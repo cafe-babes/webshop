@@ -30,7 +30,7 @@ for (var i = 0; i <jsonData.length; i++){
     var priceTr = document.createElement("tr");
         priceTr.innerHTML = jsonData[i].price;
         td.appendChild(priceTr);
-        
+
     table.appendChild(td);
     }
 }
