@@ -1,24 +1,26 @@
 package com.training360.cafebabeswebshop.product;
 
 public class ResultStatus {
-    private boolean ok;
+
+
+    private ResultStatusE status;
     private String message;
 
-    public ResultStatus(boolean ok, String message) {
-        this.ok = ok;
+    public ResultStatus(ResultStatusE status, String message) {
+        this.status = status;
         this.message = message;
     }
 
-    public boolean isOk() {
-        return ok;
+    public ResultStatusE getStatus() {
+        return status;
+    }
+
+    public void setStatus(ResultStatusE status) {
+        this.status = status;
     }
 
     public String getMessage() {
         return message;
-    }
-
-    public void setOk(boolean ok) {
-        this.ok = ok;
     }
 
     public void setMessage(String message) {
