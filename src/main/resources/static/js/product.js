@@ -10,10 +10,14 @@ window.onload = function() {
                 return response.json();
                 })
                 .then(function(jsonData) {
-               console.log(jsonData);
+                if (jsonData.status == 'NOT_OK') {
+                             showProductNotFound(jsonData);
+                         }else{
+                             showProduct(jsonData);
+                         }
                // a kapott adatokból újrakreáljuk a táblát
-               showProduct(jsonData);
             });
+                return false;
             }
 
 function showProduct(jsonData) {
@@ -28,4 +32,11 @@ function showProduct(jsonData) {
         manufacture.innerHTML = jsonData.manufacture;
         price.innerHTML = jsonData.price;
 
+    }
+
+    function showProductNotFound(jsonData){
+        var productText = document.getElementById("product-text");
+        var picture = document.getElementById("picture");
+        productText.innerHTML = "Sajnálom, ilyen termékkel nem rendelkezünk !";
+        picture.innerHTML = "";
     }
