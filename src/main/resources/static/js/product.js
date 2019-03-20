@@ -11,13 +11,8 @@ window.onload = function() {
 
  function fetchProduct(){
             var address = (new URL(document.location)).searchParams.get("address");
-            var url = "/api/products/"+address;
-                fetch(url, {
-        method: "GET",
-        body: JSON.stringify(request),
-        headers: {
-            "Content-type": "application/json"
-        }})
+            var url = "/api/product/"+address;
+                fetch(url)
                 .then (function(response){
                 return response.json();
                 })
