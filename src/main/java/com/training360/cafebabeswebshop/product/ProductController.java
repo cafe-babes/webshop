@@ -10,18 +10,18 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-    private ProductValidator validator = new ProductValidator();
+    private ProductValidator validator;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/product/{address}")
-    public ResultStatus getProduct(@PathVariable String address){
-        try {
-            productService.getProduct(validator.isValidAddress(null,address));
-            return new ResultStatus(ResultStatusE.OK, "Valid address");
-        } catch (IllegalStateException e){
+    public Object getProduct(@PathVariable String address){
+        validator = new ProductValidator(productService);
+        if (validator.isValidAddress(address)){
+            return productService.getProduct(address);
+        } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
         }
     }

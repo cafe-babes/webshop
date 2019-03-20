@@ -4,17 +4,22 @@ import java.util.List;
 
 public class ProductValidator {
 
+    private ProductService productService;
 
-    public String isValidAddress(List<Product> products, String address){
+    public ProductValidator(ProductService productService) {
+        this.productService = productService;
+    }
+
+    public boolean isValidAddress(String address){
         boolean presentAddress = false;
-        for (Product p: products) {
+        for (Product p: productService.getProducts()) {
             if (p.getAddress().equals(address)){
                 presentAddress = true;
             }
         }
-        if (address == null && address.trim().equals("") && !presentAddress){
-            throw new IllegalStateException("Invalid address");
+        if (address != null && !address.trim().equals("") && presentAddress){
+            return true;
             }
-        return address;
+        return false;
     }
 }
