@@ -65,4 +65,5 @@ public class Product {
     public void setPrice(int price) {
         this.price = price;
     }
+
 }
