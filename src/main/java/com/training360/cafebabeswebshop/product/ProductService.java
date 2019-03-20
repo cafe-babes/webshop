@@ -1,11 +1,20 @@
 package com.training360.cafebabeswebshop.product;
 
-import com.training360.cafebabeswebshop.products.Product;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ProductService {
-    ProductDao productDao;
 
-    public Product getProduct() {
-        return productDao.getProduct();
+
+    private ProductDao productDao;
+
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
+
+    public Product getProduct(Product product) {
+        return productDao.getProduct(product);
+
     }
 }
