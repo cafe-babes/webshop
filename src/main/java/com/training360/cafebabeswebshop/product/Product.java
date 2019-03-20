@@ -1,8 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
 
-import org.springframework.stereotype.Service;
-
 public class Product {
 
     private long id;
