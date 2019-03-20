@@ -19,7 +19,7 @@ public class ProductController {
 
     @GetMapping("/api/product/{address}")
     public Product getProduct(@RequestBody Product product){
-        return productService.getProduct(product.getAddress());
+        return productService.getProduct(product.setAddressUrl(product.getAddress()));
     }
 
 }
