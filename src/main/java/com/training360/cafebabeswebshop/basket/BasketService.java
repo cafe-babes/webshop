@@ -15,7 +15,7 @@ public class BasketService {
         return basketDao.saveBasketItemAndGetId(basket);
     }
 
-    public List<Basket> getBasketItems(){
-        return basketDao.getBasketItems();
-    }
+//    public List<Basket> getBasketItems(long userId){
+//        return basketDao.getBasketItems(userId);
+//    }
 }
