@@ -1,3 +1,4 @@
+/*
 package com.training360.cafebabeswebshop.basket;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,3 +17,4 @@ public class BasketController {
         return basketService.saveBasketItemAndGetId(basket);
     }
 }
+*/
