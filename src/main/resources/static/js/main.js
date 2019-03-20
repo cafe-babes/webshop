@@ -1,40 +1,44 @@
-window.onload = function(){
-fetchLocations();
+window.onload = function () {
+    fetchLocations();
 }
 
-function fetchLocations(){
+function fetchLocations() {
     fetch("/products")
-        .then(function(response){
-        return response.json();
+        .then(function (response) {
+            return response.json();
         })
-        .then(function(jsonData){
-        console.log(jsonData);
-        showTable(jsonData);
+        .then(function (jsonData) {
+            console.log(jsonData);
+            showTable(jsonData);
         });
 }
 
-function showTable(jsonData){
-var table = document.getElementById("products-table");
-    table.innerHTML = "";
-for (var i = 0; i <jsonData.length; i++){
-    var td = document.createElement("td");
-    var codeTr = document.createElement("tr");
-    codeTd.innerHTML = jsonData[i].code;
-    td.appendChild(codeTr);
-    var nameTr = document.createElement("tr");
-    nameTr.innerHTML = "<a href='product.html?address=" + jsonData[i].address + "'>" + jsonData[i].name + "</a>";
-    td.appendChild(nameTr);
-    var manufactureTr = document.createElement("tr");
-      manufactureTr.innerHTML = jsonData[i].manufacture;
-      td.appendChild(manufactureTr);
-    var priceTr = document.createElement("tr");
-        priceTr.innerHTML = jsonData[i].price;
-        td.appendChild(priceTr);
-
-    table.appendChild(td);
+function showTable(jsonData) {
+    var container = document.querySelector('#list-products');
+    container.innerHTML = "";
+    for (var i = 0; i < jsonData.length; i++) {
+        var item = `<div class="col-md-4"><a href='product.html?address=${jsonData[i].address}></a>
+        <div class="card mb-4 box-shadow">
+            <img class="card-img-top"
+                src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
+                alt="surfboard image">
+            <div class="card-body">
+                <p class="card-text">${jsonData[i].name}</p>
+                <p class="card-text">${jsonData[i].manufacture}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-lm btn-outline-secondary">Details</button>
+                    </div>
+                </div>
+                <small class="text-muted">${jsonData[i].price}<span> Ft</span></small>
+                <small class="text-muted">${jsonData[i].code}<span> Ft</span></small>
+            </div>
+        </div>
+    </div>`;
+        container.appendChild(item);
     }
 }
 
 
-    /* var createFrom = document.querySelector('#products-form');
-       createFrom.onsubmit = handleCreateFormSubmit; */
+/* var createFrom = document.querySelector('#products-form');
+   createFrom.onsubmit = handleCreateFormSubmit; */
