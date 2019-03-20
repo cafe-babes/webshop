@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -31,9 +32,13 @@ public class ProductDao {
 
 
     public Product getProduct(String address){
-    
+
+        try{
         return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price from products where address = ?",
                 PRODUCT_ROW_MAPPER, address);
+        } catch (EmptyResultDataAccessException e){
+            throw new IllegalStateException();
+        }
     }
 
 
