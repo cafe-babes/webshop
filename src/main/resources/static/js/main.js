@@ -27,7 +27,7 @@ function listProducts(jsonData) {
                 <p class="card-text">${jsonData[i].manufacture}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-lm btn-outline-secondary"><a href='product.html?address=${jsonData[i].address}'></a>Details</button>
+                        <a href='product.html?address=${jsonData[i].address}' <button type="button" class="btn btn-lm btn-outline-secondary">Details</button></a>
                     </div>
                 </div>
                 <small class="text-muted">${jsonData[i].price}<span> Ft</span></small>
