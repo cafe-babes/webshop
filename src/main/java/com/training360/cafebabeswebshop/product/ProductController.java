@@ -17,7 +17,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/api/product/{address}")
+    @GetMapping("/product/{address}")
     public Product getProduct(@RequestBody Product product){
         return productService.getProduct(product.setAddressUrl(product.getAddress()));
     }

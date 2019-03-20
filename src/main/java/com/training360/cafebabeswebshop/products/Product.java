@@ -9,9 +9,9 @@ public class Product {
     private String address;
     private String name;
     private String manufacture;
-    private long price;
+    private int price;
 
-    public Product(long id, String code, String address, String name, String manufacture, long price) {
+    public Product(long id, String code, String address, String name, String manufacture, int price) {
         this.id = id;
         this.code = code;
         this.address = address;
