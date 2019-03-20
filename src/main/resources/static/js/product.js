@@ -11,7 +11,7 @@ window.onload = function() {
 
  function fetchProduct(){
             var address = (new URL(document.location)).searchParams.get("address");
-            var url = "/api/products/"+address;
+            var url = "/api/product/"+address;
                 fetch(url, {
         method: "GET",
         body: JSON.stringify(request),
