@@ -1,12 +1,5 @@
 window.onload = function() {
     fetchProduct();
-
-// Kliens oldalról begépelődnek az adatok.
-// create-form gombra kattintva elküldi a szervernek (JAVA-kapja meg előbb)
-//    var createForm = document.getElementById("create-form");
-//       //Ha a felhasználó submitolja a formot akkor ez a függvény hívódjon meg (olyan mint egy lambda kifejezés)
-//       // a függvény nem kerül meghívásra csak akkor ha meg lesz nyomva a gomb.
-//       createForm.onsubmit = handleCreateFormSubmit;
 }
 
  function fetchProduct(){
