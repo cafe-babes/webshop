@@ -12,6 +12,7 @@ public class ProductDao {
     private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER = ((resultSet, i) -> new Product(
+            resultSet.getLong("id"),
             resultSet.getString("code"),
             resultSet.getString("address"),
             resultSet.getString("name"),
