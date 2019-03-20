@@ -27,7 +27,7 @@ function showProduct(jsonData) {
 
         var code = document.getElementById("code");
         var name = document.getElementById("name");
-        var manufacture = document.getElementById("manufacture");
+        var manufacture = document.getElementById("manufacturer");
         var price = document.getElementById("price");
 
         code.innerHTML = jsonData.code;
