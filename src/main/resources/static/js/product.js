@@ -29,3 +29,5 @@ function showProduct(jsonData) {
         price.innerHTML = jsonData.price;
 
     }
+
+
