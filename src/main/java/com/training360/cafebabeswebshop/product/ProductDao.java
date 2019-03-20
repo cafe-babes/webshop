@@ -42,7 +42,7 @@ public class ProductDao {
     }
 
     public List<Product> getProducts(){
-        return jdbcTemplate.query("select id, code, address, name, manufacture, price from products", new RowMapper<Product>() {
+        return jdbcTemplate.query("select id, code, address, name, manufacture, price from products order by name, manufacture", new RowMapper<Product>() {
             @Override
             public Product mapRow(ResultSet resultSet, int i) throws SQLException {
                 return new Product(resultSet.getLong("id"), resultSet.getString("code"), resultSet.getString("address"),
