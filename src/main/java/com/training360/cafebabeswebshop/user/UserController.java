@@ -31,6 +31,11 @@ public class UserController {
         userService.updateUser(id, user);
     }
 
+    @PostMapping("/users")
+    public void insertUser(@RequestBody User user) {
+        userService.insertUser(user);
+    }
+
 
 
 }
