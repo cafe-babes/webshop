@@ -1,10 +1,8 @@
 package com.training360.cafebabeswebshop.user;
 
-import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,11 +11,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    UserValidator userValidator;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserValidator userValidator;
 
     @GetMapping("/users")
     public List<User> listUsers(){

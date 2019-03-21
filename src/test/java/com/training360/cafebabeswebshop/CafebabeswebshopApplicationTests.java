@@ -38,7 +38,7 @@ public class CafebabeswebshopApplicationTests {
 
 		List<Product> products = productController.getProducts();
 
-		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findFirst().get();
+		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
 		long id = product.getId();
 
 		productController.deleteLocation(id);
@@ -46,6 +46,20 @@ public class CafebabeswebshopApplicationTests {
 		products = productController.getProducts();
 
 		assertEquals(2, products.size());
-		assertEquals("DELETED", products.get(1).getProduct_status());
+		assertEquals("DELETED", products.get(0).getProduct_status());
 	}
+
+	@Test
+	public void testProductLoad(){
+		//Given
+		productController.saveProductAndGetId(new Product(6, "LLL333", "sea_snake", "Sea Snake", "cafebabes", 120000, "ACTIVE"));
+
+		// When
+		List<Product> products = productController.getProducts();
+		products = productController.getProducts();
+
+		// Then
+		assertEquals(2, products.size());
+	}
+
 }
