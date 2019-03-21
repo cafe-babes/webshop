@@ -26,7 +26,7 @@ public class UserController {
         userService.deleteUserById(id);
     }
 
-    @PostMapping("/api/employees/{id}")
+    @PostMapping("/users/{id}")
     public void updateUser(@PathVariable long id, @RequestBody User user) {
         userService.updateUser(id, user);
     }
