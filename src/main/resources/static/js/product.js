@@ -4,39 +4,63 @@ window.onload = function() {
 console.log((new URL(document.location)).searchParams.get("address"));
 
  function fetchProduct(){
-            var address = (new URL(document.location)).searchParams.get("address");
-            var url = "/product/"+address;
-                fetch(url)
-                .then (function(response){
-                return response.json();
-                })
-                .then(function(jsonData) {
-                if (jsonData.status == 'NOT_OK') {
-                             showProductNotFound(jsonData);
-                         }else{
-                             showProduct(jsonData);
-                         }
-            });
+    var address = (new URL(document.location)).searchParams.get("address");
+    var url = "/product/"+address;
+        fetch(url)
+        .then (function(response){
+        return response.json();
+        })
+        .then(function(jsonData) {
+        if (jsonData.status == 'NOT_OK') {
+                     showProductNotFound(jsonData);
+                 }else{
+                     showProduct(jsonData);
+                 }
+    });
+        return false;
+}
+
+function fetchBasket(){
+    var address = (new URL(document.location)).searchParams.get("address");
+    var user_id = 1; //TODO
+    var url = "/basket/" + user_id;
+    fetch(url)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(jsonData) {
+        for(var i = 0; i < jsonData.length; i++) {
+            if(jsonData[i].address==address) {
+                alert("This product has already been added!");
                 return false;
             }
+        }
+        return true;
+    });
+}
+
+function handleAddToBasketButton() {
+    if(fetchBasket())
+        addToBasket();
+}
 
 function addToBasket(){
-            var address = (new URL(document.location)).searchParams.get("address");
-            var url = "/basket/"+address;
-            var request = {
-            "userId" : 1
-            }
-            fetch(url,{
-              method: "POST",
-              body: JSON.stringify(request),
-              headers:{
-              "Content-type": "application/json"
-              }
-              })
-              .then(function() {
-              window.location.href = "basket.html";
-              })
-            }
+    var address = (new URL(document.location)).searchParams.get("address");
+    var url = "/basket/"+address;
+    var request = {
+    "userId" : 1
+    }
+    fetch(url,{
+      method: "POST",
+      body: JSON.stringify(request),
+      headers:{
+      "Content-type": "application/json"
+      }
+      })
+      .then(function() {
+      window.location.href = "basket.html";
+      })
+}
 
 function showProduct(jsonData) {
 

@@ -4,11 +4,13 @@ public class BasketProduct {
     private String name;
     private int price;
     private int amount;
+    private String address;
 
-    public BasketProduct(String name, int price, int amount) {
+    public BasketProduct(String name, int price, int amount, String address) {
         this.name = name;
         this.price = price;
         this.amount = amount;
+        this.address = address;
     }
 
     public String getName() {
@@ -33,5 +35,13 @@ public class BasketProduct {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
