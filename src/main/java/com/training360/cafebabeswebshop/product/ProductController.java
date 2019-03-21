@@ -40,6 +40,7 @@ public class ProductController {
 
     @PostMapping("/products/{id}")
     public void updateProducts(@PathVariable long id, @RequestBody Product product){
+        System.out.println("edit" + id);
         productService.updateProducts(id, product);
     }
 

@@ -36,7 +36,6 @@ public class ProductDao {
 
 
     public Product getProduct(String address){
-
         try{
         return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where address = ?",
                 PRODUCT_ROW_MAPPER, address);

@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void insertUser(@RequestBody User user) {
-        userService.insertUser(user);
+    public long insertUserAndGetId(@RequestBody User user) {
+        return userService.insertUserAndGetId(user);
     }
 
 
