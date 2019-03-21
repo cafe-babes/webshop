@@ -1,11 +1,11 @@
 function handleFormSubmit() {
 var request = {
+"name" : document.forms["form-register"].name.value,
 "username" : document.forms["form-register"].username.value,
-"email" : document.forms["form-register"].email.value,
 "password" : document.forms["form-register"].password.value
 }
 
-fetch("/register",{
+fetch("/users",{
          method: "POST",
          body: JSON.stringify(request),
          headers:{

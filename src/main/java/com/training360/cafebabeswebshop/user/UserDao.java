@@ -41,7 +41,7 @@ public class UserDao {
 
     public void updateUser(long id, User user) {
         jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, password = ?, role = ?, user_status = ? where id = ?",
-                user.getName(), user.getEmail(), user.getUser_name(), user.getPassword(), user.getRole(), user.getUser_status(), id);
+                user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getRole(), user.getUserStatus(), id);
     }
 
     public long insertUser(User user) {
@@ -49,14 +49,12 @@ public class UserDao {
 
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps =
-                            connection.prepareStatement("INSERT INTO users(name, email, user_name, password, enabled, role) VALUES ( ?, ?, ?, ?, ?, ?)",
+                            connection.prepareStatement("INSERT INTO users(name, enabled, user_name, password) VALUES ( ?, ?, ?, ?)",
                                     Statement.RETURN_GENERATED_KEYS);
                     ps.setString(1, user.getName());
-                    ps.setString(2, user.getEmail());
-                    ps.setString(3, user.getUser_name());
+                    ps.setInt(2, 1);
+                    ps.setString(3, user.getUserName());
                     ps.setString(4, user.getPassword());
-                    ps.setString(5, user.getRole());
-                    ps.setString(6, user.getUser_status());
                     return ps;
                 }, keyHolder
         );

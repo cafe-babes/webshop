@@ -1,2 +1,3 @@
 drop INDEX email on users;
 ALTER TABLE users MODIFY email VARCHAR(255) NULL;
+ALTER TABLE users MODIFY user_name VARCHAR(255) NOT NULL;
