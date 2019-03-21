@@ -54,16 +54,16 @@ public class ProductDao {
     public long saveProductAndGetId(Product product){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement("insert into products (`code`, `address`, `name`,  `manufacture`, `price`, `product_status`) values (?,?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, product.getCode());
-        ps.setString(2, product.getAddress());
-        ps.setString(3, product.getName());
-        ps.setString(4, product.getManufacture());
-        ps.setDouble(5, product.getPrice());
-        ps.setString(6, "ACTIVE");
-        return ps;
-    }, keyHolder);
+            PreparedStatement ps = connection.prepareStatement("insert into products (`code`, `address`, `name`,  `manufacture`, `price`, `product_status`) values (?,?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, product.getCode());
+            ps.setString(2, product.getAddress());
+            ps.setString(3, product.getName());
+            ps.setString(4, product.getManufacture());
+            ps.setDouble(5, product.getPrice());
+            ps.setString(6, "ACTIVE");
+            return ps;
+        }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 

@@ -19,7 +19,7 @@ public class ProductController {
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address){
         validator = new ProductValidator(productService);
-        if (validator.isValidAddress(address)){
+        if (validator.isValidAddressPresent(address)){
             return productService.getProduct(address);
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");

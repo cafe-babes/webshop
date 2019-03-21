@@ -23,22 +23,35 @@ public class BasketDao {
             resultSet.getLong("product_id")
     ));
 
-    public long saveBasketItemAndGetId(Basket basket) {
+    private static final RowMapper<BasketProduct> BASKETPRODUCT_ROW_MAPPER = ((resultSet, i) -> new BasketProduct(
+            resultSet.getString("products.name"),
+            resultSet.getInt("products.price"),
+            resultSet.getInt("amount")
+    ));
+
+    public long saveBasketItemAndGetId(String address, Basket basket) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO basket (user_id, product_id) VALUES (?,?)",
+                    "INSERT INTO basket(user_id, product_id) VALUES ( ? , (SELECT id FROM products WHERE address = ?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, basket.getUserId());
-            ps.setLong(2, basket.getProductId());
+            ps.setString(2, address);
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
-    public List<Basket> getBasketItems() {
-        return jdbcTemplate.query("SELECT product.name, 1 FROM basket JOIN products ON basket.product_id=products.id",
-                BASKET_ROW_MAPPER);
+    public List<BasketProduct> getBasketItems(long userId) {
+        return jdbcTemplate.query(
+                "SELECT products.name, products.price, 1 as 'amount' FROM basket JOIN products ON basket.product_id=products.id WHERE user_id = ?",
+                BASKETPRODUCT_ROW_MAPPER,
+                userId);
+    }
+
+
+    public void deleteBasket(long userId) {
+        jdbcTemplate.update("DELETE FROM basket WHERE user_id = ?", userId);
     }
 }
