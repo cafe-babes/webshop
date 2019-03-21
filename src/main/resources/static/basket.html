@@ -10,7 +10,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">CafeBabes</a>
+    <a class="navbar-brand" href="/">CafeBabes</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,10 +19,10 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Bejelentkezés<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/login">Bejelentkezés<span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <!-- <form class="form-inline my-2 my-lg-0">
@@ -40,23 +40,23 @@
 
 <div class="container">
     <br>
-    <div class="row content">
+    <div class="row content" id="list-product">
         <div class="col-sm-5">
-            <img src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
+            <img class="surf-basket-img" src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
                  alt="surf">
         </div>
-
         <div class="col-sm-7">
             <hr>
             <h2 id="name">Spongebob board</h2>
             <h3><span id="price">800000</span> Ft X </h3>
             <h2><span id="amount">1</span> db</h2>
 
-            <h2 id="total">Teljes összeg: <span id="total-price"></span> Ft</h2>
-            <a href="basket.html"><button type="button" class="btn btn-outline-secondary">Megrendelem</button></a>
-
-            <br><br>
+            <br>
         </div>
+    </div>
+    <div class="col-sm-7 float-right">
+        <h2 id="total">Teljes összeg: <span id="total-price"></span> Ft</h2>
+        <a href="basket.html"><button type="button" class="btn btn-outline-secondary">Megrendelem</button></a>
     </div>
 </div>
 
