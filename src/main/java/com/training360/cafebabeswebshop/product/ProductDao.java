@@ -75,7 +75,7 @@ public class ProductDao {
     }
 
     public void deleteProduct(long id){
-        jdbcTemplate.update("delete from products where id = ?", id);
+        jdbcTemplate.update("update products set `product_status` = 'DELETED' where id = ?", id);
     }
 
     public Product findById(Long id) {
