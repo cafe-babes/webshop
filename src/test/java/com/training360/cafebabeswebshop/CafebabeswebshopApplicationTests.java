@@ -38,15 +38,15 @@ public class CafebabeswebshopApplicationTests {
 
 		List<Product> products = productController.getProducts();
 
-		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findFirst().get();
+		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
 		long id = product.getId();
 
 		productController.deleteLocation(id);
 
 		products = productController.getProducts();
 
-		assertEquals(1, products.size());
-		assertEquals("surf_killer", products.get(0).getAddress());
+		assertEquals(2, products.size());
+		assertEquals("DELETED", products.get(0).getProduct_status());
 	}
 
 	@Test
