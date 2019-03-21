@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @EnableWebSecurity
 @Configuration
-public class CafebabeswebshopApplication {
+public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CafebabeswebshopApplication.class, args);
@@ -27,7 +27,7 @@ public class CafebabeswebshopApplication {
 		http
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/", "/js/**", "/css/**", "/**").permitAll()
+				.antMatchers("/", "/js/**", "/css/**").permitAll()
 				.antMatchers("/basket.html").hasRole("USER")
 				.and()
 				.formLogin()
