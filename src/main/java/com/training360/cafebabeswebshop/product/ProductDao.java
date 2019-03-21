@@ -36,7 +36,6 @@ public class ProductDao {
 
 
     public Product getProduct(String address){
-
         try{
         return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where address = ?",
                 PRODUCT_ROW_MAPPER, address);
@@ -75,7 +74,7 @@ public class ProductDao {
     }
 
     public void deleteProduct(long id){
-        jdbcTemplate.update("delete from products where id = ?", id);
+        jdbcTemplate.update("update products set `product_status` = 'DELETED' where id = ?", id);
     }
 
     public Product findById(Long id) {

@@ -31,8 +31,11 @@ public class UserController {
         userService.updateUser(id, user);
     }
 
-    @PostMapping("/register")
-    public void createUser(@RequestBody User user) {
-        userService.createUser(user);
+    @PostMapping("/users")
+    public void insertUser(@RequestBody User user) {
+        userService.insertUser(user);
     }
+
+
+
 }
