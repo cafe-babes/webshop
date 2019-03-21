@@ -1,6 +1,7 @@
 window.onload = function() {
     fetchProduct();
 }
+console.log((new URL(document.location)).searchParams.get("address"));
 
  function fetchProduct(){
             var address = (new URL(document.location)).searchParams.get("address");
@@ -15,9 +16,26 @@ window.onload = function() {
                          }else{
                              showProduct(jsonData);
                          }
-               // a kapott adatokból újrakreáljuk a táblát
             });
                 return false;
+            }
+
+function addToBasket(){
+            var address = (new URL(document.location)).searchParams.get("address");
+            var url = "/basket/"+address;
+            var request = {
+            "userId" : 1
+            }
+            fetch(url,{
+              method: "POST",
+              body: JSON.stringify(request),
+              headers:{
+              "Content-type": "application/json"
+              }
+              })
+              .then(function() {
+              window.location.href = "basket.html";
+              })
             }
 
 function showProduct(jsonData) {

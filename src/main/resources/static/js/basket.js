@@ -1,10 +1,7 @@
-window.onload = function(){
-    fetchBasket();
-}
+fetchBasket();
 
 function fetchBasket(){
-    var url = "/basket";
-
+    var url = "/basket/1"; //TODO
     fetch(url)
     .then(function(response){
         return response.json();
@@ -19,11 +16,7 @@ function showBasket(jsonData){
     var container = document.getElementById("list-product");
     container.innerHTML = "";
 
-//    var price = parseInt(document.getElementById("price").innerHTML);
-//    var amount = parseInt(document.getElementById("amount").innerHTML);
-
     var sum = 0;
-    var amount = 0;
 
     for(var i = 0; i < jsonData.length; i++){
      console.log("ok");
@@ -37,18 +30,11 @@ function showBasket(jsonData){
                 <hr>
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
-                <h2><span id="amount">1</span> db</h2>
+                <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
                 <br>
             </div>
             `;
         sum += jsonData[i].price;
-//            var price = parseInt(document.getElementById("price").innerHTML);
-//            var amount = parseInt(document.getElementById("amount").innerHTML);
-
-            console.log(sum);
-            console.log(amount);
-//        price.innerHTML = jsonData[i].price;
-//        amount.innerHTML = jsonData[i].amount;
     }
     document.getElementById("total-price").innerHTML = sum;
 }
