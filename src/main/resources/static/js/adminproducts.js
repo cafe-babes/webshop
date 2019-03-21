@@ -50,11 +50,12 @@ function fetchProducts() {
             }
             document.querySelector("#message-div").innerHTML = jsonData.message;
         });
-    return false;
-}*/
-
-function showTable(jsonData) {
-    var table = document.querySelector("#adminproducts-table");
+        return false;
+    }*/
+    
+    function showTable(jsonData) {
+        var table = document.querySelector("#adminproducts-table");
+       // var container = document.getElementById('container');
     table.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
         var tr = document.createElement("tr");
@@ -137,7 +138,11 @@ function showTable(jsonData) {
         tr.appendChild(deleteButtonTd);
 
         table.appendChild(tr);
+        
     }
+    var createButton = document.getElementById('createButton');
+    createButton.setAttribute('onclick', `addNewProduct(${jsonData.length})`);
+
 }
 
     function editTds(num){
@@ -180,13 +185,6 @@ function showTable(jsonData) {
         var price = document.getElementById(`priceInput${num}`).value;
         //var status = document.getElementById(`status${num}`).value;
 
-        /*var code = codeTd.innerHTML;
-        var address = addressTd.innerHTML;
-        var name = nameTd.innerHTML;
-        var manu = manTd.innerHTML;
-        var price = priceTd.innerHTML;
-        var status = statusTd.innerHTML;*/
-
         var request = {
             "id": id,
             "code": code,
@@ -218,14 +216,85 @@ function showTable(jsonData) {
             
                 fetchProducts();
                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+               document.getElementById("message-div").innerHTML = "Frissítve";
             } else {
-               document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+                document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+                document.getElementById("message-div").innerHTML = "Frissítés nem sikerült";
             }
-            document.getElementById("message-div").innerHTML = "Updated";
         });
         return false;
     }
 
-    function addNewProduct(){
+    function addNewProduct(length){
+        var num = length + 1;
+        var table = document.querySelector("#adminproducts-table");
+        var tr = document.createElement('tr');
+
+        var idTd = document.createElement(td);
+        var codeTd = document.createElement(td);
+        var addressTd = document.createElement(td);
+        var nameTd = document.createElement(td);
+        var manTd = document.createElement(td);
+        var priceTd = document.createElement(td);
+
+        codeTd.innerHTML = `<input id="codeInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+        addressTd.innerHTML = `<input id="addressInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+        nameTd.innerHTML = `<input id="nameInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+        manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+        priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
+
+        var code = document.getElementById(`codeInputNew${num}`).value;
+        var address = document.getElementById(`addressInputNew${num}`).value;
+        var name = document.getElementById(`nameInputNew${num}`).value;
+        var manu = document.getElementById(`manInputNew${num}`).value;
+        var price = document.getElementById(`priceInputNew${num}`).value;
+        
+        tr.appendChild(idTd);
+        tr.appendChild(codeTd);
+        tr.appendChild(addressTd);
+        tr.appendChild(nameTd);
+        tr.appendChild(manTd);
+        tr.appendChild(priceTd);
+        table.appendChild(tr);
+        
+        var request = {
+            //"id": id,
+            "code": code,
+            "address": address,
+            "name": name,
+            "manufacture": manu,
+            "price": price,
+            "product_status": "ACTIVE"
+        }
+
+
+        fetch("/products", {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(function (response) {
+                return response.json();
+            }).
+        then(function (jsonData) {
+            if (jsonData.ok == true) {
+
+                document.getElementById(`codeTd${num}`).innerHTML = code;
+                document.getElementById(`addressTd${num}`).innerHTML = address;
+                document.getElementById(`nameTd${num}`).innerHTML = name;
+                document.getElementById(`manTd${num}`).innerHTML = manu;
+                document.getElementById(`priceTd${num}`).innerHTML = price;
+
+                fetchProducts();
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+            } else {
+                document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+            }
+            document.getElementById("message-div").innerHTML = "Updated";
+        });
+        return false;
+    
         
     }
