@@ -1,10 +1,11 @@
 function handleFormSubmit() {
 var request = {
+"name" : document.forms["form-register"].name.value,
 "username" : document.forms["form-register"].username.value,
 "password" : document.forms["form-register"].password.value
 }
 
-fetch("/register",{
+fetch("/users",{
          method: "POST",
          body: JSON.stringify(request),
          headers:{
@@ -12,10 +13,7 @@ fetch("/register",{
          }
          })
         .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            console.log(jsonData);
-            listProducts(jsonData);
+            alert("Succes!");
         });
+        return false;
 }
