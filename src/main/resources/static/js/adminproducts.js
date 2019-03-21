@@ -115,6 +115,7 @@ function showTable(jsonData) {
         deleteButton.setAttribute('id', deleteButtonId);
         deleteButtonTd.appendChild(deleteButton);
         
+        //var url = '/adminproducts/' + document.getElementById(`idTd${i}`).innerHTML;
         editButton.innerHTML = `<button class="btn"><i class="fas fa-edit"></i>Szerkesztés</button>`;
         saveButton.innerHTML = `<button class="btn"><i class="fa fa-save"></i>Mentés</button>`;
         deleteButton.innerHTML = `<button class="btn"><i class="fas fa-trash-alt"></i>Törlés</button>`;
@@ -130,6 +131,9 @@ function showTable(jsonData) {
 }
 
     function editTds(num){
+
+        var id = document.getElementById(`idTd${num}`).innerHTML
+
 
         var code = document.getElementById(`codeTd${num}`);
         var address = document.getElementById(`addressTd${num}`);
@@ -158,7 +162,7 @@ function showTable(jsonData) {
 
     function saveTds(num){
 
-         var id = (new URL(document.adminproducts)).searchParams.get("id");
+        var id = (new URL(document.adminproducts)).searchParams.get("id");
 
         var codeTd = document.getElementById(`codeTd${num}`);
         var addressTd = document.getElementById(`addressTd${num}`);
