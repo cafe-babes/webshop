@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class User {
 
     private long id;
@@ -15,7 +17,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.user_name = user_name;
-        this.password = password;
+        this.password = new BCryptPasswordEncoder(4).encode(password);
         this.role = role;
         this.user_status = user_status;
     }
