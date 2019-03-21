@@ -124,6 +124,8 @@ function fetchProducts() {
         var deleteButtonId = 'deletebutton' + i;
         deleteButton.setAttribute('id', deleteButtonId);
         deleteButton.setAttribute('class', 'btn');
+        deleteButton.setAttribute('onclick', `deleteProduct(${i})`);
+        deleteButton['raw-data'] = jsonData[i];
         deleteButtonTd.appendChild(deleteButton);
         
         //var url = '/adminproducts/' + document.getElementById(`idTd${i}`).innerHTML;
@@ -141,7 +143,7 @@ function fetchProducts() {
         
     }
     var createButton = document.getElementById('createButton');
-    createButton.setAttribute('onclick', `addNewProduct(${jsonData.length})`);
+    createButton.setAttribute('onclick', `showNewRow(${jsonData.length})`);
 
 }
 
@@ -225,23 +227,53 @@ function fetchProducts() {
         return false;
     }
 
-    function addNewProduct(length){
+    function showNewRow(length){
         var num = length + 1;
         var table = document.querySelector("#adminproducts-table");
         var tr = document.createElement('tr');
 
-        var idTd = document.createElement(td);
-        var codeTd = document.createElement(td);
-        var addressTd = document.createElement(td);
-        var nameTd = document.createElement(td);
-        var manTd = document.createElement(td);
-        var priceTd = document.createElement(td);
+        var idTd = document.createElement('td');
+        idTd.setAttribute('id', `idTd${num}`);
+        var codeTd = document.createElement('td');
+        codeTd.setAttribute('id', `codeTd${num}`);
+        var addressTd = document.createElement('td');
+        addressTd.setAttribute('id', `addressTd${num}`);
+        var nameTd = document.createElement('td');
+        nameTd.setAttribute('id', `nameTd${num}`);
+        var manTd = document.createElement('td');
+        manTd.setAttribute('id', `manTd${num}`);
+        var priceTd = document.createElement('td');
+        priceTd.setAttribute('id', `priceTd${num}`);
+        var statusTd = document.createElement('td');
+        var saveButtonTd = document.createElement('td');
+        var saveButton = document.createElement('button');
+        saveButton.setAttribute('class', 'btn');
+        saveButton.setAttribute('onclick', `addNewProduct(${num})`);
+        var deleteButtonTd = document.createElement('td');
+        var deleteButton = document.createElement('button');
+        deleteButton.setAttribute('onclick', 'deleteNewRow()')
+        deleteButton.setAttribute('class', 'btn');
+        saveButtonTd.appendChild(saveButton);
+        deleteButtonTd.appendChild(deleteButton);
 
         codeTd.innerHTML = `<input id="codeInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         addressTd.innerHTML = `<input id="addressInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         nameTd.innerHTML = `<input id="nameInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
+        statusTd.innerHTML = 'ACTIVE';
+        saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
+
+        tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd); 
+        tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
+        tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButton);
+        table.appendChild(tr);
+
+    }
+
+
+    function addNewProduct(num){
 
         var code = document.getElementById(`codeInputNew${num}`).value;
         var address = document.getElementById(`addressInputNew${num}`).value;
@@ -249,13 +281,6 @@ function fetchProducts() {
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
         
-        tr.appendChild(idTd);
-        tr.appendChild(codeTd);
-        tr.appendChild(addressTd);
-        tr.appendChild(nameTd);
-        tr.appendChild(manTd);
-        tr.appendChild(priceTd);
-        table.appendChild(tr);
         
         var request = {
             //"id": id,
@@ -279,22 +304,44 @@ function fetchProducts() {
                 return response.json();
             }).
         then(function (jsonData) {
-            if (jsonData.ok == true) {
+            if (jsonData.status == "OK") {
 
                 document.getElementById(`codeTd${num}`).innerHTML = code;
                 document.getElementById(`addressTd${num}`).innerHTML = address;
                 document.getElementById(`nameTd${num}`).innerHTML = name;
                 document.getElementById(`manTd${num}`).innerHTML = manu;
                 document.getElementById(`priceTd${num}`).innerHTML = price;
-
                 fetchProducts();
                 document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                document.getElementById("message-div").innerHTML = "Új termék hozzáadva";
             } else {
                 document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+                document.getElementById("message-div").innerHTML = "A beszúrás sikertelen";
             }
-            document.getElementById("message-div").innerHTML = "Updated";
         });
-        return false;
-    
-        
+        return false; 
     }
+
+    function deleteNewRow(){
+        var table = document.querySelector("#adminproducts-table");
+        table.removeChild(table.lastChild);
+    }
+
+    function deleteProduct(num){
+
+        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+
+        if (!confirm("Biztos, hogy törli a terméket?")) {
+            return;
+        }
+
+        fetch("/products/" + id, {
+                method: "DELETE",
+            })
+            .then(function (response) {
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                document.querySelector("#message-div").innerHTML = "Törölve"
+                fetchProducts();
+                });
+            }
+            
