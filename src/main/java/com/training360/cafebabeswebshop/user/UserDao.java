@@ -41,6 +41,9 @@ public class UserDao {
     }
 
     public void createUser(User user) {
-        jdbcTemplate.update("insert into users(user_name, password) VALUES (?,?)");
+        jdbcTemplate.update("insert into users(email, user_name, password) VALUES (?,?,?)",
+                user.getEmail(),
+                user.getUser_name(),
+                user.getPassword());
     }
 }

@@ -1,6 +1,7 @@
 function handleFormSubmit() {
 var request = {
 "username" : document.forms["form-register"].username.value,
+"email" : document.forms["form-register"].email.value,
 "password" : document.forms["form-register"].password.value
 }
 
@@ -12,10 +13,7 @@ fetch("/register",{
          }
          })
         .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            console.log(jsonData);
-            listProducts(jsonData);
+            alert("Succes!");
         });
+        return false;
 }
