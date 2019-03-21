@@ -12,7 +12,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">CafeBabes</a>
+        <a class="navbar-brand" href="/">CafeBabes</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,10 +21,10 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Bejelentkezés<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/login">Bejelentkezés<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
@@ -52,13 +52,13 @@
 
     <div class="container">
         <br>
-        <div class="row content">
-            <div class="col-sm-5">
+        <div class="row content" >
+            <div class="col-sm-5" id="picture">
                 <img src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
                     alt="surf">
             </div>
 
-            <div class="col-sm-7">
+            <div class="col-sm-7" id="product-text">
                 <hr>
                 <h2 id="name">Spongebob board</h2>
                 <h3><span id="price">800000</span> Ft</h3><br>
@@ -67,7 +67,7 @@
                 <p>Leírás, ez a legjobb szörfdeszka. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium
                     aspernatur ipsa suscipit nostrum repellendus ipsam odit, eius architecto tenetur fugit libero
                     voluptas pariatur doloribus ratione iure laborum nisi maxime mollitia.</p>
-                <button type="button" class="btn btn-primary btn-lg">Add to cart</button>
+                <a href="basket.html"><button type="button" class="btn btn-primary btn-lg">Add to cart</button></a>
                 <br><br>
             </div>
         </div>
