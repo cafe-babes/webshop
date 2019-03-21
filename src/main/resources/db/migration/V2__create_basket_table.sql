@@ -12,7 +12,7 @@ constraint pk_users primary key (id)
 
 INSERT INTO users(name, email, user_name, password, enabled, role) VALUES
 ('John Doe', 'a@a.com', 'johndoe', '$2y$12$heZ5nBAqUAvNALw5S0i17eyvbPEMJVErjd0ksuCX3neDvBbnvUj.G', 1, 'ROLE_USER'),
-('admin', 'b@b.com', 'admin', '$2a$04$MmF4xK9kPKPGxAqs6TyiouopkpORUmoNjLt7itDq/Zjg83JqO26ju', 1, 'ROLE_ADMIN');
+('admin', 'b@b.com', 'admin', '$2y$12$.kwH5V5PC1OzOEeI4AFj6.7.LJ9.w33z2L7HVKcxTe7KIgbU4GiKi', 1, 'ROLE_ADMIN');
 
 create table basket (
 id bigint auto_increment,
