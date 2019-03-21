@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init.sql")
 public class CafebabeswebshopApplicationTests {
 
 	@Autowired
@@ -27,7 +26,7 @@ public class CafebabeswebshopApplicationTests {
 		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
 		List<Product> products = productController.getProducts();
 
-		assertEquals(2, products.size());
+		assertEquals(11, products.size());
 
 	}
 
@@ -38,15 +37,14 @@ public class CafebabeswebshopApplicationTests {
 
 		List<Product> products = productController.getProducts();
 
-		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
+		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findFirst().get();
 		long id = product.getId();
 
 		productController.deleteLocation(id);
 
 		products = productController.getProducts();
 
-		assertEquals(2, products.size());
-		assertEquals("DELETED", products.get(0).getProduct_status());
+		assertEquals(1, products.size());
+		assertEquals("surf_killer", products.get(0).getAddress());
 	}
-
 }
