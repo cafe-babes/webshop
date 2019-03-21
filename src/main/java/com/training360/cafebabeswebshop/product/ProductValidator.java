@@ -27,7 +27,7 @@ public class ProductValidator {
         if(
                 isValidCode(product.getCode()) &&
                 isValidName(product.getName()) &&
-                        !(product.getAddress().trim().equals("")) &&
+                isValidAddress(product.getAddress()) &&
                 isValidManufacture(product.getManufacture()) &&
                 isValidPrice(product.getPrice())
                     )
@@ -39,10 +39,10 @@ public class ProductValidator {
 
     public Product isValidProduct2(Product product){
                 isValidCode(product.getCode());
-                        isValidName(product.getName());
-                        isValidAddress(product.getAddress());
-                        isValidManufacture(product.getManufacture());
-                        isValidPrice(product.getPrice());
+                isValidName(product.getName());
+                isValidAddress(product.getAddress());
+                isValidManufacture(product.getManufacture());
+                isValidPrice(product.getPrice());
             return product;
     }
 
