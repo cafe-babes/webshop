@@ -1,4 +1,4 @@
-window.onload() = function(){
+window.onload = function(){
     fetchBasket();
 }
 
@@ -12,17 +12,43 @@ function fetchBasket(){
     .then(function(jsonData) {
         showBasket(jsonData);
     });
+    return false;
 }
 
 function showBasket(jsonData){
+    var container = document.getElementById("list-product");
+    container.innerHTML = "";
 
-    var name = document.getElementById("name");
-    var price = parseInt(document.getElementById("price").value, 10);
-    var amount = parseInt(document.getElementById("amount").value, 10);
+//    var price = parseInt(document.getElementById("price").innerHTML);
+//    var amount = parseInt(document.getElementById("amount").innerHTML);
 
-    name.innerHTML = jsonData.name;
-    price.innerHTML = jsonData.price;
-    amount.innerHTML = jsonData.amount;
-    document.getElementById("total-price").value = price * amount;
+    var sum = 0;
+    var amount = 0;
 
+    for(var i = 0; i < jsonData.length; i++){
+     console.log("ok");
+        container.innerHTML +=
+            `<div class="col-sm-5">
+                <img class="surf-basket-img"
+                    src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
+                    alt="surf">
+            </div>
+            <div class="col-sm-7">
+                <hr>
+                <h2 id="name">${jsonData[i].name}</h2>
+                <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
+                <h2><span id="amount">1</span> db</h2>
+                <br>
+            </div>
+            `;
+        sum += jsonData[i].price;
+//            var price = parseInt(document.getElementById("price").innerHTML);
+//            var amount = parseInt(document.getElementById("amount").innerHTML);
+
+            console.log(sum);
+            console.log(amount);
+//        price.innerHTML = jsonData[i].price;
+//        amount.innerHTML = jsonData[i].amount;
+    }
+    document.getElementById("total-price").innerHTML = sum;
 }
