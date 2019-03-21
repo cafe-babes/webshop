@@ -28,4 +28,8 @@ public class UserService {
     public void updateUser(long id, User user) {
         userDao.updateUser(id, user);
     }
+
+    public void createUser(User user) {
+        userDao.createUser(user);
+    }
 }

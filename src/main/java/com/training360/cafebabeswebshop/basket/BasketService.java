@@ -16,10 +16,6 @@ public class BasketService {
         return basketDao.saveBasketItemAndGetId(basket);
     }
 
-    public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder(4).encode("admin"));
-    }
-
 //    public List<Basket> getBasketItems(long userId){
 //        return basketDao.getBasketItems(userId);
 //    }
