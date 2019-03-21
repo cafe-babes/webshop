@@ -27,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/api/employees/{id}")
-    public void updateUser(@PathVariable long id, @RequestBody Product product) {
-        userService.updateUser(id, product);
+    public void updateUser(@PathVariable long id, @RequestBody User user) {
+        userService.updateUser(id, user);
     }
 
 
