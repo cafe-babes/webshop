@@ -26,8 +26,8 @@ public class ProductDao {
             resultSet.getString("address"),
             resultSet.getString("name"),
             resultSet.getString("manufacture"),
-            resultSet.getInt("price")
-
+            resultSet.getInt("price"),
+            resultSet.getString("product_status")
     ));
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
@@ -38,7 +38,7 @@ public class ProductDao {
     public Product getProduct(String address){
 
         try{
-        return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price from products where address = ?",
+        return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where address = ?",
                 PRODUCT_ROW_MAPPER, address);
         } catch (EmptyResultDataAccessException e){
             throw new IllegalStateException();
@@ -47,7 +47,7 @@ public class ProductDao {
 
 
     public List<Product> getProducts(){
-        return jdbcTemplate.query("select id, code, address, name, manufacture, price from products order by name, manufacture",
+        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products order by name, manufacture",
                 PRODUCT_ROW_MAPPER);
     }
 
@@ -69,18 +69,17 @@ public class ProductDao {
     }
 
     public void updateProduct(long id, Product product){
-            jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? `product_status` = ? where id = ?",
+            jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ?, `product_status` = ? where id = ?",
                     product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), product.getProduct_status(), id);
 
     }
 
     public void deleteProduct(long id){
         jdbcTemplate.update("delete from products where id = ?", id);
-
     }
 
     public Product findById(Long id) {
-        return jdbcTemplate.queryForObject("select id, address, name, manufacture, price, product_status from products where id = ?",
+        return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where id = ?",
                 PRODUCT_ROW_MAPPER, id);
     }
 
