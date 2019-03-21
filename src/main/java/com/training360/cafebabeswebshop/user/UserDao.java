@@ -3,10 +3,14 @@ package com.training360.cafebabeswebshop.user;
 import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -40,7 +44,23 @@ public class UserDao {
                 user.getName(), user.getEmail(), user.getUser_name(), user.getPassword(), user.getRole(), user.getUser_status(), id);
     }
 
-    public void createUser(User user) {
-        jdbcTemplate.update("insert into users(user_name, password) VALUES (?,?)");
+    public long insertUser(User user) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps =
+                            connection.prepareStatement("INSERT INTO users(name, email, user_name, password, enabled, role) VALUES ( ?, ?, ?, ?, ?, ?)",
+                                    Statement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, user.getName());
+                    ps.setString(2, user.getEmail());
+                    ps.setString(3, user.getUser_name());
+                    ps.setString(4, user.getPassword());
+                    ps.setString(5, user.getRole());
+                    ps.setString(6, user.getUser_status());
+                    return ps;
+                }, keyHolder
+        );
+
+        return keyHolder.getKey().longValue();
     }
 }
