@@ -154,11 +154,11 @@ function showTable(jsonData) {
         var manuData = manu.innerHTML;
         var priceData = price.innerHTML;
 
-        code.innerHTML = `<input id="codeTd${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}'>`
-        address.innerHTML = `<input id="addressTd${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}'>`
-        name.innerHTML = `<input id="nameTd${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}'>`
-        manu.innerHTML = `<input id="manTd${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}'>`
-        price.innerHTML = `<input id="priceTd${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}'>`
+        code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}'>`
+        address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}'>`
+        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}'>`
+        manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}'>`
+        price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}'>`
     
 
         var edit = document.getElementById(`editbutton${num}`);
@@ -169,20 +169,23 @@ function showTable(jsonData) {
 
     function saveTds(num){
 
+
         var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
         console.log(id);
 
-        var codeTd = document.getElementById(`codeTd${num}`);
-        var addressTd = document.getElementById(`addressTd${num}`);
-        var nameTd = document.getElementById(`nameTd${num}`);
-        var manTd = document.getElementById(`manTd${num}`);
-        var priceTd = document.getElementById(`priceTd${num}`);
+        var code = document.getElementById(`codeInput${num}`).value;
+        var address = document.getElementById(`addressInput${num}`).value;
+        var name = document.getElementById(`nameInput${num}`).value;
+        var manu = document.getElementById(`manInput${num}`).value;
+        var price = document.getElementById(`priceInput${num}`).value;
+        //var status = document.getElementById(`status${num}`).value;
 
-        var code = codeTd.value;
-        var address = addressTd.value;
-        var name = nameTd.value;
-        var manu = manTd.value;
-        var price = priceTd.value;
+        /*var code = codeTd.innerHTML;
+        var address = addressTd.innerHTML;
+        var name = nameTd.innerHTML;
+        var manu = manTd.innerHTML;
+        var price = priceTd.innerHTML;
+        var status = statusTd.innerHTML;*/
 
         var request = {
             "id": id,
@@ -190,7 +193,8 @@ function showTable(jsonData) {
             "address": address,
             "name": name,
             "manufacture": manu,
-            "price": price
+            "price": price,
+            "product_status": "ACTIVE"
         }
 
         fetch("/products/" + id, {
@@ -201,22 +205,23 @@ function showTable(jsonData) {
                 }
             })
             .then(function (response) {
-                return response.json();
+                return response;
             }).
         then(function (jsonData) {
-            if (jsonData.resultStatusE = "OK") {
+            if (jsonData.ok == true) {
 
-               codeTd.innerHTML = `<td id='idTd${num}'>${code}</td>`
-               addressTd.innerHTML = `<td id='addressTd${num}'>${address}</td>`
-               nameTd.innerHTML = `<td id='nameTd${num}'>${name}</td>`
-               manTd.innerHTML = `<td id='idTd${num}'>${manu}</td>`
-               priceTd.innerHTML = `<td id='idTd${num}'>${price}</td>`
+               document.getElementById(`codeTd${num}`).innerHTML = code;
+               document.getElementById(`addressTd${num}`).innerHTML = address;
+               document.getElementById(`nameTd${num}`).innerHTML = name;
+               document.getElementById(`manTd${num}`).innerHTML = manu;
+               document.getElementById(`priceTd${num}`).innerHTML = price;
+            
                 fetchProducts();
-               // document.getElementById("message-div").setAttribute("class", "alert alert-success");
+               document.getElementById("message-div").setAttribute("class", "alert alert-success");
             } else {
-               // document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+               document.getElementById("message-div").setAttribute("class", "alert alert-danger");
             }
-           // document.getElementById("message-div").innerHTML = "Updated";
+            document.getElementById("message-div").innerHTML = "Updated";
         });
         return false;
     }
