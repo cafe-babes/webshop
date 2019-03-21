@@ -44,7 +44,7 @@ public class UserDao {
                 user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getRole(), user.getUserStatus(), id);
     }
 
-    public long insertUser(User user) {
+    public long insertUserAndGetId(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
