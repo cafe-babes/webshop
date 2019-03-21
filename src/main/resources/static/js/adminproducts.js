@@ -58,6 +58,7 @@ function showTable(jsonData) {
     table.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
         var tr = document.createElement("tr");
+        tr["raw-data"] = jsonData[i];
       
         var idTd = document.createElement("td");
         idTd.innerHTML = jsonData[i].id;
@@ -95,16 +96,24 @@ function showTable(jsonData) {
         priceTd.setAttribute('id', priceTdId);
         tr.appendChild(priceTd);
 
+        var statusTd = document.createElement("td");
+        statusTd.innerHTML = jsonData[i].product_status;
+        var statusTdId = 'statusTd' + i;
+        statusTd.setAttribute('id', statusTdId);
+        tr.appendChild(statusTd);
+
         var editButtonTd = document.createElement("td");
         var editButton = document.createElement("button");
         var editButtonId = 'editbutton' + i;
         editButton.setAttribute('id', editButtonId);
+        editButton.setAttribute('class', 'btn');
         editButton.setAttribute('onclick', `editTds(${i})`);
         editButtonTd.appendChild(editButton);
 
         var saveButton = document.createElement("button");
         var saveButtonId = 'savebutton' + i;
         saveButton.setAttribute('id', saveButtonId);
+        saveButton.setAttribute('class', 'btn');
         saveButton.setAttribute('onclick', `saveTds(${i})`);
         saveButton.style.display = 'none';
         editButtonTd.appendChild(saveButton);
@@ -113,12 +122,13 @@ function showTable(jsonData) {
         var deleteButton = document.createElement("button");
         var deleteButtonId = 'deletebutton' + i;
         deleteButton.setAttribute('id', deleteButtonId);
+        deleteButton.setAttribute('class', 'btn');
         deleteButtonTd.appendChild(deleteButton);
         
         //var url = '/adminproducts/' + document.getElementById(`idTd${i}`).innerHTML;
-        editButton.innerHTML = `<button class="btn"><i class="fas fa-edit"></i>Szerkesztés</button>`;
-        saveButton.innerHTML = `<button class="btn"><i class="fa fa-save"></i>Mentés</button>`;
-        deleteButton.innerHTML = `<button class="btn"><i class="fas fa-trash-alt"></i>Törlés</button>`;
+        editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
+        saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
        /* deleteButton.onclick = deleteLocation;
         deleteButton["raw-data"] = jsonData[i];*/
@@ -131,9 +141,6 @@ function showTable(jsonData) {
 }
 
     function editTds(num){
-
-        var id = document.getElementById(`idTd${num}`).innerHTML
-
 
         var code = document.getElementById(`codeTd${num}`);
         var address = document.getElementById(`addressTd${num}`);
@@ -162,7 +169,8 @@ function showTable(jsonData) {
 
     function saveTds(num){
 
-        var id = (new URL(document.adminproducts)).searchParams.get("id");
+        var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
+        console.log(id);
 
         var codeTd = document.getElementById(`codeTd${num}`);
         var addressTd = document.getElementById(`addressTd${num}`);
@@ -177,7 +185,7 @@ function showTable(jsonData) {
         var price = priceTd.value;
 
         var request = {
-
+            "id": id,
             "code": code,
             "address": address,
             "name": name,
@@ -185,7 +193,7 @@ function showTable(jsonData) {
             "price": price
         }
 
-        fetch("/api/adminproducts/" + id, {
+        fetch("/products/" + id, {
                 method: "POST",
                 body: JSON.stringify(request),
                 headers: {
@@ -204,11 +212,11 @@ function showTable(jsonData) {
                manTd.innerHTML = `<td id='idTd${num}'>${manu}</td>`
                priceTd.innerHTML = `<td id='idTd${num}'>${price}</td>`
                 fetchProducts();
-                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+               // document.getElementById("message-div").setAttribute("class", "alert alert-success");
             } else {
-                document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+               // document.getElementById("message-div").setAttribute("class", "alert alert-danger");
             }
-            document.getElementById("message-div").innerHTML = "Updated";
+           // document.getElementById("message-div").innerHTML = "Updated";
         });
         return false;
     }
