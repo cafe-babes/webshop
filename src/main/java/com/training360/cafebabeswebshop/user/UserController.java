@@ -1,8 +1,8 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +20,16 @@ public class UserController {
     public List<User> listUsers(){
         return userService.listUsers();
     }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUserById(@PathVariable long id) {
+        userService.deleteUserById(id);
+    }
+
+//    @PostMapping("/api/employees/{id}")
+//    public void updateProduct(@PathVariable long id, @RequestBody Product product) {
+//        employeesService.updateEmployee(id, employee.getName());
+//    }
 
 
 

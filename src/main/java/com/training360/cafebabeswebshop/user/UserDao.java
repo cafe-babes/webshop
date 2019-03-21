@@ -29,4 +29,8 @@ public class UserDao {
     public List<User> listUsers() {
         return jdbcTemplate.query("select id, name, email, user_name, password, role, user_status from users", USER_ROW_MAPPER );
     }
+
+    public void deleteUserById(long id) {
+        jdbcTemplate.update("delete from users where id = ?", id);
+    }
 }
