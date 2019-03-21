@@ -18,4 +18,8 @@ public class BasketService {
     public List<BasketProduct> getBasketItems(long userId){
         return basketDao.getBasketItems(userId);
     }
+
+    public void deleteBasket(long userId) {
+        basketDao.deleteBasket(userId);
+    }
 }

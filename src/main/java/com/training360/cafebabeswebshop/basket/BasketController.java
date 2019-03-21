@@ -24,4 +24,9 @@ public class BasketController {
     public List<BasketProduct> getBasketItems(@PathVariable long userId) {
         return basketService.getBasketItems(userId);
     }
+
+    @DeleteMapping("/basket/{userId}")
+    public void deleteBasket(@PathVariable long userId) {
+        basketService.deleteBasket(userId);
+    }
 }

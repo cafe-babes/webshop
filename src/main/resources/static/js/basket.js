@@ -1,7 +1,8 @@
 fetchBasket();
 
 function fetchBasket(){
-    var url = "/basket/1"; //TODO
+    var user_id = 1; //TODO
+    var url = "/basket/" + user_id;
     fetch(url)
     .then(function(response){
         return response.json();
@@ -9,7 +10,6 @@ function fetchBasket(){
     .then(function(jsonData) {
         showBasket(jsonData);
     });
-    return false;
 }
 
 function showBasket(jsonData){
@@ -37,4 +37,15 @@ function showBasket(jsonData){
         sum += jsonData[i].price;
     }
     document.getElementById("total-price").innerHTML = sum;
+}
+
+function emptyBasket() {
+    var user_id = 1; //TODO
+    var url = "/basket/" + user_id;
+    fetch(url, {
+    method: "DELETE"
+    })
+    .then(function(){
+        fetchBasket();
+    });
 }
