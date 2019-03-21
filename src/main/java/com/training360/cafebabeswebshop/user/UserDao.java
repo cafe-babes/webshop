@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,10 @@ public class UserDao {
 
     public void deleteUserById(long id) {
         jdbcTemplate.update("delete from users where id = ?", id);
+    }
+
+    public void updateUser(long id, User user) {
+        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, password = ?, role = ?, user_status = ? where id = ?",
+                user.getName(), user.getEmail(), user.getUser_name(), user.getPassword(), user.getRole(), user.getUser_status(), id);
     }
 }

@@ -26,10 +26,10 @@ public class UserController {
         userService.deleteUserById(id);
     }
 
-//    @PostMapping("/api/employees/{id}")
-//    public void updateProduct(@PathVariable long id, @RequestBody Product product) {
-//        employeesService.updateEmployee(id, employee.getName());
-//    }
+    @PostMapping("/api/employees/{id}")
+    public void updateUser(@PathVariable long id, @RequestBody User user) {
+        userService.updateUser(id, user);
+    }
 
 
 
