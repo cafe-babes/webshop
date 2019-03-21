@@ -28,7 +28,7 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/", "/js/**", "/css/**").permitAll()
-				.antMatchers("/basket.html").hasRole("USER")
+				.antMatchers("/basketbasket.html").hasRole("USER")
 				.and()
 				.formLogin()
 				.and()
