@@ -29,7 +29,7 @@ public class UserService {
         userDao.updateUser(id, user);
     }
 
-    public void insertUser(User user) {
-        userDao.insertUser(user);
+    public long insertUserAndGetId(User user) {
+        return userDao.insertUserAndGetId(user);
     }
 }
