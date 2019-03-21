@@ -13,17 +13,20 @@ public class UserDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    private  static final RowMapper<User> USER_ROW_MAPPER = (rs, i) -> new User
-            (rs.getLong("id"),
+    private  static final RowMapper<User> USER_ROW_MAPPER = ((rs, i) -> new User(
+                    rs.getLong("id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("user_name"),
                     rs.getString("password"),
                     rs.getString("role"),
-                    rs.getString("user_status"));
+                    rs.getString("user_status")));
 
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<User> listUsers() {
-        return jdbcTemplate.query("select id, name, email, user_name, password, role, user_status from Users", USER_ROW_MAPPER );
+        return jdbcTemplate.query("select id, name, email, user_name, password, role, user_status from users", USER_ROW_MAPPER );
     }
 }

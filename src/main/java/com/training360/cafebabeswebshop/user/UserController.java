@@ -9,17 +9,17 @@ import java.util.List;
 @RestController
 public class UserController {
 
-//    @Autowired
-//    private UserService userService;
-//
-//    public UserController(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping("/users")
-//    public List<User> listUsers(){
-//        return userService.listUsers();
-//    }
+    @Autowired
+    private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/users")
+    public List<User> listUsers(){
+        return userService.listUsers();
+    }
 
 
 
