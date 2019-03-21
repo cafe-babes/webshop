@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,9 @@ public class UserService {
 
     public void deleteUserById(long id) {
         userDao.deleteUserById(id);
+    }
+
+    public void updateUser(long id, Product product) {
+        userDao.updateUser(id, product);
     }
 }
