@@ -34,14 +34,19 @@ public class ProductController {
            return new ResultStatus(ResultStatusE.OK, String.format("Product successfully created with id %d", id));
         }
             else {
-           return new ResultStatus(ResultStatusE.NOT_OK, "Create not succsessfull!");
+           return new ResultStatus(ResultStatusE.NOT_OK, "Create not successful!");
     }
     }
 
     @PostMapping("/products/{id}")
-    public void updateProducts(@PathVariable long id, @RequestBody Product product){
-        System.out.println("edit" + id);
-        productService.updateProducts(id, product);
+    public ResultStatus updateProducts(@PathVariable long id, @RequestBody Product product){
+        validator = new ProductValidator(productService);
+        if (validator.isValidProduct(product)) {
+            productService.updateProducts(id, product);
+           return new ResultStatus(ResultStatusE.OK,"Product successfully updates");
+        } else {
+            return new ResultStatus(ResultStatusE.NOT_OK, "Update not successful!");
+        }
     }
 
     @GetMapping("/products")

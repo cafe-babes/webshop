@@ -9,19 +9,24 @@ public class User {
     private String email;
     private String userName;
     private String password;
+    private int enabled;
     private String role;
     private String userStatus;
 
-    public User(long id, String name, String email, String userName, String password, String role, String userStatus) {
+    public User(long id, String name, String email, String userName, String password, int enabled, String role, String userStatus) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.userName = userName;
         this.password = new BCryptPasswordEncoder(4).encode(password);
+        this.enabled = enabled;
         this.role = role;
         this.userStatus = userStatus;
     }
 
+    public int getEnabled() {
+        return enabled;
+    }
     public long getId() {
         return id;
     }
