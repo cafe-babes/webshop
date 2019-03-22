@@ -96,10 +96,11 @@ public class BasketTests {
         Basket basket1 = new Basket(1, idUser, idProduct);
         basketController.saveBasketItemAndGetId("wawe_blade", basket1);
         basketController.saveBasketItemAndGetId("sword_fish", basket1);
-        basketController.deleteOneItem("sword_fish", new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
+        basketController.deleteOneItem(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"), "sword_fish");
+//        basketController.deleteOneItem("sword_fish", new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
         List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
 
-        assertEquals(2, basketItems.size());
+        assertEquals(1, basketItems.size());
     }
 
 
