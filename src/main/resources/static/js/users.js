@@ -70,16 +70,19 @@ function showTable(jsonData) {
     tr.appendChild(user_statusTd);
 
 
-    var editTd = document.createElement("td");
+    var editButtonTd = document.createElement("td");
     var editButton = document.createElement("button");
+    var editButtonId = 'editbutton' + i;
+    editButton.setAttribute('id', editButtonId);
     editButton.setAttribute('class', 'btn');
     editButton.setAttribute('onclick', `editTds(${i})`);
     editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
-    tr.appendChild(editTd);
-    editTd.appendChild(editButton);
+    tr.appendChild(editButtonTd);
+    editButtonTd.appendChild(editButton);
 
      var saveButton = document.createElement("button");
                 var saveButtonId = 'savebutton' + i;
+                saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
                 saveButton.setAttribute('id', saveButtonId);
                 saveButton.setAttribute('class', 'btn');
                 saveButton.setAttribute('onclick', `saveTds(${i})`);
@@ -127,10 +130,10 @@ function editTds(num){
         var name = document.getElementById(`nameTd${num}`);
         var password = document.getElementById(`passwordTd${num}`);
 
-        var nameData = code.innerHTML;
-        var passwordData = address.innerHTML;
+        var nameData = name.innerHTML;
+        var passwordData = password.innerHTML;
 
-        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
+        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${nameData}' required>`
         password.innerHTML = `<input id="passwordInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${passwordData}' required>`
 
         var edit = document.getElementById(`editbutton${num}`);
@@ -143,20 +146,13 @@ function editTds(num){
 
             var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
 
-            var code = document.getElementById(`codeInput${num}`).value;
-            var address = document.getElementById(`addressInput${num}`).value;
             var name = document.getElementById(`nameInput${num}`).value;
-            var manu = document.getElementById(`manInput${num}`).value;
-            var price = document.getElementById(`priceInput${num}`).value;
+            var password = document.getElementById(`passwordInput${num}`).value;
+
 
             var request = {
-                "id": id,
-                "code": code,
-                "address": address,
                 "name": name,
-                "manufacture": manu,
-                "price": price,
-                "product_status": "ACTIVE"
+                "password": password
             }
 
             fetch("/users/" + id, {
@@ -170,13 +166,11 @@ function editTds(num){
                     return response.json();
                 }).
             then(function (jsonData) {
+            console.log(jsonData);
                 if (jsonData.status == 'OK') {
 
-                   document.getElementById(`codeTd${num}`).innerHTML = code;
-                   document.getElementById(`addressTd${num}`).innerHTML = address;
                    document.getElementById(`nameTd${num}`).innerHTML = name;
-                   document.getElementById(`manTd${num}`).innerHTML = manu;
-                   document.getElementById(`priceTd${num}`).innerHTML = price;
+                   document.getElementById(`passwordTd${num}`).innerHTML = password;
 
                     fetchProducts();
                    document.getElementById("message-div").setAttribute("class", "alert alert-success");
