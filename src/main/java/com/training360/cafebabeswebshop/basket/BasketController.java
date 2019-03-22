@@ -21,12 +21,12 @@ public class BasketController {
 
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
-        System.out.println(authentication.getName());
-        return basketService.getBasketItems(authentication.getName());
+        System.out.println(authentication);
+        return basketService.getBasketItems(authentication);
     }
 
     @DeleteMapping("/basket")
     public void deleteBasket(Authentication authentication) {
-        basketService.deleteBasket(authentication.getName());
+        basketService.deleteBasket(authentication);
     }
 }
