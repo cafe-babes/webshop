@@ -39,8 +39,8 @@ import static org.junit.Assert.assertEquals;
             userController.insertUserAndGetId(new User(1, "Ernest Hemingway", "ernest.ham@gmail.com", "eh001", "eh001", 1, "ROLE_USER", "ACTIVE"));
             List<User> users = userController.listUsers();
 
-            User user1 = users.stream().filter(e -> e.getEmail().equals("thomas.mann@gmail.com")).findAny().get();
-            User user2 = users.stream().filter(e -> e.getEmail().equals("ernest.ham@gmail.com")).findAny().get();
+            User user1 = users.stream().filter(e -> e.getUserName().equals("tm001")).findAny().get();
+            User user2 = users.stream().filter(e -> e.getUserName().equals("tm001")).findAny().get();
 
             long idUser1 = user1.getId();
             long idUser2 = user2.getId();
@@ -55,12 +55,13 @@ import static org.junit.Assert.assertEquals;
             long idProduct1 = product1.getId();
             long idProduct2 = product2.getId();
 
-//            basketController.saveBasketItemAndGetId("basket01", new Basket(1, idUser1, idProduct1));
-//            basketController.saveBasketItemAndGetId("basket02", new Basket(1, idUser2, idProduct2));
-//            List<BasketItem> baskets = basketController.getBasketItems(new TestingAuthenticationToken("admin2", "admin2", "ROLE_ADMIN"));
+            basketController.saveBasketItemAndGetId("basket01", new Basket(1, idUser1, idProduct1));
+            basketController.saveBasketItemAndGetId("basket02", new Basket(1, idUser2, idProduct2));
+            List<BasketItem> baskets = basketController.getBasketItems(new TestingAuthenticationToken("admin2", "admin2", "ROLE_ADMIN"));
 
-            assertEquals(100 , idProduct1);
-            assertEquals(100 , idProduct2);
+
+            assertEquals(2 , baskets.size());
+//            assertEquals(100 , idProduct2);
 
             }
 
