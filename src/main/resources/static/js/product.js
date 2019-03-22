@@ -20,7 +20,7 @@ console.log((new URL(document.location)).searchParams.get("address"));
         return false;
 }
 
-function fetchBasket(){
+function handleAddToBasketButton(){
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/basket";
     var bol = true;
@@ -32,18 +32,10 @@ function fetchBasket(){
         for(var i = 0; i < jsonData.length; i++) {
             if(jsonData[i].address==address) {
                 alert("This product has already been added!");
-                return false;
             }
         }
         addToBasket();
-        console.log("ok2");
-        return true;
     });
-}
-
-function handleAddToBasketButton() {
-    if(fetchBasket())
-        addToBasket();
 }
 
 function addToBasket(){

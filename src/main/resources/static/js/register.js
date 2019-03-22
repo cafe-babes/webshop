@@ -1,7 +1,7 @@
 function handleFormSubmit() {
 var request = {
 "name" : document.forms["form-register"].name.value,
-"username" : document.forms["form-register"].username.value,
+"userName" : document.forms["form-register"].username.value,
 "password" : document.forms["form-register"].password.value
 }
 
