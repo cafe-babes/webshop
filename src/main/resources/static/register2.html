@@ -13,11 +13,11 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-register" id="form-register" method="post" action="/register">
-        <h2 class="form-register-heading">Please register</h2>
+    <form class="form-signin" id="form-register">
+        <h2 class="form-signin-heading">Please register</h2>
         <p>
             <label for="name" class="sr-only">Full name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="name" required autofocus>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Full name" required autofocus>
         </p>
         <p>
             <label for="username" class="sr-only">Username</label>
@@ -27,7 +27,10 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         </p>
-        <button class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Register</button>
+        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Register</button>
+        <br>
+        <div id="response-box" class="">
+        </div>
     </form>
 </div>
 <script src="js/register.js"></script>
