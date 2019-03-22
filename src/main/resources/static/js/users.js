@@ -73,9 +73,19 @@ function showTable(jsonData) {
     var editTd = document.createElement("td");
     var editButton = document.createElement("button");
     editButton.setAttribute('class', 'btn');
+    editButton.setAttribute('onclick', `editTds(${i})`);
     editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
     tr.appendChild(editTd);
     editTd.appendChild(editButton);
+
+     var saveButton = document.createElement("button");
+                var saveButtonId = 'savebutton' + i;
+                saveButton.setAttribute('id', saveButtonId);
+                saveButton.setAttribute('class', 'btn');
+                saveButton.setAttribute('onclick', `saveTds(${i})`);
+                saveButton.style.display = 'none';
+                editButtonTd.appendChild(saveButton);
+
 
     var deleteButtonTd = document.createElement("td");
             var deleteButton = document.createElement("button");
@@ -112,3 +122,69 @@ function showTable(jsonData) {
                           fetchUsers();
                           });
 }
+function editTds(num){
+
+        var name = document.getElementById(`nameTd${num}`);
+        var password = document.getElementById(`passwordTd${num}`);
+
+        var nameData = code.innerHTML;
+        var passwordData = address.innerHTML;
+
+        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
+        password.innerHTML = `<input id="passwordInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${passwordData}' required>`
+
+        var edit = document.getElementById(`editbutton${num}`);
+        edit.style.display = 'none';
+        var save = document.getElementById(`savebutton${num}`);
+        save.style.display = 'inline';
+    }
+
+    function saveTds(num){
+
+            var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
+
+            var code = document.getElementById(`codeInput${num}`).value;
+            var address = document.getElementById(`addressInput${num}`).value;
+            var name = document.getElementById(`nameInput${num}`).value;
+            var manu = document.getElementById(`manInput${num}`).value;
+            var price = document.getElementById(`priceInput${num}`).value;
+
+            var request = {
+                "id": id,
+                "code": code,
+                "address": address,
+                "name": name,
+                "manufacture": manu,
+                "price": price,
+                "product_status": "ACTIVE"
+            }
+
+            fetch("/users/" + id, {
+                    method: "POST",
+                    body: JSON.stringify(request),
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                })
+                .then(function (response) {
+                    return response.json();
+                }).
+            then(function (jsonData) {
+                if (jsonData.status == 'OK') {
+
+                   document.getElementById(`codeTd${num}`).innerHTML = code;
+                   document.getElementById(`addressTd${num}`).innerHTML = address;
+                   document.getElementById(`nameTd${num}`).innerHTML = name;
+                   document.getElementById(`manTd${num}`).innerHTML = manu;
+                   document.getElementById(`priceTd${num}`).innerHTML = price;
+
+                    fetchProducts();
+                   document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                   document.getElementById("message-div").innerHTML = "Frissítve";
+                } else {
+                    document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+                    document.getElementById("message-div").innerHTML = "Frissítés nem sikerült";
+                }
+            });
+            return false;
+        }
