@@ -19,6 +19,7 @@ public class BasketController {
         return basketService.saveBasketItemAndGetId(address, authentication);
     }
 
+
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
         System.out.println(authentication);
