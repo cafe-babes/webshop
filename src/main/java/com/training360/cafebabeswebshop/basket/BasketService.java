@@ -12,8 +12,8 @@ public class BasketService {
     @Autowired
     private BasketDao basketDao;
 
-    public long saveBasketItemAndGetId(String address, Basket basket) {
-        return basketDao.saveBasketItemAndGetId(address, basket);
+    public long saveBasketItemAndGetId(String address, Authentication authentication) {
+        return basketDao.saveBasketItemAndGetId(address, authentication.getName());
     }
 
     public List<BasketItem> getBasketItems(Authentication authentication){
