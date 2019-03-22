@@ -43,9 +43,7 @@ function showBasket(jsonData){
 function deleteOneItem(){
     address = document.querySelector("#delete-one")["raw-data"].address;
     console.log(address);
-
-    var user_id = 1;
-    var url = "/basket/" + user_id + "/"+ address;
+    var url = "/basket/" + address;
     console.log(url)
     return fetch(url, {
         method: "DELETE"

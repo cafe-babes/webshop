@@ -23,4 +23,8 @@ public class BasketService {
     public void deleteBasket(Authentication authentication) {
         basketDao.deleteBasket(authentication.getName());
     }
+
+    public void deleteOneItem(Authentication authentication, String address) {
+        basketDao.deleteOneItem(authentication.getName(), address);
+    }
 }

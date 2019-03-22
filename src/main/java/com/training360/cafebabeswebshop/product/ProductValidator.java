@@ -47,11 +47,24 @@ public class ProductValidator {
     }
 
     private boolean isValidCode(String code) {
-        return (code != null && !code.trim().equals(""));
+        boolean codeAlreadyExists = false;
+        for (Product p: productService.getProducts()) {
+            if (p.getCode().equals(code)){
+                codeAlreadyExists = true;
+            }
+        }
+
+        return (code != null && !code.trim().equals("") && !codeAlreadyExists);
     }
 
     private boolean isValidAddress(String address) {
-        return (address != null && !address.trim().equals(""));
+        boolean addressAlreadyExists = false;
+        for (Product p: productService.getProducts()) {
+            if (p.getAddress().equals(address)){
+                addressAlreadyExists = true;
+            }
+        }
+        return (address != null && !address.trim().equals("") && !addressAlreadyExists);
     }
 
     private boolean isValidName(String name){
