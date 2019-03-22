@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.basket;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +16,11 @@ public class BasketService {
         return basketDao.saveBasketItemAndGetId(address, basket);
     }
 
-    public List<BasketItem> getBasketItems(String userName){
-        return basketDao.getBasketItems(userName);
+    public List<BasketItem> getBasketItems(Authentication authentication){
+        return basketDao.getBasketItems(authentication.getName());
     }
 
-    public void deleteBasket(String userName) {
-        basketDao.deleteBasket(userName);
+    public void deleteBasket(Authentication authentication) {
+        basketDao.deleteBasket(authentication.getName());
     }
 }

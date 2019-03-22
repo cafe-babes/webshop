@@ -24,6 +24,7 @@ public class BasketDao {
     ));
 
     private static final RowMapper<BasketItem> BASKETPRODUCT_ROW_MAPPER = ((resultSet, i) -> new BasketItem(
+            resultSet.getLong("product_id"),
             resultSet.getString("products.name"),
             resultSet.getInt("products.price"),
             resultSet.getInt("amount"),
@@ -46,7 +47,7 @@ public class BasketDao {
 
     public List<BasketItem> getBasketItems(String userName) {
         return jdbcTemplate.query(
-                "SELECT products.name, products.address, products.price, 1 as 'amount' FROM basket \n" +
+                "SELECT product_id, products.name, products.address, products.price, 1 as 'amount' FROM basket \n" +
                         "JOIN products ON basket.product_id=products.id \n" +
                         "JOIN users ON basket.user_id=users.id \n" +
                         "WHERE user_name = ?",
