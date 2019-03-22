@@ -145,15 +145,29 @@ function editTds(num){
     function saveTds(num){
 
             var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
-
             var name = document.getElementById(`nameInput${num}`).value;
             var password = document.getElementById(`passwordInput${num}`).value;
+            var email = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].email;
+            var userName = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].userName;
 
 
-            var request = {
-                "name": name,
-                "password": password
-            }
+
+            console.log(id);
+            console.log(name);
+            console.log(password);
+
+            var request =
+                    {
+                            "id": id,
+                            "name": name,
+                            "email": email,
+                            "userName": userName,
+                            "password": password,
+                            "enabled": 1,
+                            "role": "ROLE_USER",
+                            "userStatus": "ACTIVE"
+                        }
+
 
             fetch("/users/" + id, {
                     method: "POST",
@@ -163,16 +177,16 @@ function editTds(num){
                     }
                 })
                 .then(function (response) {
-                    return response.json();
+                    return response;
                 }).
             then(function (jsonData) {
             console.log(jsonData);
-                if (jsonData.status == 'OK') {
+                if (jsonData.ok == true) {
 
                    document.getElementById(`nameTd${num}`).innerHTML = name;
                    document.getElementById(`passwordTd${num}`).innerHTML = password;
 
-                    fetchProducts();
+                    fetchUsers();
                    document.getElementById("message-div").setAttribute("class", "alert alert-success");
                    document.getElementById("message-div").innerHTML = "Frissítve";
                 } else {
