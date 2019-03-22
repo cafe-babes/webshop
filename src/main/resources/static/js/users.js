@@ -150,12 +150,6 @@ function editTds(num){
             var email = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].email;
             var userName = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].userName;
 
-
-
-            console.log(id);
-            console.log(name);
-            console.log(password);
-
             var request =
                     {
                             "id": id,
@@ -181,17 +175,17 @@ function editTds(num){
                 }).
             then(function (jsonData) {
             console.log(jsonData);
-                if (jsonData.ok == true) {
+                if (jsonData.resultStatusEnum == "OK") {
 
                    document.getElementById(`nameTd${num}`).innerHTML = name;
                    document.getElementById(`passwordTd${num}`).innerHTML = password;
 
                     fetchUsers();
                    document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                   document.getElementById("message-div").innerHTML = "Frissítve";
+                   document.getElementById("message-div").innerHTML = jsonData.message;
                 } else {
                     document.getElementById("message-div").setAttribute("class", "alert alert-danger");
-                    document.getElementById("message-div").innerHTML = "Frissítés nem sikerült";
+                    document.getElementById("message-div").innerHTML = jsonData.message;
                 }
             });
             return false;
