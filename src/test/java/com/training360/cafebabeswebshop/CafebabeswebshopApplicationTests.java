@@ -21,7 +21,6 @@ public class CafebabeswebshopApplicationTests {
 
 	@Autowired
 	private ProductController productController;
-	private
 
 
 	@Test
@@ -30,7 +29,6 @@ public class CafebabeswebshopApplicationTests {
 		List<Product> products = productController.getProducts();
 
 		assertEquals(2, products.size());
-
 	}
 
 	@Test
