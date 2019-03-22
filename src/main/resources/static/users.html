@@ -2,23 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users adminisztráció</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/adminproducts.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css"
+          integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
 </head>
 <body>
-<table>
-    <tr>
-        <td>ID</td>
-        <td>Viselt név</td>
-        <td>Email</td>
-        <td>Felhasználó név</td>
-        <td>Jelszó</td>
-        <td>Engedélyezett</td>
-        <td>Hatáskör</td>
-        <td>Státusz</td>
-    <tr>
+    <div class="container" id="container">
+    <div id="message-div">
+        <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Viselt név</td>
+            <td>Email</td>
+            <td>Felhasználó név</td>
+            <td>Jelszó</td>
+            <td>Engedélyezett</td>
+            <td>Hatáskör</td>
+            <td>Státusz</td>
+        <tr>
+        <thead>
+            <tbody id="users-table"></tbody>
+        </table>
+    <button class="btn" id="createButton"><i class="fas fa-plus"></i>Új felhasználó</button>
+    </div>
+    </div>
 
-</table>
-
-
+    <script src="js/users.js"></script>
 </body>
 </html>

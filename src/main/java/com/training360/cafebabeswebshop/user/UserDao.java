@@ -24,6 +24,7 @@ public class UserDao {
                     rs.getString("email"),
                     rs.getString("user_name"),
                     rs.getString("password"),
+                    rs.getInt("enabled"),
                     rs.getString("role"),
                     rs.getString("user_status")));
 
@@ -32,7 +33,7 @@ public class UserDao {
     }
 
     public List<User> listUsers() {
-        return jdbcTemplate.query("select id, name, email, user_name, password, role, user_status from users", USER_ROW_MAPPER );
+        return jdbcTemplate.query("SELECT `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users`", USER_ROW_MAPPER );
     }
 
     public void deleteUserById(long id) {
@@ -40,8 +41,8 @@ public class UserDao {
     }
 
     public void updateUser(long id, User user) {
-        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, password = ?, role = ?, user_status = ? where id = ?",
-                user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getRole(), user.getUserStatus(), id);
+        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, password = ?, enabled = ?, role = ?, user_status = ? where id = ?",
+                user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
     public long insertUserAndGetId(User user) {
