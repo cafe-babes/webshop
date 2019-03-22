@@ -9,16 +9,16 @@ public class Product {
     private String name;
     private String manufacture;
     private int price;
-    private String product_status;
+    private String productStatus;
 
-    public Product(long id, String code, String address, String name, String manufacture, int price, String product_status) {
+    public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus) {
         this.id = id;
         this.code = code;
         this.address = address;
         this.name = name;
         this.manufacture = manufacture;
         this.price = price;
-        this.product_status = product_status;
+        this.productStatus = productStatus;
     }
 
     public long getId() {
@@ -69,11 +69,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getProduct_status() {
-        return product_status;
+    public String getProductStatus() {
+        return productStatus;
     }
 
-    public void setProduct_status(String product_status) {
-        this.product_status = product_status;
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 }

@@ -17,7 +17,7 @@ function listProducts(jsonData) {
     var container = document.querySelector('#list-products');
     container.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
-        if(jsonData[i].product_status === "ACTIVE"){
+        if(jsonData[i].productStatus === "ACTIVE"){
             container.innerHTML += `<div class="col-md-4">
             <div class="card mb-4 box-shadow">
                 <img class="card-img-top"

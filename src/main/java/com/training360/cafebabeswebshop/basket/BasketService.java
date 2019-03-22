@@ -15,11 +15,11 @@ public class BasketService {
         return basketDao.saveBasketItemAndGetId(address, basket);
     }
 
-    public List<BasketProduct> getBasketItems(long userId){
-        return basketDao.getBasketItems(userId);
+    public List<BasketItem> getBasketItems(String userName){
+        return basketDao.getBasketItems(userName);
     }
 
-    public void deleteBasket(long userId) {
-        basketDao.deleteBasket(userId);
+    public void deleteBasket(String userName) {
+        basketDao.deleteBasket(userName);
     }
 }

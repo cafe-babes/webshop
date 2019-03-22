@@ -1,8 +1,7 @@
 fetchBasket();
 
 function fetchBasket(){
-    var user_id = 1; //TODO
-    var url = "/basket/" + user_id;
+    var url = "/basket";
     fetch(url)
     .then(function(response){
         return response.json();
@@ -40,8 +39,7 @@ function showBasket(jsonData){
 }
 
 function emptyBasket() {
-    var user_id = 1; //TODO
-    var url = "/basket/" + user_id;
+    var url = "/basket";
     fetch(url, {
     method: "DELETE"
     })
