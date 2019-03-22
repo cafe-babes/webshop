@@ -1,12 +1,12 @@
 package com.training360.cafebabeswebshop.basket;
 
-public class BasketProduct {
+public class BasketItem {
     private String name;
     private int price;
     private int amount;
     private String address;
 
-    public BasketProduct(String name, int price, int amount, String address) {
+    public BasketItem(String name, int price, int amount, String address) {
         this.name = name;
         this.price = price;
         this.amount = amount;

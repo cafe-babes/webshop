@@ -46,7 +46,7 @@ public class CafebabeswebshopApplicationTests {
 		products = productController.getProducts();
 
 		assertEquals(2, products.size());
-		assertEquals("DELETED", products.get(0).getProduct_status());
+		assertEquals("DELETED", products.get(0).getProductStatus());
 	}
 
 	@Test
