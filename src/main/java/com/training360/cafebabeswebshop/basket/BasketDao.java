@@ -60,10 +60,12 @@ public class BasketDao {
     }
 
     public void deleteBasket(String userName) {
-        jdbcTemplate.update("DELETE FROM basket WHERE user_name = ?", userName);
+        jdbcTemplate.update("DELETE FROM basket WHERE user_id =(select id from users where users.user_name = ?)", userName);
     }
 
     public void deleteOneItem(String userName, String address) {
-        jdbcTemplate.update("delete from basket where user_name = ? and product_id = ?", userName, address);
+        jdbcTemplate.update("delete from basket where user_id=(select id from users where users.user_name = ?) and product_id=(select id from products where products.address=?)", userName, address);
     }
 }
+
+//delete from basket where user_id=(select id from users where user_name="admin") and product_id=(select id from products where address="shark");
