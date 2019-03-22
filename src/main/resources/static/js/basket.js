@@ -16,10 +16,7 @@ function showBasket(jsonData){
     container.innerHTML = "";
 
     var sum = 0;
-    if(jsonData.length === 0){
-            console.log("valami");
-            container.innerHTML += `<h2>A kosár tartalma üres</h2>`;
-        } else {
+
     for(var i = 0; i < jsonData.length; i++){
      console.log("ok");
         container.innerHTML +=
@@ -39,9 +36,7 @@ function showBasket(jsonData){
             `;
         sum += jsonData[i].price;
         document.querySelector("#delete-one")["raw-data"] = jsonData[i];
-    }
-    console.log("más");
-    container.innerHTML += `<h2 id="total">Teljes összeg: <span id="total-price"></span> Ft</h2>`;
+
     document.getElementById("total-price").innerHTML = sum;
     }
 }
