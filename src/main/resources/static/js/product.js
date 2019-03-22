@@ -7,23 +7,22 @@ console.log((new URL(document.location)).searchParams.get("address"));
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/product/"+address;
         fetch(url)
-        .then (function(response){
+        .then(function(response){
         return response.json();
         })
         .then(function(jsonData) {
-        if (jsonData.status == 'NOT_OK') {
-                     showProductNotFound(jsonData);
-                 }else{
-                     showProduct(jsonData);
-                 }
+            if (jsonData.status == 'NOT_OK') {
+               showProductNotFound(jsonData);
+            }else{
+               showProduct(jsonData);
+            }
     });
         return false;
 }
 
 function fetchBasket(){
     var address = (new URL(document.location)).searchParams.get("address");
-    var user_id = 1; //TODO
-    var url = "/basket/" + user_id;
+    var url = "/basket";
     var bol = true;
     fetch(url)
     .then(function(response){
@@ -50,16 +49,9 @@ function handleAddToBasketButton() {
 function addToBasket(){
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/basket/"+address;
-    var request = {
-    "userId" : 1
-    }
     console.log("ok");
     fetch(url,{
-      method: "POST",
-      body: JSON.stringify(request),
-      headers:{
-      "Content-type": "application/json"
-      }
+      method: "POST"
       });
       addGoToBasketButton();
 }

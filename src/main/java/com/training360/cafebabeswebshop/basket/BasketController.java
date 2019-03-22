@@ -1,9 +1,8 @@
 package com.training360.cafebabeswebshop.basket;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import com.training360.cafebabeswebshop.product.*;
 
 import java.util.List;
 
@@ -20,14 +19,15 @@ public class BasketController {
         return basketService.saveBasketItemAndGetId(address, basket);
     }
 
-    @GetMapping("/basket/{userId}")
-    public List<BasketProduct> getBasketItems(@PathVariable long userId) {
-        return basketService.getBasketItems(userId);
+    @GetMapping("/basket")
+    public List<BasketItem> getBasketItems(Authentication authentication) {
+        System.out.println(authentication);
+        return basketService.getBasketItems(authentication);
     }
 
-    @DeleteMapping("/basket/{userId}")
-    public void deleteBasket(@PathVariable long userId) {
-        basketService.deleteBasket(userId);
+    @DeleteMapping("/basket")
+    public void deleteBasket(Authentication authentication) {
+        basketService.deleteBasket(authentication);
     }
 
 
