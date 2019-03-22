@@ -27,10 +27,11 @@ function showBasket(jsonData){
                     alt="surf">
             </div>
             <div class="col-sm-7">
-                <hr>
+
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary">Töröl</button>
                 <br>
             </div>
             `;
@@ -49,5 +50,3 @@ function emptyBasket() {
         fetchBasket();
     });
 }
-
-//TODO : megjeleníteni egy gombot: irány a kosár
