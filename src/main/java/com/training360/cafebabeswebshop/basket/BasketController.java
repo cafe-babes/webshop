@@ -15,8 +15,8 @@ public class BasketController {
     private int user_id_for_test = 1;
 
     @PostMapping("/basket/{address}")
-    public long saveBasketItemAndGetId(@PathVariable String address, @RequestBody Basket basket) {
-        return basketService.saveBasketItemAndGetId(address, basket);
+    public long saveBasketItemAndGetId(@PathVariable String address, Authentication authentication) {
+        return basketService.saveBasketItemAndGetId(address, authentication);
     }
 
     @GetMapping("/basket")

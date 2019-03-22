@@ -70,9 +70,9 @@ public class BasketTests {
         long idProduct2 = product2.getId();
         long idProduct3 = product2.getId();
 
-        basketController.saveBasketItemAndGetId("sea_snake", new Basket(1, idUser1, idProduct1));
-        basketController.saveBasketItemAndGetId("sword_fish", new Basket(2, idUser2, idProduct2));
-        basketController.saveBasketItemAndGetId("sea_star", new Basket(3, idUser1, idProduct3));
+//        basketController.saveBasketItemAndGetId("sea_snake", new Basket(1, idUser1, idProduct1)); TODO
+//        basketController.saveBasketItemAndGetId("sword_fish", new Basket(2, idUser2, idProduct2)); TODO
+//        basketController.saveBasketItemAndGetId("sea_star", new Basket(3, idUser1, idProduct3)); TODO
 
         List<BasketItem> baskets = basketController.getBasketItems(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
 
@@ -94,8 +94,8 @@ public class BasketTests {
         long idProduct2 = productService.saveProductAndGetId(new Product(2, "ZZZ111", "sword_fish", "Sword Fish", "cafebabes", 139000, "ACTIVE"));
 
         Basket basket1 = new Basket(1, idUser, idProduct);
-        basketController.saveBasketItemAndGetId("wawe_blade", basket1);
-        basketController.saveBasketItemAndGetId("sword_fish", basket1);
+//        basketController.saveBasketItemAndGetId("wawe_blade", basket1); TODO
+//        basketController.saveBasketItemAndGetId("sword_fish", basket1); TODO
         basketController.deleteOneItem(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"), "sword_fish");
 //        basketController.deleteOneItem("sword_fish", new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
         List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
