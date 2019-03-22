@@ -45,7 +45,6 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder)
 				.usersByUsernameQuery("select name,password,enabled from users where name=?")
 				.authoritiesByUsernameQuery("select name, role from users where name = ?");
-
 	}
 
 }
