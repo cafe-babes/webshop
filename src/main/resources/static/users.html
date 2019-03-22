@@ -12,24 +12,25 @@
 </head>
 <body>
     <div class="container" id="container">
-    <div id="message-div">
-        <table class="table table-striped">
+        <div id="message-div"></div>
+        <table class="table table-bordered">
         <thead>
         <tr>
-            <td>ID</td>
-            <td>Viselt név</td>
-            <td>Email</td>
-            <td>Felhasználó név</td>
-            <td>Jelszó</td>
-            <td>Engedélyezett</td>
-            <td>Hatáskör</td>
-            <td>Státusz</td>
+            <th scope="col">#</th>
+            <th scope="col">Viselt név</th>
+            <th scope="col">Email</th>
+            <th scope="col">Felhasználó név</th>
+            <th scope="col" width="15%">Jelszó</th>
+            <th scope="col">Engedélyezett</th>
+            <th scope="col">Hatáskör</th>
+            <th scope="col">Státusz</th>
+            <th scope="col">Szerkesztés</th>
+            <th scope="col">Törlés</th>
         <tr>
         <thead>
             <tbody id="users-table"></tbody>
         </table>
     <button class="btn" id="createButton"><i class="fas fa-plus"></i>Új felhasználó</button>
-    </div>
     </div>
 
     <script src="js/users.js"></script>

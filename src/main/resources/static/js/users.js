@@ -68,6 +68,47 @@ function showTable(jsonData) {
     var user_statusTdId = "user_statusTd" + i;
     user_statusTd.setAttribute("id", user_statusTdId);
     tr.appendChild(user_statusTd);
-    table.appendChild(tr);
+
+
+    var editTd = document.createElement("td");
+    var editButton = document.createElement("button");
+    editButton.setAttribute('class', 'btn');
+    editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
+    tr.appendChild(editTd);
+    editTd.appendChild(editButton);
+
+    var deleteButtonTd = document.createElement("td");
+            var deleteButton = document.createElement("button");
+            var deleteButtonId = 'deletebutton' + i;
+            deleteButton.setAttribute('id', deleteButtonId);
+            deleteButton.setAttribute('class', 'btn');
+            deleteButton.setAttribute('onclick', `deleteUser(${i})`);
+            deleteButton['raw-data'] = jsonData[i];
+
+            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
+
+            deleteButtonTd.appendChild(deleteButton);
+            tr.appendChild(deleteButtonTd);
+
+            table.appendChild(tr);
+
   }
+  }
+  function deleteUser(num){
+
+          var id = document.getElementById(`deletebutton${num}`)['raw-data'].id;
+          var name = document.getElementById(`deletebutton${num}`)['raw-data'].name;
+
+          if (!confirm("Biztos, hogy törli a felhasználót?")) {
+              return;
+          }
+
+           fetch("/users/" + id, {
+                          method: "DELETE",
+                      })
+                      .then(function (response) {
+                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
+                          fetchUsers();
+                          });
 }
