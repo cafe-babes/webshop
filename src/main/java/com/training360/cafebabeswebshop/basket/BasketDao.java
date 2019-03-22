@@ -68,4 +68,3 @@ public class BasketDao {
     }
 }
 
-//delete from basket where user_id=(select id from users where user_name="admin") and product_id=(select id from products where address="shark");
