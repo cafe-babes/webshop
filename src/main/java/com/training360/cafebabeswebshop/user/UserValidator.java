@@ -20,7 +20,7 @@ public class UserValidator {
 
     public boolean userCanBeSaved(User user){
         for (User u: userService.listUsers()) {
-            if(u.getName().equals(user.getName())){
+            if(u.getUserName().equals(user.getUserName())){
                 return false;
             }
         }
