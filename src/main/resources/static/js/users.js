@@ -145,15 +145,29 @@ function editTds(num){
     function saveTds(num){
 
             var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
-
             var name = document.getElementById(`nameInput${num}`).value;
+            var email = document.getElementById("emailTd" + num).value;
+            var userName = document.getElementById("user_nameTd" + num).value;
             var password = document.getElementById(`passwordInput${num}`).value;
 
+            console.log(id);
+            console.log(name);
+            console.log(email);
+            console.log(userName);
+            console.log(password);
 
-            var request = {
-                "name": name,
-                "password": password
-            }
+            var request =
+                    {
+                        "id": id,
+                        "name": name,
+                        "email": email,
+                        "user_name": userName,
+                        "password": password,
+                        "enabled": 1,
+                        "role": "ROLE_USER",
+                        "user_status": "ACTIVE"
+                    }
+
 
             fetch("/users/" + id, {
                     method: "POST",
