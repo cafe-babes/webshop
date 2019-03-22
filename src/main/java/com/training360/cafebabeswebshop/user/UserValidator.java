@@ -9,9 +9,18 @@ public class UserValidator {
         this.userService = userService;
     }
 
+//    public boolean userCanBeSaved(User user){
+//        for (User u: userService.listUsers()) {
+//            if(u.getEmail().equals(user.getEmail())){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+
     public boolean userCanBeSaved(User user){
         for (User u: userService.listUsers()) {
-            if(u.getEmail().equals(user.getEmail())){
+            if(u.getUserName().equals(user.getUserName())){
                 return false;
             }
         }
