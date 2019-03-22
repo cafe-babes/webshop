@@ -49,4 +49,17 @@ public class CafebabeswebshopApplicationTests {
 		assertEquals("DELETED", products.get(0).getProduct_status());
 	}
 
+	@Test
+	public void testProductLoad(){
+		//Given
+		productController.saveProductAndGetId(new Product(6, "LLL333", "sea_snake", "Sea Snake", "cafebabes", 120000, "ACTIVE"));
+
+		// When
+		List<Product> products = productController.getProducts();
+		products = productController.getProducts();
+
+		// Then
+		assertEquals(2, products.size());
+	}
+
 }

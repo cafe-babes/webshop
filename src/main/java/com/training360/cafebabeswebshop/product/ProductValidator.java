@@ -10,7 +10,7 @@ public class ProductValidator {
         this.productService = productService;
     }
 
-    public boolean isValidAddress(String address){
+    public boolean isValidAddressPresent(String address){
         boolean presentAddress = false;
         for (Product p: productService.getProducts()) {
             if (p.getAddress().equals(address)){
@@ -48,6 +48,10 @@ public class ProductValidator {
 
     private boolean isValidCode(String code) {
         return (code != null && !code.trim().equals(""));
+    }
+
+    private boolean isValidAddress(String address) {
+        return (address != null && !address.trim().equals(""));
     }
 
     private boolean isValidName(String name){

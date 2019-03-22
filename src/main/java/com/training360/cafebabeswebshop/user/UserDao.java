@@ -18,7 +18,7 @@ public class UserDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    private  static final RowMapper<User> USER_ROW_MAPPER = ((rs, i) -> new User(
+    private static final RowMapper<User> USER_ROW_MAPPER = ((rs, i) -> new User(
                     rs.getLong("id"),
                     rs.getString("name"),
                     rs.getString("email"),

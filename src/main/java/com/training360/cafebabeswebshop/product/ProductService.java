@@ -24,7 +24,6 @@ public class ProductService {
         return productDao.getProducts();
     }
 
-
     public long saveProductAndGetId(Product product){
         return productDao.saveProductAndGetId(product);
     }
