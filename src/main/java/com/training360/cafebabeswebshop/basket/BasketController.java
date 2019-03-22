@@ -29,4 +29,10 @@ public class BasketController {
     public void deleteBasket(Authentication authentication) {
         basketService.deleteBasket(authentication);
     }
+
+
+    @DeleteMapping("/basker/{useId}/{address}")
+    public void deleteOneItem(@PathVariable long userId, String address){
+
+    }
 }

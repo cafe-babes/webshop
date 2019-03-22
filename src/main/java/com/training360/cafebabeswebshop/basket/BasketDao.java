@@ -17,6 +17,10 @@ public class BasketDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public BasketDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private static final RowMapper<Basket> BASKET_ROW_MAPPER = ((resultSet, i) -> new Basket(
             resultSet.getLong("id"),
             resultSet.getLong("user_id"),
