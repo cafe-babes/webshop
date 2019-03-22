@@ -4,6 +4,7 @@ import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runner.notification.RunListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,7 +29,6 @@ public class CafebabeswebshopApplicationTests {
 		List<Product> products = productController.getProducts();
 
 		assertEquals(2, products.size());
-
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class CafebabeswebshopApplicationTests {
 
 		assertEquals(2, products.size());
 		assertEquals("balaton_shark", products.get(1).getAddress());
-		assertEquals("DELETED", products.get(1).getProduct_status());
+		assertEquals("DELETED", products.get(1).getProductStatus());
 	}
 
 	@Test
@@ -78,8 +78,19 @@ public class CafebabeswebshopApplicationTests {
 		assertEquals("wawe_blade", products.get(4).getAddress());
 
 		assertEquals(5, products.size());
-		assertEquals("DELETED", products.get(2).getProduct_status());
+		assertEquals("DELETED", products.get(2).getProductStatus());
 		assertEquals(222_222, products.get(4).getPrice());
 	}
 
+	@Test
+	public void testBasketMethods(){
+		// Given
+
+		// When
+
+		// Then
+
+
+
+	}
 }
