@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.order;
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,9 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    @Autowired
     private OrderDao orderDao;
+    @Autowired
     private BasketDao basketDao;
 
 

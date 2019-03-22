@@ -15,14 +15,15 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @PostMapping("/myorders")
+    public long saveOrderAndGetId(Authentication authentication, @RequestBody Order order){
+        System.out.println(authentication);
+        return orderService.saveOrderAndGetId(authentication, order);
+    }
 
     @GetMapping("/myorders")
     public List<Order> listMyOrders(Authentication authentication){
         return orderService.listMyOrders(authentication);
     }
 
-    @PostMapping("/myorders")
-    public long saveOrderAndGetId(Authentication authentication, @RequestBody Order order){
-        return orderService.saveOrderAndGetId(authentication, order);
-    }
 }
