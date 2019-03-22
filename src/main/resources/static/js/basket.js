@@ -16,10 +16,7 @@ function showBasket(jsonData){
     container.innerHTML = "";
 
     var sum = 0;
-    if(jsonData.length === 0){
-            console.log("valami");
-            container.innerHTML += `<h2>A kosár tartalma üres</h2>`;
-        } else {
+
     for(var i = 0; i < jsonData.length; i++){
      console.log("ok");
         container.innerHTML +=
@@ -29,7 +26,6 @@ function showBasket(jsonData){
                     alt="surf">
             </div>
             <div class="col-sm-7">
-
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
@@ -41,9 +37,9 @@ function showBasket(jsonData){
         document.querySelector("#delete-one")["raw-data"] = jsonData[i];
     }
     console.log("más");
-    container.innerHTML += `<h2 id="total">Teljes összeg: <span id="total-price"></span> Ft</h2>`;
+
     document.getElementById("total-price").innerHTML = sum;
-    }
+
 }
 
 function deleteOneItem(){
