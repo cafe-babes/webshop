@@ -1,10 +1,6 @@
 window.onload = function () {
     fetchProducts();
-
-  //  var createFrom = document.querySelector('#locations-form');
-  //  createFrom.onsubmit = handleCreateFormSubmit;
 }
-
 
 function fetchProducts() {
     fetch("/products")
@@ -17,45 +13,8 @@ function fetchProducts() {
         });
 }
 
-/*function handleCreateFormSubmit() {
-    var name = document.querySelector("#name-input").value;
-    var lat = parseFloat(document.querySelector('#lat-input').value);
-    var lon = parseFloat(document.querySelector('#lon-input').value);
-    var request = {
-        "name": name,
-        "lat": lat,
-        "lon": lon
-    };
-
-    fetch("/api/locations", {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: {
-                "Content-type": "application/json"
-            }
-        })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            console.log(jsonData.status);
-            if (jsonData.status == "OK") {
-                document.querySelector("#name-input").value = "";
-                document.querySelector("#lat-input").value = "";
-                document.querySelector("#lon-input").value = "";
-                fetchProducts();
-                document.querySelector("#message-div").setAttribute("class", "alert alert-success")
-            } else {
-                document.querySelector("#message-div").setAttribute("class", "alert alert-danger")
-            }
-            document.querySelector("#message-div").innerHTML = jsonData.message;
-        });
-        return false;
-    }*/
-    
     function showTable(jsonData) {
-        var table = document.querySelector("#adminproducts-table");
-       // var container = document.getElementById('container');
+    var table = document.querySelector("#adminproducts-table");
     table.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
         var tr = document.createElement("tr");
@@ -128,13 +87,10 @@ function fetchProducts() {
         deleteButton['raw-data'] = jsonData[i];
         deleteButtonTd.appendChild(deleteButton);
         
-        //var url = '/adminproducts/' + document.getElementById(`idTd${i}`).innerHTML;
+
         editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
-
-       /* deleteButton.onclick = deleteLocation;
-        deleteButton["raw-data"] = jsonData[i];*/
 
         tr.appendChild(editButtonTd);
         tr.appendChild(deleteButtonTd);
@@ -161,11 +117,11 @@ function fetchProducts() {
         var manuData = manu.innerHTML;
         var priceData = price.innerHTML;
 
-        code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}'>`
-        address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}'>`
-        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}'>`
-        manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}'>`
-        price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}'>`
+        code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
+        address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}' required>`
+        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}' required>`
+        manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
+        price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
     
 
         var edit = document.getElementById(`editbutton${num}`);
@@ -176,16 +132,13 @@ function fetchProducts() {
 
     function saveTds(num){
 
-
         var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
-        console.log(id);
 
         var code = document.getElementById(`codeInput${num}`).value;
         var address = document.getElementById(`addressInput${num}`).value;
         var name = document.getElementById(`nameInput${num}`).value;
         var manu = document.getElementById(`manInput${num}`).value;
         var price = document.getElementById(`priceInput${num}`).value;
-        //var status = document.getElementById(`status${num}`).value;
 
         var request = {
             "id": id,
@@ -205,10 +158,10 @@ function fetchProducts() {
                 }
             })
             .then(function (response) {
-                return response;
+                return response.json();
             }).
         then(function (jsonData) {
-            if (jsonData.ok == true) {
+            if (jsonData.status == 'OK') {
 
                document.getElementById(`codeTd${num}`).innerHTML = code;
                document.getElementById(`addressTd${num}`).innerHTML = address;
@@ -251,7 +204,7 @@ function fetchProducts() {
         saveButton.setAttribute('onclick', `addNewProduct(${num})`);
         var deleteButtonTd = document.createElement('td');
         var deleteButton = document.createElement('button');
-        deleteButton.setAttribute('onclick', 'deleteNewRow()')
+        deleteButton.setAttribute('onclick', 'deleteNewRow()');
         deleteButton.setAttribute('class', 'btn');
         saveButtonTd.appendChild(saveButton);
         deleteButtonTd.appendChild(deleteButton);
@@ -272,7 +225,6 @@ function fetchProducts() {
 
     }
 
-
     function addNewProduct(num){
 
         var code = document.getElementById(`codeInputNew${num}`).value;
@@ -280,7 +232,6 @@ function fetchProducts() {
         var name = document.getElementById(`nameInputNew${num}`).value;
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
-        
         
         var request = {
             //"id": id,
@@ -291,7 +242,6 @@ function fetchProducts() {
             "price": price,
             "product_status": "ACTIVE"
         }
-
 
         fetch("/products", {
                 method: "POST",

@@ -49,3 +49,5 @@ function emptyBasket() {
         fetchBasket();
     });
 }
+
+//TODO : megjeleníteni egy gombot: irány a kosár

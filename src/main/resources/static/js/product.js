@@ -24,6 +24,7 @@ function fetchBasket(){
     var address = (new URL(document.location)).searchParams.get("address");
     var user_id = 1; //TODO
     var url = "/basket/" + user_id;
+    var bol = true;
     fetch(url)
     .then(function(response){
         return response.json();
@@ -35,6 +36,8 @@ function fetchBasket(){
                 return false;
             }
         }
+        addToBasket();
+        console.log("ok2");
         return true;
     });
 }
@@ -50,17 +53,24 @@ function addToBasket(){
     var request = {
     "userId" : 1
     }
+    console.log("ok");
     fetch(url,{
       method: "POST",
       body: JSON.stringify(request),
       headers:{
       "Content-type": "application/json"
       }
-      })
-      .then(function() {
-      window.location.href = "basket.html";
-      })
+      });
+      addGoToBasketButton();
 }
+
+function addGoToBasketButton(){
+    var container = document.querySelector("#basketButton");
+    container.innerHTML = "";
+    container.innerHTML +=
+    `<a href="basket.html"><button type="button" class="btn btn-primary btn-lg">Irány a kosár</button></a>`;
+}
+
 
 function showProduct(jsonData) {
 
