@@ -23,7 +23,8 @@ public class BasketDao {
             resultSet.getLong("product_id")
     ));
 
-    private static final RowMapper<BasketProduct> BASKETPRODUCT_ROW_MAPPER = ((resultSet, i) -> new BasketProduct(
+    private static final RowMapper<BasketItem> BASKETPRODUCT_ROW_MAPPER = ((resultSet, i) -> new BasketItem(
+            resultSet.getLong("product_id"),
             resultSet.getString("products.name"),
             resultSet.getInt("products.price"),
             resultSet.getInt("amount"),
@@ -44,15 +45,17 @@ public class BasketDao {
         return keyHolder.getKey().longValue();
     }
 
-    public List<BasketProduct> getBasketItems(long userId) {
+    public List<BasketItem> getBasketItems(String userName) {
         return jdbcTemplate.query(
-                "SELECT products.name, products.address, products.price, 1 as 'amount' FROM basket JOIN products ON basket.product_id=products.id WHERE user_id = ?",
+                "SELECT product_id, products.name, products.address, products.price, 1 as 'amount' FROM basket \n" +
+                        "JOIN products ON basket.product_id=products.id \n" +
+                        "JOIN users ON basket.user_id=users.id \n" +
+                        "WHERE user_name = ?",
                 BASKETPRODUCT_ROW_MAPPER,
-                userId);
+                userName);
     }
 
-
-    public void deleteBasket(long userId) {
-        jdbcTemplate.update("DELETE FROM basket WHERE user_id = ?", userId);
+    public void deleteBasket(String userName) {
+        jdbcTemplate.update("DELETE FROM basket WHERE user_name = ?", userName);
     }
 }

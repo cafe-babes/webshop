@@ -9,8 +9,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -69,7 +67,7 @@ public class ProductDao {
 
     public void updateProduct(long id, Product product){
             jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ?, `product_status` = ? where id = ?",
-                    product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), product.getProduct_status(), id);
+                    product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), product.getProductStatus(), id);
 
     }
 
