@@ -33,9 +33,9 @@ public class UserController {
         userValidator = new UserValidator(userService);
             if(userValidator.userCanBeSaved(user)){
                 long id = userService.insertUserAndGetId(user);
-                return new ResultStatus(ResultStatusEnum.OK, "Felhasználó sikeresen elmentve");
+                return new ResultStatus(ResultStatusEnum.OK, String.format("%s sikeresen mentésre került", user.getName()));
             }
-        return new ResultStatus(ResultStatusEnum.NOT_OK, "Ez a felhasználó már regisztrált!");
+        return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("%s már regisztrált felhasználó!", user.getName()));
     }
 
 }
