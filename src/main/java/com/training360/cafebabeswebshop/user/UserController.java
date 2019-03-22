@@ -24,13 +24,17 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}")
-    public void updateUser(@PathVariable long id, @RequestBody User user) {
-
-        userService.updateUser(id, user);
+    public ResultStatus updateUser(@PathVariable long id, @RequestBody User user) {
+        userValidator = new UserValidator(userService);
+        if(userValidator.userCanBeUpdated(user)){
+            userService.updateUser(id, user);
+            return new ResultStatus(ResultStatusEnum.OK, String.format("A felhasználó sikeresen módosításra került"));
+        }
+            return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("Módosítás sikertelen", user.getName()));
     }
 
     @PostMapping("/users")
-    public ResultStatus insertuser(@RequestBody User user) {
+    public ResultStatus insertUser(@RequestBody User user) {
         userValidator = new UserValidator(userService);
             if(userValidator.userCanBeSaved(user)){
                 long id = userService.insertUserAndGetId(user);
