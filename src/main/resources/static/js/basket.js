@@ -31,13 +31,29 @@ function showBasket(jsonData){
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
-                <button id="delete-one" type="button" class="btn btn-outline-secondary">Töröl</button>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem()">Töröl</button>
                 <br>
             </div>
             `;
         sum += jsonData[i].price;
+        document.querySelector("#delete-one")["raw-data"] = jsonData[i];
     }
     document.getElementById("total-price").innerHTML = sum;
+}
+
+function deleteOneItem(){
+    address = document.querySelector("#delete-one")["raw-data"].address;
+    console.log(address);
+
+    var user_id = 1;
+    var url = "/basket/" + user_id + "/"+ address;
+    console.log(url)
+    return fetch(url, {
+        method: "DELETE"
+    })
+    .then(function(response){
+        fetchBasket();
+    })
 }
 
 function emptyBasket() {
