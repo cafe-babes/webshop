@@ -57,7 +57,7 @@ function fetchProducts() {
         tr.appendChild(priceTd);
 
         var statusTd = document.createElement("td");
-        statusTd.innerHTML = jsonData[i].product_status;
+        statusTd.innerHTML = jsonData[i].productStatus;
         var statusTdId = 'statusTd' + i;
         statusTd.setAttribute('id', statusTdId);
         tr.appendChild(statusTd);

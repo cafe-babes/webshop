@@ -11,13 +11,12 @@ public class Order {
     private long sumQuantity;
     private OrderStatus orderStatus;
 
-    public Order(long id, long userId, long total, long sumQuantity, String orderStatus) {
+    public Order(long id, long userId, long total, long sumQuantity) {
         this.id = id;
         this.purchaseDate = LocalDateTime.now();
         this.userId = userId;
         this.total = total;
         this.sumQuantity = sumQuantity;
-        this.orderStatus = OrderStatus.valueOf(orderStatus);
     }
 
     public long getId() {

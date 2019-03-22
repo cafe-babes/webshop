@@ -18,8 +18,7 @@ public class OrderDao {
             rs.getLong("id"),
             rs.getLong("user_id"),
             rs.getLong("total"),
-            rs.getLong("sum_quantity"),
-            rs.getString("order_status")
+            rs.getLong("sum_quantity")
     ));
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
