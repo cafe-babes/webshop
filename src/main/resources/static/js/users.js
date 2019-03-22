@@ -49,6 +49,8 @@ function showTable(jsonData) {
     passwordTd.innerHTML = jsonData[i].password;
     var passwordTdId = "passwordTd" + i;
     passwordTd.setAttribute("id", passwordTdId);
+    passwordTd.setAttribute("style", "width: 12%");
+
     tr.appendChild(passwordTd);
 
     var enabledTd = document.createElement("td");
