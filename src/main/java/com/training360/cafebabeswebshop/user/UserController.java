@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResultStatus insertUser(@RequestBody User user) {
+    public ResultStatus insertuser(@RequestBody User user) {
         userValidator = new UserValidator(userService);
             if(userValidator.userCanBeSaved(user)){
                 long id = userService.insertUserAndGetId(user);

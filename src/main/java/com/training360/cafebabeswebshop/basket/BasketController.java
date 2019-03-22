@@ -31,8 +31,8 @@ public class BasketController {
     }
 
 
-    @DeleteMapping("/basker/{useId}/{address}")
-    public void deleteOneItem(@PathVariable long userId, String address){
-
+    @DeleteMapping("/basket/{useId}/{address}")
+    public void deleteOneItem(@PathVariable String address, Authentication authentication){
+        basketService.deleteOneItem(authentication, address);
     }
 }
