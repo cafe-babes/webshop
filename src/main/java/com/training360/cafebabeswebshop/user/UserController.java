@@ -25,11 +25,12 @@ public class UserController {
 
     @PostMapping("/users/{id}")
     public void updateUser(@PathVariable long id, @RequestBody User user) {
+
         userService.updateUser(id, user);
     }
 
     @PostMapping("/users")
-    public ResultStatus insertUserAndGetId(@RequestBody User user) {
+    public ResultStatus insertUser(@RequestBody User user) {
         userValidator = new UserValidator(userService);
             if(userValidator.userCanBeSaved(user)){
                 long id = userService.insertUserAndGetId(user);
