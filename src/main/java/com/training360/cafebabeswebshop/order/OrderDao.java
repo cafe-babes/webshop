@@ -22,13 +22,16 @@ public class OrderDao {
             rs.getString("order_status")
     ));
 
+    public OrderDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-    public long saveOrderAndGetId(Order order){
+    public long saveOrderAndGetId(String userName, Order order){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (user_id, total, sum_quantity) values (?,?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into orders (user_id, total, sum_quantity) values ((SELECT id FROM users WHERE user_name = ?),?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, order.getUserId());
+            ps.setString(1, userName);
             ps.setLong(2, order.getTotal());
             ps.setLong(3, order.getSumQuantity());
             return ps;
@@ -36,15 +39,17 @@ public class OrderDao {
         return keyHolder.getKey().longValue();
     }
 
-    public List<Order> listMyOrders(){
-        return jdbcTemplate.query(("select id, purchase_date, user_id, total, sum_quantity, order_status from orders"), ORDER_ROW_MAPPER);
+    public List<Order> listMyOrders(String username){
+        return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
+                "from orders join users on users.id = orders.user_id" +
+                "where users.user_name = ?"), ORDER_ROW_MAPPER, username);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into ordered_products (product_id, order_id, ordering_price, ordering_name)" +
-                            "values (?,?,?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
+                            "(product_id, order_id, ordering_price, ordering_name) values (?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, orderedProduct.getProductId());
             ps.setLong(2, orderedProduct.getOrderId());

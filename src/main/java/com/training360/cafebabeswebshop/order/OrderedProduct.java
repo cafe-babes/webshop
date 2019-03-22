@@ -16,6 +16,13 @@ public class OrderedProduct {
         this.orderingName = orderingName;
     }
 
+    public OrderedProduct(long productId, long orderId, long orderingPrice, String orderingName) {
+        this.productId = productId;
+        this.orderId = orderId;
+        this.orderingPrice = orderingPrice;
+        this.orderingName = orderingName;
+    }
+
     public long getId() {
         return id;
     }

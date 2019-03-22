@@ -1,8 +1,7 @@
 package com.training360.cafebabeswebshop.order;
-
-import com.training360.cafebabeswebshop.basket.Basket;
 import com.training360.cafebabeswebshop.basket.BasketDao;
-import com.training360.cafebabeswebshop.basket.BasketProduct;
+import com.training360.cafebabeswebshop.basket.BasketItem;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,18 +13,24 @@ public class OrderService {
     private BasketDao basketDao;
 
 
-    public List<Order> listMyOrders(){
-        return orderDao.listMyOrders();
+    public List<Order> listMyOrders(Authentication authentication){
+
+        return orderDao.listMyOrders(authentication.getName());
     }
 
-    public long saveOrderAndGetId(long id, Order order){
-        basketDao.deleteBasket(id);
-        return orderDao.saveOrderAndGetId(order);
+    public long saveOrderAndGetId(Authentication authentication, Order order){
+        long id = orderDao.saveOrderAndGetId(authentication.getName(), order);
+        addOrderedProducts(authentication, order);
+        basketDao.deleteBasket(authentication.getName());
+        return id;
     }
 
-    private void addOrderedProduct(long user_id){
-        for (BasketProduct bp: basketDao.getBasketItems(user_id)) {
-
+    private void addOrderedProducts(Authentication authentication,Order order){
+        for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
+            orderDao.saveOrderedProductAndGetId(
+                    new OrderedProduct(bi.getProductId(),
+                            saveOrderAndGetId(authentication,order),
+                            bi.getPrice(), bi.getName()));
         }
     }
 }
