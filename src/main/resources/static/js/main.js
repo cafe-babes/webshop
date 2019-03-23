@@ -13,6 +13,17 @@ function fetchProducts() {
         });
 }
 
+function fetchProductsWithStartAndSize() {
+    fetch("/products")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            console.log(jsonData);
+            listProducts(jsonData);
+        });
+}
+
 function listProducts(jsonData) {
     var container = document.querySelector('#list-products');
     container.innerHTML = "";
@@ -40,4 +51,7 @@ function listProducts(jsonData) {
             </div>`;
          }
     }
+    var buttons = document.querySelector('#page-change');
+    buttons.innerHTML = '';
+    buttons.innerHTML = `<button type="button" class="btn btn-lm btn-outline-secondary">1</button>`;
 }
