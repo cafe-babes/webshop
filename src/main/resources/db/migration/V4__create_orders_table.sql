@@ -10,6 +10,9 @@ CREATE TABLE orders (
     )
     engine = innodb character set = utf8 collate utf8_general_ci;
 
+    INSERT INTO `orders`(`purchase_date`, `user_id`, `total`, `sum_quantity`, `order_status`) VALUES ('2019-03-15', 5, 2, 900000, 'SHIPPED');
+    INSERT INTO `orders`(`purchase_date`, `user_id`, `total`, `sum_quantity`, `order_status`) VALUES ('2019-03-23', 5, 3, 1500000, 'ACTIVE');
+
     CREATE TABLE ordered_products (
     id BIGINT AUTO_INCREMENT,
     product_id BIGINT,

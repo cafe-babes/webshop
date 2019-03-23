@@ -10,11 +10,24 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary"></nav>
-<div class="mw-100">
-    <img style="width: 100%;"
-         src="https://cdn6.bigcommerce.com/s-baaesh4/product_images/uploaded_images/boards-banner-lucas.jpg?t=1489601260"
-         alt="banner-image">
+<div class="container" id="container">
+    <div id="message-div"></div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Vásárló</th>
+            <th>Rendelés leadása</th>
+            <th>Terméktípusok</th>
+            <th>Rendelés értéke</th>
+            <th>Rendelés státusza</th>
+
+            <th>Törlés</th>
+        </tr>
+        </thead>
+        <tbody id="orders-table"></tbody>
+    </table>
 </div>
+<script src="js/orders.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/navbarLoader.js"></script>
