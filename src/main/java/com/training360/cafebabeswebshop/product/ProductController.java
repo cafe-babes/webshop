@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
+import com.training360.cafebabeswebshop.authentication.DetermineAuthorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -49,15 +50,10 @@ public class ProductController {
         }
     }
 
-//    @GetMapping("/products")
-//    public List<Product> getProducts(Authentication authentication) {
-//        if (authentication == null)
-//            return productService.getActiveProducts();
-//        return productService.getProducts();
-//    }
-
     @GetMapping("/products")
-    public List<Product> getProducts() {
+    public List<Product> getProducts(Authentication authentication) {
+        if (authentication == null || !new DetermineAuthorities().determineTargetUrl(authentication).equals("ADMIN"))
+            return productService.getActiveProducts();
         return productService.getProducts();
     }
 
