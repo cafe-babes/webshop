@@ -17,8 +17,7 @@ public class UserValidator {
     }
 
     public boolean userCanBeUpdated(User user) {
-        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getUserName());
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword());
     }
 
     private boolean nameIsNotEmptyOrNull(String name) {
