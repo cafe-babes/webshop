@@ -44,6 +44,11 @@ public class ProductDao {
 
 
     public List<Product> getProducts(){
+        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products order by name, manufacture",
+                PRODUCT_ROW_MAPPER);
+    }
+
+    public List<Product> getActiveProducts(){
         return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products " +
                         "WHERE product_status = 'ACTIVE' order by name, manufacture",
                 PRODUCT_ROW_MAPPER);

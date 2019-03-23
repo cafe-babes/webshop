@@ -24,6 +24,10 @@ public class ProductService {
         return productDao.getProducts();
     }
 
+    public List<Product> getActiveProducts(){
+        return productDao.getActiveProducts();
+    }
+
     public List<Product> getProductsWithStartAndSize(int start, int size){
         return productDao.getProductsWithStartAndSize(start, size);
     }
