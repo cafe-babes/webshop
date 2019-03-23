@@ -6,8 +6,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -18,7 +20,8 @@ public class OrderDao {
             rs.getLong("id"),
             rs.getLong("user_id"),
             rs.getLong("total"),
-            rs.getLong("sum_quantity")
+            rs.getLong("sum_quantity"),
+            rs.getString("order_status")
     ));
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
@@ -28,11 +31,14 @@ public class OrderDao {
     public long saveOrderAndGetId(String userName, Order order){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (user_id, total, sum_quantity) values ((SELECT id FROM users WHERE user_name = ?),?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, total, sum_quantity) " +
+                            "values (?,(SELECT id FROM users WHERE user_name = ?),?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, userName);
-            ps.setLong(2, order.getTotal());
-            ps.setLong(3, order.getSumQuantity());
+            ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
+            ps.setString(2, userName);
+            ps.setLong(3, order.getTotal());
+            ps.setLong(4, order.getSumQuantity());
+            ps.setString(5, String.valueOf(order.getOrderStatus()));
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -40,7 +46,7 @@ public class OrderDao {
 
     public List<Order> listMyOrders(String username){
         return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
-                "from orders join users on users.id = orders.user_id" +
+                "from orders join users on users.id = orders.user_id " +
                 "where users.user_name = ?"), ORDER_ROW_MAPPER, username);
     }
 
