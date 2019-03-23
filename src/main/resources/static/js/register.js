@@ -1,8 +1,9 @@
 function handleFormSubmit() {
+var form = document.forms["form-register"];
 var request = {
-"name" : document.forms["form-register"].name.value,
-"userName" : document.forms["form-register"].username.value,
-"password" : document.forms["form-register"].password.value
+"name" : form.name.value,
+"userName" : form.username.value,
+"password" : form.password.value
 }
 
 fetch("/users",{
@@ -12,8 +13,22 @@ fetch("/users",{
          "Content-type": "application/json"
          }
          })
-        .then(function (response) {
-            alert("Succes!");
-        });
-        return false;
+         .then(function(response){
+            return response.json();
+         })
+         .then(function(json) {
+         var div = document.querySelector('#response-box');
+         if(json.resultStatusEnum=="OK") {
+            div.setAttribute("class", "alert alert-success")
+            div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
+            setTimeout(function(){
+            window.location.href = "/login";
+            }, 1000);
+         } else {
+            div.innerHTML = "Ez a felhasználónév már foglalt!";
+            div.setAttribute("class", "alert alert-danger");
+            form.name.focus();
+         }});
+
+return false;
 }

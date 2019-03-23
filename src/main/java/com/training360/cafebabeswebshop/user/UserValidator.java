@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import java.util.List;
+
 public class UserValidator {
 
 
@@ -9,42 +11,31 @@ public class UserValidator {
         this.userService = userService;
     }
 
-//    public boolean userCanBeSaved(User user){
-//        for (User u: userService.listUsers()) {
-//            if(u.getEmail().equals(user.getEmail())){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
     public boolean userCanBeSaved(User user) {
-        for (User u : userService.listUsers()) {
-            if (user.getName() == null ||
-                    user.getName().trim().equals("") ||
-                    u.getUserName().equals(user.getUserName()) ||
-                    user.getPassword() == null ||
-                    user.getPassword().trim().equals("")) {
-                return false;
-            }
-        }
-        return true;
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName());
     }
 
     public boolean userCanBeUpdated(User user) {
-        if (user.getName() == null ||
-                user.getName().trim().equals("") ||
-                user.getPassword() == null ||
-                user.getPassword().trim().equals("")) {
-            return false;
-        }
-        for (User u : userService.listUsers()) {
-            if (u.getUserName().equals(user.getUserName())) {
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName());
+    }
+
+    private boolean nameIsNotEmptyOrNull(String name) {
+        return name != null && !name.trim().equals("");
+    }
+
+    private boolean passwordIsNotEmptyOrNull(String pass) {
+        return pass != null && !pass.trim().equals("");
+    }
+
+    private boolean userIsNotRegisteredWithThisNameYet(String newUsername) {
+        List<User> registeredUsers = userService.listUsers();
+        for (User reguser : registeredUsers) {
+            if (newUsername.equals(reguser.getName())) {
                 return false;
             }
         }
         return true;
     }
-
-
 }
