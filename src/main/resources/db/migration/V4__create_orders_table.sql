@@ -1,6 +1,6 @@
 CREATE TABLE orders (
     id BIGINT AUTO_INCREMENT,
-    purchase_date DATE,
+    purchase_date DATETIME,
     user_id BIGINT,
     total BIGINT,
     sum_quantity BIGINT,

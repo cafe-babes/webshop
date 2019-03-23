@@ -43,8 +43,8 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource, PasswordEncoder passwordEncoder) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder)
-				.usersByUsernameQuery("select name,password,enabled from users where user_name=?")
-				.authoritiesByUsernameQuery("select name, role from users where user_name = ?");
+				.usersByUsernameQuery("select user_name,password,enabled from users where user_name=?")
+				.authoritiesByUsernameQuery("select user_name, role from users where user_name = ?");
 	}
 
 }
