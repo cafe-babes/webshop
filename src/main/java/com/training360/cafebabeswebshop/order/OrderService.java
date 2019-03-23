@@ -33,9 +33,9 @@ public class OrderService {
         return orderDao.listAllOrderedProduct();
     }
 
-    public long saveOrderAndGetId(Authentication authentication, Order order){
+    public long saveOrderAndGetId(Authentication authentication){
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        Order o = new Order(0, order.getUserId(), countTotal(authentication), basketSize, "ACTIVE");
+        Order o = new Order(0, orderDao.getUserId(authentication.getName()), countTotal(authentication), basketSize, "ACTIVE");
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             addOrderedProducts(authentication, o);

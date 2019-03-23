@@ -29,14 +29,10 @@ public class OrderController {
     }
 
     @PostMapping("/myorders")
-    public ResultStatus saveOrderAndGetId(Authentication authentication, @RequestBody Order order){
+    public ResultStatus saveOrderAndGetId(Authentication authentication){
         try{
-            if (validator.isValidOrder(order)) {
-                long id = orderService.saveOrderAndGetId(authentication, order);
+                long id = orderService.saveOrderAndGetId(authentication);
                 return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
-            } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid order");
-            }
         } catch (IllegalStateException e){
             return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
         }
