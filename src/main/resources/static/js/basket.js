@@ -7,6 +7,7 @@ function fetchBasket(){
         return response.json();
     })
     .then(function(jsonData) {
+        console.log(jsonData);
         showBasket(jsonData);
     });
 }
@@ -29,21 +30,19 @@ function showBasket(jsonData){
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
-                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem()">Töröl</button>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem('${jsonData[i].address}')">Töröl</button>
                 <br>
             </div>
             `;
         sum += jsonData[i].price;
         document.querySelector("#delete-one")["raw-data"] = jsonData[i];
     }
-    console.log("más");
 
     document.getElementById("total-price").innerHTML = sum;
 
 }
 
-function deleteOneItem(){
-    address = document.querySelector("#delete-one")["raw-data"].address;
+function deleteOneItem(address){
     console.log(address);
     var url = "/basket/" + address;
     console.log(url)
@@ -62,5 +61,37 @@ function emptyBasket() {
     })
     .then(function(){
         fetchBasket();
+    });
+}
+
+function handleAddToOrders(){
+    var url = "/myorders";
+    fetch(url,{
+        method: "GET",
+        redirect: "follow"
+    })
+    .then(function(response) {
+        console.log(response);
+        return response.json();
+    })
+    .then(function(){
+        addToOrders();
+    });
+}
+
+function addToOrders(jsonData){
+//    var total = document.getElementById("total-price");
+//    var sum_quantity = jsonData.length;
+//    var request = {"total" : total,
+//                    "sum_quantity" : sum_quantity};
+    var url = "/myorders";
+    fetch(url,{
+        method: "POST",
+//        body: JSON.stringify(request),
+//        headers: {"Content-type" : "application/json"}
+    })
+    .then(function(response){
+        console.log(response);
+        return response.json();
     });
 }
