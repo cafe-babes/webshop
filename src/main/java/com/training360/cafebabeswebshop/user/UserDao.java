@@ -38,6 +38,7 @@ public class UserDao {
 
     public void deleteUserById(long id) {
         jdbcTemplate.update("delete from users where id = ?", id);
+        jdbcTemplate.update("update orders set user_id = NULL where id = ?", id);
     }
 
     public void updateUser(long id, User user) {

@@ -54,6 +54,11 @@ public class ProductController {
        return productService.getProducts();
     }
 
+    @GetMapping("/products/{start}/{size}")
+    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size){
+       return productService.getProductsWithStartAndSize(start, size);
+    }
+
     @DeleteMapping("/products/{id}")
     public void deleteProduct(@PathVariable long id){
         productService.deleteProduct(id);
