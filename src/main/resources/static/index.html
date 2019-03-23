@@ -25,16 +25,18 @@
 
     <div class="container">
         <br>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+        <div class="row">
+            <div class="col text-center">
+                <label for="size-select">Megjelenített termékek: </label>
+                <select id="size-select" class="browser-default custom-select">
+                    <option value="all" selected>összes 1 oldalon</option>
+                    <option value="6">6 /oldal</option>
+                    <option value="12">12 /oldal</option>
+                    <option value="30">30 /oldal</option>
+                </select>
             </div>
         </div>
+        <br>
         <div class="row" id="list-products">
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
@@ -58,44 +60,6 @@
             <div class="col text-center" id="page-change">
                 <button type="button" class="btn btn-lm btn-outline-secondary">1</button>
             </div>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <!-- Link or button to toggle dropdown -->
-        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li><a tabindex="-1" href="#">Action</a></li>
-            <li><a tabindex="-1" href="#">Another action</a></li>
-            <li><a tabindex="-1" href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a tabindex="-1" href="#">Separated link</a></li>
-        </ul>
-    </div>
-    <div class="dropdown show">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown link
-        </a>
-
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-    </div>
-    <div class="container">
-        <h2>Dropdowns</h2>
-        <p>The .dropdown class is used to indicate a dropdown menu.</p>
-        <p>Use the .dropdown-menu class to actually build the dropdown menu.</p>
-        <p>To open the dropdown menu, use a button or a link with a class of .dropdown-toggle and data-toggle="dropdown".</p>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-                <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a href="#">HTML</a></li>
-                <li><a href="#">CSS</a></li>
-                <li><a href="#">JavaScript</a></li>
-            </ul>
         </div>
     </div>
 
