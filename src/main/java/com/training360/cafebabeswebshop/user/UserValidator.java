@@ -13,7 +13,7 @@ public class UserValidator {
 
     public boolean userCanBeSaved(User user) {
         return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName());
+                userIsNotRegisteredWithThisNameYet(user.getUserName());
     }
 
     public boolean userCanBeUpdated(User user) {
