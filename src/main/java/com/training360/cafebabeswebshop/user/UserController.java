@@ -20,14 +20,11 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     public ResultStatus deleteUserById(@PathVariable long id) {
-        int sizeOfUserListBeforeDeletion = listUsers().size();
-        userService.deleteUserById(id);
-        int sizeOfUserListAfterDeletingAUser = listUsers().size();
-        if (sizeOfUserListBeforeDeletion > sizeOfUserListAfterDeletingAUser) {
+        userValidator = new UserValidator(userService);
+        if (userValidator.deletionWasSuccessFul(id)) {
             return new ResultStatus(ResultStatusEnum.OK, "A felhasználó törlése sikeres volt.");
         }
         return new ResultStatus(ResultStatusEnum.NOT_OK, "A felhasználó törlése sikertelen volt.");
-
     }
 
     @PostMapping("/users/{id}")

@@ -15,30 +15,19 @@ function fetchMyOrders(){
 
 function showMyOrders(jsonData){
     console.log("showMyOrders ok")
-    var container = document.querySelector("#container");
+    var container = document.querySelector("#tbody");
     container.innerHTML = "";
     console.log(jsonData.length);
 
     for(var i = 0; i < jsonData.length; i++){
-        console.log("ciklus ok");
-        container.innerHTML +=
-        `
-            <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Dátum</th>
-                        <th scope="col">Termék</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row" id="counter">${i}</th>
-                        <td id="date">${jsonData[i].purchase_date}</td>
-                        <td id="product">${jsonData[i].ordering_name}</td>
-                    </tr>
-                    </tbody>
-                </table>
-        `
+            console.log("ciklus ok");
+            container.innerHTML +=
+            `
+                        <tr>
+                            <th scope="row" id="counter">${i+1}</th>
+                            <td id="date">${jsonData[i].purchaseDate}</td>
+                            <td id="product">${jsonData[i].orderingName}</td>
+                        </tr>
+            `
     }
 }

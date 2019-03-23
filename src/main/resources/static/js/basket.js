@@ -67,8 +67,7 @@ function emptyBasket() {
 function handleAddToOrders(){
     var url = "/myorders";
     fetch(url,{
-        method: "GET",
-        redirect: "follow"
+        method: "GET"
     })
     .then(function(response) {
         console.log(response);
@@ -80,18 +79,14 @@ function handleAddToOrders(){
 }
 
 function addToOrders(jsonData){
-//    var total = document.getElementById("total-price");
-//    var sum_quantity = jsonData.length;
-//    var request = {"total" : total,
-//                    "sum_quantity" : sum_quantity};
+    var request = {"name" : name};
+    console.log("addToOrders ok")
     var url = "/myorders";
     fetch(url,{
         method: "POST",
-//        body: JSON.stringify(request),
-//        headers: {"Content-type" : "application/json"}
     })
     .then(function(response){
         console.log(response);
         return response.json();
-    });
+    })
 }

@@ -16,6 +16,13 @@ public class UserValidator {
                 userIsNotRegisteredWithThisNameYet(user.getUserName());
     }
 
+    public boolean deletionWasSuccessFul(long id) {
+        int sizeOfUserListBeforeDeletion = userService.listUsers().size();
+        userService.deleteUserById(id);
+        int sizeOfUserListAfterDeletingAUser = userService.listUsers().size();
+        return sizeOfUserListBeforeDeletion > sizeOfUserListAfterDeletingAUser;
+    }
+
     public boolean userCanBeUpdated(User user) {
         return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword());
     }
