@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.user;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserValidator {
@@ -13,19 +12,13 @@ public class UserValidator {
     }
 
     public boolean userCanBeSaved(User user) {
-        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName())) {
-            return true;
-        }
-        return false;
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName());
     }
 
     public boolean userCanBeUpdated(User user) {
-        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName())) {
-                return true;
-        }
-        return false;
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName());
     }
 
     private boolean nameIsNotEmptyOrNull(String name) {
@@ -37,7 +30,7 @@ public class UserValidator {
     }
 
     private boolean userIsNotRegisteredWithThisNameYet(String newUsername) {
-        List<User> registeredUsers = new ArrayList<>(userService.listUsers());
+        List<User> registeredUsers = userService.listUsers();
         for (User reguser : registeredUsers) {
             if (newUsername.equals(reguser.getName())) {
                 return false;
@@ -45,6 +38,4 @@ public class UserValidator {
         }
         return true;
     }
-
-
 }

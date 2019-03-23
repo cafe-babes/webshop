@@ -20,10 +20,10 @@ fetch("/users",{
          var div = document.querySelector('#response-box');
          if(json.resultStatusEnum=="OK") {
             div.setAttribute("class", "alert alert-success")
-            div.innerHTML = "Sikeres regisztráció!";
+            div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
             setTimeout(function(){
-            window.location.href = "/";
-            }, 1500);
+            window.location.href = "/login";
+            }, 1000);
          } else {
             div.innerHTML = "Ez a felhasználónév már foglalt!";
             div.setAttribute("class", "alert alert-danger");

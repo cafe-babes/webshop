@@ -28,7 +28,7 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/", "/js/**", "/css/**").permitAll()
-				.antMatchers("/basket.html", "/myorders.html").hasRole("USER")
+				.antMatchers("/basket", "/basket.html", "/myorders.html").hasRole("USER")
 				.and()
 				.formLogin()
 				.and()
@@ -43,8 +43,8 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource, PasswordEncoder passwordEncoder) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder)
-				.usersByUsernameQuery("select name,password,enabled from users where name=?")
-				.authoritiesByUsernameQuery("select name, role from users where name = ?");
+				.usersByUsernameQuery("select name,password,enabled from users where user_name=?")
+				.authoritiesByUsernameQuery("select name, role from users where user_name = ?");
 	}
 
 }

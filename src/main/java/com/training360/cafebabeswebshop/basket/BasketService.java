@@ -13,6 +13,10 @@ public class BasketService {
     private BasketDao basketDao;
 
     public long saveBasketItemAndGetId(String address, Authentication authentication) {
+        for (BasketItem item : basketDao.getBasketItems(authentication.getName())) {
+            if (item.getAddress().equals(address))
+                return -1;
+        }
         return basketDao.saveBasketItemAndGetId(address, authentication.getName());
     }
 
