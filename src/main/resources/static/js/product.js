@@ -32,6 +32,7 @@ function handleAddToBasketButton(){
         for(var i = 0; i < jsonData.length; i++) {
             if(jsonData[i].address==address) {
                 alert("This product has already been added!");
+                return;
             }
         }
         addToBasket();
@@ -41,11 +42,18 @@ function handleAddToBasketButton(){
 function addToBasket(){
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/basket/"+address;
-    console.log("ok");
     fetch(url,{
       method: "POST"
-      });
-      addGoToBasketButton();
+      })
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(jsonData){
+        if(jsonData!=-1)
+            addGoToBasketButton();
+        else
+            alert("This product has already been added!")
+      })
 }
 
 function addGoToBasketButton(){

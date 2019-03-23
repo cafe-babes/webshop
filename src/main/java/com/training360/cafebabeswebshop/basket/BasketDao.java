@@ -35,14 +35,14 @@ public class BasketDao {
             resultSet.getString("products.address")
     ));
 
-    public long saveBasketItemAndGetId(String address, Basket basket) {
+    public long saveBasketItemAndGetId(String address, String userName) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO basket(user_id, product_id) VALUES ( ? , (SELECT id FROM products WHERE address = ?))",
+                    "INSERT INTO basket(user_id, product_id) VALUES ((SELECT id FROM users WHERE user_name = ?) , (SELECT id FROM products WHERE address = ?))",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, basket.getUserId());
+            ps.setString(1, userName);
             ps.setString(2, address);
             return ps;
         }, keyHolder);
@@ -68,4 +68,3 @@ public class BasketDao {
     }
 }
 
-//delete from basket where user_id=(select id from users where user_name="admin") and product_id=(select id from products where address="shark");

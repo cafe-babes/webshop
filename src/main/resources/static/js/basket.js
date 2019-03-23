@@ -26,7 +26,6 @@ function showBasket(jsonData){
                     alt="surf">
             </div>
             <div class="col-sm-7">
-
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
@@ -37,7 +36,10 @@ function showBasket(jsonData){
         sum += jsonData[i].price;
         document.querySelector("#delete-one")["raw-data"] = jsonData[i];
     }
+    console.log("más");
+
     document.getElementById("total-price").innerHTML = sum;
+
 }
 
 function deleteOneItem(){
