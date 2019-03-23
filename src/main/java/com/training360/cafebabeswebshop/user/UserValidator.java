@@ -12,13 +12,19 @@ public class UserValidator {
     }
 
     public boolean userCanBeSaved(User user) {
-        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName());
+        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName())) {
+            return true;
+        }
+        return false;
     }
 
     public boolean userCanBeUpdated(User user) {
-        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName());
+        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getName())) {
+            return true;
+        }
+        return false;
     }
 
     private boolean nameIsNotEmptyOrNull(String name) {

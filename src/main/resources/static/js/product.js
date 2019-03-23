@@ -23,10 +23,16 @@ console.log((new URL(document.location)).searchParams.get("address"));
 function handleAddToBasketButton(){
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/basket";
-    var bol = true;
-    fetch(url)
+    fetch(url,{
+       method: "GET",
+       redirect: "follow"
+    })
     .then(function(response){
-        return response.json();
+    console.log(response);
+        if(response.url.indexOf("login")>-1)
+            window.location.href = "/login";
+        else
+            return response.json();
     })
     .then(function(jsonData) {
         for(var i = 0; i < jsonData.length; i++) {
