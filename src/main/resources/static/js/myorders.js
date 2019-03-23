@@ -8,6 +8,7 @@ function fetchMyOrders(){
     })
     .then(function(jsonData){
         console.log("fetch ok");
+        console.log(jsonData);
         showMyOrders(jsonData);
     });
 }
@@ -16,6 +17,7 @@ function showMyOrders(jsonData){
     console.log("showMyOrders ok")
     var container = document.querySelector("#container");
     container.innerHTML = "";
+    console.log(jsonData.length);
 
     for(var i = 0; i < jsonData.length; i++){
         console.log("ciklus ok");

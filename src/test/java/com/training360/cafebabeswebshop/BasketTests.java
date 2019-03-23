@@ -101,6 +101,8 @@ public class BasketTests {
         List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
 
         assertEquals(1, basketItems.size());
+//        assertEquals(1, basket1.);
+
     }
 
 
