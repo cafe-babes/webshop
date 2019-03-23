@@ -12,19 +12,19 @@ public class UserValidator {
     }
 
     public boolean userCanBeSaved(User user) {
-        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName())) {
-            return true;
-        }
-        return false;
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
+                userIsNotRegisteredWithThisNameYet(user.getUserName());
+    }
+
+    public boolean deletionWasSuccessFul(long id) {
+        int sizeOfUserListBeforeDeletion = userService.listUsers().size();
+        userService.deleteUserById(id);
+        int sizeOfUserListAfterDeletingAUser = userService.listUsers().size();
+        return sizeOfUserListBeforeDeletion > sizeOfUserListAfterDeletingAUser;
     }
 
     public boolean userCanBeUpdated(User user) {
-        if (nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword()) &&
-                userIsNotRegisteredWithThisNameYet(user.getName())) {
-            return true;
-        }
-        return false;
+        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword());
     }
 
     private boolean nameIsNotEmptyOrNull(String name) {
@@ -36,9 +36,8 @@ public class UserValidator {
     }
 
     private boolean userIsNotRegisteredWithThisNameYet(String newUsername) {
-        List<User> registeredUsers = userService.listUsers();
-        for (User reguser : registeredUsers) {
-            if (newUsername.equals(reguser.getName())) {
+        for (User reguser : userService.listUsers()) {
+            if (newUsername.equals(reguser.getUserName())) {
                 return false;
             }
         }
