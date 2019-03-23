@@ -1,6 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
-import com.training360.cafebabeswebshop.authentication.DetermineAuthorities;
+import com.training360.cafebabeswebshop.user.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,10 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserController userController;
+
     private ProductValidator validator;
 
     public ProductController(ProductService productService) {
@@ -52,7 +56,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> getProducts(Authentication authentication) {
-        if (authentication == null || !new DetermineAuthorities().determineTargetUrl(authentication).equals("ADMIN"))
+        if (authentication == null || !userController.determineRole(authentication).equals("ADMIN"))
             return productService.getActiveProducts();
         return productService.getProducts();
     }
