@@ -1,13 +1,15 @@
-if((new URL(document.location)).searchParams.get("start") == undefined) {
-    fetchProducts();
-    dropdown[(new URL(document.location)).searchParams.get("page")].selected
-} else
-    fetchProductsWithStartAndSize();
-
 var dropdown = document.querySelector("#size-select");
 dropdown.onchange = function(){
-  fetchProductsWithStartAndSize();
+    var size = dropdown[dropdown.selectedIndex].value;
+    window.location.href=`/index.html?start=0&size=${size}`;
 };
+
+if((new URL(document.location)).searchParams.get("start") == undefined) {
+    fetchProducts();
+} else {
+    fetchProductsWithStartAndSize();
+    dropdown.value = (new URL(document.location)).searchParams.get("size");
+}
 
 function fetchProducts() {
     fetch("/products")
@@ -22,7 +24,7 @@ function fetchProducts() {
 
 function fetchProductsWithStartAndSize() {
     var start = (new URL(document.location)).searchParams.get("start") || "0";
-    var size = dropdown[dropdown.selectedIndex].value;
+    var size = (new URL(document.location)).searchParams.get("size");
     fetch("/products/"+start+"/"+size)
         .then(function (response) {
             return response.json();
@@ -41,8 +43,9 @@ function getButtons(size) {
             return response.json();
         })
         .then(function (jsonData) {
-            for(let i = 1; i < jsonData.length/size ;i++) {
-                buttons.innerHTML += `<a href='index.html?start=${i*size}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
+            buttons.innerHTML = '';
+            for(let i = 0; i < jsonData.length/size ;i++) {
+                buttons.innerHTML += `<a href='index.html?start=${i*size}&size=${size}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
             }
         });
 }
