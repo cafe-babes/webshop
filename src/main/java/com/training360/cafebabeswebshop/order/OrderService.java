@@ -18,12 +18,12 @@ public class OrderService {
     private BasketDao basketDao;
 
 
-    public Map<Long, List<OrderedProduct>> listMyOrders(Authentication authentication){
-        Map<Long, List<OrderedProduct>> result = new HashMap<>();
+    public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        Map<Order, List<OrderedProduct>> result = new HashMap<>();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
         for (Order o: orders) {
-            result.put(o.getId(), listOrderedProductsByOrderId(o.getId()));
+            result.put(o, listOrderedProductsByOrderId(o.getId()));
         }
         return result;
     }
