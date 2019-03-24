@@ -29,8 +29,8 @@ function fetchOrders() {
 
         var purchaseDateTd = document.createElement("td");
         purchaseDateTd.innerHTML = jsonData[i].purchaseDate;
-        var purchase_dateTdId = 'purchaseDateTd' + i;
-        purchaseDateTd.setAttribute('id', purchase_dateTdId);
+        var purchaseDateTdId = 'purchaseDateTd' + i;
+        purchaseDateTd.setAttribute('id', purchaseDateTdId);
         tr.appendChild(purchaseDateTd);
 
         var userId = document.createElement("td");
@@ -86,19 +86,43 @@ function fetchOrders() {
 
         table.appendChild(tr);
 
+//        var orderDetailsTable = document.createElement("table");
+//        orderDetailsTable.innerHTML = "<tr><td>loremipsum</tr></td><tr><td>loremipsum</tr></td><tr><td>loremipsum</tr></td>";
+////        var orderDetailsTrId = 'orderDetailsTr' + i;
+////         orderDetailsTr.setAttribute('id', orderDetailsTrId);
+//        tr.appendChild(orderDetailsTable);
+
     }
 
 }
 
+    function editTds(num){
+
+        window.location.href = "editorder.html";
+
+        var address = (new URL(document.location)).searchParams.get("address");
+            var url = "/product/"+address;
+
+
+//        function fetchOrder() {
+//            fetch("/orders/`${num}`")
+//                .then(function (response) {
+//                    return response.json();
+//                })
+//                .then(function (jsonData) {
+//                    console.log(jsonData);
+//                    showTable(jsonData);
+//                });
+//        }
+//        fetchOrder();
+    }
+
 
     function deleteOrder(num){
-
         var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
-
         if (!confirm("Biztos, hogy törli a megrendelést?")) {
             return;
         }
-
         fetch("/orders/" + id, {
                 method: "POST",
             })
