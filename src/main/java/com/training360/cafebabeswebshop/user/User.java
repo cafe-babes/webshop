@@ -18,7 +18,9 @@ public class User {
         this.name = name;
         this.email = email;
         this.userName = userName;
-        this.password = new BCryptPasswordEncoder(4).encode(password);
+        if(password != null && !password.trim().equals("")) {
+            this.password = new BCryptPasswordEncoder(4).encode(password);
+        }
         this.enabled = enabled;
         this.role = role;
         this.userStatus = userStatus;
