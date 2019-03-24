@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class OrderController {
@@ -39,7 +41,7 @@ public class OrderController {
     }
 
     @GetMapping("/myorders")
-    public List<Order> listMyOrders(Authentication authentication){
+    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
         return orderService.listMyOrders(authentication);
     }
 
@@ -70,6 +72,16 @@ public class OrderController {
             return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
+        }
+    }
+
+    @PostMapping("/orders/{id}/{status}")
+    public ResultStatus updateOrderStatus(@PathVariable long id, @PathVariable String status){
+        if (validator.isValidStatus(status.toUpperCase()) && validator.isValidOrderId(id)){
+            orderService.updateOrderStatus(id, status.toUpperCase());
+            return new ResultStatus(ResultStatusE.OK, String.format("Orderstatus successfully updated with id %d", id));
+        } else {
+            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id or status");
         }
     }
 

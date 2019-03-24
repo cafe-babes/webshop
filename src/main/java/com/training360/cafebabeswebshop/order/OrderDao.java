@@ -112,4 +112,8 @@ public class OrderDao {
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
     }
 
+    public void updateOrderStatus(long id, String status){
+        jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
+    }
+
 }

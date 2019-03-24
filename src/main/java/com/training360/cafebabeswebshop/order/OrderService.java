@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -16,9 +20,14 @@ public class OrderService {
     private BasketDao basketDao;
 
 
-    public List<Order> listMyOrders(Authentication authentication){
+    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        Map<LocalDateTime, List<OrderedProduct>> result = new HashMap<>();
+        List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
-        return orderDao.listMyOrders(authentication.getName());
+        for (Order o: orders) {
+            result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
+        }
+        return result;
     }
 
     public List<Order> listAllOrders(){
@@ -52,6 +61,10 @@ public class OrderService {
 
     public void deleteOrder(long id){
         orderDao.deleteOrder(id);
+    }
+
+    public void updateOrderStatus(long id, String status){
+        orderDao.updateOrderStatus(id, status);
     }
 
     private void addOrderedProducts(Authentication authentication,Order order){
