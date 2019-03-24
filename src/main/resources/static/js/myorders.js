@@ -21,12 +21,13 @@ function showMyOrders(jsonData){
 
     for(var i = 0; i < jsonData.length; i++){
             console.log("ciklus ok");
+            console.log(jsonData[i].name)
             container.innerHTML +=
             `
                         <tr>
                             <th scope="row" id="counter">${i+1}</th>
                             <td id="date">${jsonData[i].purchaseDate}</td>
-                            <td id="product">${jsonData[i].orderingName}</td>
+                            <td id="product">${jsonData[i].name}</td>
                         </tr>
             `
     }

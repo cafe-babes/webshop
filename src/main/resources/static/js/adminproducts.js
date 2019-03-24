@@ -147,7 +147,7 @@ function fetchProducts() {
             "name": name,
             "manufacture": manu,
             "price": price,
-            "product_status": "ACTIVE"
+            "productStatus": "ACTIVE"
         }
 
         fetch("/products/" + id, {

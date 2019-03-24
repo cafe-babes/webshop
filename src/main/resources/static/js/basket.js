@@ -35,7 +35,6 @@ function showBasket(jsonData){
             </div>
             `;
         sum += jsonData[i].price;
-        document.querySelector("#delete-one")["raw-data"] = jsonData[i];
     }
 
     document.getElementById("total-price").innerHTML = sum;
@@ -78,15 +77,21 @@ function handleAddToOrders(){
     });
 }
 
-function addToOrders(jsonData){
-    var request = {"name" : name};
+function addToOrders(){
     console.log("addToOrders ok")
+    var request = {"name" : name};
     var url = "/myorders";
     fetch(url,{
         method: "POST",
+        body : JSON.stringify(request),
+        headers : {
+            "Content-type" : "application/json"
+        }
+
     })
     .then(function(response){
         console.log(response);
+        window.location.href ="/myorders.html";
         return response.json();
     })
 }
