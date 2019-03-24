@@ -22,13 +22,14 @@ public class BasketController {
 
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
-        return basketService.getBasketItems(authentication);
+        return authentication==null ? null : basketService.getBasketItems(authentication);
     }
 
     @DeleteMapping("/basket")
     public void deleteBasket(Authentication authentication) {
         basketService.deleteBasket(authentication);
     }
+
 
 
     @DeleteMapping("/basket/{address}")
