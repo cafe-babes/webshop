@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,12 +34,10 @@ public class OrdersTest {
 
         assertEquals(orders.size(), 3);
 
-        orderController.saveOrderAndGetId(null);
-
     }
 
     @Test
-    public void deleteOrderById() {
+    public void testDeleteOrderById() {
 
         // Given (a list of orders given)
         List<Order> orders = orderController.listAllOrders();
@@ -54,6 +53,25 @@ public class OrdersTest {
 
 
         assertEquals(orderexample.getOrderStatus().name(), "DELETED");
+
+    }
+
+
+    @Test
+    public void testStatusOfOrdersIsActiveDefault() {
+
+        // Given (a list of orders given)
+        List<Order> orders = orderController.listAllOrders();
+
+        boolean allOrdersStatusIsActive = true;
+
+        for (Order o : orders) {
+            if(!o.getOrderStatus().name().equals("ACTIVE")){
+                allOrdersStatusIsActive = false;
+            }
+        }
+
+        assertEquals(allOrdersStatusIsActive, true);
 
     }
 
