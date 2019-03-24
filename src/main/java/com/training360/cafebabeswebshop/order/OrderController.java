@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class OrderController {
@@ -39,7 +40,7 @@ public class OrderController {
     }
 
     @GetMapping("/myorders")
-    public List<Order> listMyOrders(Authentication authentication){
+    public Map<Long, List<OrderedProduct>> listMyOrders(Authentication authentication){
         return orderService.listMyOrders(authentication);
     }
 

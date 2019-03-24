@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -16,9 +18,14 @@ public class OrderService {
     private BasketDao basketDao;
 
 
-    public List<Order> listMyOrders(Authentication authentication){
+    public Map<Long, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        Map<Long, List<OrderedProduct>> result = new HashMap<>();
+        List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
-        return orderDao.listMyOrders(authentication.getName());
+        for (Order o: orders) {
+            result.put(o.getId(), listOrderedProductsByOrderId(o.getId()));
+        }
+        return result;
     }
 
     public List<Order> listAllOrders(){
