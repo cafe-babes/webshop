@@ -22,7 +22,7 @@ public class BasketController {
 
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
-        return basketService.getBasketItems(authentication);
+        return authentication==null ? null : basketService.getBasketItems(authentication);
     }
 
     @DeleteMapping("/basket")
