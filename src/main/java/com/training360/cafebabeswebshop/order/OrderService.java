@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +20,12 @@ public class OrderService {
     private BasketDao basketDao;
 
 
-    public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication){
-        Map<Order, List<OrderedProduct>> result = new HashMap<>();
+    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        Map<LocalDateTime, List<OrderedProduct>> result = new HashMap<>();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
         for (Order o: orders) {
-            result.put(o, listOrderedProductsByOrderId(o.getId()));
+            result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
         }
         return result;
     }
