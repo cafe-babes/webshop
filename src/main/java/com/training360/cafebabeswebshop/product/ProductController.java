@@ -56,7 +56,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> getProducts(Authentication authentication) {
-        if (authentication == null || !userController.determineRole(authentication).equals("ADMIN"))
+        if (!userController.determineRole(authentication).getRole().equals("ADMIN"))
             return productService.getActiveProducts();
         return productService.getProducts();
     }

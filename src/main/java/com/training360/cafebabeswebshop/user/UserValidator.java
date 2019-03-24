@@ -4,7 +4,6 @@ import java.util.List;
 
 public class UserValidator {
 
-
     UserService userService;
 
     public UserValidator(UserService userService) {
@@ -36,7 +35,8 @@ public class UserValidator {
     }
 
     private boolean userIsNotRegisteredWithThisNameYet(String newUsername) {
-        for (User reguser : userService.listUsers()) {
+        List<User> list = userService.listUsers();
+        for (User reguser : list) {
             if (newUsername.equals(reguser.getUserName())) {
                 return false;
             }
