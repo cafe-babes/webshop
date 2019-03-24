@@ -63,6 +63,10 @@ public class OrderService {
         orderDao.deleteOrder(id);
     }
 
+    public void updateOrderStatus(long id, String status){
+        orderDao.updateOrderStatus(id, status);
+    }
+
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
