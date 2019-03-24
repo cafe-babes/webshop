@@ -29,12 +29,12 @@ function showBasket(jsonData){
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
-                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem()">Töröl</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="deleteOneItem('${jsonData[i].address}')">Töröl</button>
                 <br>
             </div>
             `;
         sum += jsonData[i].price;
-        document.querySelector("#delete-one")["raw-data"] = jsonData[i];
+//        document.querySelector(`#delete-one`)["raw-data"] = jsonData[i];
     }
     console.log("más");
 
@@ -42,8 +42,8 @@ function showBasket(jsonData){
 
 }
 
-function deleteOneItem(){
-    address = document.querySelector("#delete-one")["raw-data"].address;
+function deleteOneItem(address){
+//    address = document.querySelector(`#delete-one`)["raw-data"].address;
     console.log(address);
     var url = "/basket/" + address;
     console.log(url)

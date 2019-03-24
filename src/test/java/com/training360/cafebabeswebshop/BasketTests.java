@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -62,7 +61,7 @@ public class BasketTests {
         productController.saveProductAndGetId(new Product(2, "ZZZ111", "sword_fish", "Sword Fish", "cafebabes", 139000, "ACTIVE"));
         productController.saveProductAndGetId(new Product(3, "YYY222", "sea_star", "Sea Star", "cafebabes", 99000, "ACTIVE"));
         productController.saveProductAndGetId(new Product(4, "XXX333", "wawe_blade", "Wawe Blade", "cafebabes", 119000, "ACTIVE"));
-        List<Product> products = productController.getProducts();
+        List<Product> products = productController.getProducts(null);
         Product product1 = products.stream().filter(e -> e.getAddress().equals("sea_snake")).findAny().get();
         Product product2 = products.stream().filter(e -> e.getAddress().equals("sword_fish")).findAny().get();
         Product product3 = products.stream().filter(e -> e.getAddress().equals("sea_star")).findAny().get();

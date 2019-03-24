@@ -4,7 +4,6 @@ import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runner.notification.RunListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -26,7 +25,7 @@ public class CafebabeswebshopApplicationTests {
 	@Test
 	public void contextLoads() {
 		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
-		List<Product> products = productController.getProducts();
+		List<Product> products = productController.getProducts(null);
 
 		assertEquals(2, products.size());
 	}
@@ -36,14 +35,14 @@ public class CafebabeswebshopApplicationTests {
 		//Given
 		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
 
-		List<Product> products = productController.getProducts();
+		List<Product> products = productController.getProducts(null);
 
 		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
 		long id = product.getId();
 
 		productController.deleteProduct(id);
 
-		products = productController.getProducts();
+		products = productController.getProducts(null);
 
 		assertEquals(2, products.size());
 		assertEquals("balaton_shark", products.get(1).getAddress());
@@ -60,7 +59,7 @@ public class CafebabeswebshopApplicationTests {
 			// Az id és a product_status nem kerül lementésre, mert azt az SQL álllítja be
 
 		// When
-		List<Product> products = productController.getProducts();
+		List<Product> products = productController.getProducts(null);
 		Product product = products.stream().filter(e -> e.getAddress().equals("sea_star")).findAny().get();
 		Product product2 = products.stream().filter(e -> e.getAddress().equals("wawe_blade")).findAny().get();
 		long id = product.getId();
@@ -68,7 +67,7 @@ public class CafebabeswebshopApplicationTests {
 
 		productController.deleteProduct(id);
 		productController.updateProducts(id2, new Product(0, "XXX333", "wawe_blade", "Wawe Blade", "cafebabes", 222_222, "ACTIVE"));
-		products = productController.getProducts();
+		products = productController.getProducts(null);
 
 		// Then
 		assertEquals("bala_lala", products.get(0).getAddress());

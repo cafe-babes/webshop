@@ -22,7 +22,11 @@ public class BasketController {
 
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
-        System.out.println(authentication);
+        System.out.println(authentication.getAuthorities());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getCredentials());
+        System.out.println(authentication.getDetails());
+        System.out.println(authentication.getName());
         return basketService.getBasketItems(authentication);
     }
 
