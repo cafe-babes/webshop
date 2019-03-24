@@ -63,6 +63,22 @@ function emptyBasket() {
     });
 }
 
+function checkIfEmpty(){
+       var url = "/basket";
+       fetch(url)
+       .then(function(response){
+           return response.json();
+       })
+       .then(function(jsonData) {
+           console.log(jsonData);
+           if(jsonData.length == 0){
+                alert("a kosár tartalma üres");
+                return;
+           }
+           handleAddToOrders();
+       });
+}
+
 function handleAddToOrders(){
     var url = "/myorders";
     fetch(url,{
