@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Order {
@@ -14,6 +15,15 @@ public class Order {
     public Order(long id, long userId, long total, long sumQuantity, String status) {
         this.id = id;
         this.purchaseDate = LocalDateTime.now();
+        this.userId = userId;
+        this.total = total;
+        this.sumQuantity = sumQuantity;
+        this.orderStatus = OrderStatus.valueOf(status);
+    }
+
+    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String status) {
+        this.id = id;
+        this.purchaseDate = purchaseDate;
         this.userId = userId;
         this.total = total;
         this.sumQuantity = sumQuantity;
@@ -69,5 +79,9 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public String toString(){
+        return id + " " + purchaseDate + " " + userId + " " + total + " " + sumQuantity + " " + orderStatus;
     }
 }

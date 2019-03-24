@@ -18,6 +18,7 @@ public class OrderDao {
     private JdbcTemplate jdbcTemplate;
     private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, rowNum) -> new Order(
             rs.getLong("id"),
+            rs.getTimestamp("purchase_date").toLocalDateTime(),
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
@@ -109,6 +110,10 @@ public class OrderDao {
 
     public void deleteOrder(long id){
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
+    }
+
+    public void updateOrderStatus(long id, String status){
+        jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
     }
 
 }
