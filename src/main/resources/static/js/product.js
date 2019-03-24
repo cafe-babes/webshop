@@ -3,6 +3,11 @@ window.onload = function() {
 }
 console.log((new URL(document.location)).searchParams.get("address"));
 
+$.getJSON("/user-role", json => {
+if(json.role != 'VISITOR')
+    document.querySelector('#addToBasketButton').hidden = false;
+});
+
  function fetchProduct(){
     var address = (new URL(document.location)).searchParams.get("address");
     var url = "/product/"+address;

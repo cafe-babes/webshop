@@ -17,6 +17,7 @@ fetch("/users",{
             return response.json();
          })
          .then(function(json) {
+         console.log(json);
          var div = document.querySelector('#response-box');
          if(json.resultStatusEnum=="OK") {
             div.setAttribute("class", "alert alert-success")

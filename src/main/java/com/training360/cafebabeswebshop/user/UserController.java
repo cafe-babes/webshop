@@ -21,8 +21,10 @@ public class UserController {
         return userService.listUsers();
     }
 
-    @GetMapping("/user")
-    public String determineRole(Authentication authentication) {
+    @GetMapping("/user-role")
+    public UserInfo determineRole(Authentication authentication) {
+        if (authentication == null)
+            return new UserInfo("VISITOR", null);
         boolean isUser = false;
         boolean isAdmin = false;
         Collection<? extends GrantedAuthority> authorities
@@ -37,11 +39,11 @@ public class UserController {
         }
 
         if (isAdmin) {
-            return "ADMIN";
+            return new UserInfo("ADMIN", authentication.getName());
         } else if (isUser) {
-            return "USER";
+            return new UserInfo("USER", authentication.getName());
         } else {
-            return "VISITOR";
+            return new UserInfo("VISITOR", null);
         }
     }
 
