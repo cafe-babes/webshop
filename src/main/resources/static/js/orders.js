@@ -56,7 +56,7 @@ function fetchOrders() {
         var editButtonId = 'editbutton' + i;
         editButton.setAttribute('id', editButtonId);
         editButton.setAttribute('class', 'btn');
-        editButton.setAttribute('onclick', `editTds(${i})`);
+        editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
         editButtonTd.appendChild(editButton);
 
         var saveButton = document.createElement("button");
@@ -86,35 +86,16 @@ function fetchOrders() {
 
         table.appendChild(tr);
 
-//        var orderDetailsTable = document.createElement("table");
-//        orderDetailsTable.innerHTML = "<tr><td>loremipsum</tr></td><tr><td>loremipsum</tr></td><tr><td>loremipsum</tr></td>";
-////        var orderDetailsTrId = 'orderDetailsTr' + i;
-////         orderDetailsTr.setAttribute('id', orderDetailsTrId);
-//        tr.appendChild(orderDetailsTable);
-
     }
 
 }
 
     function editTds(num){
 
-        window.location.href = "editorder.html";
-
-        var address = (new URL(document.location)).searchParams.get("address");
-            var url = "/product/"+address;
+//            window.location.href = "/editorder.html";
+        window.location.href = `editorder.html/?id=${num}`;
 
 
-//        function fetchOrder() {
-//            fetch("/orders/`${num}`")
-//                .then(function (response) {
-//                    return response.json();
-//                })
-//                .then(function (jsonData) {
-//                    console.log(jsonData);
-//                    showTable(jsonData);
-//                });
-//        }
-//        fetchOrder();
     }
 
 

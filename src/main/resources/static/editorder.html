@@ -10,29 +10,46 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-    <title>Rendelés szerkesztése</title>
+    <title>Rendelés adminisztrációja</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary"></nav>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+    <a class="navbar-brand navbar-inverse" href="/">CafeBabes</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+
+            <!--js tölti fel-->
+
+            <li class="nav-item active" id="basket">
+                <a class="nav-link" href="basket.html">
+                    <i class="fa" style="font-size:24px">&#xf07a;</i>
+                    <span class='badge badge-warning' id='cartCount'></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container" id="container">
     <div id="message-div"></div>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Termék neve</th>
-            <th>Darabszám</th>
-            <th>Egységár</th>
+            <th>Termék típusok</th>
+            <th>Termék értéke</th>
 
-
-            <th>Törlés</th>
+            <th>Tétel törlése</th>
         </tr>
         </thead>
-        <tbody id="order-table"></tbody>
+        <tbody id="orders-table"></tbody>
     </table>
 </div>
 <script src="js/editorder.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/navbarLoader.js"></script>
-
 </body>
 </html>
