@@ -34,13 +34,13 @@ function fetchOrders() {
         tr.appendChild(purchaseDateTd);
 
         var userId = document.createElement("td");
-        userId.innerHTML = jsonData[i].total;
+        userId.innerHTML = jsonData[i].sumQuantity;
         var userTdId = 'userId' + i;
         userId.setAttribute('id', userTdId);
         tr.appendChild(userId);
 
         var total = document.createElement("td");
-        total.innerHTML = jsonData[i].sumQuantity;
+        total.innerHTML = jsonData[i].total;
         var totalTdId = 'total' + i;
         total.setAttribute('id', totalTdId);
         tr.appendChild(total);
@@ -91,11 +91,7 @@ function fetchOrders() {
 }
 
     function editTds(num){
-
-//            window.location.href = "/editorder.html";
         window.location.href = `editorder.html/?id=${num}`;
-
-
     }
 
 
