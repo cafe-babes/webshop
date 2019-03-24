@@ -13,8 +13,26 @@
     <title>Kosár</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-// js tölti be
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+    <a class="navbar-brand navbar-inverse" href="/">CafeBabes</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+
+            <!--js tölti fel-->
+
+            <li class="nav-item active" id="basket">
+                <a class="nav-link" href="basket.html">
+                    <i class="fa" style="font-size:24px">&#xf07a;</i>
+                    <span class='badge badge-warning' id='cartCount'></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <div class="mw-100">
@@ -41,7 +59,7 @@
     </div>
     <div class="col-sm-7 float-right">
         <h2 id="total">Teljes összeg: <span id="total-price"></span> Ft</h2>
-        <a ><button type="button" class="btn btn-outline-secondary" id="order" onclick="handleAddToOrders()">Megrendelem</button></a>
+        <a ><button type="button" class="btn btn-outline-secondary" id="order" onclick="checkIfEmpty()">Megrendelem</button></a>
         <button type="button" class="btn btn-outline-secondary" id="delete-all" onclick="emptyBasket()">Kosár ürítése</button>
 
     </div>
