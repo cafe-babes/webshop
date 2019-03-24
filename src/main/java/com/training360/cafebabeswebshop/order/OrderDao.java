@@ -18,6 +18,7 @@ public class OrderDao {
     private JdbcTemplate jdbcTemplate;
     private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, rowNum) -> new Order(
             rs.getLong("id"),
+            rs.getTimestamp("purchase_date").toLocalDateTime(),
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
