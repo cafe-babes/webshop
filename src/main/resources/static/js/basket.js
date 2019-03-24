@@ -7,6 +7,7 @@ function fetchBasket(){
         return response.json();
     })
     .then(function(jsonData) {
+        console.log(jsonData);
         showBasket(jsonData);
     });
 }
@@ -29,21 +30,18 @@ function showBasket(jsonData){
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
-                <button type="button" class="btn btn-outline-secondary" onclick="deleteOneItem('${jsonData[i].address}')">Töröl</button>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem('${jsonData[i].address}')">Töröl</button>
                 <br>
             </div>
             `;
         sum += jsonData[i].price;
-//        document.querySelector(`#delete-one`)["raw-data"] = jsonData[i];
     }
-    console.log("más");
 
     document.getElementById("total-price").innerHTML = sum;
 
 }
 
 function deleteOneItem(address){
-//    address = document.querySelector(`#delete-one`)["raw-data"].address;
     console.log(address);
     var url = "/basket/" + address;
     console.log(url)
@@ -63,4 +61,31 @@ function emptyBasket() {
     .then(function(){
         fetchBasket();
     });
+}
+
+function handleAddToOrders(){
+    var url = "/myorders";
+    fetch(url,{
+        method: "GET"
+    })
+    .then(function(response) {
+        console.log(response);
+        return response.json();
+    })
+    .then(function(){
+        addToOrders();
+    });
+}
+
+function addToOrders(){
+    console.log("addToOrders ok")
+    var url = "/myorders";
+    fetch(url,{
+        method: "POST",
+    })
+    .then(function(response){
+        console.log(response);
+        window.location.href ="/myorders.html";
+        return response.json();
+    })
 }
