@@ -1,7 +1,7 @@
-//window.onload = function () {
-//    fetchOrders();
-//}
-/*
+window.onload = function () {
+    fetchOrders();
+}
+
 function fetchOrders() {
     fetch("/orders")
         .then(function (response) {
@@ -12,28 +12,7 @@ function fetchOrders() {
             showTable(jsonData);
         });
 }
-*/
 
-
-
-function getJsonData(url, callbackFunc) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        callbackFunc(this);
-      }
-    };
-    xhttp.open('GET', url, true);
-    xhttp.send();
-  }
-
-  function successAjax(xhttp) {
-    var orders = JSON.parse(xhttp.responseText);
-    console.log(orders);
-    showTable(orders);
-  }
-
-  getJsonData('/json/orders.json', successAjax);
 
   function showTable(jsonData) {
     var table = document.querySelector("#orders-table");
@@ -43,13 +22,13 @@ function getJsonData(url, callbackFunc) {
         tr["raw-data"] = jsonData[i];
 
         var idTd = document.createElement("td");
-        idTd.innerHTML = jsonData[i].user_id;
+        idTd.innerHTML = jsonData[i].userId;
         var idTdId = 'idTd' + i;
         idTd.setAttribute('id', idTdId);
         tr.appendChild(idTd);
 
         var purchaseDateTd = document.createElement("td");
-        purchaseDateTd.innerHTML = jsonData[i].purchase_date;
+        purchaseDateTd.innerHTML = jsonData[i].purchaseDate;
         var purchase_dateTdId = 'purchaseDateTd' + i;
         purchaseDateTd.setAttribute('id', purchase_dateTdId);
         tr.appendChild(purchaseDateTd);
@@ -61,13 +40,13 @@ function getJsonData(url, callbackFunc) {
         tr.appendChild(userId);
 
         var total = document.createElement("td");
-        total.innerHTML = jsonData[i].order_value;
+        total.innerHTML = jsonData[i].sumQuantity;
         var totalTdId = 'total' + i;
         total.setAttribute('id', totalTdId);
         tr.appendChild(total);
 
         var orderStatusTd = document.createElement("td");
-        orderStatusTd.innerHTML = jsonData[i].order_status;
+        orderStatusTd.innerHTML = jsonData[i].orderStatus;
         var orderStatusTdId = 'manTd' + i;
         orderStatusTd.setAttribute('id', orderStatusTdId);
         tr.appendChild(orderStatusTd);
@@ -108,7 +87,24 @@ function getJsonData(url, callbackFunc) {
         table.appendChild(tr);
 
     }
-    var createButton = document.getElementById('createButton');
-    createButton.setAttribute('onclick', `showNewRow(${jsonData.length})`);
 
 }
+
+
+    function deleteOrder(num){
+
+        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+
+        if (!confirm("Biztos, hogy törli a megrendelést?")) {
+            return;
+        }
+
+        fetch("/orders/" + id, {
+                method: "POST",
+            })
+            .then(function (response) {
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                document.querySelector("#message-div").innerHTML = "Törölve"
+                fetchOrders();
+                });
+            }
