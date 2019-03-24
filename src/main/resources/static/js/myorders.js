@@ -7,8 +7,23 @@ function fetchMyOrders(){
         return response.json();
     })
     .then(function(jsonData){
-        console.log("fetch ok");
-        console.log(jsonData);
+        getNames(jsonData);
+//        console.log("fetch ok");
+//        console.log(jsonData);
+//        showMyOrders(jsonData);
+    });
+}
+
+function getNames(jsonData){
+    var url = "/myorders";
+    fetch(url, {
+        method: "GET"
+    })
+    .then(function(response){
+        console.log(response);
+        return response.json();
+    })
+    .then(function(jsonData){
         showMyOrders(jsonData);
     });
 }

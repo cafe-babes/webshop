@@ -79,7 +79,9 @@ function handleAddToOrders(){
 
 function addToOrders(){
     console.log("addToOrders ok")
+    var name = document.getElementById("name").innerHTML;
     var request = {"name" : name};
+    console.log(request);
     var url = "/myorders";
     fetch(url,{
         method: "POST",
