@@ -1,12 +1,12 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -16,13 +16,31 @@ import java.util.List;
 public class OrderDao {
 
     private JdbcTemplate jdbcTemplate;
-    private static final RowMapper<Order> ORDER_ROW_MAPPER = ((rs, rowNum) -> new Order(
+    private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, rowNum) -> new Order(
             rs.getLong("id"),
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
             rs.getString("order_status")
-    ));
+    );
+    private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
+            rs.getLong("id"),
+            rs.getLong("product_id"),
+            rs.getLong("order_id"),
+            rs.getLong("ordering_price"),
+            rs.getString("ordering_name")
+    );
+
+    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User(
+            rs.getLong("id"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getString("user_name"),
+            rs.getString("password"),
+            rs.getInt("enabled"),
+            rs.getString("role"),
+            rs.getString("user_status")
+    );
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -32,16 +50,22 @@ public class OrderDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, total, sum_quantity) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?),?,?,?)",
+                            "values (?,(SELECT id FROM users WHERE user_name = ?),?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
             ps.setLong(3, order.getTotal());
             ps.setLong(4, order.getSumQuantity());
-            ps.setString(5, String.valueOf(order.getOrderStatus()));
+           // ps.setString(5, String.valueOf(order.getOrderStatus()));
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
+    }
+
+    public long getUserId(String userName){
+       User u = jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status " +
+               "from users where user_name = ?", USER_ROW_MAPPER, userName);
+       return u.getId();
     }
 
     public List<Order> listMyOrders(String username){
@@ -64,4 +88,27 @@ public class OrderDao {
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
+
+    public List<Order> listAllOrders(){
+        return jdbcTemplate.query("select id, purchase_date, user_id, total, sum_quantity, order_status from orders order by purchase_date desc", ORDER_ROW_MAPPER);
+    }
+
+    public List<OrderedProduct> listOrderedProductsByOrderId(long id){
+        return jdbcTemplate.query("select id, product_id, order_id, ordering_price, ordering_name from ordered_products where order_id =?",
+                ORDERED_PRODUCT_ROW_MAPPER, id);
+    }
+
+    public List<OrderedProduct> listAllOrderedProduct(){
+        return jdbcTemplate.query("select id, product_id, order_id, ordering_price, ordering_name from ordered_products", ORDERED_PRODUCT_ROW_MAPPER);
+    }
+
+    public void deleteOneItemFromOrder(long orderId, String address){
+        jdbcTemplate.update("delete ordered_products from ordered_products inner join products on product_id = products.id " +
+                "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
+    }
+
+    public void deleteOrder(long id){
+        jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
+    }
+
 }

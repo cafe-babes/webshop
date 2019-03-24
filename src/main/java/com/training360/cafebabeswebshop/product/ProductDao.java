@@ -48,6 +48,21 @@ public class ProductDao {
                 PRODUCT_ROW_MAPPER);
     }
 
+    public List<Product> getActiveProducts(){
+        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products " +
+                        "WHERE product_status = 'ACTIVE' order by name, manufacture",
+                PRODUCT_ROW_MAPPER);
+    }
+
+    public List<Product> getProductsWithStartAndSize(int start, int size){
+        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products " +
+                        "WHERE product_status = 'ACTIVE' order by name, manufacture LIMIT ? OFFSET ?",
+                PRODUCT_ROW_MAPPER,
+                size,
+                start
+        );
+    }
+
 
     public long saveProductAndGetId(Product product){
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -66,8 +81,8 @@ public class ProductDao {
     }
 
     public void updateProduct(long id, Product product){
-            jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ?, `product_status` = ? where id = ?",
-                    product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), product.getProductStatus(), id);
+            jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
+                    product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
 
     }
 

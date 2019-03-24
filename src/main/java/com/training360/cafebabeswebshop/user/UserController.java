@@ -1,8 +1,11 @@
 package com.training360.cafebabeswebshop.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -18,16 +21,37 @@ public class UserController {
         return userService.listUsers();
     }
 
+    @GetMapping("/user")
+    public String determineRole(Authentication authentication) {
+        boolean isUser = false;
+        boolean isAdmin = false;
+        Collection<? extends GrantedAuthority> authorities
+                = authentication.getAuthorities();
+        for (GrantedAuthority grantedAuthority : authorities){
+            if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
+                isUser = true;
+            }else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
+
+        if (isAdmin) {
+            return "ADMIN";
+        } else if (isUser) {
+            return "USER";
+        } else {
+            return "VISITOR";
+        }
+    }
+
     @DeleteMapping("/users/{id}")
     public ResultStatus deleteUserById(@PathVariable long id) {
-        int sizeOfUserListBeforeDeletion = listUsers().size();
-        userService.deleteUserById(id);
-        int sizeOfUserListAfterDeletingAUser = listUsers().size();
-        if (sizeOfUserListBeforeDeletion > sizeOfUserListAfterDeletingAUser) {
+        userValidator = new UserValidator(userService);
+        if (userValidator.deletionWasSuccessFul(id)) {
             return new ResultStatus(ResultStatusEnum.OK, "A felhasználó törlése sikeres volt.");
         }
         return new ResultStatus(ResultStatusEnum.NOT_OK, "A felhasználó törlése sikertelen volt.");
-
     }
 
     @PostMapping("/users/{id}")

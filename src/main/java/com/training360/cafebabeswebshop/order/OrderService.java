@@ -21,10 +21,24 @@ public class OrderService {
         return orderDao.listMyOrders(authentication.getName());
     }
 
-    public long saveOrderAndGetId(Authentication authentication, Order order){
-        if (basketDao.getBasketItems(authentication.getName()).size() > 0) {
-            long id = orderDao.saveOrderAndGetId(authentication.getName(), order);
-            addOrderedProducts(authentication, order);
+    public List<Order> listAllOrders(){
+        return orderDao.listAllOrders();
+    }
+
+    public List<OrderedProduct> listOrderedProductsByOrderId(long id){
+        return orderDao.listOrderedProductsByOrderId(id);
+    }
+
+    public List<OrderedProduct> listAllOrderedProduct(){
+        return orderDao.listAllOrderedProduct();
+    }
+
+    public long saveOrderAndGetId(Authentication authentication){
+        int basketSize = basketDao.getBasketItems(authentication.getName()).size();
+        Order o = new Order(0, orderDao.getUserId(authentication.getName()), countTotal(authentication), basketSize, "ACTIVE");
+        if (basketSize > 0) {
+            long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
+            addOrderedProducts(authentication, o);
             basketDao.deleteBasket(authentication.getName());
             return id;
         } else {
@@ -32,12 +46,28 @@ public class OrderService {
         }
     }
 
+    public void deleteOneItemFromOrder(long orderId, String address){
+        orderDao.deleteOneItemFromOrder(orderId,address);
+    }
+
+    public void deleteOrder(long id){
+        orderDao.deleteOrder(id);
+    }
+
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
                     new OrderedProduct(bi.getProductId(),
-                            saveOrderAndGetId(authentication,order),
+                            orderDao.saveOrderAndGetId(authentication.getName(),order),
                             bi.getPrice(), bi.getName()));
         }
+    }
+
+    private long countTotal(Authentication authentication){
+        long sum = 0;
+        for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
+            sum += bi.getPrice();
+        }
+        return sum;
     }
 }

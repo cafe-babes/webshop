@@ -1,6 +1,8 @@
 package com.training360.cafebabeswebshop.product;
 
+import com.training360.cafebabeswebshop.user.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,10 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserController userController;
+
     private ProductValidator validator;
 
     public ProductController(ProductService productService) {
@@ -17,9 +23,9 @@ public class ProductController {
     }
 
     @GetMapping("/product/{address}")
-    public Object getProduct(@PathVariable String address){
+    public Object getProduct(@PathVariable String address) {
         validator = new ProductValidator(productService);
-        if (validator.isValidAddressPresent(address)){
+        if (validator.isValidAddressPresent(address)) {
             return productService.getProduct(address);
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
@@ -27,41 +33,47 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResultStatus saveProductAndGetId(@RequestBody Product product){
+    public ResultStatus saveProductAndGetId(@RequestBody Product product) {
         validator = new ProductValidator(productService);
-       if(validator.isValidProduct(product)){
+        if (validator.isValidProduct(product)) {
             long id = productService.saveProductAndGetId(product);
-           return new ResultStatus(ResultStatusE.OK, String.format("Product successfully created with id %d", id));
+            return new ResultStatus(ResultStatusE.OK, String.format("Product successfully created with id %d", id));
+        } else {
+            return new ResultStatus(ResultStatusE.NOT_OK, "Create not successful!");
         }
-            else {
-           return new ResultStatus(ResultStatusE.NOT_OK, "Create not successful!");
-    }
     }
 
     @PostMapping("/products/{id}")
-    public ResultStatus updateProducts(@PathVariable long id, @RequestBody Product product){
+    public ResultStatus updateProducts(@PathVariable long id, @RequestBody Product product) {
         validator = new ProductValidator(productService);
         if (validator.isValidProduct(product)) {
             productService.updateProducts(id, product);
-           return new ResultStatus(ResultStatusE.OK,"Product successfully updates");
+            return new ResultStatus(ResultStatusE.OK, "Product successfully updates");
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Update not successful!");
         }
     }
 
     @GetMapping("/products")
-    public List<Product> getProducts(){
-       return productService.getProducts();
+    public List<Product> getProducts(Authentication authentication) {
+        if (authentication == null || !userController.determineRole(authentication).equals("ADMIN"))
+            return productService.getActiveProducts();
+        return productService.getProducts();
+    }
+
+    @GetMapping("/products/{start}/{size}")
+    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size) {
+        return productService.getProductsWithStartAndSize(start, size);
     }
 
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable long id){
+    public void deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
     }
 
 
     @GetMapping("/products/{id}")
-    public Product findById(@PathVariable long id){
+    public Product findById(@PathVariable long id) {
         return productService.findById(id);
     }
 
