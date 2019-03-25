@@ -43,7 +43,7 @@ function showTable(jsonData) {
         var deleteButtonId = 'deletebutton' + i;
         deleteButton.setAttribute('id', deleteButtonId);
         deleteButton.setAttribute('class', 'btn');
-        deleteButton.setAttribute('onclick', deleteItem(jsonData[i].orderId, jsonData[i].orderingName));
+        deleteButton.setAttribute('onclick', `deleteItem(${i})`);
         deleteButton['raw-data'] = jsonData[i];
         deleteButtonTd.appendChild(deleteButton);
 
@@ -54,6 +54,26 @@ function showTable(jsonData) {
         table.appendChild(tr);
     }
 }
+
+
+    function deleteItem(num){
+
+//        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+//
+//        if (!confirm("Biztos, hogy törli a terméket?")) {
+//            return;
+//        }
+//
+//        fetch("/orders/" + id +"/" address, {
+//                method: "DELETE",
+//            })
+//            .then(function (response) {
+//                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+//                document.querySelector("#message-div").innerHTML = "Törölve"
+//                fetchProducts();
+//                });
+            }
+
 
 //    function deleteItem(id, orderingName){
 ////        var id = document.getElementById(`deletebutton${id}`).parentElement.parentElement['raw-data'].id;
