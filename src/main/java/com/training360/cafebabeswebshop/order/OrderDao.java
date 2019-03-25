@@ -114,15 +114,18 @@ public class OrderDao {
     }
 
     public OrderedProduct findOrderedProductByProductAddress(String address){
-        return jdbcTemplate.queryForObject("select id, product_id, order_id, ordering_price, ordering_name from ordered_products join products on " +
+        System.out.println(address);
+        return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name from ordered_products join products on " +
                 "product_id = products.id where products.address = ?", ORDERED_PRODUCT_ROW_MAPPER, address);
     }
 
     public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address){
         Order o = findOrderById(orderId);
         OrderedProduct op = findOrderedProductByProductAddress(address);
-        jdbcTemplate.update("update orders set sumQuantity = ?", (o.getSumQuantity() -1));
-        jdbcTemplate.update("update orders set total = ?", (o.getTotal() - op.getOrderingPrice()));
+        long newSumQuantity = o.getSumQuantity() - 1;
+        long newTotal = o.getTotal() - op.getOrderingPrice();
+        jdbcTemplate.update("update orders set sum_quantity = ?", newSumQuantity);
+        jdbcTemplate.update("update orders set total = ?", newTotal);
     }
 
     public void deleteOrder(long id){

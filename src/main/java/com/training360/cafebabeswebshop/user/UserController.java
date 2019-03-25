@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,10 @@ public class UserController {
         boolean isAdmin = false;
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
-        for (GrantedAuthority grantedAuthority : authorities){
+        for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
                 isUser = true;
-            }else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
                 isAdmin = true;
                 break;
             }
@@ -59,7 +60,7 @@ public class UserController {
     @PostMapping("/users/{id}")
     public ResultStatus updateUser(@PathVariable long id, @RequestBody User user) {
         userValidator = new UserValidator(userService);
-        if (userValidator.userCanBeUpdated(user)) {
+        if (userValidator.userCanBeSaved(user)) {
             userService.updateUser(id, user);
             return new ResultStatus(ResultStatusEnum.OK, "A felhasználó sikeresen módosításra került");
         }
@@ -70,10 +71,15 @@ public class UserController {
     public ResultStatus insertUser(@RequestBody User user) {
         userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
-            long id = userService.insertUserAndGetId(user);
-            return new ResultStatus(ResultStatusEnum.OK, String.format("%s sikeresen mentésre került. ( id = %d )", user.getUserName(), id));
+            long id;
+            try {
+                id = userService.insertUserAndGetId(user);
+            } catch (DataAccessException sql) {
+                return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("\"%s\" már regisztrált felhasználó!", user.getUserName()));
+            }
+            return new ResultStatus(ResultStatusEnum.OK, String.format("\"%s\" sikeresen mentésre került. ( id: %d )", user.getUserName(), id));
         }
-        return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("%s már regisztrált felhasználó!", user.getUserName()));
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");//TODO
     }
 
 }
