@@ -14,8 +14,8 @@ public class ReportService {
     public ReportService(ReportDao reportDao) {
         this.reportDao = reportDao;
     }
-
-    public List<Order> getMonthlyIncomeOfOrders() {
-        return reportDao.getMonthlyIncomeOfOrders();
-    }
+//
+//    public List<Order> getMonthlyIncomeOfOrders() {
+//        return reportDao.getMonthlyIncomeOfOrders();
+//    }
 }
