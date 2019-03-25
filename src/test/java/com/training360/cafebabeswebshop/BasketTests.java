@@ -31,18 +31,16 @@ public class BasketTests {
 
     @Autowired
     private BasketController basketController;
-    @Autowired
-    private UserController userController;
-    @Autowired
-    private ProductController productController;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private BasketService basketService;
 
 
+    @Test
+    public void saveBasketItemsTest() {
+
+        basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("chch", "ch01", "ROLE_USER"));
+        basketController.saveBasketItemAndGetId("wawe_peak", new TestingAuthenticationToken("chch", "ch01", "ROLE_USER"));
+
+        assertEquals(2, basketController.getBasketItems(new TestingAuthenticationToken("chch", "ch01", "ROLE_USER")).size());
+    }
 
     @Test
     public void listBasketTest() {
@@ -52,27 +50,25 @@ public class BasketTests {
         assertEquals(1, baskets.size());
     }
 
-//    @Test
-//    public void deleteBasketTest() {
-//        long idUser = userService.insertUserAndGetId(new User(1, "Thomas Mann", "thomas.mann@gmail.com", "tm001", "tm001", 1, "ROLE_USER", "ACTIVE"));
-//        long idProduct = productService.saveProductAndGetId(new Product(4, "XXX333", "wawe_blade", "Wawe Blade", "cafebabes", 119000, "ACTIVE"));
-//
-//    }
+    @Test
+    public void deleteBasketTest() {
+
+        basketController.deleteBasket(new TestingAuthenticationToken("ff", "ff", "ROLE_USER"));
+
+        assertEquals(0, basketController.getBasketItems(new TestingAuthenticationToken("ff", "ff", "ROLE_USER")).size());
+
+    }
 
     @Test
     public void deleteOneItemTest() {
-        long idUser = userService.insertUserAndGetId(new User(1, "Thomas Mann", "thomas.mann@gmail.com", "tm001", "tm001", 1, "ROLE_USER", "ACTIVE"));
-        long idProduct = productService.saveProductAndGetId(new Product(1, "XXX333", "wawe_blade", "Wawe Blade", "cafebabes", 119000, "ACTIVE"));
-        long idProduct2 = productService.saveProductAndGetId(new Product(2, "ZZZ111", "sword_fish", "Sword Fish", "cafebabes", 139000, "ACTIVE"));
 
-        Basket basket1 = new Basket(1, idUser, idProduct);
-        basketController.saveBasketItemAndGetId("wawe_blade", new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
-        basketController.saveBasketItemAndGetId("sword_fish", new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
-        basketController.deleteOneItem(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"), "sword_fish");
+        basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("chch", "ch01", "ROLE_USER"));
+        basketController.saveBasketItemAndGetId("wawe_peak", new TestingAuthenticationToken("chch", "ch01", "ROLE_USER"));
 
-        List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("tm001", "tm001", "ROLE_USER"));
+        basketController.deleteOneItem(new TestingAuthenticationToken("chch", "ch01", "ROLE_USER"), "wawe_peak");
 
-        assertEquals(1, basketItems.size());
+        assertEquals(1, basketController.getBasketItems(new TestingAuthenticationToken("chch", "ch01", "ROLE_USER")).size());
+        assertEquals("surf_killer", basketController.getBasketItems(new TestingAuthenticationToken("chch", "ch01", "ROLE_USER")).get(0).getAddress());
     }
 
 
