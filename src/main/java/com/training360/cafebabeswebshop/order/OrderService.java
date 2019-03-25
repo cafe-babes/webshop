@@ -44,9 +44,11 @@ public class OrderService {
 
     public long saveOrderAndGetId(Authentication authentication){
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        Order o = new Order(0, orderDao.getUserId(authentication.getName()), countTotal(authentication), basketSize, "ACTIVE");
+        Order o = new Order(0, orderDao.getUserId(authentication.getName()),
+                countTotal(authentication), basketSize, "ACTIVE");
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
+            o.setId(id);
             addOrderedProducts(authentication, o);
             basketDao.deleteBasket(authentication.getName());
             return id;
@@ -71,8 +73,7 @@ public class OrderService {
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
                     new OrderedProduct(bi.getProductId(),
-                            orderDao.saveOrderAndGetId(authentication.getName(),order),
-                            bi.getPrice(), bi.getName()));
+                            order.getId(), bi.getPrice(), bi.getName()));
         }
     }
 
