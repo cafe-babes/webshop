@@ -30,7 +30,7 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/", "/js/**", "/css/**").permitAll()
 				.antMatchers("/basket.html", "/myorders.html", "/orders.html").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-				.antMatchers("/adminproducts.html", "/adminusers.html", "/users.html").hasRole("ADMIN")
+				.antMatchers("/adminproducts.html", "/adminusers.html", "/users.html", "/dashboard.html").hasRole("ADMIN")
 				.antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
 				.and()
 				.formLogin()
