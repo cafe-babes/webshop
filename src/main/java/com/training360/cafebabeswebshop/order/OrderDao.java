@@ -118,6 +118,13 @@ public class OrderDao {
                 "product_id = products.id where products.address = ?", ORDERED_PRODUCT_ROW_MAPPER, address);
     }
 
+    public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address){
+        Order o = findOrderById(orderId);
+        OrderedProduct op = findOrderedProductByProductAddress(address);
+        jdbcTemplate.update("update orders set sumQuantity = ?", (o.getSumQuantity() -1));
+        jdbcTemplate.update("update orders set total = ?", (o.getTotal() - op.getOrderingPrice()));
+    }
+
     public void deleteOrder(long id){
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
     }
