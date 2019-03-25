@@ -45,7 +45,7 @@ $.getJSON("/user-role", json => {
                     class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="/orders.html">Rendeléseim</a>
+                <a class="dropdown-item" href="/myorders.html">Rendeléseim</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Kijelentkezés</a>
             </div>
