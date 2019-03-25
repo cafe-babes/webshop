@@ -69,6 +69,11 @@ public class OrderDao {
        return u.getId();
     }
 
+    public Order findOrderById(long id){
+        return jdbcTemplate.queryForObject("select id, purchase_date, user_id, total, sum_quantity, order_status from orders where id = ?",
+                ORDER_ROW_MAPPER, id);
+    }
+
     public List<Order> listMyOrders(String username){
         return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
                 "from orders join users on users.id = orders.user_id " +
@@ -106,6 +111,11 @@ public class OrderDao {
     public void deleteOneItemFromOrder(long orderId, String address){
         jdbcTemplate.update("delete ordered_products from ordered_products inner join products on product_id = products.id " +
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
+    }
+
+    public OrderedProduct findOrderedProductByProductAddress(String address){
+        return jdbcTemplate.queryForObject("select id, product_id, order_id, ordering_price, ordering_name from ordered_products join products on " +
+                "product_id = products.id where products.address = ?", ORDERED_PRODUCT_ROW_MAPPER, address);
     }
 
     public void deleteOrder(long id){
