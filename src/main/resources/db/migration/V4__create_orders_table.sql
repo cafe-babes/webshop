@@ -17,6 +17,7 @@ CREATE TABLE orders (
     order_id BIGINT,
     ordering_price BIGINT,
     ordering_name VARCHAR(255),
+    ordering_address VARCHAR(255),
     CONSTRAINT pk_ordered_products PRIMARY KEY (id),
     CONSTRAINT fk_op_product_id FOREIGN KEY (product_id) REFERENCES products(id),
     CONSTRAINT fk_op_order_id FOREIGN KEY (order_id) REFERENCES orders(id)
