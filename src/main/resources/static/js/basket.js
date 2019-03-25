@@ -101,7 +101,7 @@ function addToOrders(){
     })
     .then(function(response){
         console.log(response);
-        window.location.href ="/myorders.html";
+        window.location.href ="/succesfulorder.html";
         return response.json();
     })
 }
