@@ -41,7 +41,7 @@ function handleAddToBasketButton(){
     .then(function(jsonData) {
         for(var i = 0; i < jsonData.length; i++) {
             if(jsonData[i].address==address) {
-                alert("This product has already been added!");
+                alert("A termék már a kosárban van!");
                 return;
             }
         }
