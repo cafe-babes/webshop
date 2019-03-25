@@ -26,7 +26,7 @@ fetch("/users",{
             window.location.href = "/login";
             }, 1000);
          } else {
-            div.innerHTML = "Ez a felhasználónév már foglalt!";
+            div.innerHTML = json.message;
             div.setAttribute("class", "alert alert-danger");
             form.name.focus();
          }});

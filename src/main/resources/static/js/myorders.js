@@ -14,14 +14,16 @@ function fetchMyOrders(){
 }
 
 function showMyOrders(jsonData){
-    console.log("showMyOrders ok");
-    var container = document.querySelector("#table");
+    var container = document.querySelector("#container");
     container.innerHTML = "";
+    var table = document.createElement("table");
+    table.setAttribute('class', 'table table-striped');
+    container.appendChild(table);
 
     for(var obj in jsonData){
         if(jsonData.hasOwnProperty(obj)){
             var thead = document.createElement("thead");
-            container.appendChild(thead);
+            table.appendChild(thead);
 
             var trHead = document.createElement("tr");
             thead.appendChild(trHead);
@@ -39,7 +41,7 @@ function showMyOrders(jsonData){
             for(var prop in jsonData[obj]){
                 if(jsonData[obj].hasOwnProperty(prop)){
                    var tbody = document.createElement("tbody");
-                   container.appendChild(tbody);
+                   table.appendChild(tbody);
 
                     var tr = document.createElement("tr");
                     tbody.appendChild(tr);
@@ -57,7 +59,7 @@ function showMyOrders(jsonData){
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
 
-                    container.appendChild(tr);
+                    tbody.appendChild(tr);
                 }
             }
         }
