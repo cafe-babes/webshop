@@ -72,7 +72,7 @@ public class OrderDao {
     public List<Order> listMyOrders(String username){
         return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
                 "from orders join users on users.id = orders.user_id " +
-                "where users.user_name = ?"), ORDER_ROW_MAPPER, username);
+                "where users.user_name = ? order by purchase_date desc"), ORDER_ROW_MAPPER, username);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct){
