@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResultStatus insertUser(@RequestBody User user) {
+    public ResultStatus createUser(@RequestBody User user) {
         userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
             long id;
@@ -81,5 +81,4 @@ public class UserController {
         }
         return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");//TODO
     }
-
 }
