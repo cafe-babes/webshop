@@ -59,6 +59,7 @@ public class OrderService {
 
     public void deleteOneItemFromOrder(long orderId, String address){
         orderDao.deleteOneItemFromOrder(orderId,address);
+        orderDao.reduceOrderQuantityAndPriceWhenDeleting(orderId, address);
     }
 
     public void deleteOrder(long id){
