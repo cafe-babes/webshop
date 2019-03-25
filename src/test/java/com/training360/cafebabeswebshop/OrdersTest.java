@@ -58,7 +58,7 @@ public class OrdersTest {
 
 
     @Test
-    public void testStatusOfOrdersIsActiveDefault() {
+    public void testStatusOfOrderIsActiveDefault() {
 
         // Given (a list of orders given)
         List<Order> orders = orderController.listAllOrders();
