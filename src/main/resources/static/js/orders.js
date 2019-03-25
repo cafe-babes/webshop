@@ -8,14 +8,13 @@ function fetchOrders() {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData);
             checkOrderStatus(jsonData);
         });
 }
 
     var selector = document.querySelector("#checkStatus");
     selector.addEventListener('change', function (event) {
-        if (selector.checked) {-m ""
+        if (selector.checked) {
             fetchOrders();
         } else {
             fetchOrders();
@@ -24,7 +23,6 @@ function fetchOrders() {
 
 function checkOrderStatus(jsonData){
 var checkStatus = document.querySelector("#checkStatus").checked;
-    console.log(checkStatus);
     if(checkStatus){
         showTable(jsonData);
     } else {
