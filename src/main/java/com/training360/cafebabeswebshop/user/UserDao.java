@@ -1,6 +1,6 @@
 package com.training360.cafebabeswebshop.user;
 
-import com.training360.cafebabeswebshop.product.Product;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,8 +8,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -46,20 +44,20 @@ public class UserDao {
                 user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
-    public long insertUserAndGetId(User user) {
+    public long insertUserAndGetId(User user) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(connection -> {
-                    PreparedStatement ps =
-                            connection.prepareStatement("INSERT INTO users(name, enabled, user_name, password) VALUES ( ?, ?, ?, ?)",
-                                    Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, user.getName());
-                    ps.setInt(2, 1);
-                    ps.setString(3, user.getUserName());
-                    ps.setString(4, user.getPassword());
-                    return ps;
-                }, keyHolder
-        );
+            jdbcTemplate.update(connection -> {
+                        PreparedStatement ps =
+                                connection.prepareStatement("INSERT INTO users(name, enabled, user_name, password) VALUES ( ?, ?, ?, ?)",
+                                        Statement.RETURN_GENERATED_KEYS);
+                        ps.setString(1, user.getName());
+                        ps.setInt(2, 1);
+                        ps.setString(3, user.getUserName());
+                        ps.setString(4, user.getPassword());
+                        return ps;
+                    }, keyHolder
+            );
 
         return keyHolder.getKey().longValue();
     }
