@@ -88,4 +88,8 @@ public class UsersTests {
         assertEquals(updatedUsersUserName, updatedUser.getUserName());
     }
 
+    @Test
+    public void testCreate(){
+
+    }
 }
