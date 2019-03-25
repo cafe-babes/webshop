@@ -1,7 +1,6 @@
 package com.training360.cafebabeswebshop.report;
 
 
-import com.training360.cafebabeswebshop.order.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,8 @@ public class ReportService {
     public ReportService(ReportDao reportDao) {
         this.reportDao = reportDao;
     }
-//
-//    public List<Order> getMonthlyIncomeOfOrders() {
-//        return reportDao.getMonthlyIncomeOfOrders();
-//    }
+
+    public List<OrderReport> getMonthlyIncomeOfOrders() {
+        return reportDao.getMonthlyIncomeOfOrders();
+    }
 }
