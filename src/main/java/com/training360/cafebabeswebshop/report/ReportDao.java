@@ -25,7 +25,8 @@ public class ReportDao {
     );
 
     public List<OrderReport> getMonthlyIncomeOfOrders() {
-        return jdbcTemplate.query("SELECT  YEAR(purchase_date) as year, month(purchase_date) as month, `order_status` as orderStatus,  sum(`total`) as total, count(*) as count\n" +
+        return jdbcTemplate.query(
+                "SELECT  YEAR(purchase_date) as year, month(purchase_date) as month, `order_status` as orderStatus, sum(`total`) as total, count(*) as count\n" +
                 "FROM `orders`\n" +
                 "GROUP BY YEAR(purchase_date), month(purchase_date), order_status  \n" +
                 "ORDER BY `orders`.`order_status`, purchase_date  ASC", ORDER_ROW_MAPPER);
