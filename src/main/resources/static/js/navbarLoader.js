@@ -8,16 +8,18 @@ $.getJSON("/user-role", json => {
     var helper = document.createElement('div');
 
     helper.innerHTML = `<li class="nav-item active" id="home">
-                         <a class="nav-link" href="/">Home</a>
-                     </li>`;
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home fa-lg"> </i>
+                            </a>
+                        </li>`;
 
     if (role == 'ADMIN') {
         helper.innerHTML +=
             `<div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin menü<span
-                    class="sr-only">Toggle Dropdown</span>
-            </button>
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin menü<span
+                        class="sr-only">Toggle Dropdown</span>
+                </button>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/adminproducts.html">Termékek adminisztrációja</a>
                 <a class="dropdown-item" href="/users.html">Felhasználók adminisztrációja</a>

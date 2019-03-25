@@ -8,11 +8,27 @@ function fetchOrders() {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData);
-            showTable(jsonData);
+            checkOrderStatus(jsonData);
         });
 }
 
+    var selector = document.querySelector("#checkStatus");
+    selector.addEventListener('change', function (event) {
+        if (selector.checked) {
+            fetchOrders();
+        } else {
+            fetchOrders();
+        }
+    });
+
+function checkOrderStatus(jsonData){
+var checkStatus = document.querySelector("#checkStatus").checked;
+    if(checkStatus){
+        showTable(jsonData);
+    } else {
+        showTable(jsonData.filter(e => e.orderStatus == "ACTIVE"));
+    }
+}
 
   function showTable(jsonData) {
     var table = document.querySelector("#orders-table");
