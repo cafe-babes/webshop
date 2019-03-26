@@ -53,8 +53,7 @@ function showTable(jsonData) {
 function deleteItem(i, orderingAddress){
     var id = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderId;
     var orderingAddress = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderingAddress;
-    console.log(id);
-    console.log(orderingAddress);
+    console.log("/orders/" + id +"/" +  orderingAddress);
     if (!confirm("Biztos, hogy törli a tételt?")) {
         return;
     }
@@ -63,9 +62,9 @@ function deleteItem(i, orderingAddress){
     })
     .then(response => response.json())
     .then(jsonData => {
-        if(jsonData.ok==true) {
+        if(jsonData.status=='OK') {
             document.getElementById("message-div").setAttribute("class", "alert alert-success");
-            document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék";
+            document.querySelector("#message-div").innerHTML = "Törölve a(z) " + orderingAddress + " termék";
             fetchOrders();
         } else {
             document.getElementById("message-div").setAttribute("class", "alert alert-danger");

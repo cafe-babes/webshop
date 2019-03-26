@@ -34,8 +34,8 @@ public class OrderController {
     @PostMapping("/myorders")
     public ResultStatus saveOrderAndGetId(Authentication authentication){
         try{
-                long id = orderService.saveOrderAndGetId(authentication);
-                return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
+            long id = orderService.saveOrderAndGetId(authentication);
+            return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
         } catch (IllegalStateException e){
             return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
         }
@@ -78,12 +78,12 @@ public class OrderController {
 
     @PostMapping("/orders/{id}/{status}")
     public ResultStatus updateOrderStatus(@PathVariable long id, @PathVariable String status){
-            if (validator.isValidStatus(status.toUpperCase()) && validator.isValidOrderId(id)) {
-                orderService.updateOrderStatus(id, status.toUpperCase());
-                return new ResultStatus(ResultStatusE.OK, String.format("Orderstatus successfully updated with id %d", id));
-            } else {
-                return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id or status");
-            }
+        if (validator.isValidStatus(status.toUpperCase()) && validator.isValidOrderId(id)) {
+            orderService.updateOrderStatus(id, status.toUpperCase());
+            return new ResultStatus(ResultStatusE.OK, String.format("Order status successfully updated with id %d", id));
+        } else {
+            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id or status");
+        }
     }
 
 }
