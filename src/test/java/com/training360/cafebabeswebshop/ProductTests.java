@@ -24,6 +24,14 @@ public class ProductTests {
 
 
 	@Test
+	public void testGetProduct(){
+		// When
+		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		//Then
+		assertEquals(20, products.size());
+	}
+
+	@Test
 	public void testSaveProductAndGetId() {
 		//Given
 		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
@@ -34,15 +42,6 @@ public class ProductTests {
 		assertEquals(20, products.size());
 		assertEquals(21, products2.size());
 		assertEquals("balaton_shark", products2.get(0).getAddress());
-	}
-
-	@Test
-	public void testDeleteProduct(){
-		// When
-		productController.deleteProduct(7);
-		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
-		//Then
-		assertEquals("DELETED", products.stream().filter(e -> e.getId() == 7 ).findAny().get().getProductStatus());
 	}
 
 	@Test
@@ -58,15 +57,39 @@ public class ProductTests {
 		assertEquals("ACTIVE", productController.findById(1).getProductStatus());
 	}
 
-//	@Test
-//	public void testBasketMethods(){
-//		// Given
-//
-//		// When
-//
-//		// Then
-//
-//
-//
-//	}
+	@Test
+	public void testGetProducts(){
+		// When
+		List<Product> productListForAdmin = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		List<Product> productListForUser = productController.getProducts(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+		// Then
+		assertEquals(20, productListForAdmin.size());
+		assertEquals(16, productListForUser.size());
+	}
+
+	@Test
+	public void testGetProductsWithStartAndSize(){
+		// When
+		List<Product> productsPart = productController.getProductsWithStartAndSize(1,10);
+		// Then
+		assertEquals(10, productsPart.size());
+	}
+
+	@Test
+	public void testDeleteProduct(){
+		// When
+		productController.deleteProduct(7);
+		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		//Then
+		assertEquals("DELETED", products.stream().filter(e -> e.getId() == 7 ).findAny().get().getProductStatus());
+	}
+
+	@Test
+	public void testFindById(){
+		// When
+		Product searchedProduct = productController.findById(14);
+		//Then
+		assertEquals(14, searchedProduct.getId());
+	}
+
 }
