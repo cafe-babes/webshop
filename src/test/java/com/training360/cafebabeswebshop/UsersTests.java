@@ -55,13 +55,14 @@ public class UsersTests {
         // Given (having a user list)
         List<User> users = userController.listUsers();
 
-        long id = users.stream().filter(u -> u.getName().equals("admin")).findFirst().get().getId();
 
         // When (deleting a user)
+        long id = users.stream().filter(u -> u.getName().equals("admin")).findFirst().get().getId();
         userController.deleteUserById(id);
+        List<User> users2 = userController.listUsers();
 
         //Then (size of user list is decreased by one)
-        assertEquals(users.size()-1, userController.listUsers().size());
+        assertEquals(users.size()-1, users2.size());
 
     }
 

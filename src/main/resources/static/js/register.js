@@ -6,6 +6,12 @@ var request = {
 "password" : form.password.value
 }
 
+$(document).ready(function() {
+    $('#password-progress-bar').strengthMeter('progressBar', {
+        container: $('#password-progress-bar-container')
+    });
+});
+
 fetch("/users",{
          method: "POST",
          body: JSON.stringify(request),
