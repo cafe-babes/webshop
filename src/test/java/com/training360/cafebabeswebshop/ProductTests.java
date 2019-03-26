@@ -25,7 +25,7 @@ public class ProductTests {
 	@Test
 	public void contextLoads() {
 		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
-		List<Product> products = productController.getProducts(null);
+		List<Product> products = productController.getProducts();
 
 		assertEquals(2, products.size());
 	}

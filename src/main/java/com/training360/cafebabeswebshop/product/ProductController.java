@@ -14,9 +14,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private UserController userController;
-
     private ProductValidator validator;
 
     public ProductController(ProductService productService) {
@@ -64,10 +61,8 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> getProducts(Authentication authentication) {
-        if (!userController.determineRole(authentication).getRole().equals("ADMIN"))
-            return productService.getActiveProducts();
-        return productService.getProducts();
+    public List<Product> getProducts() {
+        return productService.getActiveProducts();
     }
 
     @GetMapping("/products/{start}/{size}")
