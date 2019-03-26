@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init_dashboard.sql")
+@Sql(scripts = "/init.sql")
 public class DashBoardTest {
 
     @Autowired

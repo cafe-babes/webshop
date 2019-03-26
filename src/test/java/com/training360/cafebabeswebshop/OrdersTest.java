@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init_orders_table.sql")
+@Sql(scripts = "/init.sql")
 public class OrdersTest {
 
     @Autowired
@@ -41,7 +41,7 @@ public class OrdersTest {
     public void saveOrderAndGetIdTest(){
         List<Order> orders = orderController.listAllOrders();
 
-       orderController.saveOrderAndGetId(new TestingAuthenticationToken("johndoe", "$2y$12$heZ5nBAqUAvNALw5S0i17PEMJVErjd0ksuCX3neDvBbnvUj.G", "ROLE_USER"));
+       orderController.saveOrderAndGetId(new TestingAuthenticationToken("johndoe", "", "ROLE_USER"));
 
         assertEquals(orders.size(), 4);
     }*/

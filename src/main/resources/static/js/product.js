@@ -59,9 +59,10 @@ function addToBasket(){
         return response.json();
       })
       .then(function(jsonData){
-        if(jsonData!=-1)
+        if(jsonData!=-1) {
             addGoToBasketButton();
-        else
+            basketRefresh();
+        } else
             alert("This product has already been added!")
       })
 }
