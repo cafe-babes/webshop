@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.order.Order;
 import com.training360.cafebabeswebshop.order.OrderController;
+import com.training360.cafebabeswebshop.order.OrderedProduct;
 import com.training360.cafebabeswebshop.report.OrderReport;
 import com.training360.cafebabeswebshop.report.ReportController;
 import com.training360.cafebabeswebshop.report.ShippedProductReport;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,18 +34,43 @@ public class ReportTest {
 
         @Autowired
         ReportController reportController;
+        @Autowired
+        OrderController orderController;
 
         @Test
-    public void testGetMonthlyIncomeOfOrders(){
-        List<OrderReport> orderReports = reportController.getMonthlyIncomeOfOrders();
-        assertTrue(!orderReports.equals(Collections.emptyList()));
+    public void contextLoads(){
+
+            // When (examining the content)
+            List<OrderReport> orderReports = reportController.getMonthlyIncomeOfOrders();
+            List<ShippedProductReport> shippedProductReports = reportController.getShippedProducts();
+
+            //Then (both lists have content)
+            boolean orderReportIsNotEmpty = !orderReports.equals(Collections.emptyList());
+            boolean shippedProductReportIsNotEmpty= !shippedProductReports.equals(Collections.emptyList());
+
+
+        assertTrue(orderReportIsNotEmpty);
+        assertTrue(shippedProductReportIsNotEmpty);
         }
 
 
     @Test
-    public void testgetShippedProducts(){
-        List<ShippedProductReport> shippedProductReports = reportController.getShippedProducts();
-        assertTrue(!shippedProductReports.equals(Collections.emptyList()));
-    }
+    public void testGetShippedProducts(){
+
+            //Given (size of shipped products)
+        int sizeOfShippedProducts= reportController.getShippedProducts().size();
+
+
+        //When  (Summing the orders which are shipped)
+        int shippedOrders = 0;
+        for (OrderReport o: reportController.getMonthlyIncomeOfOrders()) {
+            if(o.getOrderStatus().equals("SHIPPED")){
+                shippedOrders++;
+            }
+        }
+
+        //Then (The values are equal)
+        assertTrue(sizeOfShippedProducts == shippedOrders);
+        }
 
 }
