@@ -50,6 +50,7 @@ function deleteOneItem(address){
     })
     .then(function(response){
         fetchBasket();
+        basketRefresh();
     })
 }
 
@@ -60,6 +61,7 @@ function emptyBasket() {
     })
     .then(function(){
         fetchBasket();
+        basketRefresh();
     });
 }
 
@@ -76,6 +78,7 @@ function checkIfEmpty(){
                 return;
            }
            handleAddToOrders();
+           basketRefresh();
        });
 }
 
