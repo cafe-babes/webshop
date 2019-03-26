@@ -10,11 +10,11 @@ INSERT INTO users(id, name, user_name, password, enabled, role, user_status) VAL
 (3, 'admin2', 'admin2', '$2a$04$LjyBhChXHNOl.Q/N6QQijeDWaf5Qp8S7w5f3mlxYRwWX/gQtvNAs.', 1, 'ROLE_ADMIN', 'ACTIVE');
 
 INSERT INTO orders(id, purchase_date, user_id,`total`, sum_quantity, order_status) VALUES
-(1, '2019-03-20 20:20:20', 3, 1300800, 5, 'ACTIVE'),
-(2, '2019-04-20 20:20:20', 3, 1300800, 5, 'SHIPPED'),
-(3, '2019-01-20 20:20:20', 3, 1300800, 5, 'DELETED'),
-(4, '2019-02-20 20:20:20', 3, 1300800, 5, 'SHIPPED'),
-(5, '2019-01-20 20:20:20', 3, 1300800, 5, 'SHIPPED');
+(1, '2019-03-20 20:20:20', 2, 1300800, 5, 'ACTIVE'),
+(2, '2019-04-20 20:20:20', 2, 1300800, 5, 'SHIPPED'),
+(3, '2019-01-20 20:20:20', 2, 1300800, 5, 'DELETED'),
+(4, '2019-02-20 20:20:20', 2, 1300800, 5, 'SHIPPED'),
+(5, '2019-01-20 20:20:20', 2, 1300800, 5, 'SHIPPED');
 
 INSERT INTO products (id, code, address, name, manufacture, price, product_status) VALUES
 (1, '351MBA', 'surf_killer', 'Killer', 'cafebabes', 1500000, 'ACTIVE'),
