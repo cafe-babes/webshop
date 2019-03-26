@@ -116,7 +116,7 @@ var checkStatus = document.querySelector("#checkStatus").checked;
 }
 
     function editTds(num){
-        window.location.href = `editorder.html/?id=${num}`;
+        window.location.href = `editorder.html?id=${num}`;
     }
 
 

@@ -1,5 +1,4 @@
-var arr = window.location.href.split('=');
-var id = parseInt(arr[1]);
+var id = (new URL(document.location)).searchParams.get('id');
 
 window.onload = function () {
     fetchOrders();
@@ -51,20 +50,20 @@ function showTable(jsonData) {
     }
 }
 
-    function deleteItem(i, orderingAddress){
-        var id = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderId;
-        var orderingAddress = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderingAddress;
-        console.log(id);
-        console.log(orderingAddress);
-        if (!confirm("Biztos, hogy törli a tételt?")) {
-            return;
-        }
-        fetch("/orders/" + id +"/" +  orderingAddress, {
-                method: "DELETE",
-            })
-            .then(function (response) {
-                document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék"
-                fetchOrders();
-                });
-            }
+function deleteItem(i, orderingAddress){
+    var id = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderId;
+    var orderingAddress = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderingAddress;
+    console.log(id);
+    console.log(orderingAddress);
+    if (!confirm("Biztos, hogy törli a tételt?")) {
+        return;
+    }
+    fetch("/orders/" + id +"/" +  orderingAddress, {
+        method: "DELETE"
+    })
+    .then(function (response) {
+        document.getElementById("message-div").setAttribute("class", "alert alert-success");
+        document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék"
+        fetchOrders();
+        });
+}
