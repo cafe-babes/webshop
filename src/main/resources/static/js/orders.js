@@ -12,25 +12,25 @@ function fetchOrders() {
         });
 }
 
-    var selector = document.querySelector("#checkStatus");
-    selector.addEventListener('change', function (event) {
-        if (selector.checked) {
-            fetchOrders();
-        } else {
-            fetchOrders();
-        }
-    });
+var selector = document.querySelector("#checkStatus");
+selector.addEventListener('change', function (event) {
+    if (selector.checked) {
+        fetchOrders();
+    } else {
+        fetchOrders();
+    }
+});
 
-function checkOrderStatus(jsonData){
-var checkStatus = document.querySelector("#checkStatus").checked;
-    if(checkStatus){
+function checkOrderStatus(jsonData) {
+    var checkStatus = document.querySelector("#checkStatus").checked;
+    if (checkStatus) {
         showTable(jsonData);
     } else {
         showTable(jsonData.filter(e => e.orderStatus == "ACTIVE"));
     }
 }
 
-  function showTable(jsonData) {
+function showTable(jsonData) {
     var table = document.querySelector("#orders-table");
     table.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
@@ -112,36 +112,35 @@ var checkStatus = document.querySelector("#checkStatus").checked;
         table.appendChild(tr);
 
     }
-
 }
 
-    function editTds(num){
-        window.location.href = `editorder.html?id=${num}`;
+function editTds(num) {
+    window.location.href = `editorder.html?id=${num}`;
+}
+
+
+function deleteOrder(num) {
+    var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+    if (!confirm("Biztos, hogy törli a megrendelést?")) {
+        return;
+    }
+    fetch("/orders/" + id, {
+            method: "POST",
+        })
+        .then(function (response) {
+            document.getElementById("message-div").setAttribute("class", "alert alert-success");
+            document.querySelector("#message-div").innerHTML = "Törölve"
+            fetchOrders();
+        });
+}
+
+function changeStatusToShipped(num) {
+    var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+    if (!confirm("Kiszállítottra állítja a megrendelés állapotát?")) {
+        return;
     }
 
-
-    function deleteOrder(num){
-        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
-        if (!confirm("Biztos, hogy törli a megrendelést?")) {
-            return;
-        }
-        fetch("/orders/" + id, {
-                method: "POST",
-            })
-            .then(function (response) {
-                document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                document.querySelector("#message-div").innerHTML = "Törölve"
-                fetchOrders();
-                });
-            }
-
-    function changeStatusToShipped(num){
-        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
-        if (!confirm("Kiszállítottra állítja a megrendelés állapotát?")) {
-            return;
-        }
-
-        fetch("/orders/" + id + "/shipped", {
+    fetch("/orders/" + id + "/shipped", {
             method: "POST",
         })
         .then(function (response) {
@@ -150,4 +149,4 @@ var checkStatus = document.querySelector("#checkStatus").checked;
             fetchOrders();
         });
 
-    }
+}
