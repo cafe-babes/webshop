@@ -22,6 +22,7 @@ public class ReportDao {
             rs.getInt("month"),
             rs.getString("productname"),
             rs.getInt("price"),
+            rs.getInt("count"),
             rs.getInt("total")
     );
     private JdbcTemplate jdbcTemplate;
@@ -41,7 +42,7 @@ public class ReportDao {
     public List<ShippedProductReport> getShippedProducts() {
         return jdbcTemplate.query("SELECT YEAR(purchase_date) as year, month(purchase_date) as month," +
                 "ordered_products.ordering_name as productname, products.price as price, count(*) as count," +
-                "sum(ordering_price) FROM orders JOIN ordered_products on ordered_products.order_id = orders.id JOIN products on products.id = ordered_products.product_id WHERE orders.order_status = 'ACTIVE' GROUP BY YEAr(purchase_date)," +
+                "sum(ordering_price) as total FROM orders JOIN ordered_products on ordered_products.order_id = orders.id JOIN products on products.id = ordered_products.product_id WHERE orders.order_status = 'ACTIVE' GROUP BY YEAr(purchase_date)," +
                 "month(purchase_date), ordered_products.ordering_name, products.price", PRODUCT_ROW_MAPPER);
     }
 }
