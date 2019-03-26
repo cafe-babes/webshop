@@ -105,7 +105,6 @@ public class OrdersTest {
     public void orderContainsDate(){
         //Given
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
-        TestingAuthenticationToken tat2 = new TestingAuthenticationToken("admin", "admin");
 
         //When
         Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
@@ -129,8 +128,39 @@ public class OrdersTest {
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
         Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
         List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
+        List<OrderedProduct> values = listMyOrders.get(keys.get(1));
+        for(int i = 0; i < values.size(); i++){
+            System.out.println(values.get(i).getOrderingName());
+        }
 
         //When
-        List<OrderedProduct> values = listMyOrders.get(keys.get(0));
+        String name1 = values.get(0).getOrderingName();
+
+        //Given
+        assertEquals(name1, "Blow Fish");
     }
+
+    @Test
+    public void ordeDateInOrder(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
+        List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
+        LocalDateTime date0 = keys.get(0);
+        LocalDateTime date1 = keys.get(1);
+        LocalDateTime date2 = keys.get(2);
+        LocalDateTime date3 = keys.get(3);
+
+        //Then
+        assertEquals(date0, LocalDateTime.of(2019, 04, 20, 22, 20, 20));
+        assertEquals(date1, LocalDateTime.of(2019, 03, 20, 21, 20, 20));
+        assertEquals(date2, LocalDateTime.of(2019, 02, 20, 21, 20, 20));
+        assertEquals(date3, LocalDateTime.of(2019, 01, 20, 21, 20, 20));
+
+    }
+//
+//    @Test
+
 }
