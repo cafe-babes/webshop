@@ -19,4 +19,9 @@ public class ReportController {
         return reportService.getMonthlyIncomeOfOrders();
     }
 
+    @GetMapping("/reports/products")
+    public List<ShippedProductReport> getShippedProducts(){
+        return reportService.getShippedProducts();
+    }
+
 }

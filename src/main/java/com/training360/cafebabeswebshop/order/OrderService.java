@@ -58,8 +58,8 @@ public class OrderService {
     }
 
     public void deleteOneItemFromOrder(long orderId, String address){
-        orderDao.deleteOneItemFromOrder(orderId,address);
         orderDao.reduceOrderQuantityAndPriceWhenDeleting(orderId, address);
+        orderDao.deleteOneItemFromOrder(orderId,address);
     }
 
     public void deleteOrder(long id){
@@ -74,7 +74,7 @@ public class OrderService {
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
                     new OrderedProduct(bi.getProductId(),
-                            order.getId(), bi.getPrice(), bi.getName()));
+                            order.getId(), bi.getPrice(), bi.getName(), bi.getAddress()));
         }
     }
 

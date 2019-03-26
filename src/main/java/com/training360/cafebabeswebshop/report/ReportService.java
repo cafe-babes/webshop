@@ -17,4 +17,8 @@ public class ReportService {
     public List<OrderReport> getMonthlyIncomeOfOrders() {
         return reportDao.getMonthlyIncomeOfOrders();
     }
+
+    public List<ShippedProductReport> getShippedProducts() {
+        return reportDao.getShippedProducts();
+    }
 }
