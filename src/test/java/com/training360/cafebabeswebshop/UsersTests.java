@@ -26,12 +26,20 @@ public class UsersTests {
 
 
     @Test
+    public void testListUsers() {
+        // Given: init.sql
+        // When
+        List<User> users = userController.listUsers();
+
+        //Then (size of user is increased by one)
+        assertEquals(3, userController.listUsers().size());
+    }
+
+    @Test
     public void testCreateUserAndListUsers() {
 
         // Given (having a user list)
         List<User> users = userController.listUsers();
-
-//        assertEquals(7, users.size());
 
         // When (adding a user)
         userController.createUser(new User(5L, "Ciara Doe", "a@eee.com","cccdoe","asdf",1,
