@@ -59,6 +59,9 @@ $.getJSON("/user-role", json => {
     }
 });
 
+basketRefresh();
+
+function basketRefresh() {
 $.getJSON("/basket", json => {
 var sum = 0;
 for(var i = 0; i<json.length; i++) {
@@ -67,3 +70,4 @@ for(var i = 0; i<json.length; i++) {
 }
 document.querySelector('#cartCount').innerHTML = sum;
 });
+}
