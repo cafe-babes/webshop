@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop;
 
+import com.training360.cafebabeswebshop.basket.BasketController;
 import com.training360.cafebabeswebshop.order.Order;
 import com.training360.cafebabeswebshop.order.OrderController;
 import com.training360.cafebabeswebshop.user.User;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +29,8 @@ public class OrdersTest {
 
     @Autowired
     private OrderController orderController;
-
+    @Autowired
+    private BasketController basketController;
 
     @Test
     public void contextLoads() {
@@ -37,14 +40,6 @@ public class OrdersTest {
 
     }
 
-    /*@Test
-    public void saveOrderAndGetIdTest(){
-        List<Order> orders = orderController.listAllOrders();
-
-       orderController.saveOrderAndGetId(new TestingAuthenticationToken("johndoe", "$2y$12$heZ5nBAqUAvNALw5S0i17PEMJVErjd0ksuCX3neDvBbnvUj.G", "ROLE_USER"));
-
-        assertEquals(orders.size(), 4);
-    }*/
 
     @Test
     public void testDeleteOrderById() {
@@ -83,6 +78,18 @@ public class OrdersTest {
 
         assertEquals(allOrdersStatusIsActive, true);
 
+    }
+
+    @Test
+    public void emptyBasketAfterOrder(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken();
+
+        //When
+        orderController.saveOrderAndGetId(tat);
+
+        //Then
+        assertEquals(basketController.getBasketItems(tat), Collections.emptyList());
     }
 
 }
