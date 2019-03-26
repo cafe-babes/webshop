@@ -107,7 +107,7 @@ var checkStatus = document.querySelector("#checkStatus").checked;
 
         tr.appendChild(editButtonTd);
         tr.appendChild(deleteButtonTd);
-        tr.appendChild(shippedButton);
+        tr.appendChild(shippedButtonTd);
 
         table.appendChild(tr);
 

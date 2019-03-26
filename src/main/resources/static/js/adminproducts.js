@@ -8,10 +8,31 @@ function fetchProducts() {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData);
             showTable(jsonData);
+            checkProductStatus(jsonData);
         });
+
+         
 }
+
+var selector = document.querySelector("#checkStatus");
+selector.addEventListener('change', function (event) {
+    if (selector.checked) {
+        fetchProducts();
+    } else {
+        fetchProducts();
+    }
+});
+
+function checkProductStatus(jsonData) {
+    var checkStatus = document.querySelector("#checkStatus").checked;
+    if (checkStatus) {
+        showTable(jsonData);
+    } else {
+        showTable(jsonData.filter(e => e.productStatus == "ACTIVE"));
+    }
+}
+
 
     function showTable(jsonData) {
     var table = document.querySelector("#adminproducts-table");
@@ -147,7 +168,6 @@ function fetchProducts() {
             "name": name,
             "manufacture": manu,
             "price": price,
-            "productStatus": "ACTIVE"
         }
 
         fetch("/products/" + id, {
@@ -220,7 +240,7 @@ function fetchProducts() {
 
         tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd); 
         tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
-        tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButton);
+        tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
         table.appendChild(tr);
 
     }

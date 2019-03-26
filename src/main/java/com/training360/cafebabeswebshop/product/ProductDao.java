@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -64,7 +65,7 @@ public class ProductDao {
     }
 
 
-    public long saveProductAndGetId(Product product){
+    public long saveProductAndGetId(Product product) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into products (`code`, `address`, `name`,  `manufacture`, `price`, `product_status`) values (?,?,?,?,?,?)",
@@ -80,10 +81,9 @@ public class ProductDao {
         return keyHolder.getKey().longValue();
     }
 
-    public void updateProduct(long id, Product product){
+    public void updateProduct(long id, Product product) throws DataAccessException{
         jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
                 product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
-
     }
 
     public void deleteProduct(long id){
