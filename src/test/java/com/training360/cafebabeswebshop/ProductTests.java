@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init_product_table.sql")
+@Sql(scripts = "/init.sql")
 public class ProductTests {
 
 	@Autowired
@@ -23,32 +24,37 @@ public class ProductTests {
 
 
 	@Test
-	public void contextLoads() {
+	public void testSaveProductAndGetIdMethod() {
+		//Given
+		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		// When
+		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
+		//Then
+		List<Product> products2 = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		assertEquals(20, products.size());
+		assertEquals(21, products2.size());
+		assertEquals("balaton_shark", products2.get(0).getAddress());
+	}
+
+	@Test
+	public void testDeleteProductMethod(){
+		//Given
 		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
+
 		List<Product> products = productController.getProducts(null);
 
+		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
+		long id = product.getId();
+
+		productController.deleteProduct(id);
+
+		products = productController.getProducts(null);
+
 		assertEquals(2, products.size());
+		assertEquals("balaton_shark", products.get(1).getAddress());
+		assertEquals("DELETED", products.get(1).getProductStatus());
 	}
-//
-//	@Test
-//	public void testDeleteProduct(){
-//		//Given
-//		productController.saveProductAndGetId(new Product(5, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
-//
-//		List<Product> products = productController.getProducts(null);
-//
-//		Product product = products.stream().filter(e -> e.getAddress().equals("balaton_shark")).findAny().get();
-//		long id = product.getId();
-//
-//		productController.deleteProduct(id);
-//
-//		products = productController.getProducts(null);
-//
-//		assertEquals(2, products.size());
-//		assertEquals("balaton_shark", products.get(1).getAddress());
-//		assertEquals("DELETED", products.get(1).getProductStatus());
-//	}
-//
+
 //	@Test
 //	public void testProductAdministration(){
 //		//Given
