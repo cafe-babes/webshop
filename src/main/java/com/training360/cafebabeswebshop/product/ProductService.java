@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -32,11 +33,11 @@ public class ProductService {
         return productDao.getProductsWithStartAndSize(start, size);
     }
 
-    public long saveProductAndGetId(Product product){
+    public long saveProductAndGetId(Product product) throws DataAccessException {
         return productDao.saveProductAndGetId(product);
     }
 
-    public void updateProducts(long id, Product product) {
+    public void updateProducts(long id, Product product) throws DataAccessException {
         productDao.updateProduct(id, product);
     }
 
