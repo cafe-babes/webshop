@@ -6,14 +6,20 @@ public class ShippedProductReport {
     private int month;
     private String productname;
     private int price;
+    private int count;
     private int total;
 
-    public ShippedProductReport(int year, int month, String productname, int price, int total) {
+    public ShippedProductReport(int year, int month, String productname, int price, int count, int total) {
         this.year = year;
         this.month = month;
         this.productname = productname;
         this.price = price;
+        this.count = count;
         this.total = total;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public int getYear() {

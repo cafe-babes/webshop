@@ -45,7 +45,7 @@
                 tr.appendChild(o_statusTd);
 
                  var m_incomeTd = document.createElement("td");
-                         m_incomeTd.innerHTML = jsonData[i].total;
+                         m_incomeTd.innerHTML = jsonData[i].total + " Ft";
                          tr.appendChild(m_incomeTd);
 
                          var countTd = document.createElement("td");
@@ -60,7 +60,7 @@
 
   function showProductTable(jsonData){
                               console.log(jsonData);
-            var incomeTable = document.getElementById("income-table");
+            var tradeTable = document.getElementById("trade-table");
 
         for(var i = 0; i<jsonData.length; i++) {
 
@@ -75,19 +75,23 @@
                         dateMonthTd.innerHTML = jsonData[i].month;
                         tr.appendChild(dateMonthTd);
 
-            var o_statusTd = document.createElement("td");
-                o_statusTd.innerHTML = jsonData[i].orderStatus;
-                tr.appendChild(o_statusTd);
+            var productnameTd = document.createElement("td");
+                productnameTd.innerHTML = jsonData[i].productname;
+                tr.appendChild(productnameTd);
 
-                 var m_incomeTd = document.createElement("td");
-                         m_incomeTd.innerHTML = jsonData[i].total;
-                         tr.appendChild(m_incomeTd);
+                 var priceTd = document.createElement("td");
+                         priceTd.innerHTML = jsonData[i].price + " Ft";
+                         tr.appendChild(priceTd);
 
                          var countTd = document.createElement("td");
                               countTd.innerHTML = jsonData[i].count;
                               tr.appendChild(countTd);
 
-                              incomeTable.appendChild(tr);
+                              var totalTd = document.createElement("td");
+                                     totalTd.innerHTML = jsonData[i].total + " Ft";
+                                     tr.appendChild(totalTd);
+
+                              tradeTable.appendChild(tr);
 
                     }
 }
