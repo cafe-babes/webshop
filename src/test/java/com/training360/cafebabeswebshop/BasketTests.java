@@ -26,35 +26,49 @@ public class BasketTests {
     private BasketController basketController;
 
     @Test
-    public void testSaveItemGetAndDelete() {
-
-        basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-        basketController.saveBasketItemAndGetId("surf_waver", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-
-        List<BasketItem> list = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-        assertEquals(2, list.size());
-        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_killer"));
-        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_waver"));
-    }
-
-    @Test
     public void testGetBasketItems() {
+        // When
+        List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        // Then
         assertEquals(2, basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER")).size());
     }
 
     @Test
-    public void testDeleteBasket() {
-        basketController.deleteBasket(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+    public void testSaveBasketItemAndGetId() {
+        // When
+        long newId = basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        long anotherNewId = basketController.saveBasketItemAndGetId("greedy_beaver", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        List<BasketItem> list = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        // Then
+        assertEquals(4, list.size());
+        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_killer"));
+        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("greedy_beaver"));
+    }
 
+
+    @Test
+    public void testDeleteBasket() {
+        // When
+        basketController.deleteBasket(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        // Then
         assertEquals(0, basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER")).size());
     }
 
     @Test
     public void testDeleteOneItem() {
-        basketController.deleteOneItem(new TestingAuthenticationToken("user", "user", "ROLE_USER"), "surf_slayer2");
+        // Given
+        List<BasketItem> basketItemsBeforeDelete = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        assertEquals(2, basketItemsBeforeDelete.size());
+        assertEquals("surf_waver", basketItemsBeforeDelete.get(0).getAddress());
+        assertEquals("surf_slayer2", basketItemsBeforeDelete.get(1).getAddress());
 
-        assertEquals(1, basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER")).size());
-        assertEquals("surf_killer", basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER")).get(0).getAddress());
+        // When
+        basketController.deleteOneItem(new TestingAuthenticationToken("user", "user", "ROLE_USER"), "surf_slayer2");
+        List<BasketItem> basketItemsAfterDelete = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+
+        // Then
+        assertEquals(1, basketItemsAfterDelete.size());
+        assertEquals("surf_waver", basketItemsAfterDelete.get(0).getAddress());
     }
 }
 
