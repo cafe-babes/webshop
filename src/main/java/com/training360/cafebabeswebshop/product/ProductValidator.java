@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.product;
 
-import java.util.List;
-
 public class ProductValidator {
 
     private ProductService productService;
@@ -10,61 +8,20 @@ public class ProductValidator {
         this.productService = productService;
     }
 
-    public boolean isValidAddressPresent(String address){
-        boolean presentAddress = false;
-        for (Product p: productService.getProducts()) {
-            if (p.getAddress().equals(address)){
-                presentAddress = true;
-            }
-        }
-        if (address != null && !address.trim().equals("") && presentAddress){
-            return true;
-            }
-        return false;
-    }
-
     public boolean isValidProduct(Product product){
-        if(
-                isValidCode(product.getCode()) &&
+        return isValidCode(product.getCode()) &&
                 isValidName(product.getName()) &&
                 isValidAddress(product.getAddress()) &&
                 isValidManufacture(product.getManufacture()) &&
-                isValidPrice(product.getPrice())
-                    )
-            return true;
-        else {
-            return false;
-        }
+                isValidPrice(product.getPrice());
     }
 
-    public Product isValidProduct2(Product product){
-                isValidCode(product.getCode());
-                isValidName(product.getName());
-                isValidAddress(product.getAddress());
-                isValidManufacture(product.getManufacture());
-                isValidPrice(product.getPrice());
-            return product;
+    public boolean isValidAddress(String address){
+        return address != null && !address.trim().equals("");
     }
 
     private boolean isValidCode(String code) {
-       /* boolean codeAlreadyExists = false;
-        for (Product p: productService.getProducts()) {
-            if (p.getCode().equals(code)){
-                codeAlreadyExists = true;
-            }
-        }*/
-
         return (code != null && !code.trim().equals(""));
-    }
-
-    private boolean isValidAddress(String address) {
-       /* boolean addressAlreadyExists = false;
-        for (Product p: productService.getProducts()) {
-            if (p.getAddress().equals(address)){
-                addressAlreadyExists = true;
-            }
-        }*/
-        return (address != null && !address.trim().equals(""));
     }
 
     private boolean isValidName(String name){
@@ -76,7 +33,6 @@ public class ProductValidator {
     }
 
     private boolean isValidPrice(int price){
-
         return (price > 0 && price <= 2_000_000);
     }
 }
