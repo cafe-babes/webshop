@@ -28,7 +28,7 @@ public class ProductTests {
 		// When
 		List<Product> products = productController.getProducts();
 		//Then
-		assertEquals(18, products.size());
+		assertEquals(14, products.size());
 	}
 
 	@Test
@@ -39,8 +39,8 @@ public class ProductTests {
 		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
 		//Then
 		List<Product> products2 = productController.getProducts();
-		assertEquals(18, products.size());
-		assertEquals(19, products2.size());
+		assertEquals(14, products.size());
+		assertEquals(15, products2.size());
 		assertEquals("balaton_shark", products2.get(0).getAddress());
 	}
 
@@ -63,7 +63,7 @@ public class ProductTests {
 		List<Product> productListForAdmin = productController.getProducts();
 		List<Product> productListForUser = productController.getProducts();
 		// Then
-		assertEquals(18, productListForAdmin.size());
+		assertEquals(14, productListForAdmin.size());
 		assertEquals(14, productListForUser.size());
 	}
 
@@ -78,10 +78,12 @@ public class ProductTests {
 	@Test
 	public void testDeleteProduct(){
 		// When
-		productController.deleteProduct(7);
 		List<Product> products = productController.getProducts();
+		productController.deleteProduct(7);
+		List<Product> products2 = productController.getProducts();
+
 		//Then
-		assertEquals("DELETED", products.stream().filter(e -> e.getId() == 7 ).findAny().get().getProductStatus());
+		assertEquals(products2.size(), products.size()-1);
 	}
 
 	@Test
