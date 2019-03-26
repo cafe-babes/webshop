@@ -44,3 +44,9 @@ INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name
 (2,1,45000, 'Coder', 'surf_coder'),
 (8,1,25800, 'Funy', 'funny_bunny'),
 (7,1,128000, 'Longest', 'longest_board');
+
+INSERT INTO basket(id, user_id, product_id) VALUES
+(1, 2, 5),
+(2, 2, 3),
+(3, 1, 2),
+(4, 3, 5);
