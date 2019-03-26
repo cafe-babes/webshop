@@ -26,15 +26,15 @@ public class BasketTests {
     private BasketController basketController;
 
     @Test
-    public void testSaveItemGetAndDelete() {
-
-        basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-        basketController.saveBasketItemAndGetId("surf_waver", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-
+    public void testSaveBasketItemAndGetId() {
+        // When
+        long newId = basketController.saveBasketItemAndGetId("surf_killer", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+        long anotherNewId = basketController.saveBasketItemAndGetId("greedy_beaver", new TestingAuthenticationToken("user", "user", "ROLE_USER"));
         List<BasketItem> list = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
-        assertEquals(2, list.size());
+        // Then
+        assertEquals(4, list.size());
         assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_killer"));
-        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_waver"));
+        assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("greedy_beaver"));
     }
 
     @Test
