@@ -58,7 +58,7 @@ public class OrderValidator {
 
     public boolean isValidStatus(String status){
         for (OrderStatus os: OrderStatus.values()) {
-            if (os.name().equals(status)){
+            if (os.name().equals(status)) {
                 return true;
             }
         }
