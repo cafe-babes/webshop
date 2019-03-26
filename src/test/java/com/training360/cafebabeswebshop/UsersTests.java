@@ -58,7 +58,7 @@ public class UsersTests {
     }
 
     @Test
-    public void testUpdateUserBy(){
+    public void testUpdateUserById(){
 
         // Given (having a user list)
         List<User> users = userController.listUsers();
