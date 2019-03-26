@@ -1,5 +1,6 @@
             window.onload = function() {
               fetchOrderReport();
+              fetchProductReport();
             };
 
             function fetchOrderReport() {
@@ -11,6 +12,16 @@
                   showIncomeTable(jsonData);
                 });
             }
+
+             function fetchProductReport() {
+                          fetch("/reports/products")
+                            .then(function(response) {
+                              return response.json();
+                            })
+                            .then(function(jsonData) {
+                              showProductTable(jsonData);
+                            });
+                        }
 
             function showIncomeTable(jsonData){
                               console.log(jsonData);
@@ -34,7 +45,7 @@
                 tr.appendChild(o_statusTd);
 
                  var m_incomeTd = document.createElement("td");
-                         m_incomeTd.innerHTML = jsonData[i].total;
+                         m_incomeTd.innerHTML = jsonData[i].total + " Ft";
                          tr.appendChild(m_incomeTd);
 
                          var countTd = document.createElement("td");
@@ -46,17 +57,41 @@
                     }
 }
 
-//$.getJSON("/reports/products", json => {
-//console.log(json)
-//var sum = 0;
-//for(var i = 0; i<json.length; i++) {
-//     var tr = document.createElement("tr");
-//        tr["raw-data"] = jsonData[i];
-//
-//        var dateTd = document.createElement("td");
-//        dateTd.innerHTML = jsonData[i].purchase_date;
-//        tr.appendChild(dateTd);
-//
-//}
-//document.querySelector('#cartCount').innerHTML = sum;
-//});
+
+  function showProductTable(jsonData){
+                              console.log(jsonData);
+            var tradeTable = document.getElementById("trade-table");
+
+        for(var i = 0; i<jsonData.length; i++) {
+
+        var tr = document.createElement("tr");
+        tr["raw-data"] = jsonData[i];
+
+        var dateYearTd = document.createElement("td");
+            dateYearTd.innerHTML = jsonData[i].year;
+            tr.appendChild(dateYearTd);
+
+            var dateMonthTd = document.createElement("td");
+                        dateMonthTd.innerHTML = jsonData[i].month;
+                        tr.appendChild(dateMonthTd);
+
+            var productnameTd = document.createElement("td");
+                productnameTd.innerHTML = jsonData[i].productname;
+                tr.appendChild(productnameTd);
+
+                 var priceTd = document.createElement("td");
+                         priceTd.innerHTML = jsonData[i].price + " Ft";
+                         tr.appendChild(priceTd);
+
+                         var countTd = document.createElement("td");
+                              countTd.innerHTML = jsonData[i].count;
+                              tr.appendChild(countTd);
+
+                              var totalTd = document.createElement("td");
+                                     totalTd.innerHTML = jsonData[i].total + " Ft";
+                                     tr.appendChild(totalTd);
+
+                              tradeTable.appendChild(tr);
+
+                    }
+}

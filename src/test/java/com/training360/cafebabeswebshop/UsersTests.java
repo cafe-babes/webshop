@@ -26,20 +26,19 @@ public class UsersTests {
 
 
     @Test
-    public void contextLoads() {
+    public void testCreateUserAndListUsers() {
 
         // Given (having a user list)
         List<User> users = userController.listUsers();
 
-        assertEquals(4, users.size());
+        assertEquals(7, users.size());
 
         // When (adding a user)
-        userController.insertUser(new User(5L, "Ciara Doe", "a@eee.com","cccdoe","asdf",1,
+        userController.createUser(new User(5L, "Ciara Doe", "a@eee.com","cccdoe","asdf",1,
                 "ROLE_USER", "ACTIVE"));
 
         //Then (size of user is increased by one)
-        users = userController.listUsers();
-        assertEquals(5, users.size());
+        assertEquals(users.size()+1, userController.listUsers().size());
     }
 
     @Test
@@ -48,16 +47,13 @@ public class UsersTests {
         // Given (having a user list)
         List<User> users = userController.listUsers();
 
-        assertEquals(4, users.size());
-
         long id = users.get(0).getId();
 
         // When (deleting a user)
         userController.deleteUserById(id);
 
         //Then (size of user list is decreased by one)
-        users = userController.listUsers();
-        assertEquals(3, users.size());
+        assertEquals(users.size()-1, userController.listUsers().size());
 
     }
 
@@ -87,5 +83,4 @@ public class UsersTests {
         String updatedUsersUserName = "cccdoe";
         assertEquals(updatedUsersUserName, updatedUser.getUserName());
     }
-
 }
