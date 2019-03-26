@@ -114,7 +114,6 @@ public class OrderDao {
     }
 
     public OrderedProduct findOrderedProductByProductAddress(String address){
-        System.out.println(address);
         return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name from ordered_products join products on " +
                 "product_id = products.id where products.address = ?", ORDERED_PRODUCT_ROW_MAPPER, address);
     }
