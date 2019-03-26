@@ -27,7 +27,7 @@ INSERT INTO products (id, code, address, name, manufacture, price, product_statu
 (8, 'LO34KJ8', 'funny_bunny', 'Funny', 'cafebabes', 25800, 'ACTIVE'),
 (9, 'GH672V4', 'shark', 'Shark', 'cafebabes', 97000, 'ACTIVE'),
 (10, 'DB89AS1', 'blowfish', 'Blow Fish', 'cafebabes', 112000, 'ACTIVE'),
-(11, 'SK001', 'surf_killer', 'Killer', 'Pacific Islands Surfboards', 990000, 'ACTIVE'),
+(11, 'SK001', 'surfer', 'Surfer', 'Pacific Islands Surfboards', 990000, 'ACTIVE'),
 (12, 'R2001', 'R2', 'R2', 'Chemistry Surfboards', 880000, 'ACTIVE'),
 (13, 'CO001', 'surf_coder', 'Coder', 'Ecoboard', 45000, 'ACTIVE'),
 (14, 'SH001', 'shark', 'Shark', 'Superbrand', 45000, 'ACTIVE'),
