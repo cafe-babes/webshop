@@ -4,8 +4,10 @@ import com.training360.cafebabeswebshop.basket.BasketController;
 import com.training360.cafebabeswebshop.order.*;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusE;
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserController;
+import org.apache.tomcat.jni.Local;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,11 @@ public class OrdersTest {
     private OrderController orderController;
     @Autowired
     private BasketController basketController;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderDao orderDao;
+
     @Test
     public void contextLoads() {
         List<Order> orders = orderController.listAllOrders();
@@ -159,5 +166,117 @@ public class OrdersTest {
 
     }
 
+    @Test
+    public void checkOrderDate(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        List<Order> orders = orderController.listAllOrders();
+        LocalDateTime date1 = orders.get(0).getPurchaseDate();
+        LocalDateTime date2 = orders.get(1).getPurchaseDate();
+
+        //Then
+        assertEquals(date1, LocalDateTime.of(2019, 04, 20, 22, 20, 20));
+        assertEquals(date2, LocalDateTime.of(2019, 03, 20, 21, 20, 20));
     }
 
+    @Test
+    public void testUserId(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        List<Order> orders = orderController.listAllOrders();
+        long user1 = orders.get(0).getUserId();
+
+        //Then
+        assertEquals(user1, 2L);
+    }
+
+    @Test
+    public void testOrderItemsQuantity(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        List<Order> orders = orderController.listAllOrders();
+        long quantity = orders.get(0).getSumQuantity();
+
+        //Then
+        assertEquals(quantity, 5L);
+    }
+
+    @Test
+    public void testValue(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        List<Order> orders = orderController.listAllOrders();
+        long value = orders.get(0).getTotal();
+
+        //Then
+        assertEquals(value, 1300800L);
+    }
+
+    @Test
+    public void testStatus(){
+        //Given
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+
+        //When
+        List<Order> orders = orderController.listAllOrders();
+        String status1 = orders.get(0).getOrderStatus().toString();
+        String status2 = orders.get(1).getOrderStatus().toString();
+        String status3 = orders.get(2).getOrderStatus().toString();
+
+        //Then
+        assertEquals(status1, "SHIPPED");
+        assertEquals(status2, "ACTIVE");
+        assertEquals(status3, "SHIPPED");
+    }
+
+    @Test
+    public void testDeleteOneItemFromOrder(){
+        //When
+        ResultStatus rs = orderController.deleteOneItemFromOrder(1, "blowfish");
+        ResultStatus rs2 = orderController.deleteOneItemFromOrder(1, "jb");
+        ResultStatus rs3 = orderController.deleteOneItemFromOrder(1, "jb-1");
+
+        //Then
+        assertEquals(rs.getMessage(), "Ordered product deleted successfully");
+        assertEquals(rs2.getMessage(), "Invalid id, or address");
+        assertEquals(rs3.getMessage(), "Ordered product deleted successfully");
+
+    }
+
+    @Test
+    public void changeOrderStatusToShipped(){
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+
+        long orderId = orderService.saveOrderAndGetId(tat);
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+
+        orderService.updateOrderStatus(orderId, "shipped");
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.SHIPPED);
+    }
+
+    @Test
+    public void changeOrderStatusToShippedWithWrongAddress(){
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+
+        long orderId = orderService.saveOrderAndGetId(tat);
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+
+        ResultStatus rs = orderController.updateOrderStatus(orderId, "shippe");
+
+        assertEquals(rs.getMessage(), "Invalid id or status");
+    }
+
+
+
+}

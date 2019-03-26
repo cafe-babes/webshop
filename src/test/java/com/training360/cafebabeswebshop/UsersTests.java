@@ -55,7 +55,7 @@ public class UsersTests {
         // Given (having a user list)
         List<User> users = userController.listUsers();
 
-        long id = users.get(0).getId();
+        long id = users.stream().filter(u -> u.getName().equals("admin")).findFirst().get().getId();
 
         // When (deleting a user)
         userController.deleteUserById(id);
