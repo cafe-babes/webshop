@@ -5,6 +5,7 @@ import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusE;
 import com.training360.cafebabeswebshop.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,10 +68,10 @@ public class OrderController {
 
     @DeleteMapping("/orders/{id}/{address}")
     public ResultStatus deleteOneItemFromOrder(@PathVariable long id, @PathVariable String address){
-        if (validator.isExistingOrderId(id) && validator.isExistingProductAddress(address)){
+        try {
             orderService.deleteOneItemFromOrder(id,address);
             return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
-        } else {
+        } catch (DataAccessException sql){
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
         }
     }

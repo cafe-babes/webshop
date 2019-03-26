@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop.order;
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class OrderService {
         }
     }
 
-    public void deleteOneItemFromOrder(long orderId, String address){
+    public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
         Order o = orderDao.findOrderById(orderId);
         orderDao.reduceOrderQuantityAndPriceWhenDeleting(orderId, address);
         orderDao.deleteOneItemFromOrder(orderId,address);

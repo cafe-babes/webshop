@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.user.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -110,7 +111,7 @@ public class OrderDao {
         return jdbcTemplate.query("select id, product_id, order_id, ordering_price, ordering_name, ordering_address from ordered_products", ORDERED_PRODUCT_ROW_MAPPER);
     }
 
-    public void deleteOneItemFromOrder(long orderId, String address){
+    public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
         jdbcTemplate.update("delete ordered_products from ordered_products inner join products on product_id = products.id " +
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
     }

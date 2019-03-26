@@ -61,9 +61,15 @@ function deleteItem(i, orderingAddress){
     fetch("/orders/" + id +"/" +  orderingAddress, {
         method: "DELETE"
     })
-    .then(function (response) {
-        document.getElementById("message-div").setAttribute("class", "alert alert-success");
-        document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék"
-        fetchOrders();
-        });
+    .then(response => response.json())
+    .then(jsonData => {
+        if(jsonData.ok==true) {
+            document.getElementById("message-div").setAttribute("class", "alert alert-success");
+            document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék";
+            fetchOrders();
+        } else {
+            document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+            document.querySelector("#message-div").innerHTML = "Nem sikerült a törlés";
+        }
+    });
 }
