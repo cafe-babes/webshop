@@ -26,7 +26,7 @@ public class ProductTests {
 	@Test
 	public void testGetProduct(){
 		// When
-		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		List<Product> products = productController.getProducts();
 		//Then
 		assertEquals(18, products.size());
 	}
@@ -34,11 +34,11 @@ public class ProductTests {
 	@Test
 	public void testSaveProductAndGetId() {
 		//Given
-		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		List<Product> products = productController.getProducts();
 		// When
 		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
 		//Then
-		List<Product> products2 = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		List<Product> products2 = productController.getProducts();
 		assertEquals(18, products.size());
 		assertEquals(19, products2.size());
 		assertEquals("balaton_shark", products2.get(0).getAddress());
@@ -60,8 +60,8 @@ public class ProductTests {
 	@Test
 	public void testGetProducts(){
 		// When
-		List<Product> productListForAdmin = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
-		List<Product> productListForUser = productController.getProducts(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+		List<Product> productListForAdmin = productController.getProducts();
+		List<Product> productListForUser = productController.getProducts();
 		// Then
 		assertEquals(18, productListForAdmin.size());
 		assertEquals(14, productListForUser.size());
@@ -79,7 +79,7 @@ public class ProductTests {
 	public void testDeleteProduct(){
 		// When
 		productController.deleteProduct(7);
-		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
+		List<Product> products = productController.getProducts();
 		//Then
 		assertEquals("DELETED", products.stream().filter(e -> e.getId() == 7 ).findAny().get().getProductStatus());
 	}

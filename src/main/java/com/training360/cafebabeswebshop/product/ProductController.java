@@ -62,7 +62,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> getProducts() {
-        return productService.getActiveProducts();
+        return productService.getProducts();
     }
 
     @GetMapping("/products/{start}/{size}")
