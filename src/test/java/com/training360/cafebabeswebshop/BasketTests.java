@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init_basket_table.sql")
+@Sql(scripts = "/init.sql")
 public class BasketTests {
 
     @Autowired

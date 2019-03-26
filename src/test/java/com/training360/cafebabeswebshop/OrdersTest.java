@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql(scripts = "/init_orders_table.sql")
+@Sql(scripts = "/init.sql")
 public class OrdersTest {
 
     @Autowired
