@@ -1,7 +1,5 @@
-
 var arr = window.location.href.split('=');
 var id = parseInt(arr[1]);
-
 
 window.onload = function () {
     fetchOrders();
@@ -37,7 +35,6 @@ function showTable(jsonData) {
         orderingPriceTd.setAttribute('id', orderingPriceTdId);
         tr.appendChild(orderingPriceTd);
 
-
         var deleteButtonTd = document.createElement("td");
         var deleteButton = document.createElement("button");
         var deleteButtonId = 'deletebutton' + i;
@@ -47,7 +44,6 @@ function showTable(jsonData) {
         deleteButton['raw-data'] = jsonData[i];
         deleteButtonTd.appendChild(deleteButton);
 
-
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
         tr.appendChild(deleteButtonTd);
@@ -55,37 +51,20 @@ function showTable(jsonData) {
     }
 }
 
-
-    function deleteItem(num){
-
-//        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
-//
-//        if (!confirm("Biztos, hogy törli a terméket?")) {
-//            return;
-//        }
-//
-//        fetch("/orders/" + id +"/" address, {
-//                method: "DELETE",
-//            })
-//            .then(function (response) {
-//                document.getElementById("message-div").setAttribute("class", "alert alert-success");
-//                document.querySelector("#message-div").innerHTML = "Törölve"
-//                fetchProducts();
-//                });
+    function deleteItem(i, orderingAddress){
+        var id = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderId;
+        var orderingAddress = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderingAddress;
+        console.log(id);
+        console.log(orderingAddress);
+        if (!confirm("Biztos, hogy törli a tételt?")) {
+            return;
+        }
+        fetch("/orders/" + id +"/" +  orderingAddress, {
+                method: "DELETE",
+            })
+            .then(function (response) {
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                document.querySelector("#message-div").innerHTML = "Törölve a " + orderingAddress + " termék"
+                fetchOrders();
+                });
             }
-
-
-//    function deleteItem(id, orderingName){
-////        var id = document.getElementById(`deletebutton${id}`).parentElement.parentElement['raw-data'].id;
-//        if (!confirm("Biztos, hogy törli a tételt?")) {
-//            return;
-//        }
-//        fetch("/orders/" + id +"/" +  orderingName, {
-//                method: "DELETE",
-//            })
-//            .then(function (response) {
-//                document.getElementById("message-div").setAttribute("class", "alert alert-success");
-//                document.querySelector("#message-div").innerHTML = "Törölve az " + orderingName + "termék"
-//                fetchOrders();
-//                });
-//            }
