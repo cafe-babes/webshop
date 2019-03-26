@@ -25,7 +25,9 @@ public class OrderService {
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
         for (Order o: orders) {
-            result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
+            if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
+                result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
+            }
         }
         return result;
     }
