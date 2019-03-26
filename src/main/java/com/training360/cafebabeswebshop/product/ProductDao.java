@@ -81,8 +81,8 @@ public class ProductDao {
     }
 
     public void updateProduct(long id, Product product){
-            jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
-                    product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
+        jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
+                product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
 
     }
 
