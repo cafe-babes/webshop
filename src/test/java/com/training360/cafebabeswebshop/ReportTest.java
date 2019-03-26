@@ -34,8 +34,6 @@ public class ReportTest {
 
         @Autowired
         ReportController reportController;
-        @Autowired
-        OrderController orderController;
 
         @Test
     public void contextLoads(){
