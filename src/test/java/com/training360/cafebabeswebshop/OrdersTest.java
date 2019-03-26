@@ -1,9 +1,7 @@
 package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.basket.BasketController;
-import com.training360.cafebabeswebshop.order.Order;
-import com.training360.cafebabeswebshop.order.OrderController;
-import com.training360.cafebabeswebshop.order.OrderedProduct;
+import com.training360.cafebabeswebshop.order.*;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusE;
@@ -40,6 +38,10 @@ public class OrdersTest {
     private OrderController orderController;
     @Autowired
     private BasketController basketController;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderDao orderDao;
 
     @Test
     public void contextLoads() {
@@ -193,7 +195,7 @@ public class OrdersTest {
     }
 
     @Test
-    public void testOrderItemsQunatity(){
+    public void testOrderItemsQuantity(){
         //Given
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
@@ -247,6 +249,32 @@ public class OrdersTest {
         assertEquals(rs2.getMessage(), "Invalid id, or address");
         assertEquals(rs3.getMessage(), "Ordered product deleted successfully");
 
+    }
+
+    @Test
+    public void changeOrderStatusToShipped(){
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+
+        long orderId = orderService.saveOrderAndGetId(tat);
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+
+        orderService.updateOrderStatus(orderId, "shipped");
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.SHIPPED);
+    }
+
+    @Test
+    public void changeOrderStatusToShippedWithWrongAddress(){
+        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+
+        long orderId = orderService.saveOrderAndGetId(tat);
+
+        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+
+        ResultStatus rs = orderController.updateOrderStatus(orderId, "shippe");
+
+        assertEquals(rs.getMessage(), "Invalid id or status");
     }
 
 
