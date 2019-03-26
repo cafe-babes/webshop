@@ -92,13 +92,22 @@ var checkStatus = document.querySelector("#checkStatus").checked;
         deleteButton['raw-data'] = jsonData[i];
         deleteButtonTd.appendChild(deleteButton);
 
+        var shippedButtonTd = document.createElement("td");
+        var shippedButton = document.createElement("button");
+        var shippedButtonId = "shippedButton" + i;
+        shippedButton.setAttribute("id", shippedButtonId);
+        shippedButton.setAttribute("class", "btn");
+        shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
+        shippedButtonTd.appendChild(shippedButton);
 
         editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
+        shippedButton.innerHTML = `<i class="fas fa-truck"></i>Kiszállítva`
 
         tr.appendChild(editButtonTd);
         tr.appendChild(deleteButtonTd);
+        tr.appendChild(shippedButton);
 
         table.appendChild(tr);
 
@@ -125,3 +134,20 @@ var checkStatus = document.querySelector("#checkStatus").checked;
                 fetchOrders();
                 });
             }
+
+    function changeStatusToShipped(num){
+        var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
+        if (!confirm("Kiszállítottra állítja a megrendelés állapotát?")) {
+            return;
+        }
+
+        fetch("/orders/" + id + "/shipped", {
+            method: "POST",
+        })
+        .then(function (response) {
+            document.getElementById("message-div").setAttribute("class", "alert alert-success");
+            document.querySelector("#message-div").innerHTML = "Státusz módosítva erre: kiszállítva"
+            fetchOrders();
+        });
+
+    }
