@@ -27,9 +27,9 @@ public class DashBoardTest {
         int allActiveOrders = dashboardController.listOfResults().get(4);
 
         assertEquals(3, users);
-        assertEquals(6, allProducts);
-        assertEquals(7, allOrders);
-        assertEquals(4, allActiveProducts);
-        assertEquals(5, allActiveOrders);
+        assertEquals(18, allProducts);
+        assertEquals(5, allOrders);
+        assertEquals(14, allActiveProducts);
+        assertEquals(1, allActiveOrders);
     }
 }
