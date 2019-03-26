@@ -36,7 +36,6 @@ public class ReportTest {
         @Test
     public void testGetMonthlyIncomeOfOrders(){
         List<OrderReport> orderReports = reportController.getMonthlyIncomeOfOrders();
-            System.out.println(orderReports);
         assertTrue(!orderReports.equals(Collections.emptyList()));
         }
 
@@ -44,7 +43,6 @@ public class ReportTest {
     @Test
     public void testgetShippedProducts(){
         List<ShippedProductReport> shippedProductReports = reportController.getShippedProducts();
-        System.out.println(shippedProductReports);
         assertTrue(!shippedProductReports.equals(Collections.emptyList()));
     }
 
