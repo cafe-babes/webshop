@@ -58,8 +58,13 @@ public class OrderService {
     }
 
     public void deleteOneItemFromOrder(long orderId, String address){
+        Order o = orderDao.findOrderById(orderId);
         orderDao.reduceOrderQuantityAndPriceWhenDeleting(orderId, address);
         orderDao.deleteOneItemFromOrder(orderId,address);
+        o.setSumQuantity(o.getSumQuantity()-1);
+        if (o.getSumQuantity() == 0){
+            orderDao.deleteOrder(orderId);
+        }
     }
 
     public void deleteOrder(long id){
