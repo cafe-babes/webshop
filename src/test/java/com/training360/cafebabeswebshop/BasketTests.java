@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop;
 
+import com.training360.cafebabeswebshop.basket.Basket;
 import com.training360.cafebabeswebshop.basket.BasketController;
 import com.training360.cafebabeswebshop.basket.BasketItem;
 import org.junit.Test;
@@ -24,6 +25,27 @@ public class BasketTests {
 
     @Autowired
     private BasketController basketController;
+
+
+    @Test
+    public void basketCreateTest(){
+        Basket basket = new Basket(1,2,3);
+        assertEquals(basket.getId(), 1);
+        assertEquals(basket.getUserId(), 2);
+        assertEquals(basket.getProductId(),3);
+    }
+
+    @Test
+    public void basketSettersTest(){
+        Basket basket = new Basket(1,2,3);
+
+        basket.setId(2);
+        assertEquals(basket.getId(),2);
+        basket.setUserId(1);
+        assertEquals(basket.getUserId(),1);
+        basket.setProductId(12);
+        assertEquals(basket.getProductId(), 12);
+    }
 
     @Test
     public void testGetBasketItems() {
