@@ -1,10 +1,9 @@
 package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.basket.BasketController;
-import com.training360.cafebabeswebshop.order.Order;
-import com.training360.cafebabeswebshop.order.OrderController;
-import com.training360.cafebabeswebshop.order.OrderedProduct;
+import com.training360.cafebabeswebshop.order.*;
 import com.training360.cafebabeswebshop.product.Product;
+import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserController;
 import org.junit.Test;
@@ -37,7 +36,6 @@ public class OrdersTest {
     private OrderController orderController;
     @Autowired
     private BasketController basketController;
-
     @Test
     public void contextLoads() {
         List<Order> orders = orderController.listAllOrders();
@@ -160,7 +158,6 @@ public class OrdersTest {
         assertEquals(date3, LocalDateTime.of(2019, 01, 20, 21, 20, 20));
 
     }
-//
-//    @Test
 
-}
+    }
+
