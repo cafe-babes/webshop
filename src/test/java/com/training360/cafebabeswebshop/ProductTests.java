@@ -28,7 +28,7 @@ public class ProductTests {
 		// When
 		List<Product> products = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
 		//Then
-		assertEquals(20, products.size());
+		assertEquals(18, products.size());
 	}
 
 	@Test
@@ -39,8 +39,8 @@ public class ProductTests {
 		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
 		//Then
 		List<Product> products2 = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
-		assertEquals(20, products.size());
-		assertEquals(21, products2.size());
+		assertEquals(18, products.size());
+		assertEquals(19, products2.size());
 		assertEquals("balaton_shark", products2.get(0).getAddress());
 	}
 
@@ -63,8 +63,8 @@ public class ProductTests {
 		List<Product> productListForAdmin = productController.getProducts(new TestingAuthenticationToken("admin", "admin", "ROLE_ADMIN"));
 		List<Product> productListForUser = productController.getProducts(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
 		// Then
-		assertEquals(20, productListForAdmin.size());
-		assertEquals(16, productListForUser.size());
+		assertEquals(18, productListForAdmin.size());
+		assertEquals(14, productListForUser.size());
 	}
 
 	@Test
