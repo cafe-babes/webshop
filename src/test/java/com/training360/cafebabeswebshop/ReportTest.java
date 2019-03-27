@@ -94,7 +94,7 @@ public class ReportTest {
         }
 
         //Then (The values are equal)
-        assertTrue(sizeOfShippedProducts == shippedOrders);
+        assertEquals(sizeOfShippedProducts, shippedOrders);
         }
 
 }

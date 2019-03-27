@@ -243,12 +243,13 @@ public class OrdersTest {
         ResultStatus rs = orderController.deleteOneItemFromOrder(1, "blowfish");
         ResultStatus rs2 = orderController.deleteOneItemFromOrder(1, "jb");
         ResultStatus rs3 = orderController.deleteOneItemFromOrder(1, "jb-1");
+        ResultStatus rs4 = orderController.deleteOneItemFromOrder(1, "surf_coder");
 
         //Then
         assertEquals(rs.getMessage(), "Ordered product deleted successfully");
         assertEquals(rs2.getMessage(), "Invalid id, or address");
         assertEquals(rs3.getMessage(), "Ordered product deleted successfully");
-
+        assertEquals(rs4.getMessage(), "Ordered product deleted successfully");
     }
 
     @Test

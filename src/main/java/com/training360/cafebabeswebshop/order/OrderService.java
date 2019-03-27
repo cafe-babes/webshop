@@ -70,7 +70,7 @@ public class OrderService {
         }
     }
 
-    public void deleteOrder(long id){
+    public void deleteOrder(long id) {
         orderDao.deleteOrder(id);
     }
 

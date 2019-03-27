@@ -86,7 +86,7 @@ public class OrderDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
-                            "(product_id, order_id, ordering_price, ordering_name) values (?,?,?,?,?)",
+                            "(product_id, order_id, ordering_price, ordering_name) values (?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, orderedProduct.getProductId());
             ps.setLong(2, orderedProduct.getOrderId());
@@ -119,22 +119,22 @@ public class OrderDao {
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
     }
 
-    public OrderedProduct findOrderedProductByProductAddress(String address){
+    public OrderedProduct findOrderedProductByProductAddress(long orderId, String address){
         return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address" +
-                        " from ordered_products join products on product_id = products.id where products.address = ?",
-                ORDERED_PRODUCT_ROW_MAPPER, address);
+                        " from ordered_products join products on product_id = products.id where products.address = ? AND order_id = ?",
+                ORDERED_PRODUCT_ROW_MAPPER, address, orderId);
     }
 
     public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address){
         Order o = findOrderById(orderId);
-        OrderedProduct op = findOrderedProductByProductAddress(address);
+        OrderedProduct op = findOrderedProductByProductAddress(orderId, address);
         long newSumQuantity = o.getSumQuantity() - 1;
         long newTotal = o.getTotal() - op.getOrderingPrice();
         jdbcTemplate.update("update orders set sum_quantity = ? where id = ?", newSumQuantity, orderId);
         jdbcTemplate.update("update orders set total = ? where id = ?", newTotal, orderId);
     }
 
-    public void deleteOrder(long id){
+    public void deleteOrder(long id) {
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
     }
 

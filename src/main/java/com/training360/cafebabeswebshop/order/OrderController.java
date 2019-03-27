@@ -37,6 +37,7 @@ public class OrderController {
             long id = orderService.saveOrderAndGetId(authentication);
             return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
         } catch (IllegalStateException e){
+            e.printStackTrace();
             return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
         }
     }
@@ -72,6 +73,7 @@ public class OrderController {
             orderService.deleteOneItemFromOrder(id,address);
             return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
         } catch (DataAccessException sql){
+            sql.printStackTrace();
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
         }
     }

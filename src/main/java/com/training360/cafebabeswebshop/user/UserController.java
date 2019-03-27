@@ -75,6 +75,7 @@ public class UserController {
             try {
                 id = userService.insertUserAndGetId(user);
             } catch (DataAccessException sql) {
+                sql.printStackTrace();
                 return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("\"%s\" már regisztrált felhasználó!", user.getUserName()));
             }
             return new ResultStatus(ResultStatusEnum.OK, String.format("\"%s\" sikeresen mentésre került. ( id: %d )", user.getUserName(), id));
