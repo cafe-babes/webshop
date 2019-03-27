@@ -126,8 +126,8 @@ public class OrderDao {
         OrderedProduct op = findOrderedProductByProductAddress(address);
         long newSumQuantity = o.getSumQuantity() - 1;
         long newTotal = o.getTotal() - op.getOrderingPrice();
-        jdbcTemplate.update("update orders set sum_quantity = ?", newSumQuantity);
-        jdbcTemplate.update("update orders set total = ?", newTotal);
+        jdbcTemplate.update("update orders set sum_quantity = ? where id = ?", newSumQuantity, orderId);
+        jdbcTemplate.update("update orders set total = ? where id = ?", newTotal, orderId);
     }
 
     public void deleteOrder(long id){
