@@ -1,4 +1,5 @@
 package com.training360.cafebabeswebshop.order;
+
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

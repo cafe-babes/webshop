@@ -28,58 +28,62 @@ public class OrderController {
         this.orderService = orderService;
         this.userService = userService;
         this.productService = productService;
-        this.validator = new OrderValidator(orderService,userService,productService);
+        this.validator = new OrderValidator(orderService, userService, productService);
     }
 
     @PostMapping("/myorders")
-    public ResultStatus saveOrderAndGetId(Authentication authentication){
-        try{
+    public ResultStatus saveOrderAndGetId(Authentication authentication) {
+        try {
             long id = orderService.saveOrderAndGetId(authentication);
             return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             e.printStackTrace();
             return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
         }
     }
 
     @GetMapping("/myorders")
-    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
+    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication) {
         return orderService.listMyOrders(authentication);
     }
 
     @GetMapping("/orders")
-    public List<Order> listAllOrders(){
+    public List<Order> listAllOrders() {
         return orderService.listAllOrders();
     }
 
     @GetMapping("/orders/{id}")
-    public List<OrderedProduct> listOrderedProductsByOrderId(@PathVariable long id){
+    public List<OrderedProduct> listOrderedProductsByOrderId(@PathVariable long id) {
         return orderService.listOrderedProductsByOrderId(id);
     }
 
     @PostMapping("/orders/{id}")
-    public ResultStatus deleteOrder(@PathVariable long id){
-        if (validator.isValidOrderId(id)){
+    public ResultStatus deleteOrder(@PathVariable long id) {
+        if (validator.isValidOrderId(id)) {
             orderService.deleteOrder(id);
-            return new ResultStatus(ResultStatusE.OK,String.format("Order successfully deleted with id %d", id));
+            return new ResultStatus(ResultStatusE.OK, String.format("Order successfully deleted with id %d", id));
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id");
         }
     }
 
     @DeleteMapping("/orders/{id}/{address}")
-    public ResultStatus deleteOneItemFromOrder(@PathVariable long id, @PathVariable String address){
+    public ResultStatus deleteOneItemFromOrder(@PathVariable long id, @PathVariable String address) {
         try {
-            orderService.deleteOneItemFromOrder(id,address);
-            return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
-        } catch (DataAccessException sql){
+            if (validator.isExistingOrderId(id) && validator.isExistingProductAddress(address)) {
+                orderService.deleteOneItemFromOrder(id, address);
+                return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
+            } else {
+                return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
+            }
+        } catch (DataAccessException sql) {
             sql.printStackTrace();
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
         }
     }
 
     @PostMapping("/orders/{id}/{status}")
-    public ResultStatus updateOrderStatus(@PathVariable long id, @PathVariable String status){
+    public ResultStatus updateOrderStatus(@PathVariable long id, @PathVariable String status) {
         if (validator.isValidStatus(status.toUpperCase()) && validator.isValidOrderId(id)) {
             orderService.updateOrderStatus(id, status.toUpperCase());
             return new ResultStatus(ResultStatusE.OK, String.format("Order status successfully updated with id %d", id));

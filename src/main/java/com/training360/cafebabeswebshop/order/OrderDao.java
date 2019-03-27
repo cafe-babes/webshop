@@ -49,7 +49,7 @@ public class OrderDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public long saveOrderAndGetId(String userName, Order order){
+    public long saveOrderAndGetId(String userName, Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, total, sum_quantity) " +
@@ -59,30 +59,30 @@ public class OrderDao {
             ps.setString(2, userName);
             ps.setLong(3, order.getTotal());
             ps.setLong(4, order.getSumQuantity());
-           // ps.setString(5, String.valueOf(order.getOrderStatus()));
+            // ps.setString(5, String.valueOf(order.getOrderStatus()));
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
-    public long getUserId(String userName){
-       User u = jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status " +
-               "from users where user_name = ?", USER_ROW_MAPPER, userName);
-       return u.getId();
+    public long getUserId(String userName) {
+        User u = jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status " +
+                "from users where user_name = ?", USER_ROW_MAPPER, userName);
+        return u.getId();
     }
 
-    public Order findOrderById(long id){
+    public Order findOrderById(long id) {
         return jdbcTemplate.queryForObject("select id, purchase_date, user_id, total, sum_quantity, order_status from orders where id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
-    public List<Order> listMyOrders(String username){
+    public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
                 "from orders join users on users.id = orders.user_id " +
                 "where users.user_name = ? order by purchase_date desc"), ORDER_ROW_MAPPER, username);
     }
 
-    public long saveOrderedProductAndGetId(OrderedProduct orderedProduct){
+    public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
@@ -97,18 +97,18 @@ public class OrderDao {
         return keyHolder.getKey().longValue();
     }
 
-    public List<Order> listAllOrders(){
+    public List<Order> listAllOrders() {
         return jdbcTemplate.query("select id, purchase_date, user_id, total, sum_quantity, order_status " +
-                        "FROM orders order by purchase_date desc", ORDER_ROW_MAPPER);
+                "FROM orders order by purchase_date desc", ORDER_ROW_MAPPER);
     }
 
-    public List<OrderedProduct> listOrderedProductsByOrderId(long id){
+    public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
         return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
                         "from ordered_products JOIN products ON product_id=products.id where order_id =?",
                 ORDERED_PRODUCT_ROW_MAPPER, id);
     }
 
-    public List<OrderedProduct> listAllOrderedProduct(){
+    public List<OrderedProduct> listAllOrderedProduct() {
         return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
                         "from ordered_products JOIN products ON product_id=products.id",
                 ORDERED_PRODUCT_ROW_MAPPER);
@@ -119,13 +119,13 @@ public class OrderDao {
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
     }
 
-    public OrderedProduct findOrderedProductByProductAddress(long orderId, String address){
+    public OrderedProduct findOrderedProductByProductAddress(long orderId, String address) throws DataAccessException {
         return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address" +
                         " from ordered_products join products on product_id = products.id where products.address = ? AND order_id = ?",
                 ORDERED_PRODUCT_ROW_MAPPER, address, orderId);
     }
 
-    public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address){
+    public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address) throws DataAccessException {
         Order o = findOrderById(orderId);
         OrderedProduct op = findOrderedProductByProductAddress(orderId, address);
         long newSumQuantity = o.getSumQuantity() - 1;
@@ -138,7 +138,7 @@ public class OrderDao {
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
     }
 
-    public void updateOrderStatus(long id, String status){
+    public void updateOrderStatus(long id, String status) {
         jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
     }
 }
