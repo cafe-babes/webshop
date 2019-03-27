@@ -6,9 +6,9 @@ INSERT INTO orders(id, purchase_date, user_id,`total`, sum_quantity, order_statu
 
 
 
-INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name, ordering_address) VALUES
-(10,1,112000, 'Blow Fish', 'blowfish'),
-(5,1,990000, 'Waver', 'surf_waver'),
-(2,2,45000, 'Coder', 'surf_coder'),
-(8,3,25800, 'Funy', 'funny_bunny'),
-(7,4,128000, 'Longest', 'longest_board');
+INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name) VALUES
+(10,1,112000, 'Blow Fish'),
+(5,1,990000, 'Waver'),
+(2,2,45000, 'Coder'),
+(8,3,25800, 'Funy'),
+(7,4,128000, 'Longest');

@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.order;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Order {
