@@ -36,7 +36,7 @@ public class ProductTests {
 		//Given
 		List<Product> products = productController.getProducts();
 		// When
-		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE"));
+		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE", null));
 		//Then
 		List<Product> products2 = productController.getProducts();
 		assertEquals(14, products.size());
@@ -47,7 +47,7 @@ public class ProductTests {
 	@Test
 	public void testUpdateProducts(){
 		// When
-		productController.updateProducts(1, new Product(0, "ST001", "surf_trainer", "Surf Trainer", "Blue Sea Watersports", 111_111, "ACTIVE"));
+		productController.updateProducts(1, new Product(0, "ST001", "surf_trainer", "Surf Trainer", "Blue Sea Watersports", 111_111, "ACTIVE", null));
 		// Then
 		assertEquals("Surf Trainer", productController.findById(1).getName());
 		assertEquals("ST001", productController.findById(1).getCode());

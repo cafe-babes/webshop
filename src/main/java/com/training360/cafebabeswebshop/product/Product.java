@@ -10,8 +10,9 @@ public class Product {
     private String manufacture;
     private int price;
     private String productStatus;
+    private String categoryId;
 
-    public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus) {
+    public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus, String categoryId) {
         this.id = id;
         this.code = code;
         this.address = address;
@@ -19,6 +20,7 @@ public class Product {
         this.manufacture = manufacture;
         this.price = price;
         this.productStatus = productStatus;
+        this.categoryId = categoryId;
     }
 
     public long getId() {
@@ -75,5 +77,13 @@ public class Product {
 
     public void setProductStatus(String productStatus) {
         this.productStatus = productStatus;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }
