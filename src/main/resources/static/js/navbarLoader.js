@@ -37,7 +37,7 @@ $.getJSON("/user-role", json => {
             <a class="nav-link" href="/register.html">Regisztráció</a>
         </li>
         <li class="nav-item active" id="login">
-            <a class="nav-link" href="/login">Bejelentkezés</a>
+            <a class="nav-link" href="/login.html">Bejelentkezés</a>
         </li>`
     } else {
         helper.innerHTML +=
