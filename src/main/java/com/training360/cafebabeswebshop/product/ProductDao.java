@@ -26,7 +26,8 @@ public class ProductDao {
             resultSet.getString("name"),
             resultSet.getString("manufacture"),
             resultSet.getInt("price"),
-            resultSet.getString("product_status")
+            resultSet.getString("product_status"),
+            resultSet.getString("category.name")
     ));
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
@@ -34,30 +35,31 @@ public class ProductDao {
     }
 
 
-    public Product getProduct(String address){
-        try{
-        return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where address = ?",
-                PRODUCT_ROW_MAPPER, address);
-        } catch (EmptyResultDataAccessException e){
+    public Product getProduct(String address) {
+        try {
+            return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+                            "FROM products JOIN category ON category_id=category.id where address = ?",
+                    PRODUCT_ROW_MAPPER, address);
+        } catch (EmptyResultDataAccessException e) {
             throw new IllegalStateException();
         }
     }
 
-    public List<Product> getProducts(){
-        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products " +
-                        "WHERE product_status = 'ACTIVE' order by name, manufacture",
+    public List<Product> getProducts() {
+        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+                        "FROM products JOIN category ON category_id=category.id WHERE product_status = 'ACTIVE' order by products.name, manufacture",
                 PRODUCT_ROW_MAPPER);
     }
 
-    public List<Product> getProductsWithStartAndSize(int start, int size){
-        return jdbcTemplate.query("select id, code, address, name, manufacture, price, product_status from products " +
-                        "WHERE product_status = 'ACTIVE' order by name, manufacture LIMIT ? OFFSET ?",
+    public List<Product> getProductsWithStartAndSize(int start, int size) {
+        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+                        "FROM products JOIN category ON category_id=category.id" +
+                        "WHERE product_status = 'ACTIVE' order by products.name, manufacture LIMIT ? OFFSET ?",
                 PRODUCT_ROW_MAPPER,
                 size,
                 start
         );
     }
-
 
     public long saveProductAndGetId(Product product) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -75,17 +77,18 @@ public class ProductDao {
         return keyHolder.getKey().longValue();
     }
 
-    public void updateProduct(long id, Product product) throws DataAccessException{
+    public void updateProduct(long id, Product product) throws DataAccessException {
         jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
                 product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
     }
 
-    public void deleteProduct(long id){
+    public void deleteProduct(long id) {
         jdbcTemplate.update("update products set `product_status` = 'DELETED' where id = ?", id);
     }
 
     public Product findById(Long id) {
-        return jdbcTemplate.queryForObject("select id, code, address, name, manufacture, price, product_status from products where id = ?",
+        return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+                        "FROM products JOIN category ON category_id=category.id WHERE id = ?",
                 PRODUCT_ROW_MAPPER, id);
     }
 
