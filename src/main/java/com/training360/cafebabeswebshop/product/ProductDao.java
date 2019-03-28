@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.product;
 
-
 import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-
 
 @Repository
 public class ProductDao {
@@ -42,7 +40,7 @@ public class ProductDao {
     public Product getProduct(String address) {
         try {
             return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                            "FROM products JOIN category ON category_id=category.id where address = ?",
+                            "FROM products LEFT JOIN category ON category_id=category.id where address = ?",
                     PRODUCT_ROW_MAPPER, address);
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalStateException();
@@ -51,13 +49,13 @@ public class ProductDao {
 
     public List<Product> getProducts() {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products JOIN category ON category_id=category.id WHERE product_status = 'ACTIVE' order by products.name, manufacture",
+                        "FROM products LEFT JOIN category ON category_id=category.id WHERE product_status = 'ACTIVE' order by products.name, manufacture",
                 PRODUCT_ROW_MAPPER);
     }
 
     public List<Product> getProductsWithStartAndSize(int start, int size) {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products JOIN category ON category_id=category.id" +
+                        "FROM products LEFT JOIN category ON category_id=category.id" +
                         "WHERE product_status = 'ACTIVE' order by products.name, manufacture LIMIT ? OFFSET ?",
                 PRODUCT_ROW_MAPPER,
                 size,
@@ -100,13 +98,12 @@ public class ProductDao {
 
     public Product findById(Long id) {
         return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products JOIN category ON category_id=category.id WHERE id = ?",
+                        "FROM products LEFT JOIN category ON category_id=category.id WHERE id = ?",
                 PRODUCT_ROW_MAPPER, id);
     }
 
     public Product getProductById(int id) {
-        return jdbcTemplate.queryForObject("SELECT `id`, `code`, `address`, `name`, `manufacture`, `price`, `product_status`, `category_id` FROM `products` WHERE id = ? ", PRODUCT_ROW_MAPPER, id);
+        return jdbcTemplate.queryForObject("SELECT id, code, address, name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
+                "FROM products WHERE id = ? ", PRODUCT_ROW_MAPPER, id);
     }
-
-
 }
