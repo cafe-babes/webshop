@@ -10,9 +10,23 @@ function fetchProducts() {
         .then(function (jsonData) {
             showTable(jsonData);
             checkProductStatus(jsonData);
-        });
+            console.log(jsonData);
+    });
+}
 
-         
+function fetchCategories(num){
+    fetch("/categories", {
+        method : "GET"
+    })
+    .then(function(response){
+        console.log(response);
+        return response.json();
+    })
+    .then(function(jsonData, num){
+        console.log(jsonData);
+        console.log(num);
+        showCategories(jsonData, num);
+    });
 }
 
 var selector = document.querySelector("#checkStatus");
@@ -94,7 +108,7 @@ function checkProductStatus(jsonData) {
         var editButtonId = 'editbutton' + i;
         editButton.setAttribute('id', editButtonId);
         editButton.setAttribute('class', 'btn');
-        editButton.setAttribute('onclick', `editTds(${i})`);
+        editButton.setAttribute('onclick', `editTds(${i}), jsonData`);
         editButtonTd.appendChild(editButton);
 
         var saveButton = document.createElement("button");
@@ -130,8 +144,7 @@ function checkProductStatus(jsonData) {
 
 }
 
-    function editTds(num){
-
+    function editTds(num, jsonData){
         var code = document.getElementById(`codeTd${num}`);
         var address = document.getElementById(`addressTd${num}`);
         var name = document.getElementById(`nameTd${num}`);
@@ -152,12 +165,18 @@ function checkProductStatus(jsonData) {
         manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
         price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
         category.innerHTML = `<select id="categoryInput${num}" class='form-control' value='${categoryData}' required>`
-        //TODO : option
+        fetchCategories(num);
 
         var edit = document.getElementById(`editbutton${num}`);
         edit.style.display = 'none';
         var save = document.getElementById(`savebutton${num}`);
         save.style.display = 'inline';
+    }
+
+    function showCategories(jsonData, num){
+        for(var i = 0; i < jsonData.length; i++){
+            document.querySelector('#categoryInput${num}') +=  `<option id="optionId${i}" value="jsonData[i].category.name">jsonData[i].categoryName</option>`
+        }
     }
 
     function saveTds(num){
@@ -169,7 +188,8 @@ function checkProductStatus(jsonData) {
         var name = document.getElementById(`nameInput${num}`).value;
         var manu = document.getElementById(`manInput${num}`).value;
         var price = document.getElementById(`priceInput${num}`).value;
-        var category = document.getElementById(`categoryInput${num}`).value;
+        var category = document.getElementById(`categoryInput${num}`);
+        var selectedCategory = category[category.selectedIndex].value;
 
         var request = {
             "id": id,
@@ -178,7 +198,7 @@ function checkProductStatus(jsonData) {
             "name": name,
             "manufacture": manu,
             "price": price,
-            "category" : category;
+            "category" : selectedCategory
         }
 
         fetch("/products/" + id, {
@@ -268,6 +288,8 @@ function checkProductStatus(jsonData) {
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
         var category = document.getElementById(`categoryInputNew${num}`).value;
+        var category = document.getElementById(`categoryInput${num}`);
+        var selectedCategory = category[category.selectedIndex].value;
         
         var request = {
             //"id": id,
