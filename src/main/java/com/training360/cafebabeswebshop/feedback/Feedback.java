@@ -1,5 +1,8 @@
 package com.training360.cafebabeswebshop.feedback;
 
+import com.training360.cafebabeswebshop.product.Product;
+import com.training360.cafebabeswebshop.user.User;
+
 import java.time.LocalDateTime;
 
 public class Feedback {
@@ -8,25 +11,29 @@ public class Feedback {
     private LocalDateTime feedbackDate;
     private String feedback;
     private int rating;
-    private int userId;
-    private int productId;
+    private User user;
+    private Product product;
 
-    public Feedback(int id, String feedback, int rating, int userId, int productId) {
+    public Feedback(int id, String feedback, int rating, User user, Product product) {
         this.id = id;
         this.feedbackDate = LocalDateTime.now();
         this.feedback = feedback;
         this.rating = rating;
-        this.userId = userId;
-        this.productId = productId;
+        this.user = user;
+        this.product = product;
     }
 
-    public Feedback(int id, LocalDateTime feedbackDate, String feedback, int rating, int userId, int productId) {
+    public Feedback(int id, LocalDateTime feedbackDate, String feedback, int rating, User user, Product product) {
         this.id = id;
         this.feedbackDate = feedbackDate;
         this.feedback = feedback;
         this.rating = rating;
-        this.userId = userId;
-        this.productId = productId;
+        this.user = user;
+        this.product = product;
+    }
+
+    public LocalDateTime getFeedbackDate() {
+        return feedbackDate;
     }
 
     public int getId() {
@@ -41,11 +48,11 @@ public class Feedback {
         return rating;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 }
