@@ -21,6 +21,9 @@ public class ProductService {
         this.categoryDao = categoryDao;
     }
 
+    public Product getProduct(String address){
+        return productDao.getProduct(address);
+    }
     public List<Product> getProducts(){
         return productDao.getProducts();
     }
