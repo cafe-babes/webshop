@@ -1,5 +1,8 @@
 package com.training360.cafebabeswebshop.product;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ProductValidator {
 
     private ProductService productService;
@@ -17,7 +20,8 @@ public class ProductValidator {
     }
 
     public boolean isValidAddress(String address){
-        return address != null && !address.trim().equals("");
+        List<String> addresses = productService.getProducts().stream().map(product -> product.getAddress()).collect(Collectors.toList());
+        return address != null && !address.trim().equals("") && addresses.contains(address);
     }
 
     private boolean isValidCode(String code) {

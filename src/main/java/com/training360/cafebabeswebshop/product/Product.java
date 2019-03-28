@@ -1,6 +1,8 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import com.training360.cafebabeswebshop.category.Category;
+
 public class Product {
 
     private long id;
@@ -10,8 +12,9 @@ public class Product {
     private String manufacture;
     private int price;
     private String productStatus;
+    private Category category;
 
-    public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus) {
+    public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus, Category category) {
         this.id = id;
         this.code = code;
         this.address = address;
@@ -19,6 +22,7 @@ public class Product {
         this.manufacture = manufacture;
         this.price = price;
         this.productStatus = productStatus;
+        this.category = category;
     }
 
     public long getId() {
@@ -75,5 +79,13 @@ public class Product {
 
     public void setProductStatus(String productStatus) {
         this.productStatus = productStatus;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
