@@ -1,0 +1,28 @@
+body, html {
+  height: 100%;
+}
+
+.bg {
+  background-image: url("/images/login_backgr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 93.8vh;
+}
+
+.container {
+padding: 25vh;
+
+}
+
+.headline-dark {
+background-color:  rgba(30, 33, 39, 0.767);
+height: 6vh;
+}
+
+.headline-gold {
+  background-color:  rgba(243, 180, 7, 0.918);
+  height: 0.2vh;
+  }
+
+

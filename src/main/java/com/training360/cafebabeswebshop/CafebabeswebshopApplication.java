@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,17 +13,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import javax.sql.DataSource;
 
 @SpringBootApplication
 @EnableWebSecurity
 @Configuration
+
 public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CafebabeswebshopApplication.class, args);
 	}
+
+
 
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -34,6 +41,8 @@ public class CafebabeswebshopApplication extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
 				.and()
 				.formLogin()
+				.loginPage("/login.html").loginProcessingUrl("/login")
+				.defaultSuccessUrl("/index.html")
 				.and()
 				.logout();
 	}
