@@ -25,8 +25,8 @@ public class FeedbackDao {
             rs.getTimestamp("feedback_date").toLocalDateTime(),
             rs.getString("feedback"),
             rs.getInt("rating"),
-            userDao.getUserById(rs.getInt("user_id")),
-            productDao.getProductById(rs.getInt("product_id"))
+            userDao.getUserById(rs.getLong("user_id")),
+            productDao.getProductById(rs.getLong("product_id"))
     ));
 
 
@@ -35,10 +35,10 @@ public class FeedbackDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Feedback> listFeedBacksByProductId(int productId) {
-        return jdbcTemplate.query("select id, feedback_date, feedback, rating, user_id" +
-                        "from feedback" +
-                        "where product_id = ?" +
+    public List<Feedback> listFeedBacksByProductId(long productId) {
+        return jdbcTemplate.query("select id, feedback_date, feedback, rating, user_id, product_id \n" +
+                        "from feedback \n" +
+                        "where product_id = ? \n" +
                         "ORDER BY feedback_date DESC",
                 FEEDBACK_ROW_MAPPER, productId);
     }

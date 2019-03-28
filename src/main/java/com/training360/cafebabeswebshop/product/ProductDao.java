@@ -96,14 +96,10 @@ public class ProductDao {
         jdbcTemplate.update("update products set product_status = 'DELETED' where id = ?", id);
     }
 
-    public Product findById(Long id) {
-        return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products LEFT JOIN category ON category_id=category.id WHERE id = ?",
-                PRODUCT_ROW_MAPPER, id);
-    }
 
-    public Product getProductById(int id) {
-        return jdbcTemplate.queryForObject("SELECT id, code, address, name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                "FROM products WHERE id = ? ", PRODUCT_ROW_MAPPER, id);
+
+    public Product getProductById(long id) {
+        return jdbcTemplate.queryForObject("SELECT products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
+                "FROM products  LEFT JOIN category ON category_id=category.id WHERE products.id = ? ", PRODUCT_ROW_MAPPER, id);
     }
 }

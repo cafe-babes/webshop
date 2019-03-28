@@ -45,8 +45,8 @@ public class ProductService {
         productDao.deleteProduct(id);
     }
 
-    public Product findById(@PathVariable long id){
-        return productDao.findById(id);
+    public Product getProductById(@PathVariable long id){
+        return productDao.getProductById(id);
     }
 
 }

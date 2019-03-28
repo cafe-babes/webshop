@@ -16,7 +16,7 @@ public class FeedbackService {
         this.feedbackDao = feedbackDao;
     }
 
-    public List<Feedback> listFeedBacksByProductId(int productId) {
+    public List<Feedback> listFeedBacksByProductId(long productId) {
         return feedbackDao.listFeedBacksByProductId(productId);
     }
 
