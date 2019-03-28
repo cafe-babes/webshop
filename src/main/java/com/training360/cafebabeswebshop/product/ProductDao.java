@@ -92,5 +92,9 @@ public class ProductDao {
                 PRODUCT_ROW_MAPPER, id);
     }
 
+    public Product getProductById(int id) {
+        return jdbcTemplate.queryForObject("SELECT `id`, `code`, `address`, `name`, `manufacture`, `price`, `product_status`, `category_id` FROM `products` WHERE id = ? ", PRODUCT_ROW_MAPPER, id);
+    }
+
 
 }

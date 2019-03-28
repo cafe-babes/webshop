@@ -19,4 +19,8 @@ public class FeedbackService {
     public List<Feedback> listFeedBacksByProductId(int productId) {
         return feedbackDao.listFeedBacksByProductId(productId);
     }
+
+    public void giveAFeedback(Feedback feedback) {
+        feedbackDao.giveAFeedback(feedback);
+    }
 }
