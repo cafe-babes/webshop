@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,7 +28,10 @@ public class ProductDao {
             resultSet.getString("manufacture"),
             resultSet.getInt("price"),
             resultSet.getString("product_status"),
-            resultSet.getString("category.name")
+            new Category(
+                    resultSet.getLong("category_id"),
+                    resultSet.getString("category.name"),
+                    resultSet.getLong("category.ordinal"))
     ));
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
@@ -37,7 +41,7 @@ public class ProductDao {
 
     public Product getProduct(String address) {
         try {
-            return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+            return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                             "FROM products JOIN category ON category_id=category.id where address = ?",
                     PRODUCT_ROW_MAPPER, address);
         } catch (EmptyResultDataAccessException e) {
@@ -46,13 +50,13 @@ public class ProductDao {
     }
 
     public List<Product> getProducts() {
-        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                         "FROM products JOIN category ON category_id=category.id WHERE product_status = 'ACTIVE' order by products.name, manufacture",
                 PRODUCT_ROW_MAPPER);
     }
 
     public List<Product> getProductsWithStartAndSize(int start, int size) {
-        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                         "FROM products JOIN category ON category_id=category.id" +
                         "WHERE product_status = 'ACTIVE' order by products.name, manufacture LIMIT ? OFFSET ?",
                 PRODUCT_ROW_MAPPER,
@@ -64,7 +68,7 @@ public class ProductDao {
     public long saveProductAndGetId(Product product) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into products (`code`, `address`, `name`,  `manufacture`, `price`, `product_status`) values (?,?,?,?,?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) values (?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getCode());
             ps.setString(2, product.getAddress());
@@ -72,22 +76,30 @@ public class ProductDao {
             ps.setString(4, product.getManufacture());
             ps.setDouble(5, product.getPrice());
             ps.setString(6, "ACTIVE");
+            ps.setLong(7, product.getCategory().getId());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     public void updateProduct(long id, Product product) throws DataAccessException {
-        jdbcTemplate.update("update products set `code` = ?, `address` = ?, `name` = ?, `manufacture` = ?, `price` = ? where id = ?",
-                product.getCode(), product.getAddress(), product.getName(), product.getManufacture(), product.getPrice(), id);
+        jdbcTemplate.update("update products set code = ?, address = ?, name = ?, manufacture = ?, price = ?, " +
+                        "category_id = ? where id = ?",
+                product.getCode(),
+                product.getAddress(),
+                product.getName(),
+                product.getManufacture(),
+                product.getPrice(),
+                product.getCategory().getId(),
+                id);
     }
 
     public void deleteProduct(long id) {
-        jdbcTemplate.update("update products set `product_status` = 'DELETED' where id = ?", id);
+        jdbcTemplate.update("update products set product_status = 'DELETED' where id = ?", id);
     }
 
     public Product findById(Long id) {
-        return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category.name " +
+        return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                         "FROM products JOIN category ON category_id=category.id WHERE id = ?",
                 PRODUCT_ROW_MAPPER, id);
     }
