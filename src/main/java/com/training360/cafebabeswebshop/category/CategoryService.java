@@ -14,4 +14,8 @@ public class CategoryService {
     public List<Category> listCategories(){
         return categoryDao.listCategories();
     }
+
+    public long createCategoryAndGetId(Category category) {
+        return categoryDao.createCategoryAndGetId(category);
+    }
 }

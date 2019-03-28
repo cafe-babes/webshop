@@ -1,12 +1,13 @@
 package com.training360.cafebabeswebshop.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class CategoryController {
 
     @Autowired
@@ -15,5 +16,9 @@ public class CategoryController {
     @GetMapping("/categories")
     public List<Category> listCategories(){
         return categoryService.listCategories();
+    }
+
+    public long createCategoryAndGetId(Category category) {
+        return categoryService.createCategoryAndGetId(category);
     }
 }

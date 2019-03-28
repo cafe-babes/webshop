@@ -1,6 +1,8 @@
 package com.training360.cafebabeswebshop.product;
 
 
+import com.training360.cafebabeswebshop.category.Category;
+import com.training360.cafebabeswebshop.category.CategoryDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +14,11 @@ public class ProductService {
 
 
     private ProductDao productDao;
+    private CategoryDao categoryDao;
 
-    public ProductService(ProductDao productDao) {
+    public ProductService(ProductDao productDao, CategoryDao categoryDao) {
         this.productDao = productDao;
-    }
-
-    public Product getProduct(String address) {
-        return productDao.getProduct(address);
+        this.categoryDao = categoryDao;
     }
 
     public List<Product> getProducts(){
@@ -30,7 +30,11 @@ public class ProductService {
     }
 
     public long saveProductAndGetId(Product product) throws DataAccessException {
+        for (Category category:categoryDao.listCategories()) {
+            if (category.getName().equals(product.getCategory().getName()))
         return productDao.saveProductAndGetId(product);
+        }
+        return categoryDao.createCategoryAndGetId(product.getCategory());//TODO
     }
 
     public void updateProducts(long id, Product product) throws DataAccessException {
