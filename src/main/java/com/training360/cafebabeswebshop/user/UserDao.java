@@ -62,7 +62,7 @@ public class UserDao {
         return keyHolder.getKey().longValue();
     }
 
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         return jdbcTemplate.queryForObject("select `id` `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users` where id = ? ", USER_ROW_MAPPER, id);
     }
 }
