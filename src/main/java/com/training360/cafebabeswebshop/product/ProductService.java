@@ -21,34 +21,36 @@ public class ProductService {
         this.categoryDao = categoryDao;
     }
 
-    public Product getProduct(String address){
+    public Product getProduct(String address) {
         return productDao.getProduct(address);
     }
-    public List<Product> getProducts(){
+
+    public List<Product> getProducts() {
         return productDao.getProducts();
     }
 
-    public List<Product> getProductsWithStartAndSize(int start, int size){
+    public List<Product> getProductsWithStartAndSize(int start, int size) {
         return productDao.getProductsWithStartAndSize(start, size);
     }
 
     public long saveProductAndGetId(Product product) throws DataAccessException {
-        for (Category category:categoryDao.listCategories()) {
+        for (Category category : categoryDao.listCategories()) {
             if (category.getName().equals(product.getCategory().getName()))
-        return productDao.saveProductAndGetId(product);
+                return productDao.saveProductAndGetId(product);
         }
-        return categoryDao.createCategoryAndGetId(product.getCategory());//TODO
+        categoryDao.createCategoryAndGetId(product.getCategory());//TODO
+        return productDao.saveProductAndGetId(product);
     }
 
     public void updateProducts(long id, Product product) throws DataAccessException {
         productDao.updateProduct(id, product);
     }
 
-    public void deleteProduct(long id){
+    public void deleteProduct(long id) {
         productDao.deleteProduct(id);
     }
 
-    public Product getProductById(@PathVariable long id){
+    public Product getProductById(@PathVariable long id) {
         return productDao.getProductById(id);
     }
 
