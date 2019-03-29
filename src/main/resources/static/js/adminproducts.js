@@ -3,9 +3,6 @@ window.onload = function () {
     fetchCategories();
 }
 
-//var fetchAgain = true;
-//var jdc= "";
-//var globnum = 0;
 var global;
 
 //TODO: service-ben szűrés a category nevekre
@@ -29,7 +26,6 @@ function fetchCategories(){
     })
     .then(function(jsonData){
         global = jsonData;
-
     });
     return false;
 }
@@ -139,8 +135,6 @@ function fetchCategories(){
         var price = document.getElementById(`priceTd${num}`);
         var category = document.getElementById(`categoryTd${num}`);
         selectedCategory = category.innerHTML;
-        console.log("category:" + selectedCategory);
-        console.log("num:" + num);
 
         var codeData = code.innerHTML;
         var addressData = address.innerHTML;
@@ -165,19 +159,15 @@ function fetchCategories(){
 
 
 function showCategories(num, category){
-        console.log(category);
-        console.log(global);
         var jsonData = global;
-        console.log(jsonData);
-        console.log(num);
         var myselect2 = document.querySelector('#selectInput' + num);
-        console.log(myselect2);
         myselect2.innerHTML = "";
         for (var i = 0; i < jsonData.length; i++) {
             myselect2.innerHTML +=
             `<option value="${jsonData[i].name}">${jsonData[i].name}</option>`
         }
 }
+
 
     function saveTds(num){
 
@@ -190,7 +180,10 @@ function showCategories(num, category){
         var price = document.getElementById(`priceInput${num}`).value;
         var category = document.getElementById(`selectInput${num}`).value;
         console.log(category);
+        console.log(global);
+        console.log(num);
 
+        //TODO category mentése
         var request = {
             "id": id,
             "code": code,
@@ -272,16 +265,36 @@ function showCategories(num, category){
         manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
         statusTd.innerHTML = 'ACTIVE';
-        categoryTd.innerHTML = `<select id="categoryInputNew${num}" class='form-control' value='${categoryData}' required>`
+        categoryTd.innerHTML = `<select id="categoryInputNew${num}" class='form-control' required>`
+        console.log(num);
+        for(var i = 0; i < global.length; i++){
+            document.querySelector(`#categoryInputNew${num}`).innerHTML +=
+            `<option value="${global[i].name}">${global[i].name}</option>`
+        }
+
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
         tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd); 
         tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
-        tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
+        tr.appendChild(statusTd); tr.appendChild(categoryTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
         table.appendChild(tr);
 
     }
+
+
+function showNewCategories(num){
+    console.log(num);
+    var jsonData = global;
+    console.log(document.querySelector('#categoryInputNew15'));
+    var myselect2 = document.querySelector('#categoryInputNew' + num);
+    console.log(myselect2);
+            myselect2.innerHTML = "";
+            for (var i = 0; i < jsonData.length; i++) {
+                myselect2.innerHTML +=
+                `<option value="${jsonData[i].name}">${jsonData[i].name}</option>`
+            }
+}
 
     function addNewProduct(num){
 
@@ -291,8 +304,6 @@ function showCategories(num, category){
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
         var category = document.getElementById(`categoryInputNew${num}`).value;
-        var category = document.getElementById(`categoryInput${num}`);
-        var selectedCategory = category[category.selectedIndex].value;
         
         var request = {
             //"id": id,
