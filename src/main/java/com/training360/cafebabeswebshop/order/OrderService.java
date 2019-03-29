@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
+import com.training360.cafebabeswebshop.user.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ public class OrderService {
     private OrderDao orderDao;
     @Autowired
     private BasketDao basketDao;
+    @Autowired
+    private UserDao userDao;
 
 
     public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
@@ -48,8 +51,8 @@ public class OrderService {
 
     public long saveOrderAndGetId(Authentication authentication){
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        Order o = new Order(0, orderDao.getUserId(authentication.getName()),
-                countTotal(authentication), countSumQuantity(authentication), "ACTIVE");
+        Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
+                -1, -1, "ACTIVE");
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -62,11 +65,8 @@ public class OrderService {
     }
 
     public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
-        Order o = orderDao.findOrderById(orderId);
-        orderDao.reduceOrderQuantityAndPriceWhenDeleting(orderId, address);
         orderDao.deleteOneItemFromOrder(orderId,address);
-        o.setSumQuantity(o.getSumQuantity()-1);
-        if (o.getSumQuantity() == 0){
+        if (orderDao.findOrderById(orderId).getSumQuantity() == 0){
             orderDao.deleteOrder(orderId);
         }
     }
@@ -87,25 +87,8 @@ public class OrderService {
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
-                    new OrderedProduct(bi.getProductId(),
-                            order.getId(), bi.getPrice(), bi.getName(), bi.getPieces()));
+                    new OrderedProduct(
+                            bi.getProductId(), order.getId(), bi.getPrice(), bi.getName(), bi.getPieces()));
         }
     }
-
-    private int countSumQuantity(Authentication authentication){
-        int sum = 0;
-        for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
-            sum += bi.getPieces();
-        }
-        return sum;
-    }
-
-    private long countTotal(Authentication authentication){
-        long sum = 0;
-        for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
-            sum += bi.getPrice() * bi.getPieces();
-        }
-        return sum;
-    }
-
 }
