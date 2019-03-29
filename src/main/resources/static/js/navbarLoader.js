@@ -22,6 +22,7 @@ $.getJSON("/user-role", json => {
                 </button>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/adminproducts.html">Termékek adminisztrációja</a>
+                <a class="dropdown-item" href="/categories.html">Kategóriák adminisztrációja</a>
                 <a class="dropdown-item" href="/users.html">Felhasználók adminisztrációja</a>
                 <a class="dropdown-item" href="/orders.html">Rendelések adminisztrációja</a>
                 <div class="dropdown-divider"></div>
@@ -47,6 +48,7 @@ $.getJSON("/user-role", json => {
                     class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
+                <a class="dropdown-item" href="/myprofile.html">Saját adatlap</a>
                 <a class="dropdown-item" href="/myorders.html">Rendeléseim</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Kijelentkezés</a>
