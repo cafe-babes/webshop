@@ -21,8 +21,8 @@ public class OrderDao {
             rs.getLong("id"),
             rs.getTimestamp("purchase_date").toLocalDateTime(),
             rs.getLong("user_id"),
-            rs.getLong("sum(ordering_price*pieces)"),
-            rs.getLong("sum(pieces)"),
+            rs.getLong("total"),
+            rs.getLong("sum_quantity"),
             rs.getString("order_status")
     );
     private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
@@ -54,17 +54,19 @@ public class OrderDao {
 
     public Order findOrderById(long id) {
         return jdbcTemplate.queryForObject("SELECT id, purchase_date, user_id, " +
-                        "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = ?)," +
-                        "(SELECT sum(pieces) FROM ordered_products WHERE order_id = ?), " +
+                        "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS total," +
+                        "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS sum_quantity, " +
                         "order_status " +
                         "FROM orders WHERE id = ?",
-                ORDER_ROW_MAPPER, id, id, id);
+                ORDER_ROW_MAPPER, id);
     }
 
     public List<Order> listMyOrders(String username) {
-        return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
-                "from orders join users on users.id = orders.user_id " +
-                "where users.user_name = ? order by purchase_date desc"), ORDER_ROW_MAPPER, username);
+        return jdbcTemplate.query(("SELECT id, purchase_date, user_id, " +
+                "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS total," +
+                "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS sum_quantity, " +
+                "order_status FROM orders " +
+                "WHERE user_id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"), ORDER_ROW_MAPPER, username);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
@@ -84,7 +86,9 @@ public class OrderDao {
     }
 
     public List<Order> listAllOrders() {
-        return jdbcTemplate.query("select id, purchase_date, user_id, total, sum_quantity, order_status " +
+        return jdbcTemplate.query("select id, purchase_date, user_id, " +
+                "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS total, " +
+                "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS sum_quantity, order_status " +
                 "FROM orders order by purchase_date desc", ORDER_ROW_MAPPER);
     }
 
@@ -103,12 +107,6 @@ public class OrderDao {
     public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
         jdbcTemplate.update("delete ordered_products from ordered_products inner join products on product_id = products.id " +
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
-    }
-
-    public OrderedProduct findOrderedProductByProductAddress(long orderId, String address) throws DataAccessException {
-        return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces" +
-                        " from ordered_products join products on product_id = products.id where products.address = ? AND order_id = ?",
-                ORDERED_PRODUCT_ROW_MAPPER, address, orderId);
     }
 
     public void deleteOrder(long id) {

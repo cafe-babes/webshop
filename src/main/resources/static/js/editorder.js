@@ -121,7 +121,9 @@ function savePiece(num){
 
 
 function deleteItem(i){
-    var productId = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].productId;
+console.log(i);
+
+    var productId = document.getElementById(`deletebuttonOp${i}`).parentElement.parentElement['raw-data'].productId;
     fetch('/products/' + productId)
         .then(res => res.json())
         .then(data => {
@@ -130,7 +132,7 @@ function deleteItem(i){
 }
 
 function removeItemFromOrders(i, product){
-    var id = document.getElementById(`deletebutton${i}`).parentElement.parentElement['raw-data'].orderId;
+    var id = document.getElementById(`deletebuttonOp${i}`).parentElement.parentElement['raw-data'].orderId;
 
     console.log("/orders/" + id +"/" +  product.address);
     if (!confirm("Biztos, hogy törli a tételt?")) {
