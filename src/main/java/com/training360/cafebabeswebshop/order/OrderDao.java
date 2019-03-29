@@ -31,7 +31,7 @@ public class OrderDao {
             rs.getLong("order_id"),
             rs.getLong("ordering_price"),
             rs.getString("ordering_name"),
-            rs.getString("products.address")
+            rs.getInt("pieces")
     );
 
     private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User(
@@ -86,12 +86,13 @@ public class OrderDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
-                            "(product_id, order_id, ordering_price, ordering_name) values (?,?,?,?)",
+                            "(product_id, order_id, ordering_price, ordering_name, pieces) values (?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, orderedProduct.getProductId());
             ps.setLong(2, orderedProduct.getOrderId());
             ps.setLong(3, orderedProduct.getOrderingPrice());
             ps.setString(4, orderedProduct.getOrderingName());
+            ps.setInt(5, orderedProduct.getPieces());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -103,13 +104,13 @@ public class OrderDao {
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
+        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
                         "from ordered_products JOIN products ON product_id=products.id where order_id =?",
                 ORDERED_PRODUCT_ROW_MAPPER, id);
     }
 
     public List<OrderedProduct> listAllOrderedProduct() {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
+        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
                         "from ordered_products JOIN products ON product_id=products.id",
                 ORDERED_PRODUCT_ROW_MAPPER);
     }
@@ -120,7 +121,7 @@ public class OrderDao {
     }
 
     public OrderedProduct findOrderedProductByProductAddress(long orderId, String address) throws DataAccessException {
-        return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address" +
+        return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces" +
                         " from ordered_products join products on product_id = products.id where products.address = ? AND order_id = ?",
                 ORDERED_PRODUCT_ROW_MAPPER, address, orderId);
     }

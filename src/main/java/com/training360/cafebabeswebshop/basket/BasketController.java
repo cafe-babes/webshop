@@ -12,11 +12,10 @@ public class BasketController {
     @Autowired
     private BasketService basketService;
 
-    private int user_id_for_test = 1;
 
     @PostMapping("/basket/{address}")
-    public long saveBasketItemAndGetId(@PathVariable String address, Authentication authentication) {
-        return basketService.saveBasketItemAndGetId(address, authentication);
+    public long saveBasketItemAndGetId(@PathVariable String address, @RequestBody BasketItem basketItem, Authentication authentication) {
+        return basketService.saveBasketItemAndGetId(address, authentication, basketItem);
     }
 
 
