@@ -48,7 +48,7 @@ public class OrderService {
     public long saveOrderAndGetId(Authentication authentication){
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
         Order o = new Order(0, orderDao.getUserId(authentication.getName()),
-                countTotal(authentication), basketSize, "ACTIVE");
+                countTotal(authentication), countSumQuantity(authentication), "ACTIVE");
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -82,14 +82,22 @@ public class OrderService {
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
                     new OrderedProduct(bi.getProductId(),
-                            order.getId(), bi.getPrice(), bi.getName(), bi.getAddress()));
+                            order.getId(), bi.getPrice(), bi.getName(), bi.getPieces()));
         }
+    }
+
+    private int countSumQuantity(Authentication authentication){
+        int sum = 0;
+        for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
+            sum += bi.getPieces();
+        }
+        return sum;
     }
 
     private long countTotal(Authentication authentication){
         long sum = 0;
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
-            sum += bi.getPrice();
+            sum += bi.getPrice() * bi.getPieces();
         }
         return sum;
     }

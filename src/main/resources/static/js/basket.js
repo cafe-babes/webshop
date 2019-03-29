@@ -24,29 +24,78 @@ function showBasket(jsonData){
             `<div class="col-sm-7">
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
-                <h2><span id="amount">${jsonData[i].amount}</span> db</h2>
-                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="deleteOneItem('${jsonData[i].address}')">Töröl</button>
+                <label for = "changeQuantity">Darab</label> <br>
+                <input onclick = "changeSum(${jsonData[i].productId}, ${jsonData[i].pieces}, ${jsonData[i].price})"
+                id = "changeQuantity${jsonData[i].productId}"
+                type = "number" step = "1" value = ${jsonData[i].pieces} min="0" style = "width:40px;" > 
+                <br><br>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="getProductById('${jsonData[i].productId}')">Töröl</button>
                 <br>
             </div>
             `;
-        sum += jsonData[i].price;
+            var quantity = document.querySelector(`#changeQuantity${jsonData[i].productId}`).value;
+            
+            sum += jsonData[i].price * quantity;
+            
     }
-
+    
     document.getElementById("total-price").innerHTML = sum;
+    
+}
+
+function changeSum(productId, pieces, price){
+    console.log("szeva")
+   var previous_value = pieces;
+    var sum = parseInt(document.getElementById("total-price").innerHTML);
+    console.log(sum);
+       var value = document.getElementById(`changeQuantity${productId}`).value;
+       console.log('value',value);
+    sum += (pieces * -price) + (value * price);
+      /* if (previous_value > value) {
+           sum -= parseInt(price);
+           previous_value = value;
+        } else if (previous_value < value) {
+            sum += parseInt(price);
+            previous_value = value;
+       }*/
+      // document.getElementById("total-price").innerHTML = sum;
+       summarizer();
 
 }
 
-function deleteOneItem(address){
-    console.log(address);
-    var url = "/basket/" + address;
-    console.log(url)
-    return fetch(url, {
-        method: "DELETE"
-    })
-    .then(function(response){
-        fetchBasket();
-        basketRefresh();
-    })
+function summarizer(){
+    var sum = 0;
+    var productArr = document.querySelector('#list-product').children;
+    for (const key in productArr) {
+        if (productArr.hasOwnProperty(key)) {
+            const element = productArr[key].children;
+            var piece = parseInt(element[4].value);
+            console.log(piece);
+            var price = parseInt(element[1].firstElementChild.innerHTML);
+            console.log(price)
+            sum += piece * price;
+        }
+    }
+    document.getElementById("total-price").innerHTML = sum;
+}
+
+
+function getProductById(productId){
+fetch('/products/' + productId)
+    .then(res => res.json())
+    .then(data => { removeItemFromBasket(data) })
+}
+
+function removeItemFromBasket(product) {
+      var url = "/basket/" + product.address;
+      console.log(url)
+      return fetch(url, {
+              method: "DELETE"
+          })
+          .then(function (response) {
+              fetchBasket();
+              basketRefresh();
+          })
 }
 
 function emptyBasket() {
@@ -67,7 +116,7 @@ function checkIfEmpty(){
            return response.json();
        })
        .then(function(jsonData) {
-           console.log(jsonData);
+         //  console.log(jsonData);
            if(jsonData.length == 0){
                 alert("a kosár tartalma üres");
                 return;

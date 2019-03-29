@@ -7,23 +7,23 @@ public class OrderedProduct {
     private long orderId;
     private long orderingPrice;
     private String orderingName;
-    private String orderingAddress;
+    private int pieces;
 
-    public OrderedProduct(long id, long productId, long orderId, long orderingPrice, String orderingName, String orderingAddress) {
+    public OrderedProduct(long id, long productId, long orderId, long orderingPrice, String orderingName, int pieces) {
         this.id = id;
         this.productId = productId;
         this.orderId = orderId;
         this.orderingPrice = orderingPrice;
         this.orderingName = orderingName;
-        this.orderingAddress = orderingAddress;
+        this.pieces = pieces;
     }
 
-    public OrderedProduct(long productId, long orderId, long orderingPrice, String orderingName, String orderingAddress) {
+    public OrderedProduct(long productId, long orderId, long orderingPrice, String orderingName, int pieces) {
         this.productId = productId;
         this.orderId = orderId;
         this.orderingPrice = orderingPrice;
         this.orderingName = orderingName;
-        this.orderingAddress = orderingAddress;
+        this.pieces = pieces;
     }
 
     public long getId() {
@@ -66,11 +66,11 @@ public class OrderedProduct {
         this.orderingName = orderingName;
     }
 
-    public String getOrderingAddress() {
-        return orderingAddress;
+    public int getPieces() {
+        return pieces;
     }
 
-    public void setOrderingAddress(String orderingAddress) {
-        this.orderingAddress = orderingAddress;
+    public void setPieces(int pieces) {
+        this.pieces = pieces;
     }
 }

@@ -4,11 +4,13 @@ public class Basket {
     private long id;
     private long userId;
     private long productId;
+    private int pieces;
 
-    public Basket(long id, long userId, long productId) {
+    public Basket(long id, long userId, long productId, int pieces) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
+        this.pieces = pieces;
     }
 
     public long getId() {
@@ -33,5 +35,13 @@ public class Basket {
 
     public void setProductId(long productId) {
         this.productId = productId;
+    }
+
+    public int getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(int pieces) {
+        this.pieces = pieces;
     }
 }

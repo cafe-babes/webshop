@@ -4,15 +4,14 @@ public class BasketItem {
     private long productId;
     private String name;
     private int price;
-    private int amount;
-    private String address;
+    private int pieces;
 
-    public BasketItem(long productId, String name, int price, int amount, String address) {
+
+    public BasketItem(long productId, String name, int price, int pieces) {
         this.productId = productId;
         this.name = name;
         this.price = price;
-        this.amount = amount;
-        this.address = address;
+        this.pieces = pieces;
     }
 
     public String getName() {
@@ -39,19 +38,11 @@ public class BasketItem {
         this.price = price;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getPieces() {
+        return pieces;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPieces(int pieces) {
+        this.pieces = pieces;
     }
 }
