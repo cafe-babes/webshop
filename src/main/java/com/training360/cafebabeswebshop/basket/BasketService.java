@@ -17,6 +17,10 @@ public class BasketService {
         return basketDao.saveBasketItemAndGetId(address, authentication.getName(), basketItem);
     }
 
+    public void updateBasketItemPieces(BasketItem basketItem){
+        basketDao.updateBasketItemPieces(basketItem);
+    }
+
     public List<BasketItem> getBasketItems(Authentication authentication){
         return basketDao.getBasketItems(authentication.getName());
     }

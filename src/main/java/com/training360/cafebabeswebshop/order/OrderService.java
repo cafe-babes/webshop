@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,11 @@ public class OrderService {
         orderDao.updateOrderStatus(id, status);
     }
 
+    public void updateOrderedProductPiece(OrderedProduct op){
+        orderDao.updateOrderedProductPiece(op);
+    }
+
+
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
@@ -101,4 +107,5 @@ public class OrderService {
         }
         return sum;
     }
+
 }

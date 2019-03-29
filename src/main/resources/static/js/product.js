@@ -72,8 +72,7 @@ function addToBasket(){
         if(jsonData!=-1) {
             addGoToBasketButton();
             basketRefresh();
-        } else
-            alert("This product has already been added!")
+        } 
       })
 }
 
