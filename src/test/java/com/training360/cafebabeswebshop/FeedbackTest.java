@@ -57,7 +57,7 @@ public class FeedbackTest {
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
 
-        assertEquals("admin", feedbacks.get(0).getUser().getUserName());
+        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
         assertEquals("Awesome!", feedbacks.get(0).getFeedback());
 
     }
