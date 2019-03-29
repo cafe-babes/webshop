@@ -17,6 +17,7 @@ function fetchProduct() {
       return response.json();
     })
     .then(function (jsonData) {
+    console.log(jsonData);
       if (jsonData.status == 'NOT_OK') {
         showProductNotFound(jsonData);
       } else {
@@ -150,8 +151,6 @@ function showProduct(jsonData) {
   var name = document.getElementById('name');
   var manufacture = document.getElementById('manufacturer');
   var price = document.getElementById('price');
-  var reviewButton = document.getElementById('review-button');
-  reviewButton.innerHTML = '<a href = "#newReviewTarget" ><button type="button" class="btn btn-outline-primary" id="new-review" onclick="newReview()">Vélemény írása</button></a>';
 
   code.innerHTML = jsonData.code;
   name.innerHTML = jsonData.name;
@@ -160,25 +159,27 @@ function showProduct(jsonData) {
 }
 
 function newReview() {
-var reviews = document.getElementById('reviews');
-reviews += `
-<div class="container">
-           <input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box' required>
-          </div>
+console.log("velemeny");
+var reviewButton = document.getElementById('review-button');
+var reviewText = document.getElementById('review-text');
+
+
+
 }
 
 function showProductNotFound(jsonData) {
-  var productText = document.getElementById('product-text');
-  var pageNotFound = document.getElementById('page-not-found');
-  var picture = document.getElementById('picture');
-  var reviews = document.getElementById('reviews');
-  pageNotFound.innerHTML = ` <br>
-                                <div class="d-flex justify-content-center">
+    var productText = document.getElementById("product-text");
+    var pageNotFound = document.getElementById("page-not-found");
+    var picture = document.getElementById("picture");
+    var reviews = document.getElementById("reviews");
+    pageNotFound.innerHTML = ` <br>
+                                <div>
                                 <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
                                 </div><br>
                                 <div class="d-flex justify-content-center"><img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812"></div>
-                               <br>`;
-  productText.innerHTML = '';
-  picture.innerHTML = '';
-  reviews.innerHTML = '';
+                               <br>`
+    productText.innerHTML = "";
+    picture.innerHTML = "";
+    reviews.innerHTML = "";
 }
+
