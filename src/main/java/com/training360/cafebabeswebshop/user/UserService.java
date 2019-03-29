@@ -37,5 +37,7 @@ public class UserService {
     public User getUserById(long id) {
         return userDao.getUserById(id);
     }
-
+    public User getUserByName(String userName) {
+        return userDao.getUserByName(userName);
+    }
 }

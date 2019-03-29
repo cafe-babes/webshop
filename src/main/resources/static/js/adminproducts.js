@@ -1,6 +1,11 @@
 window.onload = function () {
     fetchProducts();
+    fetchCategories();
 }
+
+var global;
+
+//TODO: service-ben szűrés a category nevekre
 
 function fetchProducts() {
     fetch("/products")
@@ -9,28 +14,20 @@ function fetchProducts() {
         })
         .then(function (jsonData) {
             showTable(jsonData);
-            checkProductStatus(jsonData);
-        });
-
-         
+            console.log(jsonData);
+    });
 }
 
-var selector = document.querySelector("#checkStatus");
-selector.addEventListener('change', function (event) {
-    if (selector.checked) {
-        fetchProducts();
-    } else {
-        fetchProducts();
-    }
-});
-
-function checkProductStatus(jsonData) {
-    var checkStatus = document.querySelector("#checkStatus").checked;
-    if (checkStatus) {
-        showTable(jsonData);
-    } else {
-        showTable(jsonData.filter(e => e.productStatus == "ACTIVE"));
-    }
+function fetchCategories(){
+    fetch("/categories")
+    .then(function(response){
+        console.log(response);
+        return response.json();
+    })
+    .then(function(jsonData){
+        global = jsonData;
+    });
+    return false;
 }
 
 
@@ -46,7 +43,7 @@ function checkProductStatus(jsonData) {
         var idTdId = 'idTd' + i;
         idTd.setAttribute('id', idTdId);
         tr.appendChild(idTd);
-      
+
         var codeTd = document.createElement("td");
         codeTd.innerHTML = jsonData[i].code;
         var codeTdId = 'codeTd' + i;
@@ -82,6 +79,12 @@ function checkProductStatus(jsonData) {
         var statusTdId = 'statusTd' + i;
         statusTd.setAttribute('id', statusTdId);
         tr.appendChild(statusTd);
+
+        var categoryTd = document.createElement("td");
+        categoryTd.innerHTML = jsonData[i].category.name;
+        var categoryTdId = 'categoryTd' + i;
+        categoryTd.setAttribute('id', categoryTdId);
+        tr.appendChild(categoryTd);
 
         var editButtonTd = document.createElement("td");
         var editButton = document.createElement("button");
@@ -125,31 +128,46 @@ function checkProductStatus(jsonData) {
 }
 
     function editTds(num){
-
         var code = document.getElementById(`codeTd${num}`);
         var address = document.getElementById(`addressTd${num}`);
         var name = document.getElementById(`nameTd${num}`);
         var manu = document.getElementById(`manTd${num}`);
         var price = document.getElementById(`priceTd${num}`);
+        var category = document.getElementById(`categoryTd${num}`);
+        selectedCategory = category.innerHTML;
 
         var codeData = code.innerHTML;
         var addressData = address.innerHTML;
         var nameData = name.innerHTML;
         var manuData = manu.innerHTML;
         var priceData = price.innerHTML;
+        var categoryData = category.innerHTML;
 
         code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
         address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}' required>`
         name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}' required>`
         manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
         price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
-    
+        category.innerHTML = `<select id="selectInput${num}" class='form-control' value='${categoryData}'  required>`
 
         var edit = document.getElementById(`editbutton${num}`);
         edit.style.display = 'none';
         var save = document.getElementById(`savebutton${num}`);
         save.style.display = 'inline';
+        showCategories(num, selectedCategory);
     }
+
+
+function showCategories(num, category){
+        var jsonData = global;
+        var myselect2 = document.querySelector('#selectInput' + num);
+        myselect2.innerHTML = "";
+        for (var i = 0; i < jsonData.length; i++) {
+            myselect2.innerHTML +=
+            `<option value="${jsonData[i].name}">${jsonData[i].name}</option>`
+        }
+}
+
 
     function saveTds(num){
 
@@ -160,7 +178,12 @@ function checkProductStatus(jsonData) {
         var name = document.getElementById(`nameInput${num}`).value;
         var manu = document.getElementById(`manInput${num}`).value;
         var price = document.getElementById(`priceInput${num}`).value;
+        var category = document.getElementById(`selectInput${num}`).value;
+        console.log(category);
+        console.log(global);
+        console.log(num);
 
+        //TODO category mentése
         var request = {
             "id": id,
             "code": code,
@@ -168,7 +191,12 @@ function checkProductStatus(jsonData) {
             "name": name,
             "manufacture": manu,
             "price": price,
+            "category" : {
+                "name" : category
+            }
         }
+
+        console.log(request);
 
         fetch("/products/" + id, {
                 method: "POST",
@@ -188,8 +216,10 @@ function checkProductStatus(jsonData) {
                document.getElementById(`nameTd${num}`).innerHTML = name;
                document.getElementById(`manTd${num}`).innerHTML = manu;
                document.getElementById(`priceTd${num}`).innerHTML = price;
+               document.getElementById(`categoryTd${num}`).innerHTML = category;
             
                 fetchProducts();
+                fetchCategories();
                document.getElementById("message-div").setAttribute("class", "alert alert-success");
                document.getElementById("message-div").innerHTML = "Frissítve";
             } else {
@@ -218,6 +248,8 @@ function checkProductStatus(jsonData) {
         var priceTd = document.createElement('td');
         priceTd.setAttribute('id', `priceTd${num}`);
         var statusTd = document.createElement('td');
+        var categoryTd = document.createElement('td');
+        categoryTd.setAttribute('id', `categoryTd${num}`);
         var saveButtonTd = document.createElement('td');
         var saveButton = document.createElement('button');
         saveButton.setAttribute('class', 'btn');
@@ -235,15 +267,36 @@ function checkProductStatus(jsonData) {
         manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
         statusTd.innerHTML = 'ACTIVE';
+        categoryTd.innerHTML = `<select id="categoryInputNew${num}" class='form-control' required>`
+        console.log(num);
+
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
         tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd); 
         tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
-        tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
+        tr.appendChild(statusTd); tr.appendChild(categoryTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
         table.appendChild(tr);
+        for(var i = 0; i < global.length; i++){
+            document.querySelector(`#categoryInputNew${num}`).innerHTML +=
+            `<option value="${global[i].name}">${global[i].name}</option>`
+        }
 
     }
+
+
+function showNewCategories(num){
+    console.log(num);
+    var jsonData = global;
+    console.log(document.querySelector('#categoryInputNew15'));
+    var myselect2 = document.querySelector('#categoryInputNew' + num);
+    console.log(myselect2);
+            myselect2.innerHTML = "";
+            for (var i = 0; i < jsonData.length; i++) {
+                myselect2.innerHTML +=
+                `<option value="${jsonData[i].name}">${jsonData[i].name}</option>`
+            }
+}
 
     function addNewProduct(num){
 
@@ -252,6 +305,7 @@ function checkProductStatus(jsonData) {
         var name = document.getElementById(`nameInputNew${num}`).value;
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
+        var category = document.getElementById(`categoryInputNew${num}`).value;
         
         var request = {
             //"id": id,
@@ -260,7 +314,8 @@ function checkProductStatus(jsonData) {
             "name": name,
             "manufacture": manu,
             "price": price,
-            "product_status": "ACTIVE"
+            "product_status": "ACTIVE",
+            "category" : category
         }
 
         fetch("/products", {
@@ -281,6 +336,7 @@ function checkProductStatus(jsonData) {
                 document.getElementById(`nameTd${num}`).innerHTML = name;
                 document.getElementById(`manTd${num}`).innerHTML = manu;
                 document.getElementById(`priceTd${num}`).innerHTML = price;
+                document.getElementById(`categoryTd${num}`).innerHTML = category;
                 fetchProducts();
                 document.getElementById("message-div").setAttribute("class", "alert alert-success");
                 document.getElementById("message-div").innerHTML = "Új termék hozzáadva";

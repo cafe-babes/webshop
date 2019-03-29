@@ -64,6 +64,12 @@ public class ProductController {
                 return new ResultStatus(ResultStatusE.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
             }
         } else {
+            System.out.println(validator.isValid(product.getCode()));
+            System.out.println(validator.isValid(product.getName()));
+            System.out.println(validator.isValid(product.getAddress()));
+            System.out.println(validator.isValid(product.getManufacture()));
+            System.out.println(validator.isValidPrice(product.getPrice()));
+            System.out.println(validator.isValid(product.getCategory().getName()));
             return new ResultStatus(ResultStatusE.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
         }
     }
