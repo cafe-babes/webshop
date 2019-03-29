@@ -1,5 +1,6 @@
 window.onload = function () {
     fetchProducts();
+    fetchCategories();
 }
 
 var fetchAgain = true;
@@ -138,7 +139,8 @@ function fetchCategories(){
         var manu = document.getElementById(`manTd${num}`);
         var price = document.getElementById(`priceTd${num}`);
         var category = document.getElementById(`categoryTd${num}`);
-        console.log("category:" + category);
+        selectedCategory = category.innerHTML;
+        console.log("category:" + selectedCategory);
         console.log("num:" + num);
 
         var codeData = code.innerHTML;
@@ -153,35 +155,30 @@ function fetchCategories(){
         name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}' required>`
         manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
         price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
-        category.innerHTML = `<select id="selectInput${num}" class='form-control' value='${categoryData}' onclick="onChange(${num})"  required>`
+        category.innerHTML = `<select id="selectInput${num}" class='form-control' value='${categoryData}'  required>`
 
         var edit = document.getElementById(`editbutton${num}`);
         edit.style.display = 'none';
         var save = document.getElementById(`savebutton${num}`);
         save.style.display = 'inline';
+        showCategories(num, selectedCategory);
     }
 
-    function onChange(num){
-        console.log(jdc);
-        if(jdc == ""){
-            fetchCategories();
-        }
-            showCategories(num);
-    }
 
-        function showCategories(num){
+function showCategories(num, category){
+        console.log(category);
         console.log(global);
         var jsonData = global;
         console.log(jsonData);
-            var myselect2 = document.querySelector('#selectInput' + num);
-            console.log(myselect2);
-            myselect2.append($('<option disabled selected value ></option >').val(""));
-
-            for (var i = 0; i < jsonData.length; i++) {
-                myselect2.append($('<option></option>').val(jsonData[i].name).html(jsonData[i].name));
-            }
-
+        console.log(num);
+        var myselect2 = document.querySelector('#selectInput' + num);
+        console.log(myselect2);
+        myselect2.innerHTML = "";
+        for (var i = 0; i < jsonData.length; i++) {
+            myselect2.innerHTML +=
+            `<option value="${jsonData[i].name}">${jsonData[i].name}</option>`
         }
+}
 
     function saveTds(num){
 
@@ -192,8 +189,8 @@ function fetchCategories(){
         var name = document.getElementById(`nameInput${num}`).value;
         var manu = document.getElementById(`manInput${num}`).value;
         var price = document.getElementById(`priceInput${num}`).value;
-        var category = document.getElementById(`categoryInput${num}`);
-        var selectedCategory = category[category.selectedIndex].value;
+        var category = document.getElementById(`selectInput${num}`).value;
+        console.log(category);
 
         var request = {
             "id": id,
@@ -202,8 +199,10 @@ function fetchCategories(){
             "name": name,
             "manufacture": manu,
             "price": price,
-            "category" : selectedCategory
+            "category" : category
         }
+
+        console.log(request);
 
         fetch("/products/" + id, {
                 method: "POST",
@@ -226,6 +225,7 @@ function fetchCategories(){
                document.getElementById(`categoryTd${num}`).innerHTML = category;
             
                 fetchProducts();
+                fetchCategories();
                document.getElementById("message-div").setAttribute("class", "alert alert-success");
                document.getElementById("message-div").innerHTML = "Frissítve";
             } else {

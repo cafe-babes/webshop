@@ -13,7 +13,8 @@ public class ProductValidator {
                 isValid(product.getName()) &&
                 isValid(product.getAddress()) &&
                 isValid(product.getManufacture()) &&
-                isValidPrice(product.getPrice());
+                isValidPrice(product.getPrice()) &&
+                isValid(product.getCategory().getName());
     }
 
     public boolean isValid(String str) {
