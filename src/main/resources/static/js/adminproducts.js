@@ -3,9 +3,9 @@ window.onload = function () {
     fetchCategories();
 }
 
-var fetchAgain = true;
-var jdc= "";
-var globnum = 0;
+//var fetchAgain = true;
+//var jdc= "";
+//var globnum = 0;
 var global;
 
 //TODO: service-ben szűrés a category nevekre
@@ -20,7 +20,7 @@ function fetchProducts() {
             console.log(jsonData);
     });
 }
-//TODO: category paraméter
+
 function fetchCategories(){
     fetch("/categories")
     .then(function(response){
@@ -29,7 +29,6 @@ function fetchCategories(){
     })
     .then(function(jsonData){
         global = jsonData;
-//        showCategories(jsonData);
 
     });
     return false;
