@@ -191,7 +191,9 @@ function showCategories(num, category){
             "name": name,
             "manufacture": manu,
             "price": price,
-            "category" : category
+            "category" : {
+                "name" : category
+            }
         }
 
         console.log(request);
@@ -267,10 +269,6 @@ function showCategories(num, category){
         statusTd.innerHTML = 'ACTIVE';
         categoryTd.innerHTML = `<select id="categoryInputNew${num}" class='form-control' required>`
         console.log(num);
-        for(var i = 0; i < global.length; i++){
-            document.querySelector(`#categoryInputNew${num}`).innerHTML +=
-            `<option value="${global[i].name}">${global[i].name}</option>`
-        }
 
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
@@ -279,6 +277,10 @@ function showCategories(num, category){
         tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
         tr.appendChild(statusTd); tr.appendChild(categoryTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
         table.appendChild(tr);
+        for(var i = 0; i < global.length; i++){
+            document.querySelector(`#categoryInputNew${num}`).innerHTML +=
+            `<option value="${global[i].name}">${global[i].name}</option>`
+        }
 
     }
 
