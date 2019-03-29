@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.Result;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -28,10 +28,11 @@ public class ProductController {
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address) {
         validator = new ProductValidator(productService);
-        if (validator.isEmpty(address)) {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
-        } else {
+        List<String> addresses = productService.getProducts().stream().map(p -> p.getAddress()).collect(Collectors.toList());
+        if (validator.isValid(address) && addresses.contains(address)) {
             return productService.getProduct(address);
+        } else {
+            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
         }
     }
 
