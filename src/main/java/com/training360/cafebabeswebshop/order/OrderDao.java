@@ -142,4 +142,8 @@ public class OrderDao {
     public void updateOrderStatus(long id, String status) {
         jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
     }
+
+    public void updateOrderedProductPiece(OrderedProduct op){
+        jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
+    }
 }

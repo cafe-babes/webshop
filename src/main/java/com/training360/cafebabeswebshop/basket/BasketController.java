@@ -35,4 +35,9 @@ public class BasketController {
     public void deleteOneItem(Authentication authentication, @PathVariable String address){
         basketService.deleteOneItem(authentication, address);
     }
+
+    @PostMapping("/basket")
+    public void updateBasketItemPieces(@RequestBody BasketItem basketItem){
+        basketService.updateBasketItemPieces(basketItem);
+    }
 }

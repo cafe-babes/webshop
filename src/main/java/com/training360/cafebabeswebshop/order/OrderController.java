@@ -92,4 +92,9 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/orders/piece")
+    public void updateOrderedProductPiece(@RequestBody OrderedProduct op){
+        orderService.updateOrderedProductPiece(op);
+    }
+
 }

@@ -21,11 +21,11 @@ function showBasket(jsonData){
     for(var i = 0; i < jsonData.length; i++){
      console.log("ok");
         container.innerHTML +=
-            `<div class="col-sm-7">
+            `<div class="col-sm-7" id="${jsonData[i].productId}">
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
                 <label for = "changeQuantity">Darab</label> <br>
-                <input onclick = "changeSum(${jsonData[i].productId}, ${jsonData[i].pieces}, ${jsonData[i].price})"
+                <input onclick = "summarizer(${jsonData[i].productId})"
                 id = "changeQuantity${jsonData[i].productId}"
                 type = "number" step = "1" value = ${jsonData[i].pieces} min="0" style = "width:40px;" > 
                 <br><br>
@@ -43,27 +43,8 @@ function showBasket(jsonData){
     
 }
 
-function changeSum(productId, pieces, price){
-    console.log("szeva")
-   var previous_value = pieces;
-    var sum = parseInt(document.getElementById("total-price").innerHTML);
-    console.log(sum);
-       var value = document.getElementById(`changeQuantity${productId}`).value;
-       console.log('value',value);
-    sum += (pieces * -price) + (value * price);
-      /* if (previous_value > value) {
-           sum -= parseInt(price);
-           previous_value = value;
-        } else if (previous_value < value) {
-            sum += parseInt(price);
-            previous_value = value;
-       }*/
-      // document.getElementById("total-price").innerHTML = sum;
-       summarizer();
 
-}
-
-function summarizer(){
+function summarizer(productId){
     var sum = 0;
     var productArr = document.querySelector('#list-product').children;
     for (const key in productArr) {
@@ -77,6 +58,25 @@ function summarizer(){
         }
     }
     document.getElementById("total-price").innerHTML = sum;
+    updatePieces(productId, piece);
+}
+
+function updatePieces(productId, piece) {
+var request = {
+    "pieces": piece,
+    "productId": productId
+}
+
+fetch("/basket", {
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(function (response) {
+        return response;
+    })
 }
 
 
