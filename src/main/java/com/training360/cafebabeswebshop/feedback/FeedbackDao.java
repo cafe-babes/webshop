@@ -21,7 +21,7 @@ public class FeedbackDao {
     ProductDao productDao;
 
     private  final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
-            rs.getInt("id"),
+            rs.getLong("id"),
             rs.getTimestamp("feedback_date").toLocalDateTime(),
             rs.getString("feedback"),
             rs.getInt("rating"),
@@ -36,10 +36,7 @@ public class FeedbackDao {
     }
 
     public List<Feedback> listFeedBacksByProductId(long productId) {
-        return jdbcTemplate.query("select id, feedback_date, feedback, rating, user_id, product_id \n" +
-                        "from feedback \n" +
-                        "where product_id = ? \n" +
-                        "ORDER BY feedback_date DESC",
+        return jdbcTemplate.query("SELECT `id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id` FROM `feedback` WHERE product_id = ? ORDER BY feedback_date DESC",
                 FEEDBACK_ROW_MAPPER, productId);
     }
 

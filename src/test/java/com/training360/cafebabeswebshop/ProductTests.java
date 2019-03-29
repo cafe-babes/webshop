@@ -87,11 +87,13 @@ public class ProductTests {
 	}
 
 	@Test
-	public void testFindById(){
+	public void getProductById(){
 		// When
 		Product searchedProduct = productController.getProductById(14);
 		//Then
 		assertEquals(14, searchedProduct.getId());
+		assertEquals("Pyzel", searchedProduct.getManufacture());
+		assertEquals("Bastard", searchedProduct.getName());
 	}
 
 }

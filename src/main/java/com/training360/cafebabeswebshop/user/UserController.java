@@ -82,4 +82,9 @@ public class UserController {
         }
         return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");//TODO
     }
+
+    @GetMapping("/users/{id}")
+    public User getUserById(@PathVariable long id) {
+        return userService.getUserById(id);
+    }
 }
