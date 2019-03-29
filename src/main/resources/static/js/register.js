@@ -28,7 +28,7 @@ function handleFormSubmit() {
                 div.setAttribute("class", "alert alert-success")
                 div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
                 setTimeout(function(){
-                window.location.href = "/login";
+                window.location.href = "/login.html";
                 }, 1000);
              } else {
                 div.innerHTML = json.message;

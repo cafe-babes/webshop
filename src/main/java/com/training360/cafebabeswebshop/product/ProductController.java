@@ -21,7 +21,7 @@ public class ProductController {
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address) {
         validator = new ProductValidator(productService);
-        if (validator.isValidAddress(address)) {
+        if (validator.isEmpty(address)) {
             return productService.getProduct(address);
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
@@ -34,12 +34,13 @@ public class ProductController {
         if (validator.isValidProduct(product)) {
             try {
                 long id = productService.saveProductAndGetId(product);
-                return new ResultStatus(ResultStatusE.OK, String.format("Product successfully created with id %d", id));
+                return new ResultStatus(ResultStatusE.OK, String.format("Termék sikeresen hozzáadva! (termék id: %d )", id));
             } catch (DataAccessException sql) {
-                return new ResultStatus(ResultStatusE.NOT_OK, "Product address or code already in use");
+                sql.printStackTrace();
+                return new ResultStatus(ResultStatusE.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
             }
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Create not successful!");
+            return new ResultStatus(ResultStatusE.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
         }
     }
 
@@ -49,12 +50,13 @@ public class ProductController {
         if (validator.isValidProduct(product)) {
             try {
                 productService.updateProducts(id, product);
-                return new ResultStatus(ResultStatusE.OK, "Product successfully updated");
+                return new ResultStatus(ResultStatusE.OK, "Termék sikeresen módosítva!");
             } catch (DataAccessException sql) {
-                return new ResultStatus(ResultStatusE.NOT_OK, "Product address or code already in use");
+                sql.printStackTrace();
+                return new ResultStatus(ResultStatusE.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
             }
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Update not successful!");
+            return new ResultStatus(ResultStatusE.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
         }
     }
 

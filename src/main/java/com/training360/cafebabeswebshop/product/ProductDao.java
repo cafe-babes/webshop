@@ -40,7 +40,8 @@ public class ProductDao {
     public Product getProduct(String address) {
         try {
             return jdbcTemplate.queryForObject("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                            "FROM products LEFT JOIN category ON category_id=category.id where address = ?",
+                            "FROM products LEFT JOIN category ON category_id=category.id " +
+                            "WHERE address = ?",
                     PRODUCT_ROW_MAPPER, address);
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalStateException();
@@ -49,14 +50,15 @@ public class ProductDao {
 
     public List<Product> getProducts() {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products LEFT JOIN category ON category_id=category.id WHERE product_status = 'ACTIVE' order by products.name, manufacture",
+                        "FROM products LEFT JOIN category ON category_id=category.id " +
+                        "WHERE product_status = 'ACTIVE' ORDER BY category.ordinal, products.name, manufacture",
                 PRODUCT_ROW_MAPPER);
     }
 
     public List<Product> getProductsWithStartAndSize(int start, int size) {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                         "FROM products LEFT JOIN category ON category_id=category.id" +
-                        "WHERE product_status = 'ACTIVE' order by products.name, manufacture LIMIT ? OFFSET ?",
+                        "WHERE product_status = 'ACTIVE' ORDER BY category.ordinal, products.name, manufactureLIMIT ? OFFSET ?",
                 PRODUCT_ROW_MAPPER,
                 size,
                 start
@@ -66,7 +68,7 @@ public class ProductDao {
     public long saveProductAndGetId(Product product) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) values (?,?,?,?,?,?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) values (?,?,?,?,?,?,(SELECT id FROM category WHERE name=?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getCode());
             ps.setString(2, product.getAddress());
@@ -74,7 +76,7 @@ public class ProductDao {
             ps.setString(4, product.getManufacture());
             ps.setDouble(5, product.getPrice());
             ps.setString(6, "ACTIVE");
-            ps.setLong(7, product.getCategory().getId());
+            ps.setString(7, product.getCategory().getName());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -95,8 +97,6 @@ public class ProductDao {
     public void deleteProduct(long id) {
         jdbcTemplate.update("update products set product_status = 'DELETED' where id = ?", id);
     }
-
-
 
     public Product getProductById(long id) {
         return jdbcTemplate.queryForObject("SELECT products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +

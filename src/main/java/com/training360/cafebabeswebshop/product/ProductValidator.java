@@ -1,8 +1,5 @@
 package com.training360.cafebabeswebshop.product;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class ProductValidator {
 
     private ProductService productService;
@@ -12,28 +9,15 @@ public class ProductValidator {
     }
 
     public boolean isValidProduct(Product product){
-        return isValidCode(product.getCode()) &&
-                isValidName(product.getName()) &&
-                isValidAddress(product.getAddress()) &&
-                isValidManufacture(product.getManufacture()) &&
+        return isEmpty(product.getCode()) &&
+                isEmpty(product.getName()) &&
+                isEmpty(product.getAddress()) &&
+                isEmpty(product.getManufacture()) &&
                 isValidPrice(product.getPrice());
     }
 
-    public boolean isValidAddress(String address){
-        List<String> addresses = productService.getProducts().stream().map(product -> product.getAddress()).collect(Collectors.toList());
-        return address != null && !address.trim().equals("") && addresses.contains(address);
-    }
-
-    private boolean isValidCode(String code) {
-        return (code != null && !code.trim().equals(""));
-    }
-
-    private boolean isValidName(String name){
-        return (name != null && !name.trim().equals(""));
-    }
-
-    private boolean isValidManufacture(String manufacture){
-        return (manufacture != null && !manufacture.trim().equals(""));
+    public boolean isEmpty(String str) {
+        return (str != null && !str.trim().equals(""));
     }
 
     private boolean isValidPrice(int price){
