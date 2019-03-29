@@ -68,7 +68,8 @@ public class ProductDao {
     public long saveProductAndGetId(Product product) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) values (?,?,?,?,?,?,(SELECT id FROM category WHERE name=?))",
+            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) " +
+                            "values (?,?,?,?,?,?,(SELECT id FROM category WHERE name=?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getCode());
             ps.setString(2, product.getAddress());
@@ -84,13 +85,13 @@ public class ProductDao {
 
     public void updateProduct(long id, Product product) throws DataAccessException {
         jdbcTemplate.update("update products set code = ?, address = ?, name = ?, manufacture = ?, price = ?, " +
-                        "category_id = ? where id = ?",
+                        "category_id = (SELECT id FROM category WHERE name=?) where id = ?",
                 product.getCode(),
                 product.getAddress(),
                 product.getName(),
                 product.getManufacture(),
                 product.getPrice(),
-                product.getCategory().getId(),
+                product.getCategory().getName(),
                 id);
     }
 
