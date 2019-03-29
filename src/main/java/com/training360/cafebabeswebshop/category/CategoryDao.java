@@ -55,4 +55,8 @@ public class CategoryDao {
     public List<String> getCategoryNames(){
         return jdbcTemplate.query("select name from category", (resultSet, i) -> resultSet.getString("name"));
     }
+
+    public void deleteCategory(long id) {
+        jdbcTemplate.update("delete from category where id = ?", id);
+    }
 }
