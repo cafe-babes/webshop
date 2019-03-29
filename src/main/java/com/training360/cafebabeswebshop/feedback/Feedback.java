@@ -18,8 +18,7 @@ Feedback {
     public Feedback() {
     }
 
-    public Feedback(long id, String feedback, int rating, User user, Product product) {
-        this.id = id;
+    public Feedback(String feedback, int rating, User user, Product product) {
         this.feedbackDate = LocalDateTime.now();
         this.feedback = feedback;
         this.rating = rating;

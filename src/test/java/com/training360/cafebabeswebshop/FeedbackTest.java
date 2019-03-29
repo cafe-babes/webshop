@@ -52,7 +52,7 @@ public class FeedbackTest {
         User exampleUser = userService.listUsers().get(0);
         Product exampleproduct = productService.getProductById(1);
 
-        feedbackService.giveAFeedback(new Feedback(5,"Awesome!",5,exampleUser,
+        feedbackService.giveAFeedback(new Feedback("Awesome!",5,exampleUser,
                 exampleproduct));
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());

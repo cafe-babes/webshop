@@ -3,11 +3,17 @@ window.onload = function () {
 };
 console.log((new URL(document.location)).searchParams.get('address'));
 
+var product;
+var user;
+
 $.getJSON('/user-role', json => {
+user = {json};
   if (json.role != 'VISITOR') {
     document.querySelector('#addToBasketButton').hidden = false;
   }
 });
+
+
 
 function fetchProduct() {
   var address = (new URL(document.location)).searchParams.get('address');
@@ -21,7 +27,7 @@ function fetchProduct() {
       if (jsonData.status == 'NOT_OK') {
         showProductNotFound(jsonData);
       } else {
-        console.log(jsonData);
+        product = {jsonData};
         var productId = jsonData.id;
         fetchFeedback(productId);
         showProduct(jsonData);
@@ -160,10 +166,32 @@ function showProduct(jsonData) {
 
 function newReview() {
 console.log("velemeny");
+var dateNow = new Date(Date.now()).toISOString().substring(0,19);
 var reviewButton = document.getElementById('review-button');
 var reviewText = document.getElementById('review-text');
-
-
+console.log(user);
+console.log(product);
+var request =
+                    {
+                            "feedbackDate": dateNow,
+                            "feedback": reviewText.value,
+                            "rating": 5,
+                            "user": {user},
+                            "product": {product}
+                        }
+            fetch("/feedback" , {
+                    method: "POST",
+                    body: JSON.stringify(request),
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                }).then(function (response) {
+                                      return response.json();
+                                  }).
+                              then(function (jsonData) {
+                              console.log(jsonData);
+                              });
+                              return false;
 
 }
 
