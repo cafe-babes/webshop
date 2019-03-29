@@ -1,5 +1,8 @@
 package com.training360.cafebabeswebshop.product;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ProductValidator {
 
     private ProductService productService;
@@ -17,7 +20,8 @@ public class ProductValidator {
     }
 
     public boolean isEmpty(String str) {
-        return (str != null && !str.trim().equals(""));
+        List<String> address = productService.getProducts().stream().map(p -> p.getAddress()).collect(Collectors.toList());
+        return str == null || str.trim().equals("") || !address.contains(str);
     }
 
     private boolean isValidPrice(int price){

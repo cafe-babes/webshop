@@ -36,9 +36,7 @@ public class FeedbackDao {
     }
 
     public List<Feedback> listFeedBacksByProductId(long productId) {
-        return jdbcTemplate.query("SELECT `id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id` FROM `feedback`\n" +
-                        "WHERE product_id = ?\n" +
-                        "ORDER BY feedback_date DESC",
+        return jdbcTemplate.query("SELECT `id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id` FROM `feedback` WHERE product_id = ? ORDER BY feedback_date DESC",
                 FEEDBACK_ROW_MAPPER, productId);
     }
 

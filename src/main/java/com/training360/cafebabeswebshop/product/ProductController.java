@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.List;
 
 @RestController
@@ -18,13 +19,19 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/product")
+    public ResultStatus getIncorrectProduct(){
+        return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
+    }
+
+
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address) {
         validator = new ProductValidator(productService);
         if (validator.isEmpty(address)) {
-            return productService.getProduct(address);
-        } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
+        } else {
+            return productService.getProduct(address);
         }
     }
 
