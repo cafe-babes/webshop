@@ -1,3 +1,8 @@
+window.onload = function () {
+    fetchOrders();
+}
+
+
 function handleFormSubmit() {
 
     var div = document.querySelector('#response-box');
@@ -12,7 +17,7 @@ function handleFormSubmit() {
         "userName" : form.username.value,
         "password" : form.password.value
         }
-    fetch("/users",{
+    fetch("/users/" + id,{
              method: "POST",
              body: JSON.stringify(request),
              headers:{
@@ -26,7 +31,7 @@ function handleFormSubmit() {
              console.log(json);
              if(json.resultStatusEnum=="OK") {
                 div.setAttribute("class", "alert alert-success")
-                div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
+                div.innerHTML = "Sikeres módosítás! Átirányítunk...";
                 setTimeout(function(){
                 window.location.href = "/login.html";
                 }, 1000);
