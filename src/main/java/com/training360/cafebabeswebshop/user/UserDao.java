@@ -14,24 +14,23 @@ import java.util.List;
 @Repository
 public class UserDao {
 
-    private JdbcTemplate jdbcTemplate;
-
     private static final RowMapper<User> USER_ROW_MAPPER = ((rs, i) -> new User(
-                    rs.getLong("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("user_name"),
-                    rs.getString("password"),
-                    rs.getInt("enabled"),
-                    rs.getString("role"),
-                    rs.getString("user_status")));
+            rs.getLong("id"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getString("user_name"),
+            rs.getString("password"),
+            rs.getInt("enabled"),
+            rs.getString("role"),
+            rs.getString("user_status")));
+    private JdbcTemplate jdbcTemplate;
 
     public UserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<User> listUsers() {
-        return jdbcTemplate.query("SELECT `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users`", USER_ROW_MAPPER );
+        return jdbcTemplate.query("SELECT `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users`", USER_ROW_MAPPER);
     }
 
     public void deleteUserById(long id) {
@@ -48,18 +47,22 @@ public class UserDao {
     public long insertUserAndGetId(User user) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            jdbcTemplate.update(connection -> {
-                        PreparedStatement ps =
-                                connection.prepareStatement("INSERT INTO users(name, enabled, user_name, password) VALUES ( ?, ?, ?, ?)",
-                                        Statement.RETURN_GENERATED_KEYS);
-                        ps.setString(1, user.getName());
-                        ps.setInt(2, 1);
-                        ps.setString(3, user.getUserName());
-                        ps.setString(4, user.getPassword());
-                        return ps;
-                    }, keyHolder
-            );
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps =
+                            connection.prepareStatement("INSERT INTO users(name, enabled, user_name, password) VALUES ( ?, ?, ?, ?)",
+                                    Statement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, user.getName());
+                    ps.setInt(2, 1);
+                    ps.setString(3, user.getUserName());
+                    ps.setString(4, user.getPassword());
+                    return ps;
+                }, keyHolder
+        );
 
         return keyHolder.getKey().longValue();
+    }
+
+    public User getUserById(long id) {
+        return jdbcTemplate.queryForObject("select `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users` where id = ? ", USER_ROW_MAPPER, id);
     }
 }

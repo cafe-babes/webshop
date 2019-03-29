@@ -101,7 +101,16 @@ function showProduct(jsonData) {
 
 function showProductNotFound(jsonData){
     var productText = document.getElementById("product-text");
+    var pageNotFound = document.getElementById("page-not-found");
     var picture = document.getElementById("picture");
-    productText.innerHTML = "Sajnálom, ilyen termékkel nem rendelkezünk !";
+    var reviews = document.getElementById("reviews");
+    pageNotFound.innerHTML = ` <br>
+                                <div class="d-flex justify-content-center">
+                                <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
+                                </div><br>
+                                <div class="d-flex justify-content-center"><img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812"></div>
+                               <br>`
+    productText.innerHTML = "";
     picture.innerHTML = "";
+    reviews.innerHTML = "";
 }

@@ -9,27 +9,15 @@ public class ProductValidator {
     }
 
     public boolean isValidProduct(Product product){
-        return isValidCode(product.getCode()) &&
-                isValidName(product.getName()) &&
-                isValidAddress(product.getAddress()) &&
-                isValidManufacture(product.getManufacture()) &&
+        return isValid(product.getCode()) &&
+                isValid(product.getName()) &&
+                isValid(product.getAddress()) &&
+                isValid(product.getManufacture()) &&
                 isValidPrice(product.getPrice());
     }
 
-    public boolean isValidAddress(String address){
-        return address != null && !address.trim().equals("");
-    }
-
-    private boolean isValidCode(String code) {
-        return (code != null && !code.trim().equals(""));
-    }
-
-    private boolean isValidName(String name){
-        return (name != null && !name.trim().equals(""));
-    }
-
-    private boolean isValidManufacture(String manufacture){
-        return (manufacture != null && !manufacture.trim().equals(""));
+    public boolean isValid(String str) {
+        return (str != null && !str.trim().equals(""));
     }
 
     private boolean isValidPrice(int price){

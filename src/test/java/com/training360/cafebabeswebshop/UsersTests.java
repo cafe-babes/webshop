@@ -42,15 +42,15 @@ public class UsersTests {
         List<User> users = userController.listUsers();
 
         // When (adding a user)
-        userController.createUser(new User(5L, "Ciara Doe", "a@eee.com","cccdoe","asdf",1,
+        userController.createUser(new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "asdf", 1,
                 "ROLE_USER", "ACTIVE"));
 
         //Then (size of user is increased by one)
-        assertEquals(users.size()+1, userController.listUsers().size());
+        assertEquals(users.size() + 1, userController.listUsers().size());
     }
 
     @Test
-    public void testDeleteUserById(){
+    public void testDeleteUserById() {
 
         // Given (having a user list)
         List<User> users = userController.listUsers();
@@ -62,12 +62,12 @@ public class UsersTests {
         List<User> users2 = userController.listUsers();
 
         //Then (size of user list is decreased by one)
-        assertEquals(users.size()-1, users2.size());
+        assertEquals(users.size() - 1, users2.size());
 
     }
 
     @Test
-    public void testUpdateUserById(){
+    public void testUpdateUserById() {
 
         // Given (having a user list)
         List<User> users = userController.listUsers();
@@ -79,7 +79,7 @@ public class UsersTests {
         assertThat(users.contains(exampleUser), equalTo(true));
 
         // When (modifying a user by ID)
-        userController.updateUser(exampleUserId, (new User(5L, "Ciara Doe", "a@eee.com","cccdoe","asdf",1,
+        userController.updateUser(exampleUserId, (new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "asdf", 1,
                 "ROLE_USER", "ACTIVE")));
 
         //Then (example user can not be found any more in the list)
@@ -88,8 +88,19 @@ public class UsersTests {
 
         // Ciara Doe can be found in the list and it's userName is cccdoe
 
-        User updatedUser = users.stream().filter((user)-> user.getName().equals("Ciara Doe")).findFirst().get();
+        User updatedUser = users.stream().filter((user) -> user.getName().equals("Ciara Doe")).findFirst().get();
         String updatedUsersUserName = "cccdoe";
         assertEquals(updatedUsersUserName, updatedUser.getUserName());
+    }
+
+    @Test
+    public void testGetUserById() {
+
+        // Given (an ID)
+        long id = 3;
+        // When (getting a user by id)
+        User user = userController.getUserById(id);
+        //Then (It's name is admin)
+        assertEquals("admin2", user.getUserName());
     }
 }
