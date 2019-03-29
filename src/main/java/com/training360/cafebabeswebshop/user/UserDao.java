@@ -63,6 +63,12 @@ public class UserDao {
     }
 
     public User getUserById(long id) {
-        return jdbcTemplate.queryForObject("select `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users` where id = ? ", USER_ROW_MAPPER, id);
+        return jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status FROM users WHERE id = ? ",
+                USER_ROW_MAPPER, id);
+    }
+
+    public User getUserByName(String userName) {
+        return jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status FROM users WHERE user_name = ? ",
+                USER_ROW_MAPPER, userName);
     }
 }
