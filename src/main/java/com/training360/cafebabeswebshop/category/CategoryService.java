@@ -18,8 +18,11 @@ public class CategoryService {
 
     public long createCategoryAndGetId(Category category) throws DataAccessException {
         long max = categoryDao.getMaxOrdinal();
-        if (max+1<category.getOrdinal())
+        if (max+1<category.getOrdinal() || category.getOrdinal() < 1)
             return -1;
+        if(categoryDao.getCategoryNames().contains(category.getName())){
+            return -2;
+        }
         if (category.getOrdinal()<=0)
             category.setOrdinal(max+1);
         else if (category.getOrdinal()<=max)

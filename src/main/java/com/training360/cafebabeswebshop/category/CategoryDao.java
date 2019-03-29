@@ -9,6 +9,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -48,5 +50,9 @@ public class CategoryDao {
 
     public void reindexOrdinal(long ordinal) {
         jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal+1, ordinal);
+    }
+
+    public List<String> getCategoryNames(){
+        return jdbcTemplate.query("select name from category", (resultSet, i) -> resultSet.getString("name"));
     }
 }
