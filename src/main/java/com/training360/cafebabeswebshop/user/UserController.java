@@ -23,9 +23,9 @@ public class UserController {
     }
 
     @GetMapping("/user-role")
-    public UserInfo determineRole(Authentication authentication) {
+    public User determineRole(Authentication authentication) {
         if (authentication == null)
-            return new UserInfo("VISITOR", null);
+            return new User(0, null, null, null, null, 1, "VISITOR", null);
         boolean isUser = false;
         boolean isAdmin = false;
         Collection<? extends GrantedAuthority> authorities
@@ -39,12 +39,13 @@ public class UserController {
             }
         }
 
+        User user = userService.getUserByName(authentication.getName());
         if (isAdmin) {
-            return new UserInfo("ADMIN", authentication.getName());
+            return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_ADMIN", null);
         } else if (isUser) {
-            return new UserInfo("USER", authentication.getName());
+            return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_USER", null);
         } else {
-            return new UserInfo("VISITOR", null);
+            return new User(0, null, null, authentication.getName(), null, 1, "VISITOR", null);
         }
     }
 
