@@ -7,8 +7,10 @@ var product;
 var user;
 
 $.getJSON('/user-role', json => {
+if(json.id != 0){
 var userId = json.id;
 fetchUser(userId);
+}
   if (json.role != 'VISITOR') {
     document.querySelector('#addToBasketButton').hidden = false;
   }
@@ -74,7 +76,7 @@ function showReviews(jsonData) {
                                 <div class="col-md-4 col-sm-6">
                                     <div class="block-text rel zmin">
                                     <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                        <div class="mark">My rating: ${jsonData[i].rating}<span class="rating-input"><span data-value="0"
+                                        <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span data-value="0"
                                          class="glyphicon glyphicon-star"></span><span
                                          data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
                                          class="glyphicon glyphicon-star"></span><span

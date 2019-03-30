@@ -23,4 +23,8 @@ public class FeedbackService {
     public void giveAFeedback(Feedback feedback) {
         feedbackDao.giveAFeedback(feedback);
     }
+
+    public void deleteFeedbackById(long id) {
+        feedbackDao.deleteFeedbackById(id);
+    }
 }

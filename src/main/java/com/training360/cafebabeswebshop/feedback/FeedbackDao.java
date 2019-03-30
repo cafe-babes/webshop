@@ -44,4 +44,8 @@ public class FeedbackDao {
         jdbcTemplate.update("INSERT INTO `feedback`(`feedback_date`, `feedback`, `rating`, `user_id`, `product_id`)"
                 + "VALUES (?,?,?,?,?)", feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getUser().getId(), feedback.getProduct().getId());
     }
+
+    public void deleteFeedbackById(long id) {
+        jdbcTemplate.update("delete from feedback where id = ?", id);
+    }
 }
