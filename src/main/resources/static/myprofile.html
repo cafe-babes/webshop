@@ -14,67 +14,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap-grid.min.css"></script>
 
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/myprofile.css">
 
-    <style>
-        div.passwordValidator{
-          line-height: 16px;
-          width: 99%;
-          background: rgba(255,255,0,0.3);
-          border-radius: 10px;
-          margin: 0 5px 20px 0;
-          padding: 10px;
-          font-size: 16px;
-        }
-
-    </style>
     <title>My Profile</title>
 </head>
 <body>
-
-<div class="d-flex justify-content-center">
-    <div class="row">
-        <div>
-            <h2 class="form-signin-heading">Saját adatok módosítása</h2>
+<div class="headline-dark"></div>
+<div class="headline-gold"></div>
+<div class="bg">
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <div class="row">
+            <div>
+                <h1 class="form-signin-heading">Saját adatok módosítása</h1>
+            </div>
         </div>
     </div>
-</div>
-<br>
-<br>
+    <br>
+    <br>
 
-<div class="container">
-    <form class="form-signin" id="form-register">
-        <!--<p>-->
-            <!--<label for="name" class="sr-only"></label>-->
-            <!--<input type="text" id="name" name="name" class="form-control" placeholder="Full name" required>-->
-        <!--</p>-->
-        <p>
-            <label for="username" class="sr-only">új felhasználónév</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="új felhasználónév" required
-                   autofocus>
-        </p>
-        <!--<p>-->
-        <!--<label for="password" class="sr-only">Password</label>-->
-        <!--<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>-->
-        <!--</p>-->
-        <!--<p>-->
-        <!--<label for="confirmPassword" class="sr-only">Confirm Password</label>-->
-        <!--<input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>-->
-        <!--</p>-->
-        <div class="formContainer">
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" class="textPassword form-control" id="password" name="password"
-                   placeholder="új jelszó" required>
-            <div class="passwordValidator"></div>
-            <label for="confirm" class="sr-only">Confirm Password</label>
-            <input type="password" class="textConfirmPassword form-control" id="confirm" name="confirm"
-                   placeholder="új jelszó megerősítése" required>
-        </div>
-        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Register</button>
-        <br>
-        <div id="response-box" class="">
-        </div>
-    </form>
+    <div class="container">
+        <form class="form-signin" id="form-register">
+            <p>
+                <label for="username" class="sr-only">új felhasználónév</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="új felhasználónév"
+                       required
+                       autofocus>
+            </p>
+            <div class="formContainer">
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" class="textPassword form-control" id="password" name="password"
+                       placeholder="új jelszó" required>
+                <div class="passwordValidator"></div>
+                <label for="confirm" class="sr-only">Confirm Password</label>
+                <input type="password" class="textConfirmPassword form-control" id="confirm" name="confirm"
+                       placeholder="új jelszó megerősítése" required>
+            </div>
+            <button type="button" class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Register
+            </button>
+            <br>
+            <div id="response-box" class="">
+            </div>
+        </form>
+    </div>
+    <script src="js/myprofile.js"></script>
 </div>
-<script src="js/myprofile.js"></script>
 </body>
 </html>
