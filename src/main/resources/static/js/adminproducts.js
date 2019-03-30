@@ -183,7 +183,6 @@ function showCategories(num, category){
         console.log(global);
         console.log(num);
 
-        //TODO category mentése
         var request = {
             "id": id,
             "code": code,
@@ -195,8 +194,6 @@ function showCategories(num, category){
                 "name" : category
             }
         }
-
-        console.log(request);
 
         fetch("/products/" + id, {
                 method: "POST",
@@ -315,7 +312,9 @@ function showNewCategories(num){
             "manufacture": manu,
             "price": price,
             "product_status": "ACTIVE",
-            "category" : category
+            "category" : {
+                "name" : category
+            }
         }
 
         fetch("/products", {

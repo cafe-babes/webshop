@@ -60,6 +60,10 @@ public class BasketDao {
                 userName);
     }
 
+    public void updateBasketItemPieces(BasketItem basketItem){
+        jdbcTemplate.update("update basket set pieces = ? where product_id = ?", basketItem.getPieces(),basketItem.getProductId());
+    }
+
     public void deleteBasket(String userName) {
         jdbcTemplate.update("DELETE FROM basket WHERE user_id =(select id from users where users.user_name = ?)", userName);
     }

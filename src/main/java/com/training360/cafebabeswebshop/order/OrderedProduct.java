@@ -26,6 +26,9 @@ public class OrderedProduct {
         this.pieces = pieces;
     }
 
+    public OrderedProduct() {
+    }
+
     public long getId() {
         return id;
     }

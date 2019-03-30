@@ -14,14 +14,27 @@ public class FeedbackController {
     FeedbackService feedbackService;
 
     @PostMapping("/feedback")
-    public void giveAFeedback(@RequestBody Feedback feedback){
-        feedbackService.giveAFeedback(feedback);
+    public ResultStatus giveAFeedback(@RequestBody Feedback feedback){
+        if(feedbackService.giveAFeedback(feedback)){
+            return new ResultStatus(ResultStatusEnum.OK, "Az értékelést megkaptuk, köszönjük.");
+        }
+        return new ResultStatus(ResultStatusEnum.NOT_OK,"Még nem szállítottunk ilyen terméket Önnek.");
     }
 
-    @GetMapping("/feedback/{id}")
+    @RequestMapping("/feedback/{productId}")
     public List<Feedback> listFeedBacksByProductId(@PathVariable long productId){
         return feedbackService.listFeedBacksByProductId(productId);
     }
+
+    @DeleteMapping("/feedback/{id}")
+    public void deleteFeedbackById(@PathVariable long id){
+        feedbackService.deleteFeedbackById(id);
+    }
+
+//    @PostMapping("/feedback")
+//    public void updateFeedback(@RequestBody Feedback feedback){
+//        feedbackService.giveAFeedback(feedback);
+//    }
 
 
 }

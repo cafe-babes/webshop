@@ -37,6 +37,11 @@ function showMyOrders(jsonData){
             thName.setAttribute('scope', 'col');
             thName.innerHTML = "Termék";
             trHead.appendChild(thName);
+            
+            var thPiece = document.createElement("th");
+            thName.setAttribute('scope', 'col');
+            thPiece.innerHTML = "Darab";
+            trHead.appendChild(thPiece);
 
             for(var prop in jsonData[obj]){
                 if(jsonData[obj].hasOwnProperty(prop)){
@@ -58,6 +63,10 @@ function showMyOrders(jsonData){
                     nameTd.innerHTML = jsonData[obj][prop].orderingName;
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
+
+                    var pieceTd = document.createElement("td");
+                    pieceTd.innerHTML = jsonData[obj][prop].pieces;
+                    tr.appendChild(pieceTd);
 
                     tbody.appendChild(tr);
                 }
