@@ -1,3 +1,21 @@
+window.onload = function () {
+    fetchUser();
+}
+
+var id = 0;
+var name = "";
+function fetchUser() {
+  fetch("/user-role")
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(jsonData) {
+      console.log(jsonData);
+      id = jsonData.id;
+      name = jsonData.name;
+    });
+}
+
 function handleFormSubmit() {
 
     var div = document.querySelector('#response-box');
@@ -8,11 +26,16 @@ function handleFormSubmit() {
         return;
         }
     var request = {
-        "name" : form.name.value,
-        "userName" : form.username.value,
-        "password" : form.password.value
-        }
-    fetch("/users",{
+                    "name": name,
+                    "email": "email",
+                    "userName": form.username.value,
+                    "password": form.password.value,
+                    "enabled": 1,
+                    "role": "ROLE_USER",
+                    "userStatus": "ACTIVE"
+                 }
+    console.log(request);
+    fetch("/users/" + id,{
              method: "POST",
              body: JSON.stringify(request),
              headers:{
@@ -26,14 +49,14 @@ function handleFormSubmit() {
              console.log(json);
              if(json.resultStatusEnum=="OK") {
                 div.setAttribute("class", "alert alert-success")
-                div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
+                div.innerHTML = "Sikeres módosítás! Átirányítunk...";
                 setTimeout(function(){
                 window.location.href = "/login.html";
                 }, 1000);
              } else {
                 div.innerHTML = json.message;
                 div.setAttribute("class", "alert alert-danger");
-                form.name.focus();
+//                form.name.focus();
              }});
 
     return false;

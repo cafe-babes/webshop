@@ -52,13 +52,37 @@ public class FeedbackTest {
         User exampleUser = userService.listUsers().get(0);
         Product exampleproduct = productService.getProductById(1);
 
-        feedbackService.giveAFeedback(new Feedback(5,"Awesome!",5,exampleUser,
+        feedbackService.giveAFeedback(new Feedback("Awesome!",5,exampleUser,
                 exampleproduct));
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
 
         assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
         assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+
+    }
+
+    @Test
+    public void testDeleteFeedBackById(){
+
+//        Given (we have ONE product of which we have TWO feedbacks)
+
+        Product exampleproduct = productService.getProductById(1);
+
+        Feedback exampleFeedback = feedbackService.listFeedBacksByProductId(exampleproduct .getId()).get(0);
+
+        long idOfExampleFeedback = exampleFeedback.getId();
+
+//        When (deleting ONE feedback by id it's ID )
+
+        feedbackService.deleteFeedbackById(idOfExampleFeedback);
+
+        int sizeOfFeedbacksOfTheExampleProduct = 1;
+
+
+//      Then  (the list of Feedbacks decreases by one as well)
+
+        assertEquals(feedbackService.listFeedBacksByProductId(exampleproduct.getId()), sizeOfFeedbacksOfTheExampleProduct);
 
     }
 

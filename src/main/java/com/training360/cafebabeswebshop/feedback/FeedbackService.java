@@ -20,7 +20,21 @@ public class FeedbackService {
         return feedbackDao.listFeedBacksByProductId(productId);
     }
 
-    public void giveAFeedback(Feedback feedback) {
-        feedbackDao.giveAFeedback(feedback);
+    public boolean giveAFeedback(Feedback feedback) {
+
+        long userId = feedback.getUser().getId();
+        long productId = feedback.getProduct().getId();
+
+        boolean feedbackWasSuccessful = false;
+
+        if (feedbackDao.userCanGiveAFeedback(userId, productId)) {
+            feedbackDao.giveAFeedback(feedback);
+            feedbackWasSuccessful = true;
+        }
+        return feedbackWasSuccessful;
+    }
+
+    public void deleteFeedbackById(long id) {
+        feedbackDao.deleteFeedbackById(id);
     }
 }

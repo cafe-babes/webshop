@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.order;
 
-import com.training360.cafebabeswebshop.user.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -53,20 +52,16 @@ public class OrderDao {
     }
 
     public Order findOrderById(long id) {
-        return jdbcTemplate.queryForObject("SELECT id, purchase_date, user_id, " +
-                        "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS total," +
-                        "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS sum_quantity, " +
-                        "order_status " +
-                        "FROM orders WHERE id = ?",
+        return jdbcTemplate.queryForObject("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
+                        "sum(pieces) AS sum_quantity, order_status FROM orders JOIN ordered_products ON orders.id = order_id WHERE orders.id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
     public List<Order> listMyOrders(String username) {
-        return jdbcTemplate.query(("SELECT id, purchase_date, user_id, " +
-                "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS total," +
-                "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS sum_quantity, " +
-                "order_status FROM orders " +
-                "WHERE user_id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"), ORDER_ROW_MAPPER, username);
+        return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
+                "order_status FROM orders JOIN ordered_products ON orders.id = order_id " +
+                "WHERE orders.id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
+                ORDER_ROW_MAPPER, username);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
@@ -86,10 +81,9 @@ public class OrderDao {
     }
 
     public List<Order> listAllOrders() {
-        return jdbcTemplate.query("select id, purchase_date, user_id, " +
-                "(SELECT sum(pieces) FROM ordered_products WHERE order_id = id) AS total, " +
-                "(SELECT sum(ordering_price) FROM ordered_products WHERE order_id = id) AS sum_quantity, order_status " +
-                "FROM orders order by purchase_date desc", ORDER_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
+                "sum(pieces) AS sum_quantity, order_status FROM orders JOIN ordered_products ON orders.id = order_id " +
+                "GROUP BY order_id order by purchase_date desc", ORDER_ROW_MAPPER);
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {

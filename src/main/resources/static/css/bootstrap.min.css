@@ -26,4 +26,13 @@ a{
     text-decoration: none
 }
 
+.ad-right {
+  float: right;
+  margin-left: 10px;
+}
+
+.ad-left {
+  float: left;
+}
+
  /*# sourceMappingURL=bootstrap.min.css.map */

@@ -16,11 +16,8 @@ import java.util.Map;
 @RestController
 public class OrderController {
 
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private UserService userService;
-    @Autowired
     private ProductService productService;
     private OrderValidator validator;
 
