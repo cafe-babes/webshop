@@ -23,7 +23,6 @@ function fetchProduct() {
       return response.json();
     })
     .then(function (jsonData) {
-    console.log(jsonData);
       if (jsonData.status == 'NOT_OK') {
         showProductNotFound(jsonData);
       } else {
@@ -44,8 +43,6 @@ function fetchFeedback(productId) {
       return response.json();
     })
     .then(function (jsonData) {
-      console.log('fetch ok');
-      console.log(jsonData);
       showReviews(jsonData);
     });
 }
@@ -65,7 +62,7 @@ function showReviews(jsonData) {
                                 <div class="col-md-4 col-sm-6">
                                     <div class="block-text rel zmin">
                                     <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                        <div class="mark">My rating: <span class="rating-input"><span data-value="0"
+                                        <div class="mark">My rating: ${jsonData[i].rating}<span class="rating-input"><span data-value="0"
                                          class="glyphicon glyphicon-star"></span><span
                                          data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
                                          class="glyphicon glyphicon-star"></span><span
@@ -99,7 +96,6 @@ function handleAddToBasketButton() {
     method: 'GET'
   })
     .then(function (response) {
-      console.log(response);
       if (response.ok == false) {
         window.location.href = '/login';
       } else {
@@ -165,17 +161,23 @@ function showProduct(jsonData) {
 }
 
 function newReview() {
-console.log("velemeny");
-var dateNow = new Date(Date.now()).toISOString().substring(0,19);
-var reviewButton = document.getElementById('review-button');
-var reviewText = document.getElementById('review-text');
-console.log(user);
-console.log(product);
-var request =
+            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+
+            var dateNow = new Date(Date.now()).toISOString().substring(0,19);
+            var reviewButton = document.getElementById('review-button');
+            var reviewText = document.getElementById('review-text');
+
+            console.log(dateNow);
+            console.log(reviewText.value);
+            console.log(rating);
+            console.log(user);
+            console.log(product);
+
+            var request =
                     {
                             "feedbackDate": dateNow,
                             "feedback": reviewText.value,
-                            "rating": 5,
+                            "rating": rating,
                             "user": {user},
                             "product": {product}
                         }
@@ -189,7 +191,6 @@ var request =
                                       return response.json();
                                   }).
                               then(function (jsonData) {
-                              console.log(jsonData);
                               });
                               return false;
 
@@ -211,3 +212,33 @@ function showProductNotFound(jsonData) {
     reviews.innerHTML = "";
 }
 
+//initial star setup
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(function(star){
+                star.addEventListener('click', setRating);
+            });
+
+            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            let target = stars[rating - 1];
+            target.dispatchEvent(new MouseEvent('click'));
+        });
+        function setRating(ev){
+            let span = ev.currentTarget;
+            let stars = document.querySelectorAll('.star');
+            let match = false;
+            let num = 0;
+            stars.forEach(function(star, index){
+                if(match){
+                    star.classList.remove('rated');
+                }else{
+                    star.classList.add('rated');
+                }
+                //are we currently looking at the span that was clicked
+                if(star === span){
+                    match = true;
+                    num = index + 1;
+                }
+            });
+            document.querySelector('.stars').setAttribute('data-rating', num);
+        }
