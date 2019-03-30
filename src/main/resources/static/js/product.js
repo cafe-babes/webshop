@@ -175,11 +175,11 @@ function showProduct(jsonData) {
 }
 
 function newReview() {
-            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
-            var dateNow = new Date(Date.now()).toISOString().substring(0,19);
             var reviewButton = document.getElementById('review-button');
+            var dateNow = new Date(Date.now()).toISOString().substring(0,19);
             var reviewText = document.getElementById('review-text');
+            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
             console.log(dateNow);
             console.log(reviewText.value);
@@ -187,29 +187,35 @@ function newReview() {
             console.log(user);
             console.log(product);
 
-            var request =
-                    {
-                            "feedbackDate": dateNow,
-                            "feedback": reviewText.value,
-                            "rating": rating,
-                            "user": {user},
-                            "product": {product}
-                        }
-            fetch("/feedback" , {
-                    method: "POST",
-                    body: JSON.stringify(request),
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                }).then(function (response) {
-                                      return response.json();
-                                  }).
-                              then(function (jsonData) {
-                              fetchProduct();
-                              });
-                              return false;
+                    var request =
+                               {
+                                   "feedbackDate": dateNow,
+                                   "feedback": reviewText.value,
+                                   "rating": rating,
+                                   "user": {user},
+                                   "product": {product}
+                               }
 
-}
+            fetch("/feedback" , {
+                                method: "POST",
+                                body: JSON.stringify(request),
+                                headers: {
+                                    "Content-type": "application/json"
+                                }
+                            })
+                            .then(function (response) {
+                                return response.json();
+                            }).
+                        then(function (jsonData) {
+                            if (jsonData.ResultStatusEnum == "OK") {
+                              alert(jsonData.message);
+                              fetchProduct();
+                            } else {
+                                alert(jsonData.message);
+                            }
+                        });
+                        return false;
+                    }
 
 function showProductNotFound(jsonData) {
     var productText = document.getElementById("product-text");
@@ -227,7 +233,7 @@ function showProductNotFound(jsonData) {
     reviews.innerHTML = "";
 }
 
-//initial star setup
+//Init Star Rating System
         document.addEventListener('DOMContentLoaded', function(){
             let stars = document.querySelectorAll('.star');
             stars.forEach(function(star){
