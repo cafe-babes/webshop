@@ -43,7 +43,7 @@ public class UserController {
         if (isAdmin) {
             return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_ADMIN", null);
         } else if (isUser) {
-            return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_USER", null);
+            return new User(user.getId(), user.getName(), null, authentication.getName(), null, 1, "ROLE_USER", null);
         } else {
             return new User(0, null, null, authentication.getName(), null, 1, "VISITOR", null);
         }
