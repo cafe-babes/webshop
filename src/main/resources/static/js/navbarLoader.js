@@ -15,12 +15,11 @@ $.getJSON("/user-role", json => {
 
     if (role == 'ADMIN') {
         helper.innerHTML +=
-            `<div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin menü<span
-                        class="sr-only">Toggle Dropdown</span>
-                </button>
-            <div class="dropdown-menu">
+            `<div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin menü
+                  </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="/adminproducts.html">Termékek adminisztrációja</a>
                 <a class="dropdown-item" href="/users.html">Felhasználók adminisztrációja</a>
                 <a class="dropdown-item" href="/orders.html">Rendelések adminisztrációja</a>
