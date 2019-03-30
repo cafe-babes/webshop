@@ -7,12 +7,24 @@ var product;
 var user;
 
 $.getJSON('/user-role', json => {
-user = {json};
+var userId = json.id;
+fetchUser(userId);
   if (json.role != 'VISITOR') {
     document.querySelector('#addToBasketButton').hidden = false;
   }
 });
 
+function fetchUser(userId) {
+  var url = '/users/' + userId;
+  fetch(url)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (jsonData) {
+     user = {jsonData};
+    });
+  return false;
+}
 
 
 function fetchProduct() {
@@ -191,6 +203,7 @@ function newReview() {
                                       return response.json();
                                   }).
                               then(function (jsonData) {
+                              fetchProduct();
                               });
                               return false;
 
