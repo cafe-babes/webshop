@@ -5,17 +5,20 @@ import com.training360.cafebabeswebshop.user.User;
 
 import java.time.LocalDateTime;
 
-public class Feedback {
+public class
+Feedback {
 
-    private int id;
+    private long id;
     private LocalDateTime feedbackDate;
     private String feedback;
     private int rating;
     private User user;
     private Product product;
 
-    public Feedback(int id, String feedback, int rating, User user, Product product) {
-        this.id = id;
+    public Feedback() {
+    }
+
+    public Feedback(String feedback, int rating, User user, Product product) {
         this.feedbackDate = LocalDateTime.now();
         this.feedback = feedback;
         this.rating = rating;
@@ -23,7 +26,7 @@ public class Feedback {
         this.product = product;
     }
 
-    public Feedback(int id, LocalDateTime feedbackDate, String feedback, int rating, User user, Product product) {
+    public Feedback(long id, LocalDateTime feedbackDate, String feedback, int rating, User user, Product product) {
         this.id = id;
         this.feedbackDate = feedbackDate;
         this.feedback = feedback;
@@ -36,7 +39,7 @@ public class Feedback {
         return feedbackDate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

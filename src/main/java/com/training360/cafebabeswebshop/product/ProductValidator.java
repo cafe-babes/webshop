@@ -9,18 +9,19 @@ public class ProductValidator {
     }
 
     public boolean isValidProduct(Product product){
-        return isEmpty(product.getCode()) &&
-                isEmpty(product.getName()) &&
-                isEmpty(product.getAddress()) &&
-                isEmpty(product.getManufacture()) &&
-                isValidPrice(product.getPrice());
+        return isValid(product.getCode()) &&
+                isValid(product.getName()) &&
+                isValid(product.getAddress()) &&
+                isValid(product.getManufacture()) &&
+                isValidPrice(product.getPrice()) &&
+                isValid(product.getCategory().getName());
     }
 
-    public boolean isEmpty(String str) {
+    public boolean isValid(String str) {
         return (str != null && !str.trim().equals(""));
     }
 
-    private boolean isValidPrice(int price){
+    public boolean isValidPrice(int price){
         return (price > 0 && price <= 2_000_000);
     }
 }

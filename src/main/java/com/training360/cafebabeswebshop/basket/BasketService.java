@@ -12,12 +12,13 @@ public class BasketService {
     @Autowired
     private BasketDao basketDao;
 
-    public long saveBasketItemAndGetId(String address, Authentication authentication) {
-        for (BasketItem item : basketDao.getBasketItems(authentication.getName())) {
-            if (item.getAddress().equals(address))
-                return -1;
-        }
-        return basketDao.saveBasketItemAndGetId(address, authentication.getName());
+    public long saveBasketItemAndGetId(String address, Authentication authentication, BasketItem basketItem) {
+
+        return basketDao.saveBasketItemAndGetId(address, authentication.getName(), basketItem);
+    }
+
+    public void updateBasketItemPieces(BasketItem basketItem){
+        basketDao.updateBasketItemPieces(basketItem);
     }
 
     public List<BasketItem> getBasketItems(Authentication authentication){

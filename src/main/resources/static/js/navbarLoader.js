@@ -13,7 +13,7 @@ $.getJSON("/user-role", json => {
                             </a>
                         </li>`;
 
-    if (role == 'ADMIN') {
+    if (role == 'ROLE_ADMIN') {
         helper.innerHTML +=
             `<div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,6 +21,7 @@ $.getJSON("/user-role", json => {
                   </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="/adminproducts.html">Termékek adminisztrációja</a>
+                <a class="dropdown-item" href="/categories.html">Kategóriák adminisztrációja</a>
                 <a class="dropdown-item" href="/users.html">Felhasználók adminisztrációja</a>
                 <a class="dropdown-item" href="/orders.html">Rendelések adminisztrációja</a>
                 <div class="dropdown-divider"></div>
@@ -47,6 +48,7 @@ $.getJSON("/user-role", json => {
             </button>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/myorders.html">Rendeléseim</a>
+                <a class="dropdown-item" href="/myprofile.html">Saját adatlap</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Kijelentkezés</a>
             </div>

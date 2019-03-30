@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.order;
 
-import com.training360.cafebabeswebshop.user.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,18 +30,7 @@ public class OrderDao {
             rs.getLong("order_id"),
             rs.getLong("ordering_price"),
             rs.getString("ordering_name"),
-            rs.getString("products.address")
-    );
-
-    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User(
-            rs.getLong("id"),
-            rs.getString("name"),
-            rs.getString("email"),
-            rs.getString("user_name"),
-            rs.getString("password"),
-            rs.getInt("enabled"),
-            rs.getString("role"),
-            rs.getString("user_status")
+            rs.getInt("pieces")
     );
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
@@ -52,64 +40,60 @@ public class OrderDao {
     public long saveOrderAndGetId(String userName, Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, total, sum_quantity) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?),?,?)",
+            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id) " +
+                            "values (?,(SELECT id FROM users WHERE user_name = ?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-            ps.setLong(3, order.getTotal());
-            ps.setLong(4, order.getSumQuantity());
             // ps.setString(5, String.valueOf(order.getOrderStatus()));
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
-    public long getUserId(String userName) {
-        User u = jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status " +
-                "from users where user_name = ?", USER_ROW_MAPPER, userName);
-        return u.getId();
-    }
-
     public Order findOrderById(long id) {
-        return jdbcTemplate.queryForObject("select id, purchase_date, user_id, total, sum_quantity, order_status from orders where id = ?",
+        return jdbcTemplate.queryForObject("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
+                        "sum(pieces) AS sum_quantity, order_status FROM orders JOIN ordered_products ON orders.id = order_id WHERE orders.id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
     public List<Order> listMyOrders(String username) {
-        return jdbcTemplate.query(("select orders.id, purchase_date, user_id, total, sum_quantity, order_status " +
-                "from orders join users on users.id = orders.user_id " +
-                "where users.user_name = ? order by purchase_date desc"), ORDER_ROW_MAPPER, username);
+        return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
+                "order_status FROM orders JOIN ordered_products ON orders.id = order_id " +
+                "WHERE orders.id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
+                ORDER_ROW_MAPPER, username);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
-                            "(product_id, order_id, ordering_price, ordering_name) values (?,?,?,?)",
+                            "(product_id, order_id, ordering_price, ordering_name, pieces) values (?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, orderedProduct.getProductId());
             ps.setLong(2, orderedProduct.getOrderId());
             ps.setLong(3, orderedProduct.getOrderingPrice());
             ps.setString(4, orderedProduct.getOrderingName());
+            ps.setInt(5, orderedProduct.getPieces());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     public List<Order> listAllOrders() {
-        return jdbcTemplate.query("select id, purchase_date, user_id, total, sum_quantity, order_status " +
-                "FROM orders order by purchase_date desc", ORDER_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
+                "sum(pieces) AS sum_quantity, order_status FROM orders JOIN ordered_products ON orders.id = order_id " +
+                "GROUP BY order_id order by purchase_date desc", ORDER_ROW_MAPPER);
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
+        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
                         "from ordered_products JOIN products ON product_id=products.id where order_id =?",
                 ORDERED_PRODUCT_ROW_MAPPER, id);
     }
 
     public List<OrderedProduct> listAllOrderedProduct() {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address " +
+        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
                         "from ordered_products JOIN products ON product_id=products.id",
                 ORDERED_PRODUCT_ROW_MAPPER);
     }
@@ -119,26 +103,15 @@ public class OrderDao {
                 "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
     }
 
-    public OrderedProduct findOrderedProductByProductAddress(long orderId, String address) throws DataAccessException {
-        return jdbcTemplate.queryForObject("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, products.address" +
-                        " from ordered_products join products on product_id = products.id where products.address = ? AND order_id = ?",
-                ORDERED_PRODUCT_ROW_MAPPER, address, orderId);
-    }
-
-    public void reduceOrderQuantityAndPriceWhenDeleting(long orderId, String address) throws DataAccessException {
-        Order o = findOrderById(orderId);
-        OrderedProduct op = findOrderedProductByProductAddress(orderId, address);
-        long newSumQuantity = o.getSumQuantity() - 1;
-        long newTotal = o.getTotal() - op.getOrderingPrice();
-        jdbcTemplate.update("update orders set sum_quantity = ? where id = ?", newSumQuantity, orderId);
-        jdbcTemplate.update("update orders set total = ? where id = ?", newTotal, orderId);
-    }
-
     public void deleteOrder(long id) {
         jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
     }
 
     public void updateOrderStatus(long id, String status) {
         jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
+    }
+
+    public void updateOrderedProductPiece(OrderedProduct op){
+        jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
 }

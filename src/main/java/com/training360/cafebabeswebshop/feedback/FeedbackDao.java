@@ -20,8 +20,8 @@ public class FeedbackDao {
     @Autowired
     ProductDao productDao;
 
-    private  final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
-            rs.getInt("id"),
+    private final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
+            rs.getLong("id"),
             rs.getTimestamp("feedback_date").toLocalDateTime(),
             rs.getString("feedback"),
             rs.getInt("rating"),
@@ -30,16 +30,12 @@ public class FeedbackDao {
     ));
 
 
-
     public FeedbackDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Feedback> listFeedBacksByProductId(long productId) {
-        return jdbcTemplate.query("select id, feedback_date, feedback, rating, user_id, product_id \n" +
-                        "from feedback \n" +
-                        "where product_id = ? \n" +
-                        "ORDER BY feedback_date DESC",
+        return jdbcTemplate.query("SELECT `id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id` FROM `feedback` WHERE product_id = ? ORDER BY feedback_date DESC",
                 FEEDBACK_ROW_MAPPER, productId);
     }
 
@@ -47,4 +43,20 @@ public class FeedbackDao {
         jdbcTemplate.update("INSERT INTO `feedback`(`feedback_date`, `feedback`, `rating`, `user_id`, `product_id`)"
                 + "VALUES (?,?,?,?,?)", feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getUser().getId(), feedback.getProduct().getId());
     }
+
+    public void deleteFeedbackById(long id) {
+        jdbcTemplate.update("delete from feedback where id = ?", id);
+    }
+
+    public boolean userCanGiveAFeedback(long userId, long productId) {
+
+        int numberOfShippedProductsWhichTheUserOrdered =
+                jdbcTemplate.queryForObject("SELECT count(ordered_products.id) as OrderedAndShippedProducts\n" +
+                        "FROM orders\n" +
+                        "JOIN ordered_products on orders.id = ordered_products.order_id\n" +
+                        "WHERE orders.user_id = ? AND ordered_products.product_id = ? AND orders.order_status = 'SHIPPED'", Integer.class, userId, productId);
+
+        return numberOfShippedProductsWhichTheUserOrdered >= 1;
+    }
+
 }

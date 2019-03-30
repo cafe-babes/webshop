@@ -1,3 +1,4 @@
+delete from feedback;
 delete from ordered_products;
 delete from orders;
 delete from basket;
@@ -52,3 +53,6 @@ INSERT INTO basket(id, user_id, product_id) VALUES
 (2, 2, 3),
 (3, 1, 2),
 (4, 3, 5);
+
+INSERT INTO `feedback`(`id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id`)
+VALUES (1, '2019-03-03 10:10:10', 'Never a better shop!', 5,3,1);

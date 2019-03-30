@@ -34,4 +34,10 @@ public class UserService {
     public long insertUserAndGetId(User user) throws DataAccessException {
         return userDao.insertUserAndGetId(user);
     }
+    public User getUserById(long id) {
+        return userDao.getUserById(id);
+    }
+    public User getUserByName(String userName) {
+        return userDao.getUserByName(userName);
+    }
 }

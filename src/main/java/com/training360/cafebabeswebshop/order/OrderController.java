@@ -16,11 +16,8 @@ import java.util.Map;
 @RestController
 public class OrderController {
 
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private UserService userService;
-    @Autowired
     private ProductService productService;
     private OrderValidator validator;
 
@@ -90,6 +87,11 @@ public class OrderController {
         } else {
             return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id or status");
         }
+    }
+
+    @PostMapping("/orders/piece")
+    public void updateOrderedProductPiece(@RequestBody OrderedProduct op){
+        orderService.updateOrderedProductPiece(op);
     }
 
 }
