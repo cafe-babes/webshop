@@ -5,6 +5,7 @@ console.log((new URL(document.location)).searchParams.get('address'));
 
 var product;
 var user;
+var feedbacks;
 
 $.getJSON('/user-role', json => {
 if(json.id != 0){
@@ -23,7 +24,7 @@ function fetchUser(userId) {
       return response.json();
     })
     .then(function (jsonData) {
-     user = {jsonData};
+     user = jsonData;
     });
   return false;
 }
@@ -40,9 +41,9 @@ function fetchProduct() {
       if (jsonData.status == 'NOT_OK') {
         showProductNotFound(jsonData);
       } else {
-        product = {jsonData};
+        product = jsonData;
         var productId = jsonData.id;
-        fetchFeedback(productId);
+        fetchFeedbacks(productId);
         showProduct(jsonData);
       }
     });
@@ -50,57 +51,64 @@ function fetchProduct() {
 }
 
 
-function fetchFeedback(productId) {
+function fetchFeedbacks(productId) {
   var url = '/feedback/' + productId;
   fetch(url)
     .then(function (response) {
       return response.json();
     })
     .then(function (jsonData) {
-      showReviews(jsonData);
+    feedbacks = jsonData;
+      showFeedbacks(jsonData);
     });
 }
 
 
-function showReviews(jsonData) {
-  var reviews = document.getElementById('reviews');
-  reviews.innerHTML = '';
+function showFeedbacks(jsonData) {
+  var feedbacks = document.getElementById('feedbacks');
+  feedbacks.innerHTML = '';
 
   for (var i = 0; i < jsonData.length; i++) {
-    reviews.innerHTML += `
-                <div class="container">
-                <div>
-                    <div id="carousel-reviews" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="block-text rel zmin">
-                                    <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                        <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span data-value="0"
-                                         class="glyphicon glyphicon-star"></span><span
-                                         data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
-                                         class="glyphicon glyphicon-star"></span><span
-                                         data-value="3" class="glyphicon glyphicon-star"></span><span data-value="4"
-                                         class="glyphicon glyphicon-star-empty"></span><span
-                                         data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span></div>
-                                        <p>${jsonData[i].feedback}</p>
-                                        <ins class="ab zmin sprite sprite-i-triangle block"></ins>
-                                    </div>
-                                    <br>
-                                    <div class="person-text rel">
-                                    <a title="" href="#">${jsonData[i].user.name}</a>
-                                </div>
-                            </div>
-                         </div>
-                     </div>
-                </div>
-           </div>
+    feedbacks.innerHTML += `
+      <div class="container">
+          <div>
+              <div id="carousel-feedbacks" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                      <div class="item active">
+                          <div class="col-md-4 col-sm-6">
+                              <div class="block-text rel zmin">
+                              <div class="ad-right" id="feedback-and-delete-buttons">
+                              <button onclick="editFeedback(${jsonData[i].id})" id="editFeedback#"+${jsonData[i].id} class="btn btn-success"><i class='fas fa-pen-alt'></i></button>
+                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button></div>
+                                  <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
+                                  <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
+                                          data-value="0"
+                                          class="glyphicon glyphicon-star"></span><span
+                                          data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
+                                                                                                       class="glyphicon glyphicon-star"></span><span
+                                          data-value="3" class="glyphicon glyphicon-star"></span><span data-value="4"
+                                                                                                       class="glyphicon glyphicon-star-empty"></span><span
+                                          data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span>
+                                  </div>
+                                  <p>${jsonData[i].feedback}</p>
+                                  <ins class="ab zmin sprite sprite-i-triangle block"></ins>
+                              </div>
+                              <br>
+                              <div class="person-text rel">
+                                  <a title="" href="#">${jsonData[i].user.name}</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
 
 
                 `;
   }
-}
+  }
+
 
 
 function handleAddToBasketButton() {
@@ -174,15 +182,20 @@ function showProduct(jsonData) {
   price.innerHTML = jsonData.price;
 }
 
-function newReview() {
+function newFeedback() {
 
-            var reviewButton = document.getElementById('review-button');
+            if(typeof user === "undefined"){
+                        alert("Be kell jelentkeznie az értékeléshez");
+                        return;
+                    }
+
+            var feedbackButton = document.getElementById('feedback-button');
             var dateNow = new Date(Date.now()).toISOString().substring(0,19);
-            var reviewText = document.getElementById('review-text');
+            var feedbackText = document.getElementById('feedback-text');
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
             console.log(dateNow);
-            console.log(reviewText.value);
+            console.log(feedbackText.value);
             console.log(rating);
             console.log(user);
             console.log(product);
@@ -190,7 +203,7 @@ function newReview() {
                     var request =
                                {
                                    "feedbackDate": dateNow,
-                                   "feedback": reviewText.value,
+                                   "feedback": feedbackText.value,
                                    "rating": rating,
                                    "user": {user},
                                    "product": {product}
@@ -206,22 +219,56 @@ function newReview() {
                             .then(function (response) {
                                 return response.json();
                             }).
-                        then(function (jsonData) {
-                            if (jsonData.ResultStatusEnum == "OK") {
-                              alert(jsonData.message);
-                              fetchProduct();
-                            } else {
-                                alert(jsonData.message);
-                            }
-                        });
-                        return false;
-                    }
+                                then(function (jsonData) {
+                                    if (jsonData.ResultStatusEnum == "OK") {
+                                      alert(jsonData.message);
+                                      fetchProduct();
+                                    } else {
+                                        alert(jsonData.message);
+                                    }
+                                });
+                                return false;
+            }
+
+function deleteFeedback(feedbackId){
+
+        if(typeof user === "undefined"){
+            alert("Be kell jelentkeznie az értékelés törléséhez");
+            return;
+        }
+
+        var feedback;
+        for(var i = 0; i<feedbacks.length; i++){
+                if(feedbacks[i].id == feedbackId){
+                        feedback = feedbacks[i];
+                        break;
+                }
+        }
+
+        console.log("feedback-hez tartozó user id-ja = " +feedback.user.id);
+        console.log("a bejelentkezett user id-ja = "+ user.id);
+
+            if(user.id == feedback.user.id){
+
+                     fetch("/feedback/" + feedback.id, {
+                                               method: "DELETE",
+                                           })
+                                           .then(function (response) {
+                     //                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                     //                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
+                                               fetchProduct();
+                                               });
+            }else{
+                alert("Ez nem az Ön értékelése, ezért nem törölheti");
+            }
+
+}
 
 function showProductNotFound(jsonData) {
     var productText = document.getElementById("product-text");
     var pageNotFound = document.getElementById("page-not-found");
     var picture = document.getElementById("picture");
-    var reviews = document.getElementById("reviews");
+    var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
                                 <div>
                                 <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
@@ -230,7 +277,7 @@ function showProductNotFound(jsonData) {
                                <br>`
     productText.innerHTML = "";
     picture.innerHTML = "";
-    reviews.innerHTML = "";
+    feedbacks.innerHTML = "";
 }
 
 //Init Star Rating System
