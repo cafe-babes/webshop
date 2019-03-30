@@ -190,7 +190,9 @@ function newFeedback() {
                     }
 
             var feedbackButton = document.getElementById('feedback-button');
-            var dateNow = new Date(Date.now()).toISOString().substring(0,19);
+            var date = new Date(Date.now());
+            date.setHours(date.getHours()+1)
+            var dateNow = date.toISOString().substring(0,19);
             var feedbackText = document.getElementById('feedback-text');
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
@@ -201,13 +203,35 @@ function newFeedback() {
             console.log(product);
 
                     var request =
-                               {
-                                   "feedbackDate": dateNow,
-                                   "feedback": feedbackText.value,
-                                   "rating": rating,
-                                   "user": {user},
-                                   "product": {product}
-                               }
+                                   {
+                                   	"feedbackDate": dateNow,
+                                       "feedback": feedbackText.value,
+                                       "rating": rating,
+                                       "user": {
+                                       "id": user.id,
+                                       "name": user.name,
+                                       "email": null,
+                                       "userName": user.userName,
+                                       "password": user.password,
+                                       "enabled": user.enabled,
+                                       "role": user.role,
+                                       "userStatus": user.userStatus
+                                   },
+                                       "product": {
+                                       "id": product.id,
+                                       "code": product.code,
+                                       "address": product.address,
+                                       "name": product.name,
+                                       "manufacture":product.manufacture,
+                                       "price": product.price,
+                                       "productStatus": product.productStatus,
+                                       "category": {
+                                           "id": product.category.id,
+                                           "name": product.category.name,
+                                           "ordinal": 1
+                                       }
+                                   }
+                                   }
 
             fetch("/feedback" , {
                                 method: "POST",
@@ -220,9 +244,9 @@ function newFeedback() {
                                 return response.json();
                             }).
                                 then(function (jsonData) {
-                                    if (jsonData.ResultStatusEnum == "OK") {
-                                      alert(jsonData.message);
+                                    if (jsonData.resultStatusEnum == "OK") {
                                       fetchProduct();
+                                      alert(jsonData.message);
                                     } else {
                                         alert(jsonData.message);
                                     }
@@ -262,6 +286,14 @@ function deleteFeedback(feedbackId){
                 alert("Ez nem az Ön értékelése, ezért nem törölheti");
             }
 
+}
+
+function editFeedback(feedbackId){
+        if(typeof user === "undefined"){
+                    alert("Be kell jelentkeznie az értékelés módosításához");
+                    return;
+                }
+                alert("Fejlesztés alatt...");
 }
 
 function showProductNotFound(jsonData) {
