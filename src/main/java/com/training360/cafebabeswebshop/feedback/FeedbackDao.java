@@ -20,7 +20,7 @@ public class FeedbackDao {
     @Autowired
     ProductDao productDao;
 
-    private  final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
+    private final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
             rs.getLong("id"),
             rs.getTimestamp("feedback_date").toLocalDateTime(),
             rs.getString("feedback"),
@@ -28,7 +28,6 @@ public class FeedbackDao {
             userDao.getUserById(rs.getLong("user_id")),
             productDao.getProductById(rs.getLong("product_id"))
     ));
-
 
 
     public FeedbackDao(JdbcTemplate jdbcTemplate) {
@@ -48,4 +47,16 @@ public class FeedbackDao {
     public void deleteFeedbackById(long id) {
         jdbcTemplate.update("delete from feedback where id = ?", id);
     }
+
+    public boolean userCanGiveAFeedback(long userId, long productId) {
+
+        int numberOfShippedProductsWhichTheUserOrdered =
+                jdbcTemplate.queryForObject("SELECT count(ordered_products.id) as OrderedAndShippedProducts\n" +
+                        "FROM orders\n" +
+                        "JOIN ordered_products on orders.id = ordered_products.order_id\n" +
+                        "WHERE orders.user_id = ? AND ordered_products.product_id = ? AND orders.order_status = 'SHIPPED'", Integer.class, userId, productId);
+
+        return numberOfShippedProductsWhichTheUserOrdered >= 1;
+    }
+
 }
