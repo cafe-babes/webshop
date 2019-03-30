@@ -66,7 +66,7 @@ function basketRefresh() {
 $.getJSON("/basket", json => {
 var sum = 0;
 for(var i = 0; i<json.length; i++) {
-    if(json[i].amount)
+    if(json[i].pieces)
         sum += json[i].pieces;
 }
 document.querySelector('#cartCount').innerHTML = sum;
