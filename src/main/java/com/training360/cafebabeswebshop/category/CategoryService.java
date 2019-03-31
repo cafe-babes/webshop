@@ -34,7 +34,7 @@ public class CategoryService {
         }
         else if (category.getOrdinal()<=max)
             while (max >= category.getOrdinal()){
-                categoryDao.reindexOrdinal(max--);
+                categoryDao.increaseOrdinal(max--);
             }
         return categoryDao.createCategoryAndGetId(category);
     }
@@ -82,7 +82,7 @@ public class CategoryService {
         if(originalOrdinal > category.getOrdinal()){
             for(int i = categories.size()-1; i >= 0; i--){
                 if(categories.get(i).getOrdinal() >= category.getOrdinal() && categories.get(i).getOrdinal() < originalOrdinal){
-                    categoryDao.reindexOrdinal(categories.get(i).getOrdinal());
+                    categoryDao.increaseOrdinal(categories.get(i).getOrdinal());
                 }
             }
             categoryDao.updateCategory(id, category);

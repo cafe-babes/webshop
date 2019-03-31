@@ -2,20 +2,20 @@ package com.training360.cafebabeswebshop.product;
 
 public class ResultStatus {
 
-    private ResultStatusEnum status;
+    private ResultStatusEnum resultStatusEnum;
     private String message;
 
-    public ResultStatus(ResultStatusEnum status, String message) {
-        this.status = status;
+    public ResultStatus(ResultStatusEnum resultStatusEnum, String message) {
+        this.resultStatusEnum = resultStatusEnum;
         this.message = message;
     }
 
     public ResultStatusEnum getStatus() {
-        return status;
+        return resultStatusEnum;
     }
 
-    public void setStatus(ResultStatusEnum status) {
-        this.status = status;
+    public void setStatus(ResultStatusEnum resultStatusEnum) {
+        this.resultStatusEnum = resultStatusEnum;
     }
 
     public String getMessage() {

@@ -53,7 +53,7 @@ public class CategoryDao {
                 (rs, rowNum) -> rs.getLong("MIN(ordinal)"));
     }
 
-    public void reindexOrdinal(long ordinal) {
+    public void increaseOrdinal(long ordinal) {
         jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal+1, ordinal);
     }
 
