@@ -292,18 +292,28 @@ function deleteFeedback(feedbackId){
 }
 
 function editFeedback(feedbackId){
+
+
+        if(typeof user === "undefined"){
+                    alert("Be kell jelentkeznie az értékelés módosításához");
+                    return;
+                }
+
+
+ if(user.id == feedback.user.id){
+
         var fb = document.getElementById("fb").innerHTML;
         var editAndDeleteFeedbackButton = document.getElementById("feedback-and-delete-buttons");
         editAndDeleteFeedbackButton.innerHTML = "";
         editAndDeleteFeedbackButton.innerHTML +=
         `
-        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
+                        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
         `;
 
-var feedbackText = document.getElementById("feedback#"+feedbackId);
-console.log(feedbackText);
-feedbackText.innerHTML =
-`
+        var feedbackText = document.getElementById("feedback#"+feedbackId);
+        console.log(feedbackText);
+        feedbackText.innerHTML =
+        `
                         <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
                             style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
 
@@ -315,15 +325,12 @@ feedbackText.innerHTML =
                             <span class="star2">&nbsp;</span>
                             <span class="star2">&nbsp;</span>
                         </div>
-`;
-            var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
-            console.log(rating);
+        `;
 
-//        if(typeof user === "undefined"){
-//                    alert("Be kell jelentkeznie az értékelés módosításához");
-//                    return;
-//                }
-//                alert("Fejlesztés alatt...");
+
+            }else{
+                alert("Ez nem az Ön értékelése, ezért nem szerkesztheti");
+            }
 }
 
 function saveEditedFeedback(feedbackId){
