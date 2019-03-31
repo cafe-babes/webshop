@@ -24,7 +24,7 @@ function handleFormSubmit() {
              })
              .then(function(json) {
              console.log(json);
-             if(json.resultStatusEnum=="OK") {
+             if(json.status=="OK") {
                 div.setAttribute("class", "alert alert-success")
                 div.innerHTML = "Sikeres regisztráció! Átirányítunk...";
                 setTimeout(function(){

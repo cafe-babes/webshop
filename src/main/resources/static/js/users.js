@@ -177,7 +177,7 @@ function editTds(num){
                 }).
             then(function (jsonData) {
             console.log(jsonData);
-                if (jsonData.resultStatusEnum == "OK") {
+                if (jsonData.status == "OK") {
 
                    document.getElementById(`nameTd${num}`).innerHTML = name;
                    document.getElementById(`passwordTd${num}`).innerHTML = password;
