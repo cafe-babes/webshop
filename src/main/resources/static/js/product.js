@@ -79,7 +79,8 @@ function showFeedbacks(jsonData) {
                               <div class="block-text rel zmin">
                               <div class="ad-right" id="feedback-and-delete-buttons">
                               <button onclick="editFeedback(${jsonData[i].id})" id="editFeedback#"+${jsonData[i].id} class="btn btn-success"><i class='fas fa-pen-alt'></i></button>
-                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button></div>
+                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button>
+                              </div>
                                   <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
                                   <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
                                           data-value="0"
@@ -90,7 +91,9 @@ function showFeedbacks(jsonData) {
                                                                                                        class="glyphicon glyphicon-star-empty"></span><span
                                           data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span>
                                   </div>
-                                  <p>${jsonData[i].feedback}</p>
+                                  <div id="feedback#${jsonData[i].id}">
+                                  <p id = "fb">${jsonData[i].feedback}</p>
+                                  </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                               </div>
                               <br>
@@ -289,11 +292,61 @@ function deleteFeedback(feedbackId){
 }
 
 function editFeedback(feedbackId){
+
+
         if(typeof user === "undefined"){
                     alert("Be kell jelentkeznie az értékelés módosításához");
                     return;
                 }
-                alert("Fejlesztés alatt...");
+
+         var feedback;
+                for(var i = 0; i<feedbacks.length; i++){
+                        if(feedbacks[i].id == feedbackId){
+                                feedback = feedbacks[i];
+                                break;
+                        }
+                }
+
+ if(user.id == feedback.user.id){
+
+        var fb = document.getElementById("fb").innerHTML;
+        var editAndDeleteFeedbackButton = document.getElementById("feedback-and-delete-buttons");
+        editAndDeleteFeedbackButton.innerHTML = "";
+        editAndDeleteFeedbackButton.innerHTML +=
+        `
+                        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
+        `;
+
+        var feedbackText = document.getElementById("feedback#"+feedbackId);
+        console.log(feedbackText);
+        feedbackText.innerHTML =
+        `
+                        <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
+                            style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
+
+
+                        <div class="stars2" data-rating="3" id="stars2">
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                        </div>
+        `;
+
+
+            }else{
+                alert("Ez nem az Ön értékelése, ezért nem szerkesztheti");
+            }
+}
+
+function saveEditedFeedback(feedbackId){
+
+console.log("mentés klikk");
+console.log(feedbackId);
+var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+            console.log(rating);
+
 }
 
 function showProductNotFound(jsonData) {
@@ -341,4 +394,35 @@ function showProductNotFound(jsonData) {
                 }
             });
             document.querySelector('.stars').setAttribute('data-rating', num);
+        }
+
+//Init Star Rating System   # 2
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars2 = document.querySelectorAll('.star2');
+            stars2.forEach(function(star2){
+                star2.addEventListener('click', setRating2);
+            });
+
+            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+            let target2 = stars2[rating2 - 1];
+            target2.dispatchEvent(new MouseEvent('click'));
+        });
+        function setRating2(ev){
+            let span2 = ev.currentTarget;
+            let stars2 = document.querySelectorAll('.star2');
+            let match2 = false;
+            let num2 = 0;
+            stars2.forEach(function(star2, index2){
+                if(match2){
+                    star2.classList.remove('rated2');
+                }else{
+                    star2.classList.add('rated2');
+                }
+                //are we currently looking at the span that was clicked
+                if(star2 === span2){
+                    match2 = true;
+                    num2 = index2 + 1;
+                }
+            });
+            document.querySelector('.stars2').setAttribute('data-rating', num2);
         }

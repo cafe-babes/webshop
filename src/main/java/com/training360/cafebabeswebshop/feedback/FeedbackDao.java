@@ -59,4 +59,9 @@ public class FeedbackDao {
         return numberOfShippedProductsWhichTheUserOrdered >= 1;
     }
 
+    public void updateFeedback(Feedback feedback) {
+        jdbcTemplate.update("UPDATE `feedback`" +
+                "SET `feedback_date`= ?,`feedback`= ?,`rating`= ? WHERE id = ?",
+                feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getId());
+    }
 }
