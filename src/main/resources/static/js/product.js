@@ -306,15 +306,17 @@ feedbackText.innerHTML =
 `
                         <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
                             style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
-                        <div class="stars" data-rating="3" id="stars">
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
+
+
+                        <div class="stars2" data-rating="3" id="stars2">
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
                         </div>
 `;
-            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
             console.log(rating);
 
 //        if(typeof user === "undefined"){
@@ -328,6 +330,8 @@ function saveEditedFeedback(feedbackId){
 
 console.log("mentés klikk");
 console.log(feedbackId);
+var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+            console.log(rating);
 
 }
 
@@ -376,4 +380,35 @@ function showProductNotFound(jsonData) {
                 }
             });
             document.querySelector('.stars').setAttribute('data-rating', num);
+        }
+
+//Init Star Rating System   # 2
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars2 = document.querySelectorAll('.star2');
+            stars2.forEach(function(star2){
+                star2.addEventListener('click', setRating2);
+            });
+
+            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+            let target2 = stars2[rating2 - 1];
+            target2.dispatchEvent(new MouseEvent('click'));
+        });
+        function setRating2(ev){
+            let span2 = ev.currentTarget;
+            let stars2 = document.querySelectorAll('.star2');
+            let match2 = false;
+            let num2 = 0;
+            stars2.forEach(function(star2, index2){
+                if(match2){
+                    star2.classList.remove('rated2');
+                }else{
+                    star2.classList.add('rated2');
+                }
+                //are we currently looking at the span that was clicked
+                if(star2 === span2){
+                    match2 = true;
+                    num2 = index2 + 1;
+                }
+            });
+            document.querySelector('.stars2').setAttribute('data-rating', num2);
         }

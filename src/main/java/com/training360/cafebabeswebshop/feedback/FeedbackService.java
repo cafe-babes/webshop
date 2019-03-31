@@ -37,4 +37,8 @@ public class FeedbackService {
     public void deleteFeedbackById(long id) {
         feedbackDao.deleteFeedbackById(id);
     }
+
+    public void updateFeedback(Feedback feedback) {
+        feedbackDao.updateFeedback(feedback);
+    }
 }

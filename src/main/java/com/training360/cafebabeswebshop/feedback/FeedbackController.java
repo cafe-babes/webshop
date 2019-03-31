@@ -31,10 +31,10 @@ public class FeedbackController {
         feedbackService.deleteFeedbackById(id);
     }
 
-//    @PostMapping("/feedback")
-//    public void updateFeedback(@RequestBody Feedback feedback){
-//        feedbackService.giveAFeedback(feedback);
-//    }
+    @PostMapping("/feedbackUpdate")
+    public void updateFeedback(@RequestBody Feedback feedback){
+        feedbackService.updateFeedback(feedback);
+    }
 
 
 }
