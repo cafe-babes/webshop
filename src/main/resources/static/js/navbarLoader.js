@@ -20,7 +20,7 @@ function getNavbar() {
 
         if (role == 'ROLE_ADMIN') {
             helper.innerHTML +=
-                `<div class="dropdown">
+                `<div class="btn-group">
                     <button class="btn btn-secondary dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin menü
                       </button>
@@ -34,23 +34,12 @@ function getNavbar() {
                     <a class="dropdown-item" href="/reports.html">Riportok</a>
                 </div>
             </div>`
-        }
-
-        if (role == 'VISITOR') {
-            helper.innerHTML +=
-                `<li class="nav-item active" id="sign-up">
-                <a class="nav-link" href="/register.html">Regisztráció</a>
-            </li>
-            <li class="nav-item active" id="login">
-                <a class="nav-link" href="/login.html">Bejelentkezés</a>
-            </li>`
         } else {
             helper.innerHTML +=
                 `<div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Üdvözlünk ${name}!<span
-                        class="sr-only">Toggle Dropdown</span>
-                </button>
+                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Üdvözlünk ${name}!
+                    </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/myorders.html">Rendeléseim</a>
                     <a class="dropdown-item" href="/myprofile.html">Saját adatlap</a>
@@ -59,6 +48,16 @@ function getNavbar() {
                 </div>
             </div>`
         }
+
+        if (role == 'VISITOR') {
+                    helper.innerHTML +=
+                        `<li class="nav-item active" id="sign-up">
+                        <a class="nav-link" href="/register.html">Regisztráció</a>
+                    </li>
+                    <li class="nav-item active" id="login">
+                        <a class="nav-link" href="/login.html">Bejelentkezés</a>
+                    </li>`
+                }
 
         while (helper.firstChild) {
             parent.insertBefore(helper.firstChild, nav);
