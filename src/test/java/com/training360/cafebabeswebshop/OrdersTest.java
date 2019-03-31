@@ -4,7 +4,7 @@ import com.training360.cafebabeswebshop.basket.BasketController;
 import com.training360.cafebabeswebshop.order.*;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ResultStatus;
-import com.training360.cafebabeswebshop.product.ResultStatusE;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserController;
 import org.apache.tomcat.jni.Local;

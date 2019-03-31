@@ -3,7 +3,7 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductService;
-import com.training360.cafebabeswebshop.product.ResultStatusE;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserService;
 

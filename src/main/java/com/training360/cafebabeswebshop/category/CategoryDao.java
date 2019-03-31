@@ -54,7 +54,7 @@ public class CategoryDao {
     }
 
     public void reindexOrdinal(long ordinal) {
-        jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal-1, ordinal);
+        jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal+1, ordinal);
     }
 
     public void changeOrdinal(long id, long ordinal){

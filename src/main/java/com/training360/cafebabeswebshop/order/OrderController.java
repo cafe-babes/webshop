@@ -2,7 +2,7 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.product.ProductService;
 import com.training360.cafebabeswebshop.product.ResultStatus;
-import com.training360.cafebabeswebshop.product.ResultStatusE;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import com.training360.cafebabeswebshop.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -32,10 +32,10 @@ public class OrderController {
     public ResultStatus saveOrderAndGetId(Authentication authentication) {
         try {
             long id = orderService.saveOrderAndGetId(authentication);
-            return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
+            return new ResultStatus(ResultStatusEnum.OK, String.format("Order successfully created with id %d", id));
         } catch (IllegalStateException e) {
             e.printStackTrace();
-            return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
+            return new ResultStatus(ResultStatusEnum.NOT_OK, e.getMessage());
         }
     }
 
@@ -58,9 +58,9 @@ public class OrderController {
     public ResultStatus deleteOrder(@PathVariable long id) {
         if (validator.isValidOrderId(id)) {
             orderService.deleteOrder(id);
-            return new ResultStatus(ResultStatusE.OK, String.format("Order successfully deleted with id %d", id));
+            return new ResultStatus(ResultStatusEnum.OK, String.format("Order successfully deleted with id %d", id));
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id");
         }
     }
 
@@ -69,13 +69,13 @@ public class OrderController {
         try {
             if (validator.isExistingOrderId(id) && validator.isExistingProductAddress(address)) {
                 orderService.deleteOneItemFromOrder(id, address);
-                return new ResultStatus(ResultStatusE.OK, "Ordered product deleted successfully");
+                return new ResultStatus(ResultStatusEnum.OK, "Ordered product deleted successfully");
             } else {
-                return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id, or address");
             }
         } catch (DataAccessException sql) {
             sql.printStackTrace();
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id, or address");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id, or address");
         }
     }
 
@@ -83,9 +83,9 @@ public class OrderController {
     public ResultStatus updateOrderStatus(@PathVariable long id, @PathVariable String status) {
         if (validator.isValidStatus(status.toUpperCase()) && validator.isValidOrderId(id)) {
             orderService.updateOrderStatus(id, status.toUpperCase());
-            return new ResultStatus(ResultStatusE.OK, String.format("Order status successfully updated with id %d", id));
+            return new ResultStatus(ResultStatusEnum.OK, String.format("Order status successfully updated with id %d", id));
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid id or status");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id or status");
         }
     }
 

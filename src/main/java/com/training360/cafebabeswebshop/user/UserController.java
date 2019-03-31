@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;

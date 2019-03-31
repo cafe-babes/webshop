@@ -4,6 +4,7 @@ delete from orders;
 delete from basket;
 delete from users;
 delete from products;
+delete from category;
 
 INSERT INTO users(id, name, user_name, password, enabled, role, user_status) VALUES
 (1, 'admin', 'admin', 'admin', 1, 'ROLE_ADMIN', 'ACTIVE'),
@@ -36,6 +37,11 @@ INSERT INTO products (id, code, address, name, manufacture, price, product_statu
 (16, 'JB101', 'jb-1', 'JB-1', 'T. Patterson', 45000, 'ACTIVE'),
 (17, 'UT001', 'utility', 'Utility', 'Rusty Surfboards', 45000, 'DELETED'),
 (18, 'DI001', 'deserted_island', 'Deserted Island', 'Blue Sea Watersports', 45000, 'ACTIVE');
+
+INSERT INTO category(id, name, ordinal) values
+(1, "pretty", 1),
+(2, "fast", 2),
+(3, "smart", 3);
 
 INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name, pieces) VALUES
 (10,1,112000, 'Blow Fish', 1),

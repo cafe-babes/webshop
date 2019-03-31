@@ -1,7 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
-public enum ResultStatusE {
-
+public enum ResultStatusEnum {
     OK,
     NOT_OK;
 }
