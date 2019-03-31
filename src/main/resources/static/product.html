@@ -59,56 +59,65 @@
             </div>
 
             <div class="col-sm-7" id="product-text">
-                <hr>
-                <h2 id="name">Spongebob board</h2>
-                <h3><span id="price">800000</span> Ft</h3><br>
-                <h5>Manufacturer: <span id="manufacturer">CafeBabes surf factory</span></h5><br>
-                <h5>Product code: <span id="code">SURF01</span></h5><br>
-                <p>Leírás, ez a legjobb szörfdeszka. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium
-                    aspernatur ipsa suscipit nostrum repellendus ipsam odit, eius architecto tenetur fugit libero
-                    voluptas pariatur doloribus ratione iure laborum nisi maxime mollitia.</p>
+                <div>
+                    <hr>
+                    <h2 id="name">Spongebob board</h2>
+                    <h3><span id="price">800000</span> Ft</h3><br>
+                    <h5>Manufacturer: <span id="manufacturer">CafeBabes surf factory</span></h5><br>
+                    <h5>Product code: <span id="code">SURF01</span></h5><br>
+                    <p>Leírás, ez a legjobb szörfdeszka. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Laudantium
+                        aspernatur ipsa suscipit nostrum repellendus ipsam odit, eius architecto tenetur fugit libero
+                        voluptas pariatur doloribus ratione iure laborum nisi maxime mollitia.</p>
+                </div>
                 <br>
                 <div>
-                    <div class="ad-left">
-                        <label for="inputQuantity">Darab</label>
-                        <br>
-                        <input id="inputQuantity" type="number" step="1" value="1" style="width:40px;">
-                    </div>
-                    <div class="ad-right">
-                        <div>
+                    <div>
+                        <div class="ad-left">
+                            <label for="inputQuantity">Darab</label>
+                            <br>
+                            <input id="inputQuantity" type="number" step="1" value="1" style="width:40px;">
+                        </div>
+                        <div class="ad-right">
                         <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
-                                  id="feedback-text"    style="height:80px;width:400px;"></textarea>
-                            <!--<input id="feedback" type='text' minLength='1' maxLength='255' class='input-box'  required >-->
+                                  id="feedback-text" style="height:80px;width:400px;resize:none"></textarea>
                         </div>
                     </div>
-                    <div class="ad-right">
-                        <div class="stars" data-rating="3" id="stars">
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
-                            <span class="star">&nbsp;</span>
+                    <br><br><br><br>
+                    <div>
+
+                        <div class="ad-left">
+                            <a href="index.html">
+                                <button type="button" class="btn btn-primary btn-lg">Visszalépés</button>
+                            </a>
+                        </div>
+                        <div class="ad-left">
+                            <button type="button" id="addToBasketButton" class="btn btn-primary btn-lg" hidden
+                                    onclick="handleAddToBasketButton()">Kosárba
+                            </button>
+                            <br>
+                            <a href="basket.html" id="basketButton"></a>
+                        </div>
+
+                        <div class="ad-right">
+                            <div class="stars" data-rating="3" id="stars">
+                                <span class="star">&nbsp;</span>
+                                <span class="star">&nbsp;</span>
+                                <span class="star">&nbsp;</span>
+                                <span class="star">&nbsp;</span>
+                                <span class="star">&nbsp;</span>
+                            </div>
+                            <div class="ad-right" id="feedback-button">
+                                <button type="button" class="btn btn-outline-primary"
+                                        onclick="newFeedback()">Értékelés elküldése <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-                <br><br>
-                <br><br>
-                <div>
-                    <div class="ad-left">
-                        <a href="index.html">
-                            <button type="button" class="btn btn-primary btn-lg">Visszalépés</button>
-                        </a>
-                    </div>
-                    <div class="ad-right" id="feedback-button">
-                        <button type="button" class="btn btn-outline-primary"
-                                onclick="newFeedback()">Vélemény írása <i class="fa fa-edit"></i>
-                        </button>
-                    </div>
-                </div>
-                <button type="button" id="addToBasketButton" class="btn btn-primary btn-lg" hidden
-                        onclick="handleAddToBasketButton()">Kosárba
-                </button>
-                <a href="basket.html" id="basketButton"></a>
+
             </div>
         </div>
     </div>

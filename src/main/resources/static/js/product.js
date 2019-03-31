@@ -79,7 +79,8 @@ function showFeedbacks(jsonData) {
                               <div class="block-text rel zmin">
                               <div class="ad-right" id="feedback-and-delete-buttons">
                               <button onclick="editFeedback(${jsonData[i].id})" id="editFeedback#"+${jsonData[i].id} class="btn btn-success"><i class='fas fa-pen-alt'></i></button>
-                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button></div>
+                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button>
+                              </div>
                                   <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
                                   <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
                                           data-value="0"
@@ -90,7 +91,9 @@ function showFeedbacks(jsonData) {
                                                                                                        class="glyphicon glyphicon-star-empty"></span><span
                                           data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span>
                                   </div>
-                                  <p>${jsonData[i].feedback}</p>
+                                  <div id="feedback#${jsonData[i].id}">
+                                  <p id = "fb">${jsonData[i].feedback}</p>
+                                  </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                               </div>
                               <br>
@@ -289,11 +292,43 @@ function deleteFeedback(feedbackId){
 }
 
 function editFeedback(feedbackId){
-        if(typeof user === "undefined"){
-                    alert("Be kell jelentkeznie az értékelés módosításához");
-                    return;
-                }
-                alert("Fejlesztés alatt...");
+        var fb = document.getElementById("fb").innerHTML;
+        var editAndDeleteFeedbackButton = document.getElementById("feedback-and-delete-buttons");
+        editAndDeleteFeedbackButton.innerHTML = "";
+        editAndDeleteFeedbackButton.innerHTML +=
+        `
+        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
+        `;
+
+var feedbackText = document.getElementById("feedback#"+feedbackId);
+console.log(feedbackText);
+feedbackText.innerHTML =
+`
+                        <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
+                            style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
+                        <div class="stars" data-rating="3" id="stars">
+                            <span class="star">&nbsp;</span>
+                            <span class="star">&nbsp;</span>
+                            <span class="star">&nbsp;</span>
+                            <span class="star">&nbsp;</span>
+                            <span class="star">&nbsp;</span>
+                        </div>
+`;
+            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            console.log(rating);
+
+//        if(typeof user === "undefined"){
+//                    alert("Be kell jelentkeznie az értékelés módosításához");
+//                    return;
+//                }
+//                alert("Fejlesztés alatt...");
+}
+
+function saveEditedFeedback(feedbackId){
+
+console.log("mentés klikk");
+console.log(feedbackId);
+
 }
 
 function showProductNotFound(jsonData) {
