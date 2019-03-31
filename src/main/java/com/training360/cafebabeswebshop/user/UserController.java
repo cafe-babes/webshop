@@ -22,7 +22,7 @@ public class UserController {
         return userService.listUsers();
     }
 
-    @GetMapping("/user-role")
+    @GetMapping("/user")
     public User determineRole(Authentication authentication) {
         if (authentication == null)
             return new User(0, null, null, null, null, 1, "VISITOR", null);

@@ -7,7 +7,7 @@ var product;
 var user;
 var feedbacks;
 
-$.getJSON('/user-role', json => {
+$.getJSON('/user', json => {
 if(json.id != 0){
 var userId = json.id;
 fetchUser(userId);

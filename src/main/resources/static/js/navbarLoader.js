@@ -1,4 +1,4 @@
-$.getJSON("/user-role", json => {
+$.getJSON("/user", json => {
 
     let role = json.role || 'VISITOR';
     let name = json.userName;

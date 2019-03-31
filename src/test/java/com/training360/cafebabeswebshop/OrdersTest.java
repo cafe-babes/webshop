@@ -48,9 +48,7 @@ public class OrdersTest {
         List<Order> orders = orderController.listAllOrders();
 
         assertEquals(orders.size(), 5);
-
     }
-
 
     @Test
     public void testDeleteOrderById() {
@@ -94,25 +92,25 @@ public class OrdersTest {
     @Test
     public void emptyBasketAfterOrder(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
-        TestingAuthenticationToken tat2 = new TestingAuthenticationToken("admin", "admin");
+        TestingAuthenticationToken user = new TestingAuthenticationToken("user", "user");
+        TestingAuthenticationToken admin = new TestingAuthenticationToken("admin", "admin");
 
         //When
-        orderController.saveOrderAndGetId(tat);
-        orderController.saveOrderAndGetId(tat2);
+        orderController.saveOrderAndGetId(user);
+        orderController.saveOrderAndGetId(admin);
 
         //Then
-        assertEquals(basketController.getBasketItems(tat), Collections.emptyList());
-        assertEquals(basketController.getBasketItems(tat2), Collections.emptyList());
+        assertEquals(basketController.getBasketItems(user), Collections.emptyList());
+        assertEquals(basketController.getBasketItems(admin), Collections.emptyList());
     }
 
     @Test
     public void orderContainsDate(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+        TestingAuthenticationToken user = new TestingAuthenticationToken("user", "user");
 
         //When
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
+        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(user);
         List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
 
         for(Map.Entry<LocalDateTime, List<OrderedProduct>> entry: listMyOrders.entrySet()){
@@ -130,8 +128,8 @@ public class OrdersTest {
     @Test
     public void orderContainsProduct(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
+        TestingAuthenticationToken user = new TestingAuthenticationToken("user", "user");
+        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(user);
         List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
         List<OrderedProduct> values = listMyOrders.get(keys.get(1));
         for(int i = 0; i < values.size(); i++){
@@ -148,10 +146,10 @@ public class OrdersTest {
     @Test
     public void ordeDateInOrder(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
+        TestingAuthenticationToken user = new TestingAuthenticationToken("user", "user");
 
         //When
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
+        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(user);
         List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
         LocalDateTime date0 = keys.get(0);
         LocalDateTime date1 = keys.get(1);
@@ -169,7 +167,6 @@ public class OrdersTest {
     @Test
     public void checkOrderDate(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
         List<Order> orders = orderController.listAllOrders();
@@ -184,7 +181,6 @@ public class OrdersTest {
     @Test
     public void testUserId(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
         List<Order> orders = orderController.listAllOrders();
@@ -197,33 +193,30 @@ public class OrdersTest {
     @Test
     public void testOrderItemsQuantity(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
         List<Order> orders = orderController.listAllOrders();
         long quantity = orders.get(0).getSumQuantity();
 
         //Then
-        assertEquals(quantity, 5L);
+        assertEquals(quantity, 3L);
     }
 
     @Test
     public void testValue(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
         List<Order> orders = orderController.listAllOrders();
         long value = orders.get(0).getTotal();
 
         //Then
-        assertEquals(value, 1300800L);
+        assertEquals(value, 96600L);
     }
 
     @Test
     public void testStatus(){
         //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
         List<Order> orders = orderController.listAllOrders();
@@ -254,9 +247,9 @@ public class OrdersTest {
 
     @Test
     public void changeOrderStatusToShipped(){
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+        TestingAuthenticationToken admin = new TestingAuthenticationToken("admin", "admin");
 
-        long orderId = orderService.saveOrderAndGetId(tat);
+        long orderId = orderService.saveOrderAndGetId(admin);
 
         assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
 
@@ -267,9 +260,9 @@ public class OrdersTest {
 
     @Test
     public void changeOrderStatusToShippedWithWrongAddress(){
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+        TestingAuthenticationToken admin = new TestingAuthenticationToken("admin", "admin");
 
-        long orderId = orderService.saveOrderAndGetId(tat);
+        long orderId = orderService.saveOrderAndGetId(admin);
 
         assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
 

@@ -5,7 +5,7 @@ window.onload = function () {
 var id = 0;
 var name = "";
 function fetchUser() {
-  fetch("/user-role")
+  fetch("/user")
     .then(function(response) {
       return response.json();
     })
