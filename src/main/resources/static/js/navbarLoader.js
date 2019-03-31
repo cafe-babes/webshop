@@ -82,7 +82,8 @@ function fetchCategories() {
         var categoryNavbar = document.querySelector('#categories');
 
         for (let i = 0; i<json.length; i++) {
-            categoryNavbar.innerHTML += `<a class="nav-link text-light" href="/index.html?category=${json[i].name}">${json[i].name}</a>`;
+            if(categoryNavbar)
+                categoryNavbar.innerHTML += `<a class="nav-link text-light" href="/index.html?category=${json[i].name}">${json[i].name}</a>`;
             if(categoryDropdown)
                 categoryDropdown.innerHTML += `<option value="${json[i].name}">${json[i].name}</option>`;
         }
