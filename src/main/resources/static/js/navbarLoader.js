@@ -1,8 +1,8 @@
-fetchUser();
+getNavbar();
 fetchCategories();
 basketRefresh();
 
-function fetchUser() {
+function getNavbar() {
     $.getJSON("/user", json => {
 
         let role = json.role || 'VISITOR';
