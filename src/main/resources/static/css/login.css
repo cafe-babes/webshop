@@ -3,7 +3,7 @@ body, html {
 }
 
 .bg {
-  background-image: url("/images/login_backgr.png");
+  background-image: url("/images/login_backgr.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
