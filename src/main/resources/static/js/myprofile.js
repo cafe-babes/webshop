@@ -10,7 +10,6 @@ function fetchUser() {
       return response.json();
     })
     .then(function(jsonData) {
-      console.log(jsonData);
       id = jsonData.id;
       name = jsonData.name;
     });
@@ -138,8 +137,6 @@ function handleFormSubmit() {
         }
     }
   }
-
-  console.clear();
 
   Validate.init({
     classPassword: '.textPassword',

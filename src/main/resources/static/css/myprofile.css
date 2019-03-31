@@ -4,7 +4,7 @@ body, html {
 }
 
 .bg {
-  background-image: url("/images/myprofile.png");
+  background-image: url("/images/myprofile.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
