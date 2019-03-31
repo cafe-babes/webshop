@@ -191,7 +191,7 @@ function newFeedback() {
 
             var feedbackButton = document.getElementById('feedback-button');
             var date = new Date(Date.now());
-            date.setHours(date.getHours()+1)
+            date.setHours(date.getHours()+2)
             var dateNow = date.toISOString().substring(0,19);
             var feedbackText = document.getElementById('feedback-text');
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
