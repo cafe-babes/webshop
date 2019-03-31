@@ -299,6 +299,13 @@ function editFeedback(feedbackId){
                     return;
                 }
 
+         var feedback;
+                for(var i = 0; i<feedbacks.length; i++){
+                        if(feedbacks[i].id == feedbackId){
+                                feedback = feedbacks[i];
+                                break;
+                        }
+                }
 
  if(user.id == feedback.user.id){
 
