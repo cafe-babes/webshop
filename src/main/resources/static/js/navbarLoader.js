@@ -34,6 +34,16 @@ function getNavbar() {
                     <a class="dropdown-item" href="/reports.html">Riportok</a>
                 </div>
             </div>`
+        }
+
+        if (role == 'VISITOR') {
+            helper.innerHTML +=
+                `<li class="nav-item active" id="sign-up">
+                <a class="nav-link" href="/register.html">Regisztráció</a>
+            </li>
+            <li class="nav-item active" id="login">
+                <a class="nav-link" href="/login.html">Bejelentkezés</a>
+            </li>`
         } else {
             helper.innerHTML +=
                 `<div class="btn-group">
@@ -48,16 +58,6 @@ function getNavbar() {
                 </div>
             </div>`
         }
-
-        if (role == 'VISITOR') {
-                    helper.innerHTML +=
-                        `<li class="nav-item active" id="sign-up">
-                        <a class="nav-link" href="/register.html">Regisztráció</a>
-                    </li>
-                    <li class="nav-item active" id="login">
-                        <a class="nav-link" href="/login.html">Bejelentkezés</a>
-                    </li>`
-                }
 
         while (helper.firstChild) {
             parent.insertBefore(helper.firstChild, nav);

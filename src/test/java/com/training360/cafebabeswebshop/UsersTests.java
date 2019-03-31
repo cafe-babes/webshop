@@ -42,7 +42,7 @@ public class UsersTests {
         List<User> users = userController.listUsers();
 
         // When (adding a user)
-        userController.createUser(new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "asdf", 1,
+        userController.createUser(new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "abcdef1A", 1,
                 "ROLE_USER", "ACTIVE"));
 
         //Then (size of user is increased by one)
@@ -79,7 +79,7 @@ public class UsersTests {
         assertThat(users.contains(exampleUser), equalTo(true));
 
         // When (modifying a user by ID)
-        userController.updateUser(exampleUserId, (new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "asdf", 1,
+        userController.updateUser(exampleUserId, (new User(5L, "Ciara Doe", "a@eee.com", "cccdoe", "abcdef1A", 1,
                 "ROLE_USER", "ACTIVE")));
 
         //Then (example user can not be found any more in the list)

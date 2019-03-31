@@ -11,15 +11,15 @@ public class UserValidator {
     }
 
     public boolean userCanBeSaved(User user) {
-        return nameIsNotEmptyOrNull(user.getName()) && passwordIsNotEmptyOrNull(user.getPassword());
+        return usernameIsNotEmptyOrNull(user.getUserName()) && passwordIsValid(user.getPassword());
     }
 
-    private boolean nameIsNotEmptyOrNull(String name) {
+    private boolean usernameIsNotEmptyOrNull(String name) {
         return name != null && !name.trim().equals("");
     }
 
-    private boolean passwordIsNotEmptyOrNull(String pass) {
-        return pass != null && !pass.trim().equals("");
+    private boolean passwordIsValid(String pass) {
+        return pass == null || pass.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}$");
     }
 
     public boolean deletionWasSuccessFul(long id) {

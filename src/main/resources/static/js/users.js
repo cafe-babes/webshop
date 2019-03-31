@@ -2,6 +2,8 @@ window.onload = function() {
   fetchUsers();
 };
 
+var messageDiv = document.getElementById("message-div");
+
 function fetchUsers() {
   fetch("/users")
     .then(function(response) {
@@ -46,11 +48,9 @@ function showTable(jsonData) {
     tr.appendChild(user_nameTd);
 
     var passwordTd = document.createElement("td");
-    passwordTd.innerHTML = jsonData[i].password;
+    passwordTd.innerHTML = "- titkosítva -";
     var passwordTdId = "passwordTd" + i;
     passwordTd.setAttribute("id", passwordTdId);
-    passwordTd.setAttribute("style", "width: 12%");
-
     tr.appendChild(passwordTd);
 
     var enabledTd = document.createElement("td");
@@ -93,102 +93,145 @@ function showTable(jsonData) {
 
 
     var deleteButtonTd = document.createElement("td");
-            var deleteButton = document.createElement("button");
-            var deleteButtonId = 'deletebutton' + i;
-            deleteButton.setAttribute('id', deleteButtonId);
-            deleteButton.setAttribute('class', 'btn');
-            deleteButton.setAttribute('onclick', `deleteUser(${i})`);
-            deleteButton['raw-data'] = jsonData[i];
+        var deleteButton = document.createElement("button");
+        var deleteButtonId = 'deletebutton' + i;
+        deleteButton.setAttribute('id', deleteButtonId);
+        deleteButton.setAttribute('class', 'btn');
+        deleteButton.setAttribute('onclick', `deleteUser(${i})`);
+        deleteButton['raw-data'] = jsonData[i];
 
-            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
-            deleteButtonTd.appendChild(deleteButton);
-            tr.appendChild(deleteButtonTd);
+        deleteButtonTd.appendChild(deleteButton);
+        tr.appendChild(deleteButtonTd);
 
-            table.appendChild(tr);
+        table.appendChild(tr);
 
   }
-  }
-  function deleteUser(num){
+}
 
-          var id = document.getElementById(`deletebutton${num}`)['raw-data'].id;
-          var name = document.getElementById(`deletebutton${num}`)['raw-data'].name;
+function deleteUser(num){
 
-          if (!confirm("Biztos, hogy törli a felhasználót?")) {
-              return;
-          }
+    var id = document.getElementById(`deletebutton${num}`)['raw-data'].id;
+    var name = document.getElementById(`deletebutton${num}`)['raw-data'].name;
 
-           fetch("/users/" + id, {
-                          method: "DELETE",
-                      })
-                      .then(function (response) {
-                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
-                          fetchUsers();
-                          });
+    if (!confirm("Biztos, hogy törli a felhasználót?")) {
+      return;
+    }
+
+    fetch("/users/" + id, {
+          method: "DELETE",
+      })
+      .then(function (response) {
+          messageDiv.setAttribute("class", "alert alert-success");
+          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
+          fetchUsers();
+          });
 }
 function editTds(num){
 
-        var name = document.getElementById(`nameTd${num}`);
-        var password = document.getElementById(`passwordTd${num}`);
+    var name = document.getElementById(`nameTd${num}`);
+    var password = document.getElementById(`passwordTd${num}`);
 
-        var nameData = name.innerHTML;
-        var passwordData = password.innerHTML;
+    var nameData = name.innerHTML;
 
-        name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${nameData}' required>`
-        password.innerHTML = `<input id="passwordInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${passwordData}' required>`
+    name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${nameData}' required>`
+    password.innerHTML = `<input id="passwordInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='********' required>`
 
-        var edit = document.getElementById(`editbutton${num}`);
-        edit.style.display = 'none';
-        var save = document.getElementById(`savebutton${num}`);
-        save.style.display = 'inline';
+    var edit = document.getElementById(`editbutton${num}`);
+    edit.style.display = 'none';
+    var save = document.getElementById(`savebutton${num}`);
+    save.style.display = 'inline';
+}
+
+function saveTds(num){
+
+    var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
+    var name = document.getElementById(`nameInput${num}`).value;
+    var password = document.getElementById(`passwordInput${num}`).value;
+    var email = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].email;
+    var userName = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].userName;
+
+    var request;
+    if(password == '********' || password == '') {
+        request =
+            {
+                    "id": id,
+                    "name": name,
+                    "email": email,
+                    "userName": userName,
+                    "enabled": 1,
+                    "role": "ROLE_USER",
+                    "userStatus": "ACTIVE"
+                }
+    } else if(checkPwd(password)) {
+        request =
+            {
+                   "id": id,
+                   "name": name,
+                   "email": email,
+                   "userName": userName,
+                   "password": password,
+                   "enabled": 1,
+                   "role": "ROLE_USER",
+                   "userStatus": "ACTIVE"
+               }
+    } else {
+        return;
     }
 
-    function saveTds(num){
 
-            var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
-            var name = document.getElementById(`nameInput${num}`).value;
-            var password = document.getElementById(`passwordInput${num}`).value;
-            var email = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].email;
-            var userName = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].userName;
-
-            var request =
-                    {
-                            "id": id,
-                            "name": name,
-                            "email": email,
-                            "userName": userName,
-                            "password": password,
-                            "enabled": 1,
-                            "role": "ROLE_USER",
-                            "userStatus": "ACTIVE"
-                        }
-
-
-            fetch("/users/" + id, {
-                    method: "POST",
-                    body: JSON.stringify(request),
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                })
-                .then(function (response) {
-                    return response.json();
-                }).
-            then(function (jsonData) {
+    fetch("/users/" + id, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: {
+                "Content-type": "application/json"
+            }
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
             console.log(jsonData);
-                if (jsonData.status == "OK") {
 
-                   document.getElementById(`nameTd${num}`).innerHTML = name;
-                   document.getElementById(`passwordTd${num}`).innerHTML = password;
+            if (jsonData.status == "OK") {
 
-                    fetchUsers();
-                   document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                   document.getElementById("message-div").innerHTML = jsonData.message;
-                } else {
-                    document.getElementById("message-div").setAttribute("class", "alert alert-danger");
-                    document.getElementById("message-div").innerHTML = jsonData.message;
-                }
-            });
-            return false;
-        }
+                document.getElementById(`nameTd${num}`).innerHTML = name;
+                document.getElementById(`passwordTd${num}`).innerHTML = password;
+
+                fetchUsers();
+                messageDiv.setAttribute("class", "alert alert-success");
+                messageDiv.innerHTML = jsonData.message;
+            } else {
+                messageDiv.setAttribute("class", "alert alert-danger");
+                messageDiv.innerHTML = jsonData.message;
+            }
+    });
+    return false;
+}
+
+function checkPwd(str) {
+    messageDiv.setAttribute("class", "alert alert-danger");
+    if (str.length < 8) {
+        messageDiv.innerHTML = "A jelszó legalább 8 karakter legyen!";
+        return false;
+    } else if (str.length > 50) {
+        messageDiv.innerHTML = "Túl hosszú jelszó!";
+        return false;
+    } else if (str.search(/\d/) == -1) {
+        messageDiv.innerHTML = "Legalább egy számot tartalmazzon!";
+        return false;
+    } else if (str.search(/[a-zA-Z]/) == -1) {
+        messageDiv.innerHTML = "Legalább egy betűt tartalmazzon!";
+        return false;
+    } else if (str.search(/[A-Z]/) == -1) {
+        messageDiv.innerHTML = "Legalább egy nagybetűt tartalmazzon!";
+        return false;
+    } else if (str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
+        messageDiv.innerHTML = "Nem engedélyezett speciális karakter használata!";
+        return false;
+    }
+    messageDiv.setAttribute("class", "alert alert-success");
+    messageDiv.innerHTML = `Megfelelő jelszó! Kattintson a <strong>Mentés</strong> gombra!`;
+    return true;
+}
