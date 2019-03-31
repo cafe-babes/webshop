@@ -397,32 +397,32 @@ function showProductNotFound(jsonData) {
         }
 
 //Init Star Rating System   # 2
-        document.addEventListener('DOMContentLoaded', function(){
-            let stars2 = document.querySelectorAll('.star2');
-            stars2.forEach(function(star2){
-                star2.addEventListener('click', setRating2);
-            });
-
-            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
-            let target2 = stars2[rating2 - 1];
-            target2.dispatchEvent(new MouseEvent('click'));
-        });
-        function setRating2(ev){
-            let span2 = ev.currentTarget;
-            let stars2 = document.querySelectorAll('.star2');
-            let match2 = false;
-            let num2 = 0;
-            stars2.forEach(function(star2, index2){
-                if(match2){
-                    star2.classList.remove('rated2');
-                }else{
-                    star2.classList.add('rated2');
-                }
-                //are we currently looking at the span that was clicked
-                if(star2 === span2){
-                    match2 = true;
-                    num2 = index2 + 1;
-                }
-            });
-            document.querySelector('.stars2').setAttribute('data-rating', num2);
-        }
+//        document.addEventListener('DOMContentLoaded', function(){
+//            let stars2 = document.querySelectorAll('.star2');
+//            stars2.forEach(function(star2){
+//                star2.addEventListener('click', setRating2);
+//            });
+//
+//            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+//            let target2 = stars2[rating2 - 1];
+//            target2.dispatchEvent(new MouseEvent('click'));
+//        });
+//        function setRating2(ev){
+//            let span2 = ev.currentTarget;
+//            let stars2 = document.querySelectorAll('.star2');
+//            let match2 = false;
+//            let num2 = 0;
+//            stars2.forEach(function(star2, index2){
+//                if(match2){
+//                    star2.classList.remove('rated2');
+//                }else{
+//                    star2.classList.add('rated2');
+//                }
+//                //are we currently looking at the span that was clicked
+//                if(star2 === span2){
+//                    match2 = true;
+//                    num2 = index2 + 1;
+//                }
+//            });
+//            document.querySelector('.stars2').setAttribute('data-rating', num2);
+//        }
