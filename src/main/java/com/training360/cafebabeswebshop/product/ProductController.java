@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
+import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public ResultStatus getIncorrectProduct(){
+    public ResultStatus getIncorrectProduct() {
         return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
     }
 
@@ -79,9 +80,11 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @GetMapping("/products/{start}/{size}")
-    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size) {
-        return productService.getProductsWithStartAndSize(start, size);
+    @PostMapping("/products/{start}/{size}")
+    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size, @RequestBody(required = false) Category category) {
+        if (category==null)
+            return productService.getProductsWithStartAndSize(start,size);
+        return productService.getProductsWithStartAndSizeAndCategory(start, size, category);
     }
 
     @DeleteMapping("/products/{id}")

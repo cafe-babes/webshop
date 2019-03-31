@@ -47,15 +47,8 @@
         <!--</form>-->
     </div>
 </nav>
-<nav class="nav nav-underline navbar-dark" style="background:black;">
-    <a class="nav-link text-light" href="#">Kategória 1</a>
-    <!--<a class="nav-link text-light" href="#">-->
-        <!--Kategória 1-->
-        <!--<span class="badge badge-pill align-text-bottom">27</span>-->
-    <!--</a>-->
-    <a class="nav-link text-light" href="#">Kategória 2</a>
-    <a class="nav-link text-light" href="#">Kategória 3</a>
-    <a class="nav-link text-light" href="#">Kategória 4</a>
+<nav class="nav nav-underline navbar-dark" id="categories" style="background:black;">
+    <span class="nav-link text-light">Kategóriák</span>
 </nav>
 
 <main style="min-height:calc(100vh - 348px);">
@@ -81,6 +74,13 @@
                     <option value="6">6 /oldal</option>
                     <option value="12">12 /oldal</option>
                     <option value="30">30 /oldal</option>
+                </select>
+            </div>
+            <div class="col text-center">
+                <label for="category-select">Kategória: </label>
+                <select id="category-select" class="browser-default custom-select">
+                    <option value="all" selected>Összes</option>
+                    <!--js tölti fel-->
                 </select>
             </div>
         </div>

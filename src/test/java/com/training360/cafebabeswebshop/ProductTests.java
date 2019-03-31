@@ -71,7 +71,7 @@ public class ProductTests {
 	@Test
 	public void testGetProductsWithStartAndSize(){
 		// When
-		List<Product> productsPart = productController.getProductsWithStartAndSize(1,10);
+		List<Product> productsPart = productController.getProductsWithStartAndSize(1,10, null);
 		// Then
 		assertEquals(10, productsPart.size());
 	}
