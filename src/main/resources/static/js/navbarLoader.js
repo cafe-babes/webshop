@@ -79,14 +79,15 @@ function basketRefresh() {
 
 function fetchCategories() {
     $.getJSON("/categories", json => {
+        var categoryDropdown = document.querySelector("#category-select");
+        var categoryNavbar = document.querySelector('#categories');
+
         for (let i = 0; i<json.length; i++) {
-            document.querySelector('#categories').innerHTML += `<a class="nav-link text-light" href="/${json[i].name}">${json[i].name}</a>`;
-            document.querySelector('#category-select').innerHTML += `<option value="${json[i].name}">${json[i].name}</option>`;
-            if ((new URL(document.location)).searchParams.get("category") == json[i].name) {
-                document.querySelector('#categories').selectedIndex = i;
-            }
+            categoryNavbar.innerHTML += `<a class="nav-link text-light" href="/index.html?category=${json[i].name}">${json[i].name}</a>`;
+            if(categoryDropdown)
+                categoryDropdown.innerHTML += `<option value="${json[i].name}">${json[i].name}</option>`;
         }
-        if(document.querySelector("#category-select"))
-            document.querySelector("#category-select").value = new URL(document.location).searchParams.get("category") || 'all';
+        if(categoryDropdown)
+            categoryDropdown.value = new URL(document.location).searchParams.get("category") || 'all';
     });
 }
