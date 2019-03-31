@@ -5,6 +5,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,10 +57,16 @@ public class CategoryService {
 
 
     public void updateCategory(long id, Category category) {
-        long max = categoryDao.getMaxOrdinal();
-        if(category.getOrdinal() <= max){
-            while(max >= category.getOrdinal()){
-                categoryDao.reindexOrdinal(max--);
+        List<Category> categories = categoryDao.listCategories();
+        long originalOrdinal = category.getOrdinal();
+        for(Category c : categories) {
+            if (c.getId() == id) {
+                originalOrdinal = c.getOrdinal();
+            }
+        }
+        for(Category g : categories){
+            if(g.getOrdinal() == category.getOrdinal()){
+                categoryDao.changeOrdinal(g.getId(), originalOrdinal);
             }
         }
         categoryDao.updateCategory(id, category);
