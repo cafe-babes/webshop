@@ -121,12 +121,13 @@ function checkIfEmpty(){
                 alert("a kosár tartalma üres");
                 return;
            }
-           handleAddToOrders();
+           window.location.href = "/delivery.html";
+           //handleAddToOrders();
            basketRefresh();
        });
 }
 
-function handleAddToOrders(){
+/*function handleAddToOrders(){
     var url = "/myorders";
     fetch(url,{
         method: "GET"
@@ -148,7 +149,7 @@ function addToOrders(){
     })
     .then(function(response){
         console.log(response);
-        window.location.href ="/succesfulorder.html";
+        window.location.href ="/delivery.html";
         return response.json();
     })
-}
+}*/
