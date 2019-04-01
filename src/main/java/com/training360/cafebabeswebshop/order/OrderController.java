@@ -30,8 +30,6 @@ public class OrderController {
 
     @PostMapping("/myorders")
     public ResultStatus saveOrderAndGetId(Authentication authentication, @RequestBody Delivery delivery) {
-        if (authentication==null)
-            return null;
         try {
             long id = orderService.saveOrderAndGetId(authentication, delivery);
             return new ResultStatus(ResultStatusEnum.OK, String.format("Order successfully created with id %d", id));
@@ -42,8 +40,6 @@ public class OrderController {
 
     @GetMapping("/myorders")
     public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication) {
-        if (authentication==null)
-            return null;
         return orderService.listMyOrders(authentication);
     }
 

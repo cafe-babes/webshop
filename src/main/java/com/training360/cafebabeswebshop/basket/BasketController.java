@@ -18,7 +18,6 @@ public class BasketController {
         return basketService.saveBasketItemAndGetId(address, authentication, basketItem);
     }
 
-
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
         return authentication==null ? null : basketService.getBasketItems(authentication);
