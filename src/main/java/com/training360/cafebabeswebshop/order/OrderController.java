@@ -30,18 +30,20 @@ public class OrderController {
 
     @PostMapping("/myorders")
     public ResultStatus saveOrderAndGetId(Authentication authentication, @RequestBody Delivery delivery) {
+        if (authentication==null)
+            return null;
         try {
             long id = orderService.saveOrderAndGetId(authentication, delivery);
             return new ResultStatus(ResultStatusEnum.OK, String.format("Order successfully created with id %d", id));
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalArgumentException e) {
             return new ResultStatus(ResultStatusEnum.NOT_OK, e.getMessage());
-        } catch (IllegalArgumentException iae){
-            return new ResultStatus(ResultStatusEnum.NOT_OK, iae.getMessage());
         }
     }
 
     @GetMapping("/myorders")
     public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication) {
+        if (authentication==null)
+            return null;
         return orderService.listMyOrders(authentication);
     }
 
