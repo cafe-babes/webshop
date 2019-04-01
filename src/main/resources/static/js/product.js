@@ -228,9 +228,9 @@ function newFeedback() {
 
             console.log(dateNow);
             console.log('Feedback '+feedbackText.value);
-            console.log('Rating '+rating);
-            console.log('User ID '+user.id);
-            console.log('Product ID '+ product.id);
+            console.log('Rating :'+rating);
+            console.log('User ID :'+user.id);
+            console.log('Product ID :'+ product.id);
 
                     var request =
                                    {
@@ -286,11 +286,6 @@ function newFeedback() {
 
 function deleteFeedback(feedbackId){
 
-        if(typeof user === "undefined"){
-            alert("Be kell jelentkeznie az értékelés törléséhez");
-            return;
-        }
-
         var feedback;
         for(var i = 0; i<feedbacks.length; i++){
                 if(feedbacks[i].id == feedbackId){
@@ -308,8 +303,6 @@ function deleteFeedback(feedbackId){
                                                method: "DELETE",
                                            })
                                            .then(function (response) {
-                     //                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                     //                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
                                                fetchProduct();
                                                });
             }else{

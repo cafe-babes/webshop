@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop.feedback;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,16 @@ public class FeedbackService {
 
         long userId = feedback.getUser().getId();
         long productId = feedback.getProduct().getId();
-        long feedbackId = feedbackDao.getFeedbackIdByUserIdAndProductId(userId, productId);
+        long feedbackId;
         boolean feedbackWasSuccessful = false;
+
+        try {
+            feedbackId = feedbackDao.getFeedbackIdByUserIdAndProductId(userId, productId);
+        }catch (DataAccessException dae){
+            dae.printStackTrace();
+            feedbackId = 0;
+        }
+
 
         if (feedbackDao.alreadyGaveAFeedback(userId, productId)) {
 
