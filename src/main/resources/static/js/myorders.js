@@ -52,6 +52,8 @@ function showMyOrders(jsonData){
                 if(jsonData[obj].hasOwnProperty(prop)){
                    var tbody = document.createElement("tbody");
                    table.appendChild(tbody);
+                   var arr = jsonData[obj].keys();
+                   console.log(arr);
 
                     var tr = document.createElement("tr");
                     tbody.appendChild(tr);

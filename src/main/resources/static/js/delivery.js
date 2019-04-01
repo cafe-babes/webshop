@@ -32,13 +32,13 @@ function showdeliveries(jsonData){
 function addNewAddress(){
     var div = document.querySelector('#new-address');
     div.innerHTML = `<label for="inputNewAddress">Szállítási cím megadása (ország, város, utca, házszám, emelet, irányítószám)</label>
-     <input type="text" id="inputNewAddress" max-length=255 style="width:600px;">`;
+     <input type="text" id="inputNewAddress" onfocus=checkoutRadios() max-length=255 style="width:600px;">`;
 }
 
-function addToOrders(){
-    var newAddress = document.querySelector('#inputNewAddress').value;
+function addToOrders(address){
+   // var newAddress = document.querySelector('#inputNewAddress').value;
     var request = {
-        "deliveryAddress": newAddress
+        "deliveryAddress":address
     }
 
      var url = "/myorders";
@@ -56,4 +56,24 @@ function addToOrders(){
          }).then(function (jsonData) {
              console.log(jsonData.message);
          })
+}
+
+function checkAddress(){
+    var deliveryDiv = document.querySelector('#deliveryDiv');
+    var newAddress = document.querySelector('#inputNewAddress');
+    for (var i = 0; i < deliveryDiv.children.length; i++){
+        if (deliveryDiv.children[i].children[2].checked == true){
+            console.log(deliveryDiv.children[i].children[0].innerHTML)
+            addToOrders(deliveryDiv.children[i].children[0].innerHTML);
+        } else if (newAddress.value != null){
+            addToOrders(newAddress);
+        }
+    }
+}
+
+function checkoutRadios(){
+    var deliveryDiv = document.querySelector('#deliveryDiv');
+     for (var i = 0; i < deliveryDiv.children.length; i++) {
+         deliveryDiv.children[i].children[2].checked = false;
+         }
 }
