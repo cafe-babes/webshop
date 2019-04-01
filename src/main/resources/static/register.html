@@ -13,8 +13,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap-grid.min.css"></script>
 
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-
     <style>
+        body{
+          background-image: url("/images/register.jpg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 100vh;
+        }
         div.passwordValidator{
           line-height: 16px;
           width: 99%;
@@ -28,37 +34,52 @@
     <title>Please register</title>
 </head>
 <body>
-<div class="container">
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:black;">
+    <a class="navbar-brand" href="/">CafeBabes</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+
+            <!--js tölti fel-->
+
+            <li class="nav-item active" id="basket">
+                <a class="nav-link" href="basket.html">
+                    <i class="fa" style="font-size:24px">&#xf07a;</i>
+                    <span class='badge badge-warning' id='cartCount'></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style="margin-top:4em;">
     <form class="form-signin" id="form-register">
-        <h2 class="form-signin-heading">Please register</h2>
+        <h2 class="form-signin-heading">Kérem regisztráljon!</h2>
         <p>
-            <label for="name" class="sr-only">Full name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Full name" required autofocus>
+            <label for="name" class="sr-only">Teljes név</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Teljes név" required autofocus>
         </p>
         <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+            <label for="username" class="sr-only">Felhasználónév</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Felhasználónév" required autofocus>
         </p>
-        <!--<p>-->
-            <!--<label for="password" class="sr-only">Password</label>-->
-            <!--<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>-->
-        <!--</p>-->
-        <!--<p>-->
-            <!--<label for="confirmPassword" class="sr-only">Confirm Password</label>-->
-            <!--<input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>-->
-        <!--</p>-->
         <div class="formContainer">
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" class="textPassword form-control" id="password" name="password" placeholder="Password" required>
+            <label for="password" class="sr-only">Jelszó</label>
+            <input type="password" class="textPassword form-control" id="password" name="password" placeholder="Jelszó" required>
             <div class="passwordValidator"></div>
-            <label for="confirm" class="sr-only">Confirm Password</label>
-            <input type="password" class="textConfirmPassword form-control" id="confirm" name="confirm" placeholder="Confirm Password" required>
+            <label for="confirm" class="sr-only">Jelszó megerősítés</label>
+            <input type="password" class="textConfirmPassword form-control" id="confirm" name="confirm" placeholder="Jelszó megerősítés" required>
         </div>
-        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Register</button>
+        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="handleFormSubmit()">Regisztrálok</button>
         <br>
         <div id="response-box" class="">
         </div>
     </form>
 </div>
+<script src="js/navbarLoader.js"></script>
 <script src="js/register.js"></script>
 </body></html>
