@@ -227,10 +227,10 @@ function newFeedback() {
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
             console.log(dateNow);
-            console.log(feedbackText.value);
-            console.log(rating);
-            console.log(user);
-            console.log(product);
+            console.log('Feedback '+feedbackText.value);
+            console.log('Rating '+rating);
+            console.log('User ID '+user.id);
+            console.log('Product ID '+ product.id);
 
                     var request =
                                    {

@@ -24,19 +24,20 @@ public class FeedbackService {
 
         long userId = feedback.getUser().getId();
         long productId = feedback.getProduct().getId();
-
+        long feedbackId = feedbackDao.getFeedbackIdByUserIdAndProductId(userId, productId);
         boolean feedbackWasSuccessful = false;
 
         if (feedbackDao.alreadyGaveAFeedback(userId, productId)) {
 
-            feedbackDao.updateFeedback(feedback);
+            feedbackDao.updateFeedback(feedback, feedbackId);
             feedbackWasSuccessful = true;
-
-        } else if (feedbackDao.userCanGiveAFeedback(userId, productId)) {
+            return feedbackWasSuccessful;
+        }
+        if (feedbackDao.userCanGiveAFeedback(userId, productId)) {
 
             feedbackDao.giveAFeedback(feedback);
             feedbackWasSuccessful = true;
-
+            return feedbackWasSuccessful;
         }
         return feedbackWasSuccessful;
     }
