@@ -92,7 +92,7 @@ function showFeedbacks(jsonData) {
 var visibility;
 
   for (var i = 0; i < jsonData.length; i++) {
-//  Setting the visibility of
+//  Setting the visibility of the delet button
   visibility = 'hidden';
   if(jsonData[i].user.id == userId){
   visibility = 'visible';
