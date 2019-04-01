@@ -1,2 +1,0 @@
-ALTER TABLE basket
-MODIFY product_id BIGINT NOT NULL UNIQUE;
