@@ -28,18 +28,16 @@ public class OrderService {
     private DeliveryDao deliveryDao;
 
 
-    public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication){
+    public List<Order> listMyOrders(Authentication authentication){
         if (authentication==null)
             return null;
-        Map<Order, List<OrderedProduct>> result = new HashMap<>();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
-
         for (Order o: orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
-                result.put(o, listOrderedProductsByOrderId(o.getId()));
+               o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
             }
         }
-        return result;
+        return orders;
     }
 
     public List<Order> listAllOrders(){
@@ -58,10 +56,9 @@ public class OrderService {
         if (authentication==null)
             return 0;
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        checkIfNewDeliveryAddress(authentication, delivery);
-        long deliveryId = deliveryDao.saveDeliveryAndGetId(authentication.getName(), delivery);
+        Delivery delivery1 = checkIfNewDeliveryAddress(authentication, delivery);
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
-                -1, -1, "ACTIVE", deliveryId);
+                -1, -1, "ACTIVE", delivery1);
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -108,9 +105,10 @@ public class OrderService {
             if (d.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "").equals(
                     delivery.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "")
             )){
-                throw new IllegalArgumentException("Address already exists");
+                return d;
             }
         }
+        deliveryDao.saveDeliveryAndGetId(authentication.getName(), delivery);
         return delivery;
     }
 }

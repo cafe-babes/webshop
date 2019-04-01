@@ -1,6 +1,10 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.delivery.Delivery;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
 
@@ -10,23 +14,28 @@ public class Order {
     private long total;
     private long sumQuantity;
     private OrderStatus orderStatus;
-    private long deliveryId;
+    private Delivery delivery;
+    private List<OrderedProduct> orderedProducts;
 
     public Order() {
     }
 
-    public Order(long id, long userId, long total, long sumQuantity, String status, long deliveryId) {
-        this(id, LocalDateTime.now(), userId, total, sumQuantity, status, deliveryId);
+    public Order(long id, long userId, long total, long sumQuantity, String status) {
+        this(id, LocalDateTime.now(), userId, total, sumQuantity, status);
     }
 
-    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String status, long deliveryId) {
+    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String status) {
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.userId = userId;
         this.total = total;
         this.sumQuantity = sumQuantity;
         this.orderStatus = OrderStatus.valueOf(status);
-        this.deliveryId = deliveryId;
+    }
+
+    public Order(long id, long userId, long total, long sumQuantity, String orderStatus, Delivery delivery) {
+        this(id, userId, total, sumQuantity, orderStatus);
+        this.delivery = delivery;
     }
 
     public long getId() {
@@ -77,15 +86,23 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public long getDeliveryId() {
-        return deliveryId;
+    public Delivery getDelivery() {
+        return delivery;
     }
 
-    public void setDeliveryId(long deliveryId) {
-        this.deliveryId = deliveryId;
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
+    public List<OrderedProduct> getOrderedProducts() {
+        return orderedProducts;
+    }
+
+    public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
+        this.orderedProducts = orderedProducts;
     }
 
     public String toString() {
-        return id + " " + purchaseDate + " " + userId + " " + total + " " + sumQuantity + " " + orderStatus + " " + deliveryId;
+        return id + " " + purchaseDate + " " + userId + " " + total + " " + sumQuantity + " " + orderStatus;
     }
 }
