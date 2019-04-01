@@ -27,9 +27,16 @@ public class FeedbackService {
 
         boolean feedbackWasSuccessful = false;
 
-        if (feedbackDao.userCanGiveAFeedback(userId, productId)) {
+        if (feedbackDao.alreadyGaveAFeedback(userId, productId)) {
+
+            feedbackDao.updateFeedback(feedback);
+            feedbackWasSuccessful = true;
+
+        } else if (feedbackDao.userCanGiveAFeedback(userId, productId)) {
+
             feedbackDao.giveAFeedback(feedback);
             feedbackWasSuccessful = true;
+
         }
         return feedbackWasSuccessful;
     }
@@ -38,7 +45,4 @@ public class FeedbackService {
         feedbackDao.deleteFeedbackById(id);
     }
 
-    public void updateFeedback(Feedback feedback) {
-        feedbackDao.updateFeedback(feedback);
-    }
 }

@@ -61,7 +61,16 @@ public class FeedbackDao {
 
     public void updateFeedback(Feedback feedback) {
         jdbcTemplate.update("UPDATE `feedback`" +
-                "SET `feedback_date`= ?,`feedback`= ?,`rating`= ? WHERE id = ?",
+                        "SET `feedback_date`= ?,`feedback`= ?,`rating`= ?" +
+                        "WHERE id = ?",
                 feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getId());
+    }
+
+    public boolean alreadyGaveAFeedback(long userId, long productId) {
+        int numberOfFeedbacksOfTheGivenUserForACertainProduct =
+                jdbcTemplate.queryForObject("SELECT count(*) numberOfFeedback" +
+                        "FROM `feedback`" +
+                        "WHERE product_id = ? AND user_id = ?", Integer.class, userId, productId);
+        return numberOfFeedbacksOfTheGivenUserForACertainProduct >= 1;
     }
 }
