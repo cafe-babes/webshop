@@ -1,7 +1,8 @@
 package com.training360.cafebabeswebshop;
-import com.training360.cafebabeswebshop.category.Category;
+
 import com.training360.cafebabeswebshop.category.CategoryService;
 import com.training360.cafebabeswebshop.feedback.Feedback;
+import com.training360.cafebabeswebshop.feedback.FeedbackDao;
 import com.training360.cafebabeswebshop.feedback.FeedbackService;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductService;
@@ -14,10 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +27,9 @@ public class FeedbackTest {
 
     @Autowired
     FeedbackService feedbackService;
+
+    @Autowired
+    FeedbackDao feedbackDao;
 
     @Autowired
     UserService userService;
@@ -49,40 +52,61 @@ public class FeedbackTest {
     @Test
     public void testGiveAFeedBack(){
 
-        User exampleUser = userService.listUsers().get(0);
-        Product exampleproduct = productService.getProductById(1);
+        User exampleUser = userService.getUserById(2);
+        Product exampleproduct = productService.getProductById(8);
 
         feedbackService.giveAFeedback(new Feedback("Awesome!",5,exampleUser,
                 exampleproduct));
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
 
-        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
+        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName() );
         assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+        assertEquals(8, feedbacks.get(0).getProduct().getId());
+        assertEquals(5, feedbacks.get(0).getRating());
 
     }
 
     @Test
     public void testDeleteFeedBackById(){
 
-//        Given (we have ONE product of which we have TWO feedbacks)
+//        Given (we have ONE product of which we have ONE feedback)
 
         Product exampleproduct = productService.getProductById(1);
 
-        Feedback exampleFeedback = feedbackService.listFeedBacksByProductId(exampleproduct .getId()).get(0);
+        List<Feedback> feedbackListOfExampleProduct = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
 
-        long idOfExampleFeedback = exampleFeedback.getId();
+        assertEquals(1, feedbackListOfExampleProduct.size());
+
 
 //        When (deleting ONE feedback by id it's ID )
 
+        long idOfExampleFeedback = feedbackListOfExampleProduct.get(0).getId();
+
         feedbackService.deleteFeedbackById(idOfExampleFeedback);
 
-        int sizeOfFeedbacksOfTheExampleProduct = 1;
-
-
 //      Then  (the list of Feedbacks decreases by one as well)
+        feedbackListOfExampleProduct = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
 
-        assertEquals(feedbackService.listFeedBacksByProductId(exampleproduct.getId()), sizeOfFeedbacksOfTheExampleProduct);
+        assertEquals(feedbackListOfExampleProduct, Collections.emptyList());
+
+    }
+
+    @Test
+    public void testUserDidNotReceiveSuchProductThereforeCanNotGiveAnyFeedback(){
+
+        User exampleUser = userService.getUserById(2);
+        Product exampleproduct = productService.getProductById(8);
+
+        feedbackService.giveAFeedback(new Feedback("Awesome!",5,exampleUser,
+                exampleproduct));
+
+        List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
+
+        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName() );
+        assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+        assertEquals(8, feedbacks.get(0).getProduct().getId());
+        assertEquals(5, feedbacks.get(0).getRating());
 
     }
 

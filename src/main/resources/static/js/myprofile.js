@@ -4,6 +4,11 @@ window.onload = function () {
 
 var id = 0;
 var name = "";
+
+window.onkeydown = e => {
+    if (e.keyCode == 13) { document.forms[0].submit(); }
+}
+
 function fetchUser() {
   fetch("/user")
     .then(function(response) {

@@ -59,9 +59,19 @@ public class FeedbackDao {
         return numberOfShippedProductsWhichTheUserOrdered >= 1;
     }
 
-    public void updateFeedback(Feedback feedback) {
-        jdbcTemplate.update("UPDATE `feedback`" +
-                "SET `feedback_date`= ?,`feedback`= ?,`rating`= ? WHERE id = ?",
-                feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getId());
+    public void updateFeedback(Feedback feedback, long feedbackId) {
+        jdbcTemplate.update("UPDATE `feedback` SET `feedback_date`= ?,`feedback`= ?,`rating`= ? WHERE id = ?",
+                feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedbackId);
     }
+
+    public boolean alreadyGaveAFeedback(long userId, long productId) {
+        int numberOfFeedbacksOfTheGivenUserForACertainProduct =
+                jdbcTemplate.queryForObject("SELECT count(*) numberOfFeedback FROM `feedback` WHERE product_id = ? AND user_id = ?", Integer.class, productId, userId);
+        return numberOfFeedbacksOfTheGivenUserForACertainProduct == 1;
+    }
+
+    public int getFeedbackIdByUserIdAndProductId(long userId, long productId){
+        return jdbcTemplate.queryForObject("SELECT `id` FROM `feedback` WHERE user_id = ? AND product_id = ?", Integer.class, userId, productId);
+    }
+
 }

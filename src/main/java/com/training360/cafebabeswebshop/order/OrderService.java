@@ -31,6 +31,8 @@ public class OrderService {
 
 
     public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        if (authentication==null)
+            return null;
         Map<Order, List<OrderedProduct>> result = new HashMap<>();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
@@ -55,6 +57,8 @@ public class OrderService {
     }
 
     public long saveOrderAndGetId(Authentication authentication, Delivery delivery) throws IllegalArgumentException{
+        if (authentication==null)
+            return 0;
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
         checkIfNewDeliveryAddress(authentication, delivery);
         long deliveryId = deliveryDao.saveDeliveryAndGetId(authentication.getName(), delivery);
