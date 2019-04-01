@@ -15,28 +15,30 @@ public class BasketController {
 
     @PostMapping("/basket/{address}")
     public long saveBasketItemAndGetId(@PathVariable String address, @RequestBody BasketItem basketItem, Authentication authentication) {
-        return basketService.saveBasketItemAndGetId(address, authentication, basketItem);
+        return authentication == null ? -1 : basketService.saveBasketItemAndGetId(address, authentication, basketItem);
     }
 
     @GetMapping("/basket")
     public List<BasketItem> getBasketItems(Authentication authentication) {
-        return authentication==null ? null : basketService.getBasketItems(authentication);
+        return authentication == null ? null : basketService.getBasketItems(authentication);
     }
 
     @DeleteMapping("/basket")
     public void deleteBasket(Authentication authentication) {
-        basketService.deleteBasket(authentication);
+        if (authentication != null)
+            basketService.deleteBasket(authentication);
     }
-
 
 
     @DeleteMapping("/basket/{address}")
-    public void deleteOneItem(Authentication authentication, @PathVariable String address){
-        basketService.deleteOneItem(authentication, address);
+    public void deleteOneItem(Authentication authentication, @PathVariable String address) {
+        if (authentication != null)
+            basketService.deleteOneItem(authentication, address);
     }
 
     @PostMapping("/basket")
-    public void updateBasketItemPieces(@RequestBody BasketItem basketItem){
-        basketService.updateBasketItemPieces(basketItem);
+    public void updateBasketItemPieces(@RequestBody BasketItem basketItem, Authentication authentication) {
+        if (authentication != null)
+            basketService.updateBasketItemPieces(authentication, basketItem);
     }
 }

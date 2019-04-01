@@ -155,12 +155,6 @@ function handleAddToBasketButton() {
       }
     })
     .then(function (jsonData) {
-      for (var i = 0; i < jsonData.length; i++) {
-        if (jsonData[i].address == address) {
-          alert('A termék már a kosárban van!');
-          return;
-        }
-      }
       addToBasket();
     });
 }
@@ -193,10 +187,8 @@ function addToBasket() {
 }
 
 function addGoToBasketButton() {
-  var container = document.querySelector('#basketButton');
-  container.innerHTML = '';
-  container.innerHTML +=
-        '<a href="basket.html"><button type="button" class="btn btn-primary btn-lg">Irány a kosár</button></a>';
+  document.querySelector('#basketButton').innerHTML =
+        '<button type="button" class="btn btn-outline-primary">Irány a kosár</button>';
 }
 
 
