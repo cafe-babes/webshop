@@ -43,6 +43,11 @@ function showMyOrders(jsonData){
             thPiece.innerHTML = "Darab";
             trHead.appendChild(thPiece);
 
+            var thDelivery = document.createElement("th");
+            thName.setAttribute('scope', 'col');
+            thDelivery.innerHTML = "Szállítási cím";
+            trHead.appendChild(thDelivery);
+
             for(var prop in jsonData[obj]){
                 if(jsonData[obj].hasOwnProperty(prop)){
                    var tbody = document.createElement("tbody");
@@ -68,9 +73,25 @@ function showMyOrders(jsonData){
                     pieceTd.innerHTML = jsonData[obj][prop].pieces;
                     tr.appendChild(pieceTd);
 
+                    var deliveryTd = document.createElement("td");
+                    getDeliveryById(jsonData[obj][prop].deliveryId);
+                    deliveryTd.innerHTML = "valami";
+                    tr.appendChild(deliveryTd);
+
                     tbody.appendChild(tr);
                 }
             }
         }
     }
+
+}
+
+function getDeliveryById(deliveryId){
+    console.log(deliveryId);
+    fetch('/delivery/' + deliveryId)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+           //return data.deliveryAddress;
+        })
 }

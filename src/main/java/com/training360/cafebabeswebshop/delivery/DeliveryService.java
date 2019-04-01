@@ -1,0 +1,23 @@
+package com.training360.cafebabeswebshop.delivery;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DeliveryService {
+
+    @Autowired
+    private DeliveryDao deliveryDao;
+
+    public List<Delivery> getDeliveriesByUserId(Authentication authentication){
+        return deliveryDao.getDeliveriesByUserId(authentication);
+    }
+
+    public Delivery getDeliveryById(long id){
+        return deliveryDao.getDeliveryById(id);
+    }
+}

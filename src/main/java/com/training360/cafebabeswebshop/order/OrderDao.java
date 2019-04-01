@@ -22,7 +22,8 @@ public class OrderDao {
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
-            rs.getString("order_status")
+            rs.getString("order_status"),
+            rs.getLong("delivery_id")
     );
     private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
             rs.getLong("id"),
@@ -40,12 +41,12 @@ public class OrderDao {
     public long saveOrderAndGetId(String userName, Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?))",
+            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, delivery_id) " +
+                            "values (?,(SELECT id FROM users WHERE user_name = ?), ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-            // ps.setString(5, String.valueOf(order.getOrderStatus()));
+           ps.setLong(3, order.getDeliveryId());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -53,14 +54,14 @@ public class OrderDao {
 
     public Order findOrderById(long id) {
         return jdbcTemplate.queryForObject("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
-                        "sum(pieces) AS sum_quantity, order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id WHERE orders.id = ?",
+                        "sum(pieces) AS sum_quantity, order_status, delivery_id FROM orders JOIN ordered_products ON orders.id = order_id WHERE orders.id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
-                "order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
-                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY order_id ORDER BY purchase_date desc"),
+                "order_status, delivery_id FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
+                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
 
@@ -82,7 +83,7 @@ public class OrderDao {
 
     public List<Order> listAllOrders() {
         return jdbcTemplate.query("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
-                "sum(pieces) AS sum_quantity, order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
+                "sum(pieces) AS sum_quantity, order_status, delivery_id FROM orders JOIN ordered_products ON orders.id = order_id " +
                 "GROUP BY order_id order by purchase_date desc", ORDER_ROW_MAPPER);
     }
 

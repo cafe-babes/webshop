@@ -1,10 +1,10 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.delivery.Delivery;
 import com.training360.cafebabeswebshop.product.ProductService;
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import com.training360.cafebabeswebshop.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -29,18 +29,19 @@ public class OrderController {
     }
 
     @PostMapping("/myorders")
-    public ResultStatus saveOrderAndGetId(Authentication authentication) {
+    public ResultStatus saveOrderAndGetId(Authentication authentication, @RequestBody Delivery delivery) {
         try {
-            long id = orderService.saveOrderAndGetId(authentication);
+            long id = orderService.saveOrderAndGetId(authentication, delivery);
             return new ResultStatus(ResultStatusEnum.OK, String.format("Order successfully created with id %d", id));
         } catch (IllegalStateException e) {
-            e.printStackTrace();
             return new ResultStatus(ResultStatusEnum.NOT_OK, e.getMessage());
+        } catch (IllegalArgumentException iae){
+            return new ResultStatus(ResultStatusEnum.NOT_OK, iae.getMessage());
         }
     }
 
     @GetMapping("/myorders")
-    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication) {
+    public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication) {
         return orderService.listMyOrders(authentication);
     }
 
