@@ -82,7 +82,7 @@ public class CategoryDao {
                 id);
     }
 
-    public void writeBlob(FileInputStream binary) {
-        jdbcTemplate.update("INSERT INTO image(file) VALUES (?)", binary);
+    public void writeBlob(Image image) {
+        jdbcTemplate.update("INSERT INTO image(file) VALUES (?)", image.getBinary());
     }
 }

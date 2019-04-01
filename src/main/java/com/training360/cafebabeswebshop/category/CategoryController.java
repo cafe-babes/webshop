@@ -78,7 +78,7 @@ public class CategoryController {
     }
 
     @PostMapping("/file")
-    public void writeBlob(@RequestParam Filename filename) {
-        categoryService.writeBlob(filename);
+    public void writeBlob(@RequestParam String filename) {
+        categoryService.writeBlob(new Image(filename));
     }
 }

@@ -4,14 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
+import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CategoryService {
@@ -99,12 +96,11 @@ public class CategoryService {
             categoryDao.updateCategory(id, category);
         }
     }
-    public void writeBlob(Filename filename) {
-        try {
-            File file = new File(filename.getFilename());
-            FileInputStream binary = new FileInputStream(file);
-            categoryDao.writeBlob(binary);
-        } catch (FileNotFoundException e) {
+    public void writeBlob(Image image) {
+        try (FileInputStream in = new FileInputStream(new File(image.getFilename()))){
+            image.setBinary(in);
+            categoryDao.writeBlob(image);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
