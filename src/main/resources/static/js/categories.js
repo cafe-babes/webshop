@@ -213,7 +213,7 @@ function deleteCategory(num){
 
     var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
 
-    if (!confirm("Biztos, hogy törli a terméket?")) {
+    if (!confirm("Biztos, hogy törli a kategóriát?")) {
         return;
     }
 
