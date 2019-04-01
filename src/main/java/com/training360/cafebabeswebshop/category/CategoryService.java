@@ -5,6 +5,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -94,6 +97,15 @@ public class CategoryService {
                 }
             }
             categoryDao.updateCategory(id, category);
+        }
+    }
+    public void writeBlob(Filename filename) {
+        try {
+            File file = new File(filename.getFilename());
+            FileInputStream binary = new FileInputStream(file);
+            categoryDao.writeBlob(binary);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
