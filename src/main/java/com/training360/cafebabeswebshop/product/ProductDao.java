@@ -7,9 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -31,6 +34,12 @@ public class ProductDao {
                     resultSet.getString("category.name"),
                     resultSet.getLong("category.ordinal"))
     ));
+
+    private static final RowMapper<Product> PRODUCT_ROW_MAPPER2 = (resultSet, i) -> new Product(
+            resultSet.getString("address"),
+            resultSet.getString("name"),
+            resultSet.getString("manufacture"),
+            resultSet.getInt("price"));
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -112,5 +121,12 @@ public class ProductDao {
     public Product getProductById(long id) {
         return jdbcTemplate.queryForObject("SELECT products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                 "FROM products  LEFT JOIN category ON category_id=category.id WHERE products.id = ? ", PRODUCT_ROW_MAPPER, id);
+    }
+
+    public List<Product> listAdviceProducts() {
+        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address from products " +
+                "join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id " +
+                "where (orders.order_status = 'ACTIVE' " +
+                "or orders.order_status = 'SHIPPED') order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER2);
     }
 }

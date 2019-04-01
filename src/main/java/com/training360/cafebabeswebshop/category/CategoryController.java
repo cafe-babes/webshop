@@ -76,4 +76,9 @@ public class CategoryController {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "az adott sorszámnak a meglévők között kell lennie!");
         }
     }
+
+    @PostMapping("/file")
+    public void writeBlob(@RequestParam String filename) {
+        categoryService.writeBlob(new Image(filename));
+    }
 }

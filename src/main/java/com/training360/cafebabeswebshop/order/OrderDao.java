@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class OrderDao {
@@ -33,6 +35,7 @@ public class OrderDao {
             rs.getString("ordering_name"),
             rs.getInt("pieces")
     );
+
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -115,4 +118,5 @@ public class OrderDao {
     public void updateOrderedProductPiece(OrderedProduct op){
         jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
+
 }
