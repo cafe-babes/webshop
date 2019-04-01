@@ -1,7 +1,7 @@
 package com.training360.cafebabeswebshop;
-import com.training360.cafebabeswebshop.category.Category;
-import com.training360.cafebabeswebshop.category.CategoryService;
+
 import com.training360.cafebabeswebshop.feedback.Feedback;
+import com.training360.cafebabeswebshop.feedback.FeedbackController;
 import com.training360.cafebabeswebshop.feedback.FeedbackService;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductService;
@@ -14,10 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -29,60 +28,112 @@ public class FeedbackTest {
     FeedbackService feedbackService;
 
     @Autowired
-    UserService userService;
+    FeedbackController feedbackController;
 
     @Autowired
-    CategoryService categoryService;
+    UserService userService;
 
     @Autowired
     ProductService productService;
 
-@Test
-    public void testListFeedBacksByProductId(){
-
-    List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(1);
-    assertEquals(3,feedbacks.get(0).getUser().getId());
-    assertEquals("Never a better shop!",feedbacks.get(0).getFeedback());
-
-}
-
     @Test
-    public void testGiveAFeedBack(){
+    public void testListFeedBacksByProductId() {
 
-        User exampleUser = userService.listUsers().get(0);
-        Product exampleproduct = productService.getProductById(1);
-
-        feedbackService.giveAFeedback(new Feedback("Awesome!",5,exampleUser,
-                exampleproduct));
-
-        List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct .getId());
-
-        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
-        assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+        List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(1);
+        assertEquals(3, feedbacks.get(0).getUser().getId());
+        assertEquals("Never a better shop!", feedbacks.get(0).getFeedback());
 
     }
 
     @Test
-    public void testDeleteFeedBackById(){
+    public void testGiveAFeedBack() {
 
-//        Given (we have ONE product of which we have TWO feedbacks)
+        User exampleUser = userService.getUserById(2);
+        Product exampleproduct = productService.getProductById(8);
+
+        feedbackService.giveAFeedback(new Feedback("Awesome!", 5, exampleUser,
+                exampleproduct));
+
+        List<Feedback> feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
+
+        assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
+        assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+        assertEquals(8, feedbacks.get(0).getProduct().getId());
+        assertEquals(5, feedbacks.get(0).getRating());
+
+    }
+
+    @Test
+    public void testDeleteFeedBackById() {
+
+//        Given (we have ONE product of which we have ONE feedback)
 
         Product exampleproduct = productService.getProductById(1);
 
-        Feedback exampleFeedback = feedbackService.listFeedBacksByProductId(exampleproduct .getId()).get(0);
+        List<Feedback> feedbackListOfExampleProduct = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
 
-        long idOfExampleFeedback = exampleFeedback.getId();
+        assertEquals(feedbackListOfExampleProduct.size(), 1);
 
-//        When (deleting ONE feedback by id it's ID )
 
-        feedbackService.deleteFeedbackById(idOfExampleFeedback);
+//        When (deleting ONE feedback by it's ID )
 
-        int sizeOfFeedbacksOfTheExampleProduct = 1;
+        long idOfExampleFeedback = feedbackListOfExampleProduct.get(0).getId();
 
+        feedbackController.deleteFeedbackById(idOfExampleFeedback);
 
 //      Then  (the list of Feedbacks decreases by one as well)
+        feedbackListOfExampleProduct = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
 
-        assertEquals(feedbackService.listFeedBacksByProductId(exampleproduct.getId()), sizeOfFeedbacksOfTheExampleProduct);
+        assertEquals(feedbackListOfExampleProduct, Collections.emptyList());
+
+    }
+
+    @Test
+    public void testUserDidNotReceiveSuchProductThereforeCanNotGiveAnyFeedback() {
+
+//      Given  (A user whom the company haven't shipped the given product yet)
+        User exampleUser = userService.getUserById(1);
+        Product exampleproduct = productService.getProductById(2);
+
+//      When (The user tries to send a feedback)
+        feedbackController.giveAFeedback(new Feedback("Awesome!", 5, exampleUser,
+                exampleproduct));
+
+        List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
+
+//      Then (It will have no effect. The feedback list for the product will remain empty)
+        assertEquals(feedbacks, Collections.emptyList());
+
+    }
+
+    @Test
+    public void testSecondFeedbackForAProductFromOneUserWillBeAnUpdateOfTheFirstOneNotANewFeedback() {
+
+
+//      Given (One User & OneProduct)
+        User exampleUser = userService.getUserById(2);
+        Product exampleproduct = productService.getProductById(8);
+
+
+//      When (Gives Two feedback for the product)
+        feedbackService.giveAFeedback(new Feedback("Awesome!", 4, exampleUser,
+                exampleproduct));
+
+        List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
+
+        assertEquals(feedbacks.size(), 1);
+        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
+        assertEquals(feedbacks.get(0).getRating(), 4);
+
+        feedbackService.giveAFeedback(new Feedback("Awesome #2!", 5, exampleUser,
+                exampleproduct));
+
+//        Then (the second feedback will serve only as an update of the first one)
+        feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
+
+        assertEquals(feedbacks.size(), 1);
+        assertEquals(feedbacks.get(0).getFeedback(), "Awesome #2!");
+        assertEquals(feedbacks.get(0).getRating(), 5);
 
     }
 

@@ -34,6 +34,7 @@ public class UserService {
     }
 
     public long insertUserAndGetId(User user) throws DataAccessException {
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
         return userDao.insertUserAndGetId(user);
     }
 

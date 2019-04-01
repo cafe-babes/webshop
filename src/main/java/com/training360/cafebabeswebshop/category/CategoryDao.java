@@ -8,11 +8,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
 
 @Repository
 public class CategoryDao {
@@ -20,13 +22,13 @@ public class CategoryDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<Category> CATEGORY_ROW_MAPPER = (rs, rowNum)->new Category(
+    private static final RowMapper<Category> CATEGORY_ROW_MAPPER = (rs, rowNum) -> new Category(
             rs.getLong("id"),
             rs.getString("name"),
             rs.getLong("ordinal")
     );
 
-    public List<Category> listCategories(){
+    public List<Category> listCategories() {
         return jdbcTemplate.query("SELECT id, name, ordinal FROM category ORDER BY ordinal",
                 CATEGORY_ROW_MAPPER);
     }
@@ -48,20 +50,20 @@ public class CategoryDao {
                 (rs, rowNum) -> rs.getLong("MAX(ordinal)"));
     }
 
-    public Long getMinOrdinal(){
+    public Long getMinOrdinal() {
         return jdbcTemplate.queryForObject("SELECT MIN(ordinal) FROM category",
                 (rs, rowNum) -> rs.getLong("MIN(ordinal)"));
     }
 
     public void increaseOrdinal(long ordinal) {
-        jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal+1, ordinal);
+        jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal + 1, ordinal);
     }
 
-    public void decreaseOrdinal(long ordinal){
-        jdbcTemplate.update("update category set ordinal = ? where ordinal = ?", ordinal-1, ordinal);
+    public void decreaseOrdinal(long ordinal) {
+        jdbcTemplate.update("update category set ordinal = ? where ordinal = ?", ordinal - 1, ordinal);
     }
 
-    public List<String> getCategoryNames(){
+    public List<String> getCategoryNames() {
         return jdbcTemplate.query("select name from category", (resultSet, i) -> resultSet.getString("name"));
     }
 
@@ -78,5 +80,9 @@ public class CategoryDao {
                 category.getName(),
                 category.getOrdinal(),
                 id);
+    }
+
+    public void writeBlob(Image image) {
+        jdbcTemplate.update("INSERT INTO image(file) VALUES (?)", image.getBinary());
     }
 }
