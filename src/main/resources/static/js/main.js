@@ -1,43 +1,109 @@
-var dropdown = document.querySelector("#size-select");
-dropdown.onchange = function(){
-    var size = dropdown[dropdown.selectedIndex].value;
-    window.location.href=`/index.html?start=0&size=${size}`;
+var sizeDropdown = document.querySelector("#size-select");
+var categoryDropdown = document.querySelector("#category-select");
+var url = new URL(document.location);
+
+sizeDropdown.onchange = function(){
+    let size = sizeDropdown[sizeDropdown.selectedIndex].value;
+    if (url.searchParams.get("category"))
+        window.location.href=`/index.html?start=0&size=${size}&category=${url.searchParams.get("category")}`;
+    else
+        window.location.href=`/index.html?start=0&size=${size}`;
 };
 
-if((new URL(document.location)).searchParams.get("start") == undefined) {
+categoryDropdown.onchange = function(){
+    let category = categoryDropdown[categoryDropdown.selectedIndex].value;
+    window.location.href=`/index.html?category=${category}`;
+};
+
+if(!url.searchParams.get("start") && !url.searchParams.get("category")) {
     fetchProducts();
-} else {
+} else if (!url.searchParams.get("category")) {
     fetchProductsWithStartAndSize();
-    dropdown.value = (new URL(document.location)).searchParams.get("size");
+} else {
+    fetchProductsWithStartAndSizeAndCategory();
 }
+
+sizeDropdown.value = url.searchParams.get("size") || 999;
 
 function fetchProducts() {
     fetch("/products")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            console.log(jsonData);
-            listProducts(jsonData);
-        });
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (jsonData) {
+        console.log(jsonData);
+        listProducts(jsonData);
+    });
 }
 
 function fetchProductsWithStartAndSize() {
-    var start = (new URL(document.location)).searchParams.get("start") || "0";
-    var size = (new URL(document.location)).searchParams.get("size");
-    fetch("/products/"+start+"/"+size)
+    var start = url.searchParams.get("start") || 0;
+    var size = url.searchParams.get("size") || 999;
+
+    fetch("/products/"+start+"/"+size, {
+        method: "POST"
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (jsonData) {
+        console.log(jsonData);
+        listProducts(jsonData);
+    });
+
+    getButtons(size);
+}
+
+function fetchProductsWithStartAndSizeAndCategory() {
+    var start = url.searchParams.get("start") || 0;
+    var size = url.searchParams.get("size") || 999;
+    var category = url.searchParams.get("category");
+
+    var request = {
+        "name": category
+    };
+
+    fetch("/products/"+start+"/"+size, {
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (jsonData) {
+        console.log(jsonData);
+        listProducts(jsonData);
+    });
+
+    getButtons(size, category);
+}
+
+function getButtons(size, category) {
+    var buttons = document.querySelector('#page-change');
+    var request = {
+          "name": category
+    };
+    if(category) {
+    fetch("/products/0/999", {
+         method: "POST",
+         body: JSON.stringify(request),
+         headers: {
+             "Content-type": "application/json"
+         }
+    })
         .then(function (response) {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData);
-            listProducts(jsonData);
+            buttons.innerHTML = '';
+            for(let i = 0; i < jsonData.length/size ;i++) {
+                buttons.innerHTML += `<a href='index.html?start=${i*size}&size=${size}&category=${category}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
+            }
         });
-    getButtons(size);
-}
-
-function getButtons(size) {
-    var buttons = document.querySelector('#page-change');
+    } else {
     fetch("/products")
         .then(function (response) {
             return response.json();
@@ -48,6 +114,7 @@ function getButtons(size) {
                 buttons.innerHTML += `<a href='index.html?start=${i*size}&size=${size}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
             }
         });
+    }
 }
 
 function listProducts(jsonData) {

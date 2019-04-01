@@ -10,4 +10,4 @@ ALTER TABLE ordered_products ADD pieces INT;
 
 ALTER TABLE products
 ADD category_id BIGINT,
-ADD constraint fk_category_products foreign key (category_id) REFERENCES category(id);
+ADD constraint fk_category_products foreign key (category_id) REFERENCES category(id) on delete set null ON UPDATE CASCADE ;

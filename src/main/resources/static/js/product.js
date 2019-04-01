@@ -5,8 +5,9 @@ console.log((new URL(document.location)).searchParams.get('address'));
 
 var product;
 var user;
+var feedbacks;
 
-$.getJSON('/user-role', json => {
+$.getJSON('/user', json => {
 if(json.id != 0){
 var userId = json.id;
 fetchUser(userId);
@@ -23,7 +24,7 @@ function fetchUser(userId) {
       return response.json();
     })
     .then(function (jsonData) {
-     user = {jsonData};
+     user = jsonData;
     });
   return false;
 }
@@ -40,9 +41,9 @@ function fetchProduct() {
       if (jsonData.status == 'NOT_OK') {
         showProductNotFound(jsonData);
       } else {
-        product = {jsonData};
+        product = jsonData;
         var productId = jsonData.id;
-        fetchFeedback(productId);
+        fetchFeedbacks(productId);
         showProduct(jsonData);
       }
     });
@@ -50,57 +51,67 @@ function fetchProduct() {
 }
 
 
-function fetchFeedback(productId) {
+function fetchFeedbacks(productId) {
   var url = '/feedback/' + productId;
   fetch(url)
     .then(function (response) {
       return response.json();
     })
     .then(function (jsonData) {
-      showReviews(jsonData);
+    feedbacks = jsonData;
+      showFeedbacks(jsonData);
     });
 }
 
 
-function showReviews(jsonData) {
-  var reviews = document.getElementById('reviews');
-  reviews.innerHTML = '';
+function showFeedbacks(jsonData) {
+  var feedbacks = document.getElementById('feedbacks');
+  feedbacks.innerHTML = '';
 
   for (var i = 0; i < jsonData.length; i++) {
-    reviews.innerHTML += `
-                <div class="container">
-                <div>
-                    <div id="carousel-reviews" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="block-text rel zmin">
-                                    <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                        <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span data-value="0"
-                                         class="glyphicon glyphicon-star"></span><span
-                                         data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
-                                         class="glyphicon glyphicon-star"></span><span
-                                         data-value="3" class="glyphicon glyphicon-star"></span><span data-value="4"
-                                         class="glyphicon glyphicon-star-empty"></span><span
-                                         data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span></div>
-                                        <p>${jsonData[i].feedback}</p>
-                                        <ins class="ab zmin sprite sprite-i-triangle block"></ins>
-                                    </div>
-                                    <br>
-                                    <div class="person-text rel">
-                                    <a title="" href="#">${jsonData[i].user.name}</a>
-                                </div>
-                            </div>
-                         </div>
-                     </div>
-                </div>
-           </div>
+    feedbacks.innerHTML += `
+      <div class="container">
+          <div>
+              <div id="carousel-feedbacks" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                      <div class="item active">
+                          <div class="col-md-4 col-sm-6">
+                              <div class="block-text rel zmin">
+                              <div class="ad-right" id="feedback-and-delete-buttons">
+                              <button onclick="editFeedback(${jsonData[i].id})" id="editFeedback#"+${jsonData[i].id} class="btn btn-success"><i class='fas fa-pen-alt'></i></button>
+                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button>
+                              </div>
+                                  <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
+                                  <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
+                                          data-value="0"
+                                          class="glyphicon glyphicon-star"></span><span
+                                          data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
+                                                                                                       class="glyphicon glyphicon-star"></span><span
+                                          data-value="3" class="glyphicon glyphicon-star"></span><span data-value="4"
+                                                                                                       class="glyphicon glyphicon-star-empty"></span><span
+                                          data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span>
+                                  </div>
+                                  <div id="feedback#${jsonData[i].id}">
+                                  <p id = "fb">${jsonData[i].feedback}</p>
+                                  </div>
+                                  <ins class="ab zmin sprite sprite-i-triangle block"></ins>
+                              </div>
+                              <br>
+                              <div class="person-text rel">
+                                  <a title="" href="#">${jsonData[i].user.name}</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
 
 
                 `;
   }
-}
+  }
+
 
 
 function handleAddToBasketButton() {
@@ -174,40 +185,167 @@ function showProduct(jsonData) {
   price.innerHTML = jsonData.price;
 }
 
-function newReview() {
+function newFeedback() {
+
+            if(typeof user === "undefined"){
+                        alert("Be kell jelentkeznie az értékeléshez");
+                        return;
+                    }
+
+            var feedbackButton = document.getElementById('feedback-button');
+            var date = new Date(Date.now());
+            date.setHours(date.getHours()+2)
+            var dateNow = date.toISOString().substring(0,19);
+            var feedbackText = document.getElementById('feedback-text');
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
-            var dateNow = new Date(Date.now()).toISOString().substring(0,19);
-            var reviewButton = document.getElementById('review-button');
-            var reviewText = document.getElementById('review-text');
-
             console.log(dateNow);
-            console.log(reviewText.value);
+            console.log(feedbackText.value);
             console.log(rating);
             console.log(user);
             console.log(product);
 
-            var request =
-                    {
-                            "feedbackDate": dateNow,
-                            "feedback": reviewText.value,
-                            "rating": rating,
-                            "user": {user},
-                            "product": {product}
-                        }
+                    var request =
+                                   {
+                                   	"feedbackDate": dateNow,
+                                       "feedback": feedbackText.value,
+                                       "rating": rating,
+                                       "user": {
+                                       "id": user.id,
+                                       "name": user.name,
+                                       "email": null,
+                                       "userName": user.userName,
+                                       "password": user.password,
+                                       "enabled": user.enabled,
+                                       "role": user.role,
+                                       "userStatus": user.userStatus
+                                   },
+                                       "product": {
+                                       "id": product.id,
+                                       "code": product.code,
+                                       "address": product.address,
+                                       "name": product.name,
+                                       "manufacture":product.manufacture,
+                                       "price": product.price,
+                                       "productStatus": product.productStatus,
+                                       "category": {
+                                           "id": product.category.id,
+                                           "name": product.category.name,
+                                           "ordinal": 1
+                                       }
+                                   }
+                                   }
+
             fetch("/feedback" , {
-                    method: "POST",
-                    body: JSON.stringify(request),
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                }).then(function (response) {
-                                      return response.json();
-                                  }).
-                              then(function (jsonData) {
-                              fetchProduct();
-                              });
-                              return false;
+                                method: "POST",
+                                body: JSON.stringify(request),
+                                headers: {
+                                    "Content-type": "application/json"
+                                }
+                            })
+                            .then(function (response) {
+                                return response.json();
+                            }).
+                                then(function (jsonData) {
+                                    if (jsonData.resultStatusEnum == "OK") {
+                                      fetchProduct();
+                                      alert(jsonData.message);
+                                    } else {
+                                        alert(jsonData.message);
+                                    }
+                                });
+                                return false;
+            }
+
+function deleteFeedback(feedbackId){
+
+        if(typeof user === "undefined"){
+            alert("Be kell jelentkeznie az értékelés törléséhez");
+            return;
+        }
+
+        var feedback;
+        for(var i = 0; i<feedbacks.length; i++){
+                if(feedbacks[i].id == feedbackId){
+                        feedback = feedbacks[i];
+                        break;
+                }
+        }
+
+        console.log("feedback-hez tartozó user id-ja = " +feedback.user.id);
+        console.log("a bejelentkezett user id-ja = "+ user.id);
+
+            if(user.id == feedback.user.id){
+
+                     fetch("/feedback/" + feedback.id, {
+                                               method: "DELETE",
+                                           })
+                                           .then(function (response) {
+                     //                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                     //                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
+                                               fetchProduct();
+                                               });
+            }else{
+                alert("Ez nem az Ön értékelése, ezért nem törölheti");
+            }
+
+}
+
+function editFeedback(feedbackId){
+
+
+        if(typeof user === "undefined"){
+                    alert("Be kell jelentkeznie az értékelés módosításához");
+                    return;
+                }
+
+         var feedback;
+                for(var i = 0; i<feedbacks.length; i++){
+                        if(feedbacks[i].id == feedbackId){
+                                feedback = feedbacks[i];
+                                break;
+                        }
+                }
+
+ if(user.id == feedback.user.id){
+
+        var fb = document.getElementById("fb").innerHTML;
+        var editAndDeleteFeedbackButton = document.getElementById("feedback-and-delete-buttons");
+        editAndDeleteFeedbackButton.innerHTML = "";
+        editAndDeleteFeedbackButton.innerHTML +=
+        `
+                        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
+        `;
+
+        var feedbackText = document.getElementById("feedback#"+feedbackId);
+        console.log(feedbackText);
+        feedbackText.innerHTML =
+        `
+                        <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
+                            style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
+
+
+                        <div class="stars2" data-rating="3" id="stars2">
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                            <span class="star2">&nbsp;</span>
+                        </div>
+        `;
+
+
+            }else{
+                alert("Ez nem az Ön értékelése, ezért nem szerkesztheti");
+            }
+}
+
+function saveEditedFeedback(feedbackId){
+
+console.log("mentés klikk");
+console.log(feedbackId);
+var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+            console.log(rating);
 
 }
 
@@ -215,7 +353,7 @@ function showProductNotFound(jsonData) {
     var productText = document.getElementById("product-text");
     var pageNotFound = document.getElementById("page-not-found");
     var picture = document.getElementById("picture");
-    var reviews = document.getElementById("reviews");
+    var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
                                 <div>
                                 <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
@@ -224,10 +362,10 @@ function showProductNotFound(jsonData) {
                                <br>`
     productText.innerHTML = "";
     picture.innerHTML = "";
-    reviews.innerHTML = "";
+    feedbacks.innerHTML = "";
 }
 
-//initial star setup
+//Init Star Rating System
         document.addEventListener('DOMContentLoaded', function(){
             let stars = document.querySelectorAll('.star');
             stars.forEach(function(star){
@@ -257,3 +395,34 @@ function showProductNotFound(jsonData) {
             });
             document.querySelector('.stars').setAttribute('data-rating', num);
         }
+
+//Init Star Rating System   # 2
+//        document.addEventListener('DOMContentLoaded', function(){
+//            let stars2 = document.querySelectorAll('.star2');
+//            stars2.forEach(function(star2){
+//                star2.addEventListener('click', setRating2);
+//            });
+//
+//            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
+//            let target2 = stars2[rating2 - 1];
+//            target2.dispatchEvent(new MouseEvent('click'));
+//        });
+//        function setRating2(ev){
+//            let span2 = ev.currentTarget;
+//            let stars2 = document.querySelectorAll('.star2');
+//            let match2 = false;
+//            let num2 = 0;
+//            stars2.forEach(function(star2, index2){
+//                if(match2){
+//                    star2.classList.remove('rated2');
+//                }else{
+//                    star2.classList.add('rated2');
+//                }
+//                //are we currently looking at the span that was clicked
+//                if(star2 === span2){
+//                    match2 = true;
+//                    num2 = index2 + 1;
+//                }
+//            });
+//            document.querySelector('.stars2').setAttribute('data-rating', num2);
+//        }

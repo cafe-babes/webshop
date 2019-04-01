@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
@@ -22,7 +24,7 @@ public class UserController {
         return userService.listUsers();
     }
 
-    @GetMapping("/user-role")
+    @GetMapping("/user")
     public User determineRole(Authentication authentication) {
         if (authentication == null)
             return new User(0, null, null, null, null, 1, "VISITOR", null);
@@ -43,7 +45,7 @@ public class UserController {
         if (isAdmin) {
             return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_ADMIN", null);
         } else if (isUser) {
-            return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_USER", null);
+            return new User(user.getId(), user.getName(), null, authentication.getName(), null, 1, "ROLE_USER", null);
         } else {
             return new User(0, null, null, authentication.getName(), null, 1, "VISITOR", null);
         }

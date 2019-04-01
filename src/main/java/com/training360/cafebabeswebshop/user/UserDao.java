@@ -44,6 +44,11 @@ public class UserDao {
                 user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
+    public void updateUserWithoutPassword(long id, User user) {
+        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, enabled = ?, role = ?, user_status = ? where id = ?",
+                user.getName(), user.getEmail(), user.getUserName(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
+    }
+
     public long insertUserAndGetId(User user) throws DataAccessException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

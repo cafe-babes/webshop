@@ -89,7 +89,7 @@ public class ReportTest {
         int shippedOrders = 0;
         for (OrderReport o: reportController.getMonthlyIncomeOfOrders()) {
             if(o.getOrderStatus().equals("SHIPPED")){
-                shippedOrders++;
+                shippedOrders += o.getCount();
             }
         }
 

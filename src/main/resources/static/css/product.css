@@ -2,7 +2,6 @@
 .carousel-control.left {left:-25px;}
 .carousel-control.right {right:-25px;}
 .broun-block {
-    background: url("http://myinstantcms.ru/images/bg-broun1.jpg") repeat scroll center top rgba(0, 0, 0, 0);
     padding-bottom: 34px;
 }
 .block-text {
@@ -79,9 +78,10 @@
 
 .star{
   color: goldenrod;
-  font-size: 2.0rem;
-  padding: 0 0.5rem; /* space out the stars */
+  font-size: 1.5rem;
+  padding: 0 0.4rem; /* space out the stars */
 }
+
 .star::before{
   content: '\2606';    /* star outline */
   cursor: pointer;
@@ -96,9 +96,42 @@
     font-size: 2.0rem;
     font-weight: 900;
 }
+
+
 .star.rated{
     counter-increment: rateme 1;
 }
 .stars::after{
     content: counter(rateme) '/5';
 }
+
+
+.star2{
+  color: goldenrod;
+  font-size: 1.5rem;
+  padding: 0 0.4rem; /* space out the stars */
+}
+
+.star2::before{
+  content: '\2606';    /* star outline */
+  cursor: pointer;
+}
+.star2.rated2::before{
+  /* the style for a selected star */
+  content: '\2605';  /* filled star */
+}
+
+.stars2{
+    counter-reset: rateme 0;
+    font-size: 2.0rem;
+    font-weight: 900;
+}
+
+
+.star2.rated2{
+    counter-increment: rateme 1;
+}
+.stars2::after{
+    content: counter(rateme) '/5';
+}
+

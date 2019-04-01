@@ -57,9 +57,19 @@ public class ProductDao {
 
     public List<Product> getProductsWithStartAndSize(int start, int size) {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
-                        "FROM products LEFT JOIN category ON category_id=category.id" +
-                        "WHERE product_status = 'ACTIVE' ORDER BY category.ordinal, products.name, manufactureLIMIT ? OFFSET ?",
+                        "FROM products LEFT JOIN category ON category_id=category.id " +
+                        "WHERE product_status = 'ACTIVE' ORDER BY category.ordinal, products.name, manufacture LIMIT ? OFFSET ?",
                 PRODUCT_ROW_MAPPER,
+                size,
+                start
+        );
+    }
+    public List<Product> getProductsWithStartAndSizeAndCategory(int start, int size, Category category) {
+        return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
+                        "FROM products LEFT JOIN category ON category_id=category.id " +
+                        "WHERE product_status = 'ACTIVE' AND category.name = ? ORDER BY category.ordinal, products.name, manufacture LIMIT ? OFFSET ?",
+                PRODUCT_ROW_MAPPER,
+                category.getName(),
                 size,
                 start
         );

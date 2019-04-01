@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop;
 
+import com.training360.cafebabeswebshop.category.Category;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductController;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class ProductTests {
 		//Given
 		List<Product> products = productController.getProducts();
 		// When
-		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE", null));
+		productController.saveProductAndGetId(new Product(21, "25KA14", "balaton_shark", "Balaton Shark", "cafebabes", 200000, "ACTIVE", new Category(1, "pretty", 1)));
 		//Then
 		List<Product> products2 = productController.getProducts();
 		assertEquals(14, products.size());
@@ -47,7 +48,7 @@ public class ProductTests {
 	@Test
 	public void testUpdateProducts(){
 		// When
-		productController.updateProducts(1, new Product(0, "ST001", "surf_trainer", "Surf Trainer", "Blue Sea Watersports", 111_111, "ACTIVE", null));
+		productController.updateProducts(1, new Product(0, "ST001", "surf_trainer", "Surf Trainer", "Blue Sea Watersports", 111_111, "ACTIVE", new Category(1, "pretty", 1)));
 		// Then
 		assertEquals("Surf Trainer", productController.getProductById(1).getName());
 		assertEquals("ST001", productController.getProductById(1).getCode());
@@ -70,7 +71,7 @@ public class ProductTests {
 	@Test
 	public void testGetProductsWithStartAndSize(){
 		// When
-		List<Product> productsPart = productController.getProductsWithStartAndSize(1,10);
+		List<Product> productsPart = productController.getProductsWithStartAndSize(1,10, null);
 		// Then
 		assertEquals(10, productsPart.size());
 	}

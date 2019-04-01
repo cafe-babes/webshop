@@ -48,8 +48,17 @@ public class CategoryDao {
                 (rs, rowNum) -> rs.getLong("MAX(ordinal)"));
     }
 
-    public void reindexOrdinal(long ordinal) {
+    public Long getMinOrdinal(){
+        return jdbcTemplate.queryForObject("SELECT MIN(ordinal) FROM category",
+                (rs, rowNum) -> rs.getLong("MIN(ordinal)"));
+    }
+
+    public void increaseOrdinal(long ordinal) {
         jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal+1, ordinal);
+    }
+
+    public void decreaseOrdinal(long ordinal){
+        jdbcTemplate.update("update category set ordinal = ? where ordinal = ?", ordinal-1, ordinal);
     }
 
     public List<String> getCategoryNames(){
@@ -58,5 +67,16 @@ public class CategoryDao {
 
     public void deleteCategory(long id) {
         jdbcTemplate.update("delete from category where id = ?", id);
+    }
+
+    public Category getCategory(String name) {
+        return jdbcTemplate.queryForObject("select id, name, ordinal from category where name = ?", CATEGORY_ROW_MAPPER, name);
+    }
+
+    public void updateCategory(long id, Category category) {
+        jdbcTemplate.update("update category set name = ?, ordinal = ? where id = ?",
+                category.getName(),
+                category.getOrdinal(),
+                id);
     }
 }

@@ -1,6 +1,6 @@
-fetchProducts();
+fetchCategories();
 
-function fetchProducts() {
+function fetchCategories() {
     fetch("/categories")
         .then(function (response) {
             return response.json();
@@ -11,7 +11,7 @@ function fetchProducts() {
 }
 
 function showTable(jsonData) {
-var table = document.querySelector("#adminproducts-table");
+var table = document.querySelector("#admincategories-table");
 table.innerHTML = "";
 for (var i = 0; i < jsonData.length; i++) {
     var tr = document.createElement("tr");
@@ -56,7 +56,7 @@ for (var i = 0; i < jsonData.length; i++) {
     var deleteButtonId = 'deletebutton' + i;
     deleteButton.setAttribute('id', deleteButtonId);
     deleteButton.setAttribute('class', 'btn');
-    deleteButton.setAttribute('onclick', `deleteProduct(${i})`);
+    deleteButton.setAttribute('onclick', `deleteCategory(${i})`);
     deleteButton['raw-data'] = jsonData[i];
     deleteButtonTd.appendChild(deleteButton);
 
@@ -77,24 +77,14 @@ createButton.setAttribute('onclick', `showNewRow(${jsonData.length})`);
 
 function editTds(num){
 
-    var code = document.getElementById(`codeTd${num}`);
-    var address = document.getElementById(`addressTd${num}`);
     var name = document.getElementById(`nameTd${num}`);
-    var manu = document.getElementById(`manTd${num}`);
-    var price = document.getElementById(`priceTd${num}`);
+    var ordinal = document.getElementById(`ordinalTd${num}`);
 
-    var codeData = code.innerHTML;
-    var addressData = address.innerHTML;
     var nameData = name.innerHTML;
-    var manuData = manu.innerHTML;
-    var priceData = price.innerHTML;
+    var ordinalData = ordinal.innerHTML;
 
-    code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
-    address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}' required>`
-    name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}' required>`
-    manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
-    price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
-
+    name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${nameData}' required>`
+    ordinal.innerHTML = `<input id="ordinalInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${ordinalData}' required>`
 
     var edit = document.getElementById(`editbutton${num}`);
     edit.style.display = 'none';
@@ -106,22 +96,16 @@ function saveTds(num){
 
     var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
 
-    var code = document.getElementById(`codeInput${num}`).value;
-    var address = document.getElementById(`addressInput${num}`).value;
     var name = document.getElementById(`nameInput${num}`).value;
-    var manu = document.getElementById(`manInput${num}`).value;
-    var price = document.getElementById(`priceInput${num}`).value;
+    var ordinal = document.getElementById(`ordinalInput${num}`).value;
 
     var request = {
         "id": id,
-        "code": code,
-        "address": address,
         "name": name,
-        "manufacture": manu,
-        "price": price,
+        "ordinal": ordinal
     }
 
-    fetch("/products/" + id, {
+    fetch("/categories/" + id, {
             method: "POST",
             body: JSON.stringify(request),
             headers: {
@@ -134,13 +118,10 @@ function saveTds(num){
     then(function (jsonData) {
         if (jsonData.status == 'OK') {
 
-           document.getElementById(`codeTd${num}`).innerHTML = code;
-           document.getElementById(`addressTd${num}`).innerHTML = address;
            document.getElementById(`nameTd${num}`).innerHTML = name;
-           document.getElementById(`manTd${num}`).innerHTML = manu;
-           document.getElementById(`priceTd${num}`).innerHTML = price;
+           document.getElementById(`ordinalTd${num}`).innerHTML = ordinal;
 
-            fetchProducts();
+            fetchCategories();
            document.getElementById("message-div").setAttribute("class", "alert alert-success");
            document.getElementById("message-div").innerHTML = "Frissítve";
         } else {
@@ -153,26 +134,20 @@ function saveTds(num){
 
 function showNewRow(length){
     var num = length + 1;
-    var table = document.querySelector("#adminproducts-table");
+    var table = document.querySelector("#admincategories-table");
     var tr = document.createElement('tr');
 
     var idTd = document.createElement('td');
     idTd.setAttribute('id', `idTd${num}`);
-    var codeTd = document.createElement('td');
-    codeTd.setAttribute('id', `codeTd${num}`);
-    var addressTd = document.createElement('td');
-    addressTd.setAttribute('id', `addressTd${num}`);
     var nameTd = document.createElement('td');
     nameTd.setAttribute('id', `nameTd${num}`);
-    var manTd = document.createElement('td');
-    manTd.setAttribute('id', `manTd${num}`);
-    var priceTd = document.createElement('td');
-    priceTd.setAttribute('id', `priceTd${num}`);
-    var statusTd = document.createElement('td');
+    var ordinalTd = document.createElement('td');
+    ordinalTd.setAttribute('id', `ordinalTd${num}`);
+
     var saveButtonTd = document.createElement('td');
     var saveButton = document.createElement('button');
     saveButton.setAttribute('class', 'btn');
-    saveButton.setAttribute('onclick', `addNewProduct(${num})`);
+    saveButton.setAttribute('onclick', `addNewCategory(${num})`);
     var deleteButtonTd = document.createElement('td');
     var deleteButton = document.createElement('button');
     deleteButton.setAttribute('onclick', 'deleteNewRow()');
@@ -180,41 +155,30 @@ function showNewRow(length){
     saveButtonTd.appendChild(saveButton);
     deleteButtonTd.appendChild(deleteButton);
 
-    codeTd.innerHTML = `<input id="codeInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
-    addressTd.innerHTML = `<input id="addressInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
     nameTd.innerHTML = `<input id="nameInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
-    manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
-    priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
-    statusTd.innerHTML = 'ACTIVE';
+    ordinalTd.innerHTML = `<input id="ordinalInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+
     saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
     deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
-    tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd);
-    tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd);
-    tr.appendChild(statusTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
+    tr.appendChild(idTd); tr.appendChild(nameTd); tr.appendChild(ordinalTd);
+    tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
     table.appendChild(tr);
 
 }
 
-function addNewProduct(num){
+function addNewCategory(num){
 
-    var code = document.getElementById(`codeInputNew${num}`).value;
-    var address = document.getElementById(`addressInputNew${num}`).value;
     var name = document.getElementById(`nameInputNew${num}`).value;
-    var manu = document.getElementById(`manInputNew${num}`).value;
-    var price = document.getElementById(`priceInputNew${num}`).value;
+    var ordinal = document.getElementById(`ordinalInputNew${num}`).value;
 
     var request = {
         //"id": id,
-        "code": code,
-        "address": address,
         "name": name,
-        "manufacture": manu,
-        "price": price,
-        "product_status": "ACTIVE"
+        "ordinal": ordinal
     }
 
-    fetch("/products", {
+    fetch("/categories", {
             method: "POST",
             body: JSON.stringify(request),
             headers: {
@@ -227,14 +191,11 @@ function addNewProduct(num){
     then(function (jsonData) {
         if (jsonData.status == "OK") {
 
-            document.getElementById(`codeTd${num}`).innerHTML = code;
-            document.getElementById(`addressTd${num}`).innerHTML = address;
             document.getElementById(`nameTd${num}`).innerHTML = name;
-            document.getElementById(`manTd${num}`).innerHTML = manu;
-            document.getElementById(`priceTd${num}`).innerHTML = price;
-            fetchProducts();
+            document.getElementById(`ordinalTd${num}`).innerHTML = ordinal;
+            fetchCategories();
             document.getElementById("message-div").setAttribute("class", "alert alert-success");
-            document.getElementById("message-div").innerHTML = "Új termék hozzáadva";
+            document.getElementById("message-div").innerHTML = "Új kategória hozzáadva";
         } else {
             document.getElementById("message-div").setAttribute("class", "alert alert-danger");
             document.getElementById("message-div").innerHTML = "A beszúrás sikertelen";
@@ -244,11 +205,11 @@ function addNewProduct(num){
 }
 
 function deleteNewRow(){
-    var table = document.querySelector("#adminproducts-table");
+    var table = document.querySelector("#admincategories-table");
     table.removeChild(table.lastChild);
 }
 
-function deleteProduct(num){
+function deleteCategory(num){
 
     var id = document.getElementById(`deletebutton${num}`).parentElement.parentElement['raw-data'].id;
 
@@ -256,13 +217,13 @@ function deleteProduct(num){
         return;
     }
 
-    fetch("/products/" + id, {
+    fetch("/categories/" + id, {
             method: "DELETE",
     })
     .then(function (response) {
         document.getElementById("message-div").setAttribute("class", "alert alert-success");
         document.querySelector("#message-div").innerHTML = "Törölve"
-        fetchProducts();
+        fetchCategories();
     });
 }
 

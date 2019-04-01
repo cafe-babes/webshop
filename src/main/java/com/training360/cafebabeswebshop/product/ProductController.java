@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
+import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public ResultStatus getIncorrectProduct(){
-        return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
+    public ResultStatus getIncorrectProduct() {
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid address");
     }
 
 
@@ -32,7 +33,7 @@ public class ProductController {
         if (validator.isValid(address) && addresses.contains(address)) {
             return productService.getProduct(address);
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Invalid address");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid address");
         }
     }
 
@@ -42,13 +43,13 @@ public class ProductController {
         if (validator.isValidProduct(product)) {
             try {
                 long id = productService.saveProductAndGetId(product);
-                return new ResultStatus(ResultStatusE.OK, String.format("Termék sikeresen hozzáadva! (termék id: %d )", id));
+                return new ResultStatus(ResultStatusEnum.OK, String.format("Termék sikeresen hozzáadva! (termék id: %d )", id));
             } catch (DataAccessException sql) {
                 sql.printStackTrace();
-                return new ResultStatus(ResultStatusE.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
             }
         } else {
-            return new ResultStatus(ResultStatusE.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
         }
     }
 
@@ -58,10 +59,10 @@ public class ProductController {
         if (validator.isValidProduct(product)) {
             try {
                 productService.updateProducts(id, product);
-                return new ResultStatus(ResultStatusE.OK, "Termék sikeresen módosítva!");
+                return new ResultStatus(ResultStatusEnum.OK, "Termék sikeresen módosítva!");
             } catch (DataAccessException sql) {
                 sql.printStackTrace();
-                return new ResultStatus(ResultStatusE.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Termék cím vagy kód már szerepel másik terméknél");
             }
         } else {
             System.out.println(validator.isValid(product.getCode()));
@@ -70,7 +71,7 @@ public class ProductController {
             System.out.println(validator.isValid(product.getManufacture()));
             System.out.println(validator.isValidPrice(product.getPrice()));
             System.out.println(validator.isValid(product.getCategory().getName()));
-            return new ResultStatus(ResultStatusE.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Minden adat kitöltendő, maximális ár: 2.000.000 Ft");
         }
     }
 
@@ -79,9 +80,11 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @GetMapping("/products/{start}/{size}")
-    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size) {
-        return productService.getProductsWithStartAndSize(start, size);
+    @PostMapping("/products/{start}/{size}")
+    public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size, @RequestBody(required = false) Category category) {
+        if (category==null)
+            return productService.getProductsWithStartAndSize(start,size);
+        return productService.getProductsWithStartAndSizeAndCategory(start, size, category);
     }
 
     @DeleteMapping("/products/{id}")

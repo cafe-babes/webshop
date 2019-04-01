@@ -1,19 +1,25 @@
 body, html {
   height: 100%;
+  padding-top: 0px;
 }
 
 .bg {
-  background-image: url("/images/login_backgr.jpg");
+  background-image: url("/images/myprofile.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 94.2vh;
 }
 
-.container {
-padding: 25vh;
-
-}
+.passwordValidator{
+          line-height: 16px;
+          width: 99%;
+          background: rgba(255,255,0,0.3);
+          border-radius: 10px;
+          margin: 0 5px 20px 0;
+          padding: 10px;
+          font-size: 16px;
+        }
 
 .headline-dark {
 background-color:  rgba(30, 33, 39, 0.767);
@@ -24,5 +30,3 @@ height: 6vh;
   background-color:  rgba(243, 180, 7, 0.918);
   height: 0.2vh;
   }
-
-
