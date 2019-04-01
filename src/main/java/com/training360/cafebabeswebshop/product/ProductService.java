@@ -3,7 +3,10 @@ package com.training360.cafebabeswebshop.product;
 
 import com.training360.cafebabeswebshop.category.Category;
 import com.training360.cafebabeswebshop.category.CategoryDao;
+import com.training360.cafebabeswebshop.order.Order;
+import com.training360.cafebabeswebshop.order.OrderDao;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -15,10 +18,12 @@ public class ProductService {
 
     private ProductDao productDao;
     private CategoryDao categoryDao;
+    private OrderDao orderDao;
 
-    public ProductService(ProductDao productDao, CategoryDao categoryDao) {
+    public ProductService(ProductDao productDao, CategoryDao categoryDao, OrderDao orderDao) {
         this.productDao = productDao;
         this.categoryDao = categoryDao;
+        this.orderDao = orderDao;
     }
 
     public Product getProduct(String address) {
@@ -57,4 +62,7 @@ public class ProductService {
         return productDao.getProductById(id);
     }
 
+    public List<Product> listAdviceProducts() {
+        return productDao.listAdviceProducts();
+    }
 }

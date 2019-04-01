@@ -22,7 +22,7 @@ if(!url.searchParams.get("start") && !url.searchParams.get("category")) {
 } else {
     fetchProductsWithStartAndSizeAndCategory();
 }
-fetchAdvice();
+    fetchAdvice();
 
 sizeDropdown.value = url.searchParams.get("size") || 999;
 
@@ -88,7 +88,6 @@ function fetchAdvice(){
         return response.json();
     })
     .then(function (jsonData){
-        console.log("fetchAdvice:" + jsonData);
         showAdvice(jsonData);
     })
 }
@@ -158,12 +157,13 @@ function listProducts(jsonData) {
 
 function showAdvice(jsonData){
     var container = document.querySelector("#show-advice");
+    container.setAttribute("class", "row d-flex justify-content-around p-3 mb-2 bg-light text-dark");
     container.innerHTML = "";
         for(var i = 0; i < jsonData.length; i++){
             container.innerHTML +=
             `
                 <div class="p-3 mb-2 bg-light text-dark">
-                    <div class="card-body">
+                    <div class="card-body justify-content-around align-items-center">
                         <p class="card-text">${jsonData[i].name}</p>
                         <p class="card-text">${jsonData[i].manufacture}</p>
                         <div class="d-flex justify-content-between align-items-center">
