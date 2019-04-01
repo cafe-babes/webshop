@@ -11,7 +11,5 @@ var inputErrorMessage = "Hibás név vagy jelszó!";
 }
 
 window.onkeydown = e => {
-    if (!e) { var e = window.event; }
-    e.preventDefault();
     if (e.keyCode == 13) { document.forms[0].submit(); }
 }
