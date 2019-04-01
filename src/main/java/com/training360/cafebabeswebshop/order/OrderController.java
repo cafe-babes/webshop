@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.delivery.Delivery;
 import com.training360.cafebabeswebshop.product.ProductService;
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusE;
@@ -29,13 +30,14 @@ public class OrderController {
     }
 
     @PostMapping("/myorders")
-    public ResultStatus saveOrderAndGetId(Authentication authentication) {
+    public ResultStatus saveOrderAndGetId(Authentication authentication, @RequestBody Delivery delivery) {
         try {
-            long id = orderService.saveOrderAndGetId(authentication);
+            long id = orderService.saveOrderAndGetId(authentication, delivery);
             return new ResultStatus(ResultStatusE.OK, String.format("Order successfully created with id %d", id));
         } catch (IllegalStateException e) {
-            e.printStackTrace();
             return new ResultStatus(ResultStatusE.NOT_OK, e.getMessage());
+        } catch (IllegalArgumentException iae){
+            return new ResultStatus(ResultStatusE.NOT_OK, iae.getMessage());
         }
     }
 

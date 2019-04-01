@@ -1,33 +1,25 @@
 package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.basket.BasketController;
+import com.training360.cafebabeswebshop.delivery.Delivery;
 import com.training360.cafebabeswebshop.order.*;
-import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ResultStatus;
-import com.training360.cafebabeswebshop.product.ResultStatusE;
-import com.training360.cafebabeswebshop.user.User;
-import com.training360.cafebabeswebshop.user.UserController;
-import org.apache.tomcat.jni.Local;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -96,10 +88,10 @@ public class OrdersTest {
         //Given
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
         TestingAuthenticationToken tat2 = new TestingAuthenticationToken("admin", "admin");
-
+        Delivery delivery = new Delivery(1, "5432, Szeged, Dankó utca 4.", 1);
         //When
-        orderController.saveOrderAndGetId(tat);
-        orderController.saveOrderAndGetId(tat2);
+        orderController.saveOrderAndGetId(tat, delivery);
+        orderController.saveOrderAndGetId(tat2, delivery);
 
         //Then
         assertEquals(basketController.getBasketItems(tat), Collections.emptyList());
@@ -255,8 +247,9 @@ public class OrdersTest {
     @Test
     public void changeOrderStatusToShipped(){
         TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+        Delivery delivery = new Delivery(1, "5432, Szeged, Dankó utca 4.", 1);
 
-        long orderId = orderService.saveOrderAndGetId(tat);
+        long orderId = orderService.saveOrderAndGetId(tat, delivery);
 
         assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
 
@@ -268,8 +261,9 @@ public class OrdersTest {
     @Test
     public void changeOrderStatusToShippedWithWrongAddress(){
         TestingAuthenticationToken tat = new TestingAuthenticationToken("admin", "admin");
+        Delivery delivery = new Delivery(1, "5432, Szeged, Dankó utca 4.", 1);
 
-        long orderId = orderService.saveOrderAndGetId(tat);
+        long orderId = orderService.saveOrderAndGetId(tat, delivery);
 
         assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
 

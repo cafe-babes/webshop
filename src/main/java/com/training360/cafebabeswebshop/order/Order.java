@@ -10,23 +10,26 @@ public class Order {
     private long total;
     private long sumQuantity;
     private OrderStatus orderStatus;
+    private long deliveryId;
 
-    public Order(long id, long userId, long total, long sumQuantity, String status) {
+    public Order(long id, long userId, long total, long sumQuantity, String status, long deliveryId) {
         this.id = id;
         this.purchaseDate = LocalDateTime.now();
         this.userId = userId;
         this.total = total;
         this.sumQuantity = sumQuantity;
         this.orderStatus = OrderStatus.valueOf(status);
+        this.deliveryId = deliveryId;
     }
 
-    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String status) {
+    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String status, long deliveryId) {
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.userId = userId;
         this.total = total;
         this.sumQuantity = sumQuantity;
         this.orderStatus = OrderStatus.valueOf(status);
+        this.deliveryId = deliveryId;
     }
 
     public Order() {
@@ -78,6 +81,14 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public long getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(long deliveryId) {
+        this.deliveryId = deliveryId;
     }
 
     public String toString(){

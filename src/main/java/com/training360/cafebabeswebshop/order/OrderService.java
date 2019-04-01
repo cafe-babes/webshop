@@ -2,6 +2,8 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
+import com.training360.cafebabeswebshop.delivery.Delivery;
+import com.training360.cafebabeswebshop.delivery.DeliveryDao;
 import com.training360.cafebabeswebshop.user.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -9,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class OrderService {
     private BasketDao basketDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private DeliveryDao deliveryDao;
 
 
     public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
@@ -49,10 +52,12 @@ public class OrderService {
         return orderDao.listAllOrderedProduct();
     }
 
-    public long saveOrderAndGetId(Authentication authentication){
+    public long saveOrderAndGetId(Authentication authentication, Delivery delivery) throws IllegalArgumentException{
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
+        checkIfNewDeliveryAddress(authentication, delivery);
+        long deliveryId = deliveryDao.saveDeliveryAndGetId(authentication.getName(), delivery);
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
-                -1, -1, "ACTIVE");
+                -1, -1, "ACTIVE", deliveryId);
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -90,5 +95,18 @@ public class OrderService {
                     new OrderedProduct(
                             bi.getProductId(), order.getId(), bi.getPrice(), bi.getName(), bi.getPieces()));
         }
+    }
+
+    private Delivery checkIfNewDeliveryAddress(Authentication authentication, Delivery delivery){
+        List<Delivery> deliveries = deliveryDao.getDeliveriesByUserId(authentication);
+
+        for (Delivery d: deliveries) {
+            if (d.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "").equals(
+                    delivery.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "")
+            )){
+                throw new IllegalArgumentException("Address already exists");
+            }
+        }
+        return delivery;
     }
 }

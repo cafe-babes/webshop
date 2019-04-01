@@ -43,6 +43,11 @@ function showMyOrders(jsonData){
             thPiece.innerHTML = "Darab";
             trHead.appendChild(thPiece);
 
+            var thDelivery = document.createElement("th");
+            thName.setAttribute('scope', 'col');
+            thDelivery.innerHTML = "Szállítási cím";
+            trHead.appendChild(thDelivery);
+
             for(var prop in jsonData[obj]){
                 if(jsonData[obj].hasOwnProperty(prop)){
                    var tbody = document.createElement("tbody");
