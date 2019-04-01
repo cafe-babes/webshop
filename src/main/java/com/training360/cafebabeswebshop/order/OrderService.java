@@ -28,13 +28,13 @@ public class OrderService {
     private DeliveryDao deliveryDao;
 
 
-    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
-        Map<LocalDateTime, List<OrderedProduct>> result = new HashMap<>();
+    public Map<Order, List<OrderedProduct>> listMyOrders(Authentication authentication){
+        Map<Order, List<OrderedProduct>> result = new HashMap<>();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
 
         for (Order o: orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
-                result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
+                result.put(o, listOrderedProductsByOrderId(o.getId()));
             }
         }
         return result;

@@ -98,7 +98,7 @@ public class OrdersTest {
         assertEquals(basketController.getBasketItems(tat2), Collections.emptyList());
     }
 
-    @Test
+   /* @Test
     public void orderContainsDate(){
         //Given
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
@@ -156,7 +156,7 @@ public class OrdersTest {
         assertEquals(date2, LocalDateTime.of(2019, 02, 20, 21, 20, 20));
         assertEquals(date3, LocalDateTime.of(2019, 01, 20, 21, 20, 20));
 
-    }
+    }*/
 
     @Test
     public void checkOrderDate(){

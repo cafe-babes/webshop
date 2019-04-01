@@ -60,8 +60,8 @@ public class OrderDao {
 
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
-                "order_status, delivery_id FROM orders JOIN ordered_products ON orders.id = order_id " +
-                "WHERE orders.id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
+                "order_status, delivery_id FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
+                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
 

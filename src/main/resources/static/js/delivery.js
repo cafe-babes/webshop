@@ -19,13 +19,13 @@ function showdeliveries(jsonData){
         div["raw-data"] = jsonData[i]
         div.setAttribute('class', 'delivery-box');
         div.setAttribute('id', `div${i}`);
-        div.innerHTML = `<p>${jsonData[i].deliveryAddress}</p><br><input type='radio' id="input${i}" class='radio-input'>`
+        div.innerHTML = `<p>${jsonData[i].deliveryAddress}</p><br><input type='radio' id="input${i}" class='radio-input' name="delivery" >`
 
         deliveryDiv.appendChild(div);
     }
     var toStore = document.createElement('div');
     toStore.setAttribute('class', 'delivery-box');
-    toStore.innerHTML = `<p>Kiszállítás az üzletbe</p><br><input type='radio'>`
+    toStore.innerHTML = `<p>Kiszállítás az üzletbe</p><br><input type='radio' name="delivery">`
     deliveryDiv.appendChild(toStore);
 }
 
@@ -37,8 +37,6 @@ function addNewAddress(){
 
 function addToOrders(){
     var newAddress = document.querySelector('#inputNewAddress').value;
-
-
     var request = {
         "deliveryAddress": newAddress
     }

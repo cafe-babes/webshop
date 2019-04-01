@@ -73,9 +73,25 @@ function showMyOrders(jsonData){
                     pieceTd.innerHTML = jsonData[obj][prop].pieces;
                     tr.appendChild(pieceTd);
 
+                    var deliveryTd = document.createElement("td");
+                    getDeliveryById(jsonData[obj][prop].deliveryId);
+                    deliveryTd.innerHTML = "valami";
+                    tr.appendChild(deliveryTd);
+
                     tbody.appendChild(tr);
                 }
             }
         }
     }
+
+}
+
+function getDeliveryById(deliveryId){
+    console.log(deliveryId);
+    fetch('/delivery/' + deliveryId)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+           //return data.deliveryAddress;
+        })
 }
