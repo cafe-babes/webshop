@@ -1,0 +1,12 @@
+.delivery-box {
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+    cursor: pointer;
+    float:left;
+    font-size: 20px;
+    margin: 10px;
+    text-align:center;
+    width: 300px;
+    height: 150px;
+}
