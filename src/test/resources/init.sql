@@ -18,30 +18,30 @@ INSERT INTO orders(id, purchase_date, user_id, order_status) VALUES
 (4, '2019-02-20 20:20:20', 2, 'SHIPPED'),
 (5, '2019-01-20 20:20:20', 2, 'SHIPPED');
 
-INSERT INTO products (id, code, address, name, manufacture, price, product_status) VALUES
-(1, '351MBA', 'surf_killer', 'Killer', 'cafebabes', 1500000, 'ACTIVE'),
-(2, 'SURF45', 'surf_coder', 'Coder', 'cafebabes', 45000, 'ACTIVE'),
-(3, 'az01', 'surf_slayer2', 'SLAYER2', 'cafebabes', 98000, 'ACTIVE'),
-(4, 'az02', 'surf_theblade', 'THE BLADE', 'cafebabes', 87500, 'DELETED'),
-(5, '848HRE', 'surf_waver', 'Waver', 'cafebabes', 990000, 'DELETED'),
-(6, 'OCEAN1', 'surf_ocean', 'Ocean', 'cafebabes', 290000, 'ACTIVE'),
-(7, '15KJLM3', 'longest_board', 'Longest', 'cafebabes', 128000, 'ACTIVE'),
-(8, 'LO34KJ8', 'funny_bunny', 'Funny', 'cafebabes', 25800, 'ACTIVE'),
-(9, 'GH672V4', 'shark', 'Shark', 'cafebabes', 97000, 'ACTIVE'),
-(10, 'DB89AS1', 'blowfish', 'Blow Fish', 'cafebabes', 112000, 'ACTIVE'),
-(11, 'SK001', 'surfer', 'Surfer', 'Pacific Islands Surfboards', 990000, 'ACTIVE'),
-(12, 'R2001', 'R2', 'R2', 'Chemistry Surfboards', 880000, 'ACTIVE'),
-(13, 'SA001', 'sampler', 'Sampler', 'Channel Islands', 45000, 'ACTIVE'),
-(14, 'BA001', 'bastard', 'Bastard', 'Pyzel', 45000, 'DELETED'),
-(15, 'GB001', 'greedy_beaver', 'Greedy Beaver', 'Firewire', 45000, 'ACTIVE'),
-(16, 'JB101', 'jb-1', 'JB-1', 'T. Patterson', 45000, 'ACTIVE'),
-(17, 'UT001', 'utility', 'Utility', 'Rusty Surfboards', 45000, 'DELETED'),
-(18, 'DI001', 'deserted_island', 'Deserted Island', 'Blue Sea Watersports', 45000, 'ACTIVE');
-
 INSERT INTO category(id, name, ordinal) values
 (1, "pretty", 1),
 (2, "fast", 2),
 (3, "smart", 3);
+
+INSERT INTO products (id, code, address, name, manufacture, price, product_status, category_id) VALUES
+(1, '351MBA', 'surf_killer', 'Killer', 'cafebabes', 1500000, 'ACTIVE', 2),
+(2, 'SURF45', 'surf_coder', 'Coder', 'cafebabes', 45000, 'ACTIVE', 1),
+(3, 'az01', 'surf_slayer2', 'SLAYER2', 'cafebabes', 98000, 'ACTIVE', 1),
+(4, 'az02', 'surf_theblade', 'THE BLADE', 'cafebabes', 87500, 'DELETED', 1),
+(5, '848HRE', 'surf_waver', 'Waver', 'cafebabes', 990000, 'DELETED', 1),
+(6, 'OCEAN1', 'surf_ocean', 'Ocean', 'cafebabes', 290000, 'ACTIVE', 1),
+(7, '15KJLM3', 'longest_board', 'Longest', 'cafebabes', 128000, 'ACTIVE', 1),
+(8, 'LO34KJ8', 'funny_bunny', 'Funny', 'cafebabes', 25800, 'ACTIVE', 1),
+(9, 'GH672V4', 'shark', 'Shark', 'cafebabes', 97000, 'ACTIVE', 2),
+(10, 'DB89AS1', 'blowfish', 'Blow Fish', 'cafebabes', 112000, 'ACTIVE', 2),
+(11, 'SK001', 'surfer', 'Surfer', 'Pacific Islands Surfboards', 990000, 'ACTIVE', 2),
+(12, 'R2001', 'R2', 'R2', 'Chemistry Surfboards', 880000, 'ACTIVE', 2),
+(13, 'SA001', 'sampler', 'Sampler', 'Channel Islands', 45000, 'ACTIVE', 2),
+(14, 'BA001', 'bastard', 'Bastard', 'Pyzel', 45000, 'DELETED', 3),
+(15, 'GB001', 'greedy_beaver', 'Greedy Beaver', 'Firewire', 45000, 'ACTIVE', 3),
+(16, 'JB101', 'jb-1', 'JB-1', 'T. Patterson', 45000, 'ACTIVE', 3),
+(17, 'UT001', 'utility', 'Utility', 'Rusty Surfboards', 45000, 'DELETED', 3),
+(18, 'DI001', 'deserted_island', 'Deserted Island', 'Blue Sea Watersports', 45000, 'ACTIVE', 2);
 
 INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name, pieces) VALUES
 (10,1,112000, 'Blow Fish', 1),
