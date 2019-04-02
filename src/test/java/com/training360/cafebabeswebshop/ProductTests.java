@@ -101,7 +101,7 @@ public class ProductTests {
 	}
 
 	@Test
-	public void testListAdviceProducts(){
+	public void testListAdviceProductsSizeOfListIsThree(){
 		// When
 		List<Product> productList = productController.listAdvicedProducts();
 		//Then
