@@ -130,6 +130,9 @@ public class ProductDao {
     }
 
     public List<Product> listAdviceProducts() {
-        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address, products.product_status from products join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER3);
+        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address, products.product_status " +
+                "from products join ordered_products on products.id = ordered_products.product_id " +
+                "join orders on ordered_products.order_id = orders.id " +
+                "where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER3);
     }
 }
