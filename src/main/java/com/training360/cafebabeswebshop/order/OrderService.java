@@ -2,6 +2,9 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
+import com.training360.cafebabeswebshop.delivery.Delivery;
+import com.training360.cafebabeswebshop.delivery.DeliveryDao;
+import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.user.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -9,10 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -23,19 +26,10 @@ public class OrderService {
     private BasketDao basketDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private DeliveryDao deliveryDao;
 
 
-    public Map<LocalDateTime, List<OrderedProduct>> listMyOrders(Authentication authentication){
-        Map<LocalDateTime, List<OrderedProduct>> result = new HashMap<>();
-        List<Order> orders = orderDao.listMyOrders(authentication.getName());
-
-        for (Order o: orders) {
-            if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
-                result.put(o.getPurchaseDate(), listOrderedProductsByOrderId(o.getId()));
-            }
-        }
-        return result;
-    }
 
     public List<Order> listAllOrders(){
         return orderDao.listAllOrders();
@@ -49,10 +43,14 @@ public class OrderService {
         return orderDao.listAllOrderedProduct();
     }
 
-    public long saveOrderAndGetId(Authentication authentication){
+    public long saveOrderAndGetId(Authentication authentication, Delivery delivery) throws IllegalArgumentException{
+        if (authentication==null)
+            return 0;
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
                 -1, -1, "ACTIVE");
+        o.setDelivery(checkIfNewDeliveryAddress(authentication,delivery));
+        System.out.println(o.getDelivery());
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -62,6 +60,22 @@ public class OrderService {
         } else {
             throw new IllegalStateException("The basket is empty");
         }
+    }
+
+    public List<Order> listMyOrders(Authentication authentication){
+        if (authentication==null)
+            return null;
+        List<Order> orders = orderDao.listMyOrders(authentication.getName());
+        for (Order o: orders) {
+            if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
+               o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
+               o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+               //break;
+            } else {
+                o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+            }
+        }
+        return orders;
     }
 
     public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
@@ -83,7 +97,6 @@ public class OrderService {
         orderDao.updateOrderedProductPiece(op);
     }
 
-
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
             orderDao.saveOrderedProductAndGetId(
@@ -91,4 +104,19 @@ public class OrderService {
                             bi.getProductId(), order.getId(), bi.getPrice(), bi.getName(), bi.getPieces()));
         }
     }
+
+    private Delivery checkIfNewDeliveryAddress(Authentication authentication, Delivery delivery){
+        List<Delivery> deliveries = deliveryDao.getDeliveriesByUserId(authentication);
+
+        for (Delivery d: deliveries) {
+            if (d.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "").equals(
+                    delivery.getDeliveryAddress().trim().toLowerCase().replaceAll("[\\-,. ]", "")
+            )){
+                return d;
+            }
+        }
+        deliveryDao.saveDeliveryAndGetId(authentication.getName(), delivery);
+        return delivery;
+    }
+
 }

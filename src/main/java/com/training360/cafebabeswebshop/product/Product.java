@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.product;
 
 
 import com.training360.cafebabeswebshop.category.Category;
-import com.training360.cafebabeswebshop.image.Image;
 
 public class Product {
 
@@ -15,6 +14,9 @@ public class Product {
     private String productStatus;
     private Category category;
 
+    public Product() {
+    }
+
     public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus, Category category) {
         this.id = id;
         this.code = code;
@@ -24,6 +26,21 @@ public class Product {
         this.price = price;
         this.productStatus = productStatus;
         this.category = category;
+    }
+
+    public Product(String address, String name, String manufacture, int price) {
+        this.address = address;
+        this.name = name;
+        this.manufacture = manufacture;
+        this.price = price;
+    }
+
+    public Product(String address, String name, String manufacture, int price, String productStatus) {
+        this.address = address;
+        this.name = name;
+        this.manufacture = manufacture;
+        this.price = price;
+        this.productStatus = productStatus;
     }
 
     public long getId() {
@@ -90,4 +107,11 @@ public class Product {
         this.category = category;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", productStatus='" + productStatus + '\'' +
+                '}';
+    }
 }

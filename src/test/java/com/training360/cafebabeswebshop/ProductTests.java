@@ -11,9 +11,12 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -96,5 +99,23 @@ public class ProductTests {
 		assertEquals("Pyzel", searchedProduct.getManufacture());
 		assertEquals("Bastard", searchedProduct.getName());
 	}
+
+	@Test
+	public void testListAdviceProductsSizeOfListIsThree(){
+		// When
+		List<Product> productList = productController.listAdvicedProducts();
+		//Then
+		assertEquals(productList.size(),3 );
+	}
+
+	@Test
+	public void testOfferedProductsStatusIsActive(){
+		// When
+		List<Product> productList = productController.listAdvicedProducts();
+		//Then
+		int sizeOfACTIVEProductList = productList.stream().filter(p -> p.getProductStatus().equals("ACTIVE")).collect(Collectors.toList()).size();
+		assertEquals(productList.size(), sizeOfACTIVEProductList);
+	}
+
 
 }

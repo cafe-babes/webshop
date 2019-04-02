@@ -3,6 +3,7 @@ package com.training360.cafebabeswebshop.product;
 import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -98,4 +99,8 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @GetMapping("/advice")
+    public List<Product> listAdvicedProducts(){
+        return productService.listAdviceProducts();
+    }
 }

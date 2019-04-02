@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
+import com.training360.cafebabeswebshop.delivery.Delivery;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,12 +18,13 @@ public class OrderDao {
 
     private JdbcTemplate jdbcTemplate;
     private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, rowNum) -> new Order(
-            rs.getLong("id"),
+            rs.getLong("orders.id"),
             rs.getTimestamp("purchase_date").toLocalDateTime(),
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
-            rs.getString("order_status")
+            rs.getString("order_status"),
+            new Delivery(rs.getLong("delivery_id"), rs.getString("delivery.address"), rs.getLong("user_id"))
     );
     private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
             rs.getLong("id"),
@@ -33,6 +35,12 @@ public class OrderDao {
             rs.getInt("pieces")
     );
 
+    private static final RowMapper<Delivery> DELIVERY_ROW_MAPPER = (rs, rowNum) -> new Delivery(
+            rs.getLong("id"),
+            rs.getString("address"),
+            rs.getLong("user_id")
+    );
+
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -40,27 +48,29 @@ public class OrderDao {
     public long saveOrderAndGetId(String userName, Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?))",
+            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, delivery_id) " +
+                            "values (?,(SELECT id FROM users WHERE user_name = ?), (SELECT id FROM delivery WHERE address = ? LIMIT 1))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-            // ps.setString(5, String.valueOf(order.getOrderStatus()));
+            ps.setString(3, order.getDelivery().getDeliveryAddress());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     public Order findOrderById(long id) {
-        return jdbcTemplate.queryForObject("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
-                        "sum(pieces) AS sum_quantity, order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id WHERE orders.id = ?",
+        return jdbcTemplate.queryForObject("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
+                        "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
+                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id WHERE orders.id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
     public List<Order> listMyOrders(String username) {
-        return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
-                "order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
-                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY order_id ORDER BY purchase_date desc"),
+        return jdbcTemplate.query(("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
+                        "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
+                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id" +
+                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
 
@@ -81,9 +91,10 @@ public class OrderDao {
     }
 
     public List<Order> listAllOrders() {
-        return jdbcTemplate.query("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, " +
-                "sum(pieces) AS sum_quantity, order_status FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
-                "GROUP BY order_id order by purchase_date desc", ORDER_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
+                "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
+                "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.user_id = delivery.user_id GROUP BY order_id order by purchase_date desc",
+                ORDER_ROW_MAPPER);
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
@@ -114,4 +125,10 @@ public class OrderDao {
     public void updateOrderedProductPiece(OrderedProduct op){
         jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
+
+    public Delivery getDeliveryById(Delivery delivery){
+        System.out.println(delivery.getDeliveryId());
+        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
+    }
+
 }

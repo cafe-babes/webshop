@@ -78,7 +78,7 @@
                         <div class="ad-left">
                             <label for="inputQuantity">Darab</label>
                             <br>
-                            <input id="inputQuantity" type="number" step="1" value="1" style="width:40px;">
+                            <input id="inputQuantity" type="number" step="1" value="1" min="1" style="width:40px;">
                         </div>
                         <div class="ad-right">
                         <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
@@ -88,21 +88,20 @@
                     <br><br><br><br>
                     <div>
 
-                        <div class="ad-left">
-                            <a href="index.html">
-                                <button type="button" class="btn btn-primary btn-lg">Visszalépés</button>
-                            </a>
-                        </div>
-                        <div class="ad-left">
-                            <button type="button" id="addToBasketButton" class="btn btn-primary btn-lg" hidden
+                        <div class="ad-left" style="margin-top:48px">
+                            <button type="button" id="addToBasketButton" class="btn btn-primary" hidden
                                     onclick="handleAddToBasketButton()">Kosárba
                             </button>
-                            <br>
-                            <a href="basket.html" id="basketButton"></a>
+                            <a href="/">
+                                <button type="button" class="btn btn-outline-primary">Visszalépés</button>
+                            </a>
+                            <a href="basket.html" id="basketButton">
+                                <!--js tölti be-->
+                            </a>
                         </div>
 
                         <div class="ad-right">
-                            <div class="stars" data-rating="3" id="stars">
+                            <div class="stars" data-rating="5" id="stars">
                                 <span class="star">&nbsp;</span>
                                 <span class="star">&nbsp;</span>
                                 <span class="star">&nbsp;</span>
@@ -122,7 +121,7 @@
         </div>
     </div>
 
-    <div id="page-not-found" class="d-flex justify-content-center"></div>
+    <div id="page-not-found"></div>
 
     <div class="carousel-feedbacks broun-block" id="feedbacks">
         <!--<div class="container">-->

@@ -65,10 +65,42 @@ function fetchFeedbacks(productId) {
 
 
 function showFeedbacks(jsonData) {
-  var feedbacks = document.getElementById('feedbacks');
-  feedbacks.innerHTML = '';
+
+    var feedbacks = document.getElementById('feedbacks');
+    feedbacks.innerHTML = '';
+
+//  Display the feedback of the registered User
+    var defaultUserFeedback = "";
+
+    if(typeof user != "undefined"){
+
+        var userId = user.id;
+        for(var i = 0; i < jsonData.length; i++){
+            if(jsonData[i].user.id == userId){
+                defaultUserFeedback = jsonData[i].feedback;
+                break;
+            }
+        }
+    }
+    var registeredUsersFeedbackTextArea = document.getElementById("feedback-text");
+    registeredUsersFeedbackTextArea.innerHTML = defaultUserFeedback;
+    console.log(defaultUserFeedback);
+//    ------------------
+
+// Listing feedbacks
+
+var visibility;
+
+var star =' <font color="#c59b08">&starf;</font>';
 
   for (var i = 0; i < jsonData.length; i++) {
+//  Setting the visibility of the delet button
+
+star = star.repeat(jsonData[i].rating);
+  visibility = 'hidden';
+  if(jsonData[i].user.id == userId){
+  visibility = 'visible';
+  }
     feedbacks.innerHTML += `
       <div class="container">
           <div>
@@ -78,11 +110,10 @@ function showFeedbacks(jsonData) {
                           <div class="col-md-4 col-sm-6">
                               <div class="block-text rel zmin">
                               <div class="ad-right" id="feedback-and-delete-buttons">
-                              <button onclick="editFeedback(${jsonData[i].id})" id="editFeedback#"+${jsonData[i].id} class="btn btn-success"><i class='fas fa-pen-alt'></i></button>
-                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger"><i class='fas fa-trash-alt'></i></button>
+                              <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger" ${visibility}><i class='fas fa-trash-alt'></i></button>
                               </div>
                                   <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                  <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
+                                  <div class="mark">Értékelés: ${star}<span class="rating-input"><span
                                           data-value="0"
                                           class="glyphicon glyphicon-star"></span><span
                                           data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
@@ -112,6 +143,11 @@ function showFeedbacks(jsonData) {
   }
   }
 
+function repeat(starsNumber){
+
+for(var i = 0 ;i < starsNumber; i++){
+}
+}
 
 
 function handleAddToBasketButton() {
@@ -128,12 +164,6 @@ function handleAddToBasketButton() {
       }
     })
     .then(function (jsonData) {
-      for (var i = 0; i < jsonData.length; i++) {
-        if (jsonData[i].address == address) {
-          alert('A termék már a kosárban van!');
-          return;
-        }
-      }
       addToBasket();
     });
 }
@@ -166,10 +196,8 @@ function addToBasket() {
 }
 
 function addGoToBasketButton() {
-  var container = document.querySelector('#basketButton');
-  container.innerHTML = '';
-  container.innerHTML +=
-        '<a href="basket.html"><button type="button" class="btn btn-primary btn-lg">Irány a kosár</button></a>';
+  document.querySelector('#basketButton').innerHTML =
+        '<button type="button" class="btn btn-outline-primary">Irány a kosár</button>';
 }
 
 
@@ -200,10 +228,10 @@ function newFeedback() {
             var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
             console.log(dateNow);
-            console.log(feedbackText.value);
-            console.log(rating);
-            console.log(user);
-            console.log(product);
+            console.log('Feedback '+feedbackText.value);
+            console.log('Rating :'+rating);
+            console.log('User ID :'+user.id);
+            console.log('Product ID :'+ product.id);
 
                     var request =
                                    {
@@ -259,11 +287,6 @@ function newFeedback() {
 
 function deleteFeedback(feedbackId){
 
-        if(typeof user === "undefined"){
-            alert("Be kell jelentkeznie az értékelés törléséhez");
-            return;
-        }
-
         var feedback;
         for(var i = 0; i<feedbacks.length; i++){
                 if(feedbacks[i].id == feedbackId){
@@ -281,8 +304,6 @@ function deleteFeedback(feedbackId){
                                                method: "DELETE",
                                            })
                                            .then(function (response) {
-                     //                          document.getElementById("message-div").setAttribute("class", "alert alert-success");
-                     //                          document.querySelector("#message-div").innerHTML = name + " sikeresen törölve!"
                                                fetchProduct();
                                                });
             }else{
@@ -291,63 +312,6 @@ function deleteFeedback(feedbackId){
 
 }
 
-function editFeedback(feedbackId){
-
-
-        if(typeof user === "undefined"){
-                    alert("Be kell jelentkeznie az értékelés módosításához");
-                    return;
-                }
-
-         var feedback;
-                for(var i = 0; i<feedbacks.length; i++){
-                        if(feedbacks[i].id == feedbackId){
-                                feedback = feedbacks[i];
-                                break;
-                        }
-                }
-
- if(user.id == feedback.user.id){
-
-        var fb = document.getElementById("fb").innerHTML;
-        var editAndDeleteFeedbackButton = document.getElementById("feedback-and-delete-buttons");
-        editAndDeleteFeedbackButton.innerHTML = "";
-        editAndDeleteFeedbackButton.innerHTML +=
-        `
-                        <button onclick="saveEditedFeedback(${feedbackId})" id="saveEditedFeedback#"+${feedbackId} class="btn btn-success">Mentés</button>
-        `;
-
-        var feedbackText = document.getElementById("feedback#"+feedbackId);
-        console.log(feedbackText);
-        feedbackText.innerHTML =
-        `
-                        <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
-                            style="resize:none"      id="feedback-text-modified"    style="height:80px;width:200px;">${fb}</textarea>
-
-
-                        <div class="stars2" data-rating="3" id="stars2">
-                            <span class="star2">&nbsp;</span>
-                            <span class="star2">&nbsp;</span>
-                            <span class="star2">&nbsp;</span>
-                            <span class="star2">&nbsp;</span>
-                            <span class="star2">&nbsp;</span>
-                        </div>
-        `;
-
-
-            }else{
-                alert("Ez nem az Ön értékelése, ezért nem szerkesztheti");
-            }
-}
-
-function saveEditedFeedback(feedbackId){
-
-console.log("mentés klikk");
-console.log(feedbackId);
-var rating = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
-            console.log(rating);
-
-}
 
 function showProductNotFound(jsonData) {
     var productText = document.getElementById("product-text");
@@ -355,11 +319,15 @@ function showProductNotFound(jsonData) {
     var picture = document.getElementById("picture");
     var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
-                                <div>
-                                <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
-                                </div><br>
-                                <div class="d-flex justify-content-center"><img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812"></div>
-                               <br>`
+                                <div class="errorStlye">
+                                    <div class="d-flex justify-content-center" >
+                                        <h1 >Sajnos ilyen termékkel nem rendelkezünk...</h1>
+                                    </div>
+                                    <br>
+                                    <div class="d-flex justify-content-center">
+                                        <img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812">
+                                    </div>
+                                 </div>`
     productText.innerHTML = "";
     picture.innerHTML = "";
     feedbacks.innerHTML = "";
@@ -396,33 +364,3 @@ function showProductNotFound(jsonData) {
             document.querySelector('.stars').setAttribute('data-rating', num);
         }
 
-//Init Star Rating System   # 2
-//        document.addEventListener('DOMContentLoaded', function(){
-//            let stars2 = document.querySelectorAll('.star2');
-//            stars2.forEach(function(star2){
-//                star2.addEventListener('click', setRating2);
-//            });
-//
-//            let rating2 = parseInt(document.querySelector('.stars2').getAttribute('data-rating'));
-//            let target2 = stars2[rating2 - 1];
-//            target2.dispatchEvent(new MouseEvent('click'));
-//        });
-//        function setRating2(ev){
-//            let span2 = ev.currentTarget;
-//            let stars2 = document.querySelectorAll('.star2');
-//            let match2 = false;
-//            let num2 = 0;
-//            stars2.forEach(function(star2, index2){
-//                if(match2){
-//                    star2.classList.remove('rated2');
-//                }else{
-//                    star2.classList.add('rated2');
-//                }
-//                //are we currently looking at the span that was clicked
-//                if(star2 === span2){
-//                    match2 = true;
-//                    num2 = index2 + 1;
-//                }
-//            });
-//            document.querySelector('.stars2').setAttribute('data-rating', num2);
-//        }

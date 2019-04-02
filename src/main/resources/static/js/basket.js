@@ -19,55 +19,64 @@ function showBasket(jsonData){
     var sum = 0;
 
     for(var i = 0; i < jsonData.length; i++){
-     console.log("ok");
+        console.log(`${jsonData[i].address}`);
         container.innerHTML +=
-            `<div class="col-sm-7" id="${jsonData[i].productId}">
+            `<div class="col-sm-7" id="${jsonData[i].address}">
                 <h2 id="name">${jsonData[i].name}</h2>
-                <h3><span id="price">${jsonData[i].price}</span> Ft X </h3>
+                <h3><span id="price-${jsonData[i].address}">${jsonData[i].price}</span> Ft</h3>
                 <label for = "changeQuantity">Darab</label> <br>
-                <input onclick = "summarizer(${jsonData[i].productId})"
-                id = "changeQuantity${jsonData[i].productId}"
-                type = "number" step = "1" value = ${jsonData[i].pieces} min="0" style = "width:40px;" > 
+                <button type="button" class="btn btn-outline-primary" id="minus" onclick="minus('${jsonData[i].address}')">-</button><span id = "changeQuantity-${jsonData[i].address}">${jsonData[i].pieces}</span>
+                <button type="button" class="btn btn-outline-primary" id="minus" onclick="plus('${jsonData[i].address}')">+</button>
                 <br><br>
-                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="getProductById('${jsonData[i].productId}')">Töröl</button>
+                <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="removeItemFromBasket('${jsonData[i].address}')">Töröl</button>
                 <br>
-            </div>
-            `;
-            var quantity = document.querySelector(`#changeQuantity${jsonData[i].productId}`).value;
-            
-            sum += jsonData[i].price * quantity;
-            
+            </div>`;//TODO
+        sum += jsonData[i].price * jsonData[i].pieces;
     }
     
     document.getElementById("total-price").innerHTML = sum;
     
 }
 
+function minus(address) {
+    var pieceSpan = document.querySelector(`#changeQuantity-${address}`);
+    if(pieceSpan.innerHTML <= 1)
+        removeItemFromBasket(address);
+    pieceSpan.innerHTML = parseInt(pieceSpan.innerText) - 1;
+    updatePieces(address, parseInt(pieceSpan.innerText));
+    summarizer(address);
+    basketRefresh();
+}
 
-function summarizer(productId){
+function plus(address) {
+    var pieceSpan = document.querySelector(`#changeQuantity-${address}`);
+    pieceSpan.innerHTML = parseInt(pieceSpan.innerText) + 1;
+    updatePieces(address, parseInt(pieceSpan.innerText));
+    summarizer(address);
+    basketRefresh();
+}
+
+function summarizer(address){
     var sum = 0;
     var productArr = document.querySelector('#list-product').children;
-    for (const key in productArr) {
-        if (productArr.hasOwnProperty(key)) {
-            const element = productArr[key].children;
-            var piece = parseInt(element[4].value);
-            console.log(piece);
-            var price = parseInt(element[1].firstElementChild.innerHTML);
-            console.log(price)
-            sum += piece * price;
-        }
+    for (let i = 0; i < productArr.length; i++) {
+        const element = productArr[i];
+        var piece = parseInt(element.querySelector("[id^='changeQuantity-']").innerText);
+        console.log(piece);
+        var price = parseInt(element.querySelector("[id^='price-']").innerText);
+        console.log(price)
+        sum += piece * price;
     }
     document.getElementById("total-price").innerHTML = sum;
-    updatePieces(productId, piece);
 }
 
-function updatePieces(productId, piece) {
-var request = {
-    "pieces": piece,
-    "productId": productId
-}
+function updatePieces(address, piece) {
+    var request = {
+        "pieces": piece,
+        "address": address
+    }
 
-fetch("/basket", {
+    fetch("/basket", {
         method: "POST",
         body: JSON.stringify(request),
         headers: {
@@ -79,15 +88,8 @@ fetch("/basket", {
     })
 }
 
-
-function getProductById(productId){
-fetch('/products/' + productId)
-    .then(res => res.json())
-    .then(data => { removeItemFromBasket(data) })
-}
-
-function removeItemFromBasket(product) {
-      var url = "/basket/" + product.address;
+function removeItemFromBasket(product_address) {
+      var url = "/basket/" + product_address;
       console.log(url)
       return fetch(url, {
               method: "DELETE"
@@ -121,12 +123,13 @@ function checkIfEmpty(){
                 alert("a kosár tartalma üres");
                 return;
            }
-           handleAddToOrders();
+           window.location.href = "/delivery.html";
+           //handleAddToOrders();
            basketRefresh();
        });
 }
 
-function handleAddToOrders(){
+/*function handleAddToOrders(){
     var url = "/myorders";
     fetch(url,{
         method: "GET"
@@ -148,7 +151,7 @@ function addToOrders(){
     })
     .then(function(response){
         console.log(response);
-        window.location.href ="/succesfulorder.html";
+        window.location.href ="/delivery.html";
         return response.json();
     })
-}
+}*/

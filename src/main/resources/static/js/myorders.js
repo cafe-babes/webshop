@@ -7,13 +7,13 @@ function fetchMyOrders(){
         return response.json();
     })
     .then(function(jsonData){
-        console.log("fetch ok");
-        console.log(jsonData);
-        showMyOrders(jsonData);
+        showMyOrders(jsonData)
     });
 }
 
 function showMyOrders(jsonData){
+    console.log(jsonData);
+
     var container = document.querySelector("#container");
     container.innerHTML = "";
     var table = document.createElement("table");
@@ -43,8 +43,13 @@ function showMyOrders(jsonData){
             thPiece.innerHTML = "Darab";
             trHead.appendChild(thPiece);
 
-            for(var prop in jsonData[obj]){
-                if(jsonData[obj].hasOwnProperty(prop)){
+            var thDelivery = document.createElement("th");
+            thName.setAttribute('scope', 'col');
+            thDelivery.innerHTML = "Szállítási cím";
+            trHead.appendChild(thDelivery);
+
+            for(var i = 0; i < jsonData.length; i++){
+                for(var j = 0; j < jsonData[i].orderedProducts.length; j++){
                    var tbody = document.createElement("tbody");
                    table.appendChild(tbody);
 
@@ -52,25 +57,28 @@ function showMyOrders(jsonData){
                     tbody.appendChild(tr);
 
                     var dateTd = document.createElement("td");
-                    dateTd.innerHTML = obj;
+                    dateTd.innerHTML = jsonData[i].purchaseDate;
                     dateTd.setAttribute('id', 'date');
                     tr.appendChild(dateTd);
 
-
-                    var names = jsonData[obj][prop];
-                    console.log(names);
                     var nameTd = document.createElement("td");
-                    nameTd.innerHTML = jsonData[obj][prop].orderingName;
+                    //if (jsonData[i].orderedProducts[i].orderingName){
+                    nameTd.innerHTML = jsonData[i].orderedProducts[j].orderingName;
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
+                   // }
 
                     var pieceTd = document.createElement("td");
-                    pieceTd.innerHTML = jsonData[obj][prop].pieces;
+                    pieceTd.innerHTML = jsonData[i].orderedProducts[j].pieces;
                     tr.appendChild(pieceTd);
+
+                    var deliveryTd = document.createElement("td");
+                    deliveryTd.innerHTML = jsonData[i].delivery.deliveryAddress;
+                    tr.appendChild(deliveryTd);
 
                     tbody.appendChild(tr);
                 }
             }
+            }
         }
     }
-}
