@@ -35,6 +35,14 @@ public class Product {
         this.price = price;
     }
 
+    public Product(String address, String name, String manufacture, int price, String productStatus) {
+        this.address = address;
+        this.name = name;
+        this.manufacture = manufacture;
+        this.price = price;
+        this.productStatus = productStatus;
+    }
+
     public long getId() {
         return id;
     }
@@ -97,5 +105,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", productStatus='" + productStatus + '\'' +
+                '}';
     }
 }

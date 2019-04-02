@@ -37,6 +37,13 @@ public class ProductDao {
             resultSet.getString("name"),
             resultSet.getString("manufacture"),
             resultSet.getInt("price"));
+
+    private static final RowMapper<Product> PRODUCT_ROW_MAPPER3 = (resultSet, i) -> new Product(
+            resultSet.getString("address"),
+            resultSet.getString("name"),
+            resultSet.getString("manufacture"),
+            resultSet.getInt("price"),
+            resultSet.getString("product_status"));
     private JdbcTemplate jdbcTemplate;
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
@@ -123,6 +130,6 @@ public class ProductDao {
     }
 
     public List<Product> listAdviceProducts() {
-        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address from products join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER2);
+        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address, products.product_status from products join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER3);
     }
 }
