@@ -32,7 +32,7 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
         }
         image.setMediaType(mediaType);
-        System.out.println(productId);
+
         image.setProductId(productId);
         try {
             image.setFileBytes(file.getBytes());
@@ -43,12 +43,12 @@ public class ImageController {
         }
     }
 
-//    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id){
-//        Image image = imageService.getImage(id);
-//        return ResponseEntity.ok()
-//                .header("Content-Disposition", "attachment; filename=" + image.getFileName())
-//                .contentType(image.getMediaType())
-//                .body(image.getFileBytes());
-//    }
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id){
+        Image image = imageService.getImage(id);
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=" + image.getFileName())
+                .contentType(image.getMediaType())
+                .body(image.getFileBytes());
+    }
 }
