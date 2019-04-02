@@ -311,10 +311,13 @@ function showProductNotFound(jsonData) {
     var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
                                 <div>
+                                <div class="d-flex justify-content-center">
                                 <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
-                                </div><br>
+                                </div>
+                                <br><br><br><br>
                                 <div class="d-flex justify-content-center"><img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812"></div>
-                               <br>`
+                                <br>
+                                   </div>`
     productText.innerHTML = "";
     picture.innerHTML = "";
     feedbacks.innerHTML = "";
