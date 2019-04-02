@@ -95,7 +95,7 @@ var star =' <font color="#c59b08">&starf;</font>';
 
   for (var i = 0; i < jsonData.length; i++) {
 //  Setting the visibility of the delet button
-
+star =' <font color="#c59b08">&starf;</font>';
 star = star.repeat(jsonData[i].rating);
   visibility = 'hidden';
   if(jsonData[i].user.id == userId){
