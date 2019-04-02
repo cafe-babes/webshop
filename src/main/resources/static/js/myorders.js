@@ -7,21 +7,18 @@ function fetchMyOrders(){
         return response.json();
     })
     .then(function(jsonData){
-        showMyOrders(jsonData)
+        showTable(jsonData)
     });
 }
+var container = document.querySelector("#container");
+container.innerHTML = "";
+var table = document.createElement("table");
+table.setAttribute('class', 'table table-striped');
+container.appendChild(table);
 
-function showMyOrders(jsonData){
+function showTableHead(jsonData){
     console.log(jsonData);
 
-    var container = document.querySelector("#container");
-    container.innerHTML = "";
-    var table = document.createElement("table");
-    table.setAttribute('class', 'table table-striped');
-    container.appendChild(table);
-
-    for(var obj in jsonData){
-        if(jsonData.hasOwnProperty(obj)){
             var thead = document.createElement("thead");
             table.appendChild(thead);
 
@@ -47,9 +44,9 @@ function showMyOrders(jsonData){
             thName.setAttribute('scope', 'col');
             thDelivery.innerHTML = "Szállítási cím";
             trHead.appendChild(thDelivery);
+        }
 
-            for(var i = 0; i < jsonData.length; i++){
-                for(var j = 0; j < jsonData[i].orderedProducts.length; j++){
+        function showTableBody(jsonData, i, j){
                    var tbody = document.createElement("tbody");
                    table.appendChild(tbody);
 
@@ -62,11 +59,9 @@ function showMyOrders(jsonData){
                     tr.appendChild(dateTd);
 
                     var nameTd = document.createElement("td");
-                    //if (jsonData[i].orderedProducts[i].orderingName){
                     nameTd.innerHTML = jsonData[i].orderedProducts[j].orderingName;
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
-                   // }
 
                     var pieceTd = document.createElement("td");
                     pieceTd.innerHTML = jsonData[i].orderedProducts[j].pieces;
@@ -77,8 +72,21 @@ function showMyOrders(jsonData){
                     tr.appendChild(deliveryTd);
 
                     tbody.appendChild(tr);
-                }
+               // }
             }
-            }
+
+
+
+
+function showTable(jsonData){
+    showTableHead(jsonData);
+for (var i = 0; i < jsonData.length; i++){
+    for(var j = 0; j < jsonData[i].orderedProducts.length ; j++){
+        showTableBody(jsonData, i, j);
+        }
+        if (i < jsonData.length-1){
+        showTableHead(jsonData);
         }
     }
+}
+

@@ -50,7 +50,6 @@ public class OrderService {
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
                 -1, -1, "ACTIVE");
         o.setDelivery(checkIfNewDeliveryAddress(authentication,delivery));
-        System.out.println(o.getDelivery());
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -68,9 +67,9 @@ public class OrderService {
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
         for (Order o: orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
-               o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
-               o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
-               //break;
+                o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
+                o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+                //break;
             } else {
                 o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
             }
