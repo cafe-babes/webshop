@@ -49,11 +49,11 @@ public class OrderDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, delivery_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?), ?)",
+                            "values (?,(SELECT id FROM users WHERE user_name = ?), (SELECT id FROM delivery WHERE address = ? LIMIT 1))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-           ps.setLong(3, order.getDelivery().getDeliveryId());
+            ps.setString(3, order.getDelivery().getDeliveryAddress());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
