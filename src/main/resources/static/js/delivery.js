@@ -16,16 +16,17 @@ function showdeliveries(jsonData){
     var deliveryDiv = document.querySelector('#deliveryDiv');
     for (var i = 0; i < jsonData.length; i ++){
         var div = document.createElement('div');
-        div.setAttribute('class', 'delivery-box');
+        div.setAttribute('class', 'delivery-box', 'd-flex justify-content-center');
+        //div.setAttribute('class', 'd-flex justify-content-center');
         div.setAttribute('id', `div${i}`);
         div.innerHTML = `<p>${jsonData[i].deliveryAddress}</p><br><input type='radio' id="input${i}" class='radio-input' name="delivery" >`
 
         deliveryDiv.appendChild(div);
     }
-    var toStore = document.createElement('div');
+    /*var toStore = document.createElement('div');
     toStore.setAttribute('class', 'delivery-box');
     toStore.innerHTML = `<p>Kiszállítás az üzletbe</p><br><input type='radio' name="delivery">`
-    deliveryDiv.appendChild(toStore);
+    deliveryDiv.appendChild(toStore);*/
 }
 
 function addNewAddress(){

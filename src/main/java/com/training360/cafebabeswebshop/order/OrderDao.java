@@ -69,7 +69,7 @@ public class OrderDao {
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
                         "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
-                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id" +
+                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
                 "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
@@ -127,7 +127,6 @@ public class OrderDao {
     }
 
     public Delivery getDeliveryById(Delivery delivery){
-        System.out.println(delivery.getDeliveryId());
         return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
     }
 

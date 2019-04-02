@@ -24,7 +24,7 @@ public class OrderValidator {
                 isValidTotal(order.getTotal());
     }
 
-   /* public boolean isValidOrderId(long id){
+    public boolean isValidOrderId(long id){
         for (Order o: orderService.listAllOrders()) {
             if (o.getId() == id){
                 return true;
@@ -32,7 +32,7 @@ public class OrderValidator {
             }
         }
         return false;
-    }*/
+    }
 
     public boolean isExistingOrderId(long id){
         for (OrderedProduct op: orderService.listAllOrderedProduct()) {
