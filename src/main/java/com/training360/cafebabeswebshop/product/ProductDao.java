@@ -19,8 +19,6 @@ import java.util.List;
 @Repository
 public class ProductDao {
 
-    private JdbcTemplate jdbcTemplate;
-
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER = ((resultSet, i) -> new Product(
             resultSet.getLong("id"),
             resultSet.getString("code"),
@@ -34,12 +32,19 @@ public class ProductDao {
                     resultSet.getString("category.name"),
                     resultSet.getLong("category.ordinal"))
     ));
-
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER2 = (resultSet, i) -> new Product(
             resultSet.getString("address"),
             resultSet.getString("name"),
             resultSet.getString("manufacture"),
             resultSet.getInt("price"));
+
+    private static final RowMapper<Product> PRODUCT_ROW_MAPPER3 = (resultSet, i) -> new Product(
+            resultSet.getString("address"),
+            resultSet.getString("name"),
+            resultSet.getString("manufacture"),
+            resultSet.getInt("price"),
+            resultSet.getString("product_status"));
+    private JdbcTemplate jdbcTemplate;
 
     public ProductDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -73,6 +78,7 @@ public class ProductDao {
                 start
         );
     }
+
     public List<Product> getProductsWithStartAndSizeAndCategory(int start, int size, Category category) {
         return jdbcTemplate.query("select products.id, code, address, products.name, manufacture, price, product_status, category_id, category.name, category.ordinal " +
                         "FROM products LEFT JOIN category ON category_id=category.id " +
@@ -124,9 +130,6 @@ public class ProductDao {
     }
 
     public List<Product> listAdviceProducts() {
-        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address from products " +
-                "join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id " +
-                "where (orders.order_status = 'ACTIVE' " +
-                "or orders.order_status = 'SHIPPED') order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER2);
+        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address, products.product_status from products join ordered_products on products.id = ordered_products.product_id join orders on ordered_products.order_id = orders.id where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER3);
     }
 }
