@@ -91,8 +91,12 @@ function showFeedbacks(jsonData) {
 
 var visibility;
 
+var star =' <font color="#c59b08">&starf;</font>';
+
   for (var i = 0; i < jsonData.length; i++) {
 //  Setting the visibility of the delet button
+star =' <font color="#c59b08">&starf;</font>';
+star = star.repeat(jsonData[i].rating);
   visibility = 'hidden';
   if(jsonData[i].user.id == userId){
   visibility = 'visible';
@@ -109,7 +113,7 @@ var visibility;
                               <button onclick="deleteFeedback(${jsonData[i].id})" id="deleteFeedback#"+${jsonData[i].id} class="btn btn-danger" ${visibility}><i class='fas fa-trash-alt'></i></button>
                               </div>
                                   <small class="text-muted">Dátum: ${jsonData[i].feedbackDate.replace('T', ' ')}</small>
-                                  <div class="mark">Értékelés: ${jsonData[i].rating}<span class="rating-input"><span
+                                  <div class="mark">Értékelés: ${star}<span class="rating-input"><span
                                           data-value="0"
                                           class="glyphicon glyphicon-star"></span><span
                                           data-value="1" class="glyphicon glyphicon-star"></span><span data-value="2"
@@ -122,10 +126,9 @@ var visibility;
                                   <p id = "fb">${jsonData[i].feedback}</p>
                                   </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
-                              </div>
-                              <br>
-                              <div class="person-text rel">
-                                  <a title="" href="#">${jsonData[i].user.name}</a>
+                              </div><br>
+                              <div class="person-text rel" >
+                                  <span class= "surf medium">${jsonData[i].user.name}</span>
                               </div>
                           </div>
                       </div>
@@ -139,6 +142,11 @@ var visibility;
   }
   }
 
+function repeat(starsNumber){
+
+for(var i = 0 ;i < starsNumber; i++){
+}
+}
 
 
 function handleAddToBasketButton() {
@@ -195,6 +203,7 @@ function addGoToBasketButton() {
 function showProduct(jsonData) {
   var code = document.getElementById('code');
   var name = document.getElementById('name');
+  name.className = "surf large";
   var manufacture = document.getElementById('manufacturer');
   var price = document.getElementById('price');
 
@@ -310,14 +319,15 @@ function showProductNotFound(jsonData) {
     var picture = document.getElementById("picture");
     var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
-                                <div>
-                                <div class="d-flex justify-content-center">
-                                <h2>Sajnos ilyen termékkel nem rendelkezünk...</h2>
-                                </div>
-                                <br><br><br><br>
-                                <div class="d-flex justify-content-center"><img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812"></div>
-                                <br>
-                                   </div>`
+                                <div class="errorStlye">
+                                    <div class="d-flex justify-content-center" >
+                                        <h1 class= "surf medium">Sajnos ilyen termékkel nem rendelkezünk...</h1>
+                                    </div>
+                                    <br>
+                                    <div class="d-flex justify-content-center">
+                                        <img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812">
+                                    </div>
+                                 </div>`
     productText.innerHTML = "";
     picture.innerHTML = "";
     feedbacks.innerHTML = "";
