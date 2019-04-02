@@ -15,9 +15,9 @@ public class FeedbackController {
 
     @PostMapping("/feedback")
     public ResultStatus giveAFeedback(@RequestBody Feedback feedback){
-//        if(feedback.getFeedback().matches("<[^>]*>")){
-//            return new ResultStatus(ResultStatusEnum.NOT_OK,"HTML kód nem megengedett");
-//        }
+        if(feedback.getFeedback().matches("<[^>]*>")){
+            return new ResultStatus(ResultStatusEnum.NOT_OK,"HTML kód nem megengedett");
+        }
         if(feedbackService.giveAFeedback(feedback)){
             return new ResultStatus(ResultStatusEnum.OK, "Az értékelést megkaptuk, köszönjük.");
         }
