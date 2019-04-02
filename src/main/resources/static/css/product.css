@@ -109,18 +109,3 @@
     font-family: 'surf';
     src: url(../font/tropical_asian.ttf);
 }
-
-.surf.small {
-font-family: 'surf';
-font-size: 102%;
-}
-
-.surf.medium {
-font-family: 'surf';
-font-size: 125%;
-}
-
-.surf.large {
-font-family: 'surf';
-font-size: 140%;
-}

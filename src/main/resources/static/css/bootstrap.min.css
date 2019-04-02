@@ -52,17 +52,17 @@ nav.slim{
 
 .surf.small {
 font-family: 'surf';
-font-size: 102%;
+font-size: 150%;
 }
 
 .surf.medium {
 font-family: 'surf';
-font-size: 200%;
+font-size: 250%;
 }
 
 .surf.large {
 font-family: 'surf';
-font-size: 275%;
+font-size: 350%;
 }
 
  /*# sourceMappingURL=bootstrap.min.css.map */

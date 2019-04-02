@@ -126,9 +126,9 @@ star = star.repeat(jsonData[i].rating);
                                   <p id = "fb">${jsonData[i].feedback}</p>
                                   </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
-                              </div>
-                              <div class="person-text rel">
-                                  <font size="6">${jsonData[i].user.name}</font>
+                              </div><br>
+                              <div class="person-text rel" >
+                                  <span class= "surf medium">${jsonData[i].user.name}</span>
                               </div>
                           </div>
                       </div>
@@ -203,6 +203,7 @@ function addGoToBasketButton() {
 function showProduct(jsonData) {
   var code = document.getElementById('code');
   var name = document.getElementById('name');
+  name.className = "surf large";
   var manufacture = document.getElementById('manufacturer');
   var price = document.getElementById('price');
 
