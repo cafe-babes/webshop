@@ -16,7 +16,7 @@ INSERT INTO orders(id, purchase_date, user_id, order_status) VALUES
 (1, '2019-03-20 20:20:20', 2, 'ACTIVE'),
 (2, '2019-04-20 20:20:20', 2, 'SHIPPED'),
 (3, '2019-01-20 20:20:20', 2, 'DELETED'),
-(4, '2019-02-20 20:20:20', 2, 'SHIPPED'),
+(4, '2019-02-20 20:20:20', 1, 'SHIPPED'),
 (5, '2019-01-20 20:20:20', 2, 'SHIPPED');
 
 INSERT INTO category(id, name, ordinal) values
@@ -52,7 +52,7 @@ INSERT INTO ordered_products(product_id, order_id, ordering_price, ordering_name
 (8,2,25800, 'Funny', 2),
 (7,1,128000, 'Longest', 1),
 (16,2,45000, 'JB-1', 1),
-(17,4,45000, 'Utility', 1),
+(8,4,25800, 'Funny', 1),
 (18,5,45000, 'Deserted', 1);
 
 INSERT INTO basket(id, user_id, product_id) VALUES

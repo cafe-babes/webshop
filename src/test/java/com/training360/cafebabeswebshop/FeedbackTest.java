@@ -157,6 +157,38 @@ public class FeedbackTest {
 
         assertTrue(expected);
     }
+    @Test
+    public void testUserCanModifyOnlyHisReview() {
 
+//      Given (Two feedback for a product)
+        User exampleUser = userService.getUserById(2);
+        User exampleUser2 = userService.getUserById(1);
+        Product exampleproduct = productService.getProductById(8);
+
+        feedbackService.giveAFeedback(new Feedback("Awesome!", 5, exampleUser,
+                exampleproduct));
+
+        feedbackService.giveAFeedback(new Feedback("Awesome2!", 5, exampleUser2,
+                exampleproduct));
+
+        List<Feedback> feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
+
+        assertEquals(feedbacks.size(), 2);
+        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
+        assertEquals(feedbacks.get(1).getFeedback(), "Awesome2!");
+
+//      When (exampleUser2 gives a feedback it will affect only his)
+
+        feedbackService.giveAFeedback(new Feedback("Awesome3!", 5, exampleUser2,
+                exampleproduct));
+
+        feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
+
+
+        assertEquals(feedbacks.size(), 2);
+        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
+        assertEquals(feedbacks.get(1).getFeedback(), "Awesome3!");
+
+    }
 
 }
