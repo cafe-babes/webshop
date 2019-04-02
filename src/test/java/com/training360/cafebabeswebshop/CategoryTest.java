@@ -63,6 +63,7 @@ public class CategoryTest {
         ResultStatus status3 = categoryController.createCategoryAndGetId(new Category(6, "insertNegative", -5));
         ResultStatus status4 = categoryController.createCategoryAndGetId(new Category(7, "pretty", 2));
         // Then
+        System.out.println(status1.getMessage() + status2.getMessage() + status3.getMessage() + status4.getMessage());
         assertEquals("Név megadása kötelező", status1.getMessage());
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status2.getMessage());
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status3.getMessage());
