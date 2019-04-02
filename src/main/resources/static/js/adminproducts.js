@@ -14,14 +14,12 @@ function fetchProducts() {
         })
         .then(function (jsonData) {
             showTable(jsonData);
-            console.log(jsonData);
     });
 }
 
 function fetchCategories(){
     fetch("/categories")
     .then(function(response){
-        console.log(response);
         return response.json();
     })
     .then(function(jsonData){
