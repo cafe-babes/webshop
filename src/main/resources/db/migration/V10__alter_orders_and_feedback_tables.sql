@@ -2,8 +2,7 @@ ALTER TABLE orders
 ADD delivery_id BIGINT,
 ADD constraint fk_orders_delivery foreign key (delivery_id) REFERENCES delivery(id);
 
-INSERT INTO delivery (address, user_id) values ('Kiszállítás az üzletbe',4);
-UPDATE orders set delivery_id = 1;
+INSERT INTO delivery (address, user_id) values ('Kiszállítás az üzletbe',NULL);
 
 
 ALTER TABLE feedback
