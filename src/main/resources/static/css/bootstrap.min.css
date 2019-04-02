@@ -45,4 +45,14 @@ nav.slim{
   padding-top:0px !important;
 }
 
+@font-face {
+    font-family: 'surf';
+    src: url(../font/tropical_asian.ttf);
+}
+
+* {
+font-family: 'surf';
+font-size: 110%;
+}
+
  /*# sourceMappingURL=bootstrap.min.css.map */

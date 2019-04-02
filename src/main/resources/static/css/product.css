@@ -105,13 +105,4 @@
     content: counter(rateme) '/5';
 }
 
-@font-face {
-    font-family: 'surf';
-    src: url(../font/tropical_asian.ttf);
-}
-
-* {
-font-family: 'surf';
-font-size: 110%;
-}
 
