@@ -7,23 +7,13 @@ function fetchMyOrders(){
         return response.json();
     })
     .then(function(jsonData){
-        var valami = [];
-        for (const key in jsonData) {
-            if (jsonData.hasOwnProperty(key)) {
-                const element = jsonData[key];
-                valami.push(getDeliveryById(element.deliveryId));
-            }
-        }
-        return [jsonData, valami];
-    })
-    .then(function(response){
-        showMyOrders(response[0], response[1])
+        showMyOrders(jsonData)
     });
 }
 
-function showMyOrders(jsonData, address){
+function showMyOrders(jsonData){
     console.log(jsonData);
-    console.log(address);
+
     var container = document.querySelector("#container");
     container.innerHTML = "";
     var table = document.createElement("table");
@@ -59,6 +49,7 @@ function showMyOrders(jsonData, address){
             trHead.appendChild(thDelivery);
 
             for(var i = 0; i < jsonData.length; i++){
+                for(var j = 0; j < jsonData[i].orderedProducts.length; j++){
                    var tbody = document.createElement("tbody");
                    table.appendChild(tbody);
 
@@ -71,29 +62,23 @@ function showMyOrders(jsonData, address){
                     tr.appendChild(dateTd);
 
                     var nameTd = document.createElement("td");
-                    nameTd.innerHTML = jsonData[i].orderedProducts[i].orderingName;
+                    //if (jsonData[i].orderedProducts[i].orderingName){
+                    nameTd.innerHTML = jsonData[i].orderedProducts[j].orderingName;
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
+                   // }
 
                     var pieceTd = document.createElement("td");
-                    pieceTd.innerHTML = jsonData[i].orderedProducts[i].pieces;
+                    pieceTd.innerHTML = jsonData[i].orderedProducts[j].pieces;
                     tr.appendChild(pieceTd);
 
                     var deliveryTd = document.createElement("td");
-                    console.log(address[i]);
-                    deliveryTd.innerHTML = address[i];
+                    deliveryTd.innerHTML = jsonData[i].delivery.deliveryAddress;
                     tr.appendChild(deliveryTd);
 
                     tbody.appendChild(tr);
                 }
             }
+            }
         }
     }
-
-
-function getDeliveryById(deliveryId){
-    console.log(deliveryId);
-    return fetch('/delivery/' + deliveryId)
-        .then(res => res.json())
-        
-}

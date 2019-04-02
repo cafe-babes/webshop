@@ -14,6 +14,9 @@ public class Product {
     private String productStatus;
     private Category category;
 
+    public Product() {
+    }
+
     public Product(long id, String code, String address, String name, String manufacture, int price, String productStatus, Category category) {
         this.id = id;
         this.code = code;
@@ -30,6 +33,14 @@ public class Product {
         this.name = name;
         this.manufacture = manufacture;
         this.price = price;
+    }
+
+    public Product(String address, String name, String manufacture, int price, String productStatus) {
+        this.address = address;
+        this.name = name;
+        this.manufacture = manufacture;
+        this.price = price;
+        this.productStatus = productStatus;
     }
 
     public long getId() {
@@ -94,5 +105,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", productStatus='" + productStatus + '\'' +
+                '}';
     }
 }

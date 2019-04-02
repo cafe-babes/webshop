@@ -23,8 +23,8 @@ public class OrderDao {
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
-            rs.getString("order_status")
-           // new Delivery(rs.getLong("delivery_id"),null, 0)
+            rs.getString("order_status"),
+            new Delivery(rs.getLong("delivery_id"))
     );
     private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
             rs.getLong("id"),
@@ -35,6 +35,12 @@ public class OrderDao {
             rs.getInt("pieces")
     );
 
+    private static final RowMapper<Delivery> DELIVERY_ROW_MAPPER = (rs, rowNum) -> new Delivery(
+            rs.getLong("id"),
+            rs.getString("address"),
+            rs.getLong("user_id")
+    );
+
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -43,11 +49,11 @@ public class OrderDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, delivery_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?), ?)",
+                            "values (?,(SELECT id FROM users WHERE user_name = ?), (SELECT id FROM delivery WHERE address = ? LIMIT 1))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-           ps.setLong(3, order.getDelivery().getDeliveryId());
+            ps.setString(3, order.getDelivery().getDeliveryAddress());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -116,4 +122,10 @@ public class OrderDao {
     public void updateOrderedProductPiece(OrderedProduct op){
         jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
+
+    public Delivery getDeliveryById(Delivery delivery){
+        System.out.println(delivery.getDeliveryId());
+        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
+    }
+
 }

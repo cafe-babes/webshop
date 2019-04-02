@@ -30,17 +30,6 @@ public class OrderService {
     private DeliveryDao deliveryDao;
 
 
-    public List<Order> listMyOrders(Authentication authentication){
-        if (authentication==null)
-            return null;
-        List<Order> orders = orderDao.listMyOrders(authentication.getName());
-        for (Order o: orders) {
-            if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
-               o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
-            }
-        }
-        return orders;
-    }
 
     public List<Order> listAllOrders(){
         return orderDao.listAllOrders();
@@ -58,9 +47,10 @@ public class OrderService {
         if (authentication==null)
             return 0;
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        Delivery delivery1 = checkIfNewDeliveryAddress(authentication, delivery);
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
-                -1, -1, "ACTIVE", delivery1);
+                -1, -1, "ACTIVE");
+        o.setDelivery(checkIfNewDeliveryAddress(authentication,delivery));
+        System.out.println(o.getDelivery());
         if (basketSize > 0) {
             long id = orderDao.saveOrderAndGetId(authentication.getName(), o);
             o.setId(id);
@@ -70,6 +60,22 @@ public class OrderService {
         } else {
             throw new IllegalStateException("The basket is empty");
         }
+    }
+
+    public List<Order> listMyOrders(Authentication authentication){
+        if (authentication==null)
+            return null;
+        List<Order> orders = orderDao.listMyOrders(authentication.getName());
+        for (Order o: orders) {
+            if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
+               o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
+               o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+               //break;
+            } else {
+                o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+            }
+        }
+        return orders;
     }
 
     public void deleteOneItemFromOrder(long orderId, String address) throws DataAccessException {
@@ -90,7 +96,6 @@ public class OrderService {
     public void updateOrderedProductPiece(OrderedProduct op){
         orderDao.updateOrderedProductPiece(op);
     }
-
 
     private void addOrderedProducts(Authentication authentication,Order order){
         for (BasketItem bi: basketDao.getBasketItems(authentication.getName())) {
