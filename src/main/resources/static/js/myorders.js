@@ -7,13 +7,23 @@ function fetchMyOrders(){
         return response.json();
     })
     .then(function(jsonData){
-        console.log("fetch ok");
-        console.log(jsonData);
-        showMyOrders(jsonData);
+        var valami = [];
+        for (const key in jsonData) {
+            if (jsonData.hasOwnProperty(key)) {
+                const element = jsonData[key];
+                valami.push(getDeliveryById(element.deliveryId));
+            }
+        }
+        return [jsonData, valami];
+    })
+    .then(function(response){
+        showMyOrders(response[0], response[1])
     });
 }
 
-function showMyOrders(jsonData){
+function showMyOrders(jsonData, address){
+    console.log(jsonData);
+    console.log(address);
     var container = document.querySelector("#container");
     container.innerHTML = "";
     var table = document.createElement("table");
@@ -48,8 +58,7 @@ function showMyOrders(jsonData){
             thDelivery.innerHTML = "Szállítási cím";
             trHead.appendChild(thDelivery);
 
-            for(var prop in jsonData[obj]){
-                if(jsonData[obj].hasOwnProperty(prop)){
+            for(var i = 0; i < jsonData.length; i++){
                    var tbody = document.createElement("tbody");
                    table.appendChild(tbody);
 
@@ -57,25 +66,22 @@ function showMyOrders(jsonData){
                     tbody.appendChild(tr);
 
                     var dateTd = document.createElement("td");
-                    dateTd.innerHTML = obj;
+                    dateTd.innerHTML = jsonData[i].purchaseDate;
                     dateTd.setAttribute('id', 'date');
                     tr.appendChild(dateTd);
 
-
-                    var names = jsonData[obj][prop];
-                    console.log(names);
                     var nameTd = document.createElement("td");
-                    nameTd.innerHTML = jsonData[obj][prop].orderingName;
+                    nameTd.innerHTML = jsonData[i].orderedProducts[i].orderingName;
                     nameTd.setAttribute('id', 'name');
                     tr.appendChild(nameTd);
 
                     var pieceTd = document.createElement("td");
-                    pieceTd.innerHTML = jsonData[obj][prop].pieces;
+                    pieceTd.innerHTML = jsonData[i].orderedProducts[i].pieces;
                     tr.appendChild(pieceTd);
 
                     var deliveryTd = document.createElement("td");
-                    getDeliveryById(jsonData[obj][prop].deliveryId);
-                    deliveryTd.innerHTML = "valami";
+                    console.log(address[i]);
+                    deliveryTd.innerHTML = address[i];
                     tr.appendChild(deliveryTd);
 
                     tbody.appendChild(tr);
@@ -84,14 +90,10 @@ function showMyOrders(jsonData){
         }
     }
 
-}
 
 function getDeliveryById(deliveryId){
     console.log(deliveryId);
-    fetch('/delivery/' + deliveryId)
+    return fetch('/delivery/' + deliveryId)
         .then(res => res.json())
-        .then(data => {
-            console.log(data);
-           //return data.deliveryAddress;
-        })
+        
 }

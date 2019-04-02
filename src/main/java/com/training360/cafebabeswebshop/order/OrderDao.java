@@ -1,6 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
-import com.training360.cafebabeswebshop.product.Product;
+import com.training360.cafebabeswebshop.delivery.Delivery;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class OrderDao {
@@ -24,8 +23,8 @@ public class OrderDao {
             rs.getLong("user_id"),
             rs.getLong("total"),
             rs.getLong("sum_quantity"),
-            rs.getString("order_status"),
-            rs.getLong("delivery_id")
+            rs.getString("order_status")
+           // new Delivery(rs.getLong("delivery_id"),null, 0)
     );
     private static final RowMapper<OrderedProduct> ORDERED_PRODUCT_ROW_MAPPER = (rs, rowNum) -> new OrderedProduct(
             rs.getLong("id"),
@@ -35,7 +34,6 @@ public class OrderDao {
             rs.getString("ordering_name"),
             rs.getInt("pieces")
     );
-
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -49,7 +47,7 @@ public class OrderDao {
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
-           ps.setLong(3, order.getDeliveryId());
+           ps.setLong(3, order.getDelivery().getDeliveryId());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -64,7 +62,7 @@ public class OrderDao {
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("SELECT orders.id, purchase_date, user_id, sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, " +
                 "order_status, delivery_id FROM orders LEFT JOIN ordered_products ON orders.id = order_id " +
-                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) order by purchase_date desc"),
+                "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
 
@@ -118,5 +116,4 @@ public class OrderDao {
     public void updateOrderedProductPiece(OrderedProduct op){
         jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
-
 }

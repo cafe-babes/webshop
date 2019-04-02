@@ -3,13 +3,15 @@ package com.training360.cafebabeswebshop.basket;
 public class BasketItem {
     private long productId;
     private String name;
+    private String address;
     private int price;
     private int pieces;
+    private String username;
 
-
-    public BasketItem(long productId, String name, int price, int pieces) {
+    public BasketItem(long productId, String name, String address, int price, int pieces) {
         this.productId = productId;
         this.name = name;
+        this.address = address;
         this.price = price;
         this.pieces = pieces;
     }
@@ -44,5 +46,21 @@ public class BasketItem {
 
     public void setPieces(int pieces) {
         this.pieces = pieces;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -38,9 +38,12 @@ public class CategoryTest {
         // Given
         List<Category> categoryList = categoryController.listCategories();
         // When
-//        ResultStatus status = categoryController.createCategoryAndGetId(null);
+        ResultStatus status1 = categoryController.createCategoryAndGetId(new Category(4, "insertToEnd", 4));
+        ResultStatus status2 = categoryController.createCategoryAndGetId(new Category(5, "insertFirst", 1));
+        ResultStatus status3 = categoryController.createCategoryAndGetId(new Category(6, "insertZero", 0));
+        ResultStatus status4 = categoryController.createCategoryAndGetId(new Category(7, "insertToSecond", 2));
         List<Category> categoryListNew = categoryController.listCategories();
         // Then
-//        assertEquals(categoryList.size()+1, categoryListNew.size());
+        assertEquals(categoryList.size()+4, categoryListNew.size());
     }
 }

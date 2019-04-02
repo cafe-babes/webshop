@@ -1,6 +1,7 @@
 delete from feedback;
 delete from ordered_products;
 delete from orders;
+delete from delivery;
 delete from basket;
 delete from users;
 delete from products;
