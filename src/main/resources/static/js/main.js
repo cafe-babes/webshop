@@ -92,6 +92,22 @@ function fetchAdvice(){
     })
 }
 
+function fetchImage(productId) {
+    var productImage = document.querySelector(`#img-${productId}`);
+
+    fetch('/image/' + productId)
+    .then(function(response) {
+      if(response.ok) {
+        return response.blob();
+      }
+      productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
+    })
+    .then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      productImage.src = objectURL;
+    });
+}
+
 function getButtons(size, category) {
     var buttons = document.querySelector('#page-change');
     var request = {
@@ -134,9 +150,9 @@ function listProducts(jsonData) {
     for (var i = 0; i < jsonData.length; i++) {
         container.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 box-shadow">
-            <!--<img class="card-img-top"
-                src="https://cdn10.bigcommerce.com/s-baaesh4/products/267/images/1427/blade-channels-deck__40048.1542307202.400.400.jpg?c=2"
-                alt="surfboard image">-->
+            <img class="card-img-top"
+                id='img-${jsonData[i].id}'
+                alt="surfboard image">
             <div class="card-body">
                 <p class="card-text">${jsonData[i].name}</p>
                 <p class="card-text">${jsonData[i].manufacture}</p>
@@ -152,6 +168,9 @@ function listProducts(jsonData) {
             </div>
         </div>
         </div>`;
+    }
+    for (var i = 0; i < jsonData.length; i++) {
+        fetchImage(jsonData[i].id);
     }
 }
 
