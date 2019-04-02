@@ -127,9 +127,8 @@ star = star.repeat(jsonData[i].rating);
                                   </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                               </div>
-                              <br>
                               <div class="person-text rel">
-                                  <a title="" href="#">${jsonData[i].user.name}</a>
+                                  <font size="6">${jsonData[i].user.name}</font>
                               </div>
                           </div>
                       </div>
@@ -321,7 +320,7 @@ function showProductNotFound(jsonData) {
     pageNotFound.innerHTML = ` <br>
                                 <div class="errorStlye">
                                     <div class="d-flex justify-content-center" >
-                                        <h1 >Sajnos ilyen termékkel nem rendelkezünk...</h1>
+                                        <h1 class= "surf medium">Sajnos ilyen termékkel nem rendelkezünk...</h1>
                                     </div>
                                     <br>
                                     <div class="d-flex justify-content-center">
