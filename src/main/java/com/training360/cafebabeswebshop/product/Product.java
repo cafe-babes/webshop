@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop.product;
 
 
 import com.training360.cafebabeswebshop.category.Category;
+import com.training360.cafebabeswebshop.image.Image;
 
 public class Product {
 
@@ -88,4 +89,5 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
 }

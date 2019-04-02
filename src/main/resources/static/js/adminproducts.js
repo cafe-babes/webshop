@@ -102,6 +102,14 @@ function fetchCategories(){
         saveButton.style.display = 'none';
         editButtonTd.appendChild(saveButton);
 
+        var editImageButtonTd = document.createElement("td");
+        var editImageButton = document.createElement("button");
+        var editImageButtonId = 'editimagebutton' + i;
+        editImageButton.setAttribute('id', editImageButtonId);
+        editImageButton.setAttribute('class', 'btn');
+        editImageButton.setAttribute('onclick', `editImageTds(${jsonData[i].id})`);
+        editImageButtonTd.appendChild(editImageButton);
+
         var deleteButtonTd = document.createElement("td");
         var deleteButton = document.createElement("button");
         var deleteButtonId = 'deletebutton' + i;
@@ -117,6 +125,7 @@ function fetchCategories(){
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
         tr.appendChild(editButtonTd);
+        tr.appendChild(editImageButtonTd);
         tr.appendChild(deleteButtonTd);
 
         table.appendChild(tr);
@@ -156,6 +165,11 @@ function fetchCategories(){
         save.style.display = 'inline';
         showCategories(num, selectedCategory);
     }
+
+
+     function editImageTds(productId){
+       location.replace("/upload.html/?productId=" + productId );
+        }
 
 
 function showCategories(num, category){
