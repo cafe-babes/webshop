@@ -12,6 +12,10 @@ public class Delivery {
         this.userId = userId;
     }
 
+    public Delivery(long deliveryId) {
+        this.deliveryId = deliveryId;
+    }
+
     public long getDeliveryId() {
         return deliveryId;
     }
@@ -34,5 +38,9 @@ public class Delivery {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String toString(){
+        return deliveryId + " " + deliveryAddress + " " + userId;
     }
 }

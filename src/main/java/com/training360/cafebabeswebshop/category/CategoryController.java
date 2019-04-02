@@ -34,13 +34,11 @@ public class CategoryController {
         try {
             long response = categoryService.createCategoryAndGetId(category);
             if (response==-1)
-                return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
-            if(response == -2)
                 return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
             return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva!");
         } catch (DataAccessException sql) {
             sql.printStackTrace();
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Adatbázis ütközés történt!");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
         }
     }
 
@@ -75,10 +73,5 @@ public class CategoryController {
             System.out.println(categoryValidator.isValidOrder(category.getOrdinal()));
             return new ResultStatus(ResultStatusEnum.NOT_OK, "az adott sorszámnak a meglévők között kell lennie!");
         }
-    }
-
-    @PostMapping("/file")
-    public void writeBlob(@RequestParam String filename) {
-        categoryService.writeBlob(new Image(filename));
     }
 }

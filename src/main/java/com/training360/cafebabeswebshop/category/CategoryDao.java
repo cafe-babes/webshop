@@ -81,8 +81,4 @@ public class CategoryDao {
                 category.getOrdinal(),
                 id);
     }
-
-    public void writeBlob(Image image) {
-        jdbcTemplate.update("INSERT INTO image(file) VALUES (?)", image.getBinary());
-    }
 }
