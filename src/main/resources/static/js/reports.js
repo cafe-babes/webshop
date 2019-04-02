@@ -182,8 +182,10 @@ function showIncomeTable(jsonData){
             "series": [
                 {
                     "values" : [
+                        0,
                         jsonData[0].total,
                         jsonData[1].total,
+                        jsonData[2].total
 //                        jsonData[2].total,
 //                        jsonData[3].total,
 //                        jsonData[4].total,
@@ -196,7 +198,7 @@ function showIncomeTable(jsonData){
 //                        jsonData[11].total,
 //                        jsonData[12].total
                         ],
-                    "background-color": "#787878"
+                    "background-color": "#90A23B"
                 },
                 {
 //                    "values": [
