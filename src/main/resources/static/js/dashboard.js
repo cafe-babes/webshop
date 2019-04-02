@@ -16,7 +16,6 @@ function fetchDashboard(){
         showDashboard(jsonData);
         myJsonData = jsonData;
         console.log(myJsonData);
-//        zingchart.render({jsonData});
     });
 }
 
@@ -129,9 +128,6 @@ function showDashboard(jsonData){
     	},
     });
     }
-
-console.log("kukucs");
-        console.log(zingchart.render);
 
 
 

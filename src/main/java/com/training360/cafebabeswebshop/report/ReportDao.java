@@ -33,10 +33,9 @@ public class ReportDao {
 
     public List<OrderReport> getMonthlyIncomeOfOrders() {
         return jdbcTemplate.query(
-                "SELECT  year(purchase_date) as year, month(purchase_date) as month, order_status, sum(pieces*ordering_price) AS total, count(*) AS count\n" +
-                        "FROM orders JOIN ordered_products ON orders.id = order_id WHERE order_status <> 'DELETED' \n" +
-                        "GROUP BY YEAR(purchase_date), month(purchase_date), order_status  \n" +
-                        "ORDER BY orders.order_status, purchase_date  ASC", ORDER_ROW_MAPPER);
+                        "SELECT year(purchase_date) as year, month(purchase_date) as month, order_status, sum(pieces*ordering_price) AS total, count(*) AS count " +
+                        "FROM orders JOIN ordered_products ON orders.id = order_id WHERE order_status <> 'DELETED' " +
+                        "GROUP BY year(purchase_date), month(purchase_date), order_status ORDER BY orders.order_status, year, month ASC", ORDER_ROW_MAPPER);
     }
 
     public List<ShippedProductReport> getShippedProducts() {
