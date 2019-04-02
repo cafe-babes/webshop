@@ -44,6 +44,6 @@ public class CategoryTest {
         ResultStatus status4 = categoryController.createCategoryAndGetId(new Category(7, "insertToSecond", 2));
         List<Category> categoryListNew = categoryController.listCategories();
         // Then
-        assertEquals(categoryList.size()+1, categoryListNew.size());
+        assertEquals(categoryList.size()+4, categoryListNew.size());
     }
 }

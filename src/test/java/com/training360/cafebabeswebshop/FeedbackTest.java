@@ -3,6 +3,7 @@ package com.training360.cafebabeswebshop;
 import com.training360.cafebabeswebshop.feedback.Feedback;
 import com.training360.cafebabeswebshop.feedback.FeedbackController;
 import com.training360.cafebabeswebshop.feedback.FeedbackService;
+import com.training360.cafebabeswebshop.feedback.ResultStatus;
 import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductService;
 import com.training360.cafebabeswebshop.user.User;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -135,6 +137,25 @@ public class FeedbackTest {
         assertEquals(feedbacks.get(0).getFeedback(), "Awesome #2!");
         assertEquals(feedbacks.get(0).getRating(), 5);
 
+    }
+
+    @Test
+    public void testGivingHTMLCodeAsFeedbackIsNotAccepted() {
+
+
+//      Given (One User & OneProduct)
+        User exampleUser = userService.getUserById(2);
+        Product exampleproduct = productService.getProductById(8);
+
+
+//      When (User gives a feedback that contains html code)
+        ResultStatus rs = feedbackController.giveAFeedback(new Feedback("Awesome shop! <span style=\"color: #3333\">Action</span>!", 4, exampleUser,
+                exampleproduct));
+
+//      Then (An error message appears)
+        boolean expected = rs.getMessage().equals("HTML kód nem megengedett");
+
+        assertTrue(expected);
     }
 
 
