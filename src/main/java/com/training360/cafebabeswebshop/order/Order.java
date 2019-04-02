@@ -33,8 +33,8 @@ public class Order {
         this.orderStatus = OrderStatus.valueOf(status);
     }
 
-    public Order(long id, long userId, long total, long sumQuantity, String orderStatus, Delivery delivery) {
-        this(id, userId, total, sumQuantity, orderStatus);
+    public Order(long id, LocalDateTime purchaseDate, long userId, long total, long sumQuantity, String orderStatus, Delivery delivery) {
+        this(id, purchaseDate, userId, total, sumQuantity, orderStatus);
         this.delivery = delivery;
     }
 

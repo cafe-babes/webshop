@@ -16,7 +16,6 @@ function showdeliveries(jsonData){
     var deliveryDiv = document.querySelector('#deliveryDiv');
     for (var i = 0; i < jsonData.length; i ++){
         var div = document.createElement('div');
-        div["raw-data"] = jsonData[i]
         div.setAttribute('class', 'delivery-box');
         div.setAttribute('id', `div${i}`);
         div.innerHTML = `<p>${jsonData[i].deliveryAddress}</p><br><input type='radio' id="input${i}" class='radio-input' name="delivery" >`
@@ -53,8 +52,9 @@ function addToOrders(address){
              return response.json();
             }).then(function (jsonData) {
             console.log(jsonData.status);
+            console.log(jsonData.message);
             if (jsonData.status == 'OK'){
-           // window.location.href = "/succesfulorder.html";
+            window.location.href = "/succesfulorder.html";
             }
          })
 }
@@ -65,10 +65,11 @@ function checkAddress(){
     for (var i = 0; i < deliveryDiv.children.length; i++){
         if (deliveryDiv.children[i].children[2].checked == true) {
             addToOrders(deliveryDiv.children[i].children[0].innerHTML);
-            } else if (newAddress.value){
-            addToOrders(newAddress.value);
+            }
         }
-    }
+    if (newAddress.value) {
+        addToOrders(newAddress.value);
+}
 }
 
 
@@ -77,4 +78,4 @@ function checkoutRadios(){
      for (var i = 0; i < deliveryDiv.children.length; i++) {
          deliveryDiv.children[i].children[2].checked = false;
          }
-}
+        }
