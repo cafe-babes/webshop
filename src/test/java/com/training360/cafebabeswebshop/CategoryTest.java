@@ -67,6 +67,5 @@ public class CategoryTest {
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status2.getMessage());
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status3.getMessage());
         assertEquals("Ilyen kategória már létezik, adjon meg egyedi nevet", status4.getMessage());
-
     }
 }
