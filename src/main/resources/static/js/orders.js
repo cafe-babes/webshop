@@ -67,6 +67,12 @@ function showTable(jsonData) {
         orderStatusTd.setAttribute('id', orderStatusTdId);
         tr.appendChild(orderStatusTd);
 
+        var deliveryAddressTd = document.createElement("td");
+        deliveryAddressTd.innerHTML = jsonData[i].delivery.deliveryAddress;
+        var deliveryAddressTdId = 'delTd' + i;
+        deliveryAddressTd.setAttribute('id', deliveryAddressTdId);
+        tr.appendChild(deliveryAddressTd);
+
         var editButtonTd = document.createElement("td");
         var editButton = document.createElement("button");
         var editButtonId = 'editbutton' + i;

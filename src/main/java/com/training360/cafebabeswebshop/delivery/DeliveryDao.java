@@ -51,8 +51,7 @@ public class DeliveryDao {
     }
 
     public List<Delivery> getDeliveriesByUserId(Authentication authentication){
-        return jdbcTemplate.query("select id, address, user_id from delivery where user_id = (SELECT id FROM users WHERE user_name = ?)" +
-                        "and address not like '%Kiszállítás az üzletbe%'",
+        return jdbcTemplate.query("select id, address, user_id from delivery where user_id = (SELECT id FROM users WHERE user_name = ?)",
                 DELIVERY_ROW_MAPPER, authentication.getName());
     }
 }

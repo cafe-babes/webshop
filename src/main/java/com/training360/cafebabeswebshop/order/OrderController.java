@@ -46,7 +46,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public List<Order> listAllOrders() {
+    public List<Order> listAllOrders(Authentication authentication) {
         return orderService.listAllOrders();
     }
 

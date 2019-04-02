@@ -31,7 +31,12 @@ public class OrderService {
 
 
 
-    public List<Order> listAllOrders(){
+    public List<Order> listAllOrders(Authentication authentication){
+        for (Order o: orderDao.listAllOrders()) {
+            o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
+            System.out.println(o.getDelivery());
+            o.setDelivery(checkIfNewDeliveryAddress(authentication, o.getDelivery()));
+        }
         return orderDao.listAllOrders();
     }
 
