@@ -106,10 +106,10 @@ function showTable(jsonData) {
         shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
         shippedButtonTd.appendChild(shippedButton);
 
-        editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
-        saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
-        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
-        shippedButton.innerHTML = `<i class="fas fa-truck"></i>Kiszállítva`
+        editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
+        saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
+        shippedButton.innerHTML = `<i class="fas fa-truck"></i> Kiszállítva`
 
         tr.appendChild(editButtonTd);
         tr.appendChild(deleteButtonTd);
