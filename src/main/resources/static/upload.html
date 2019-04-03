@@ -46,21 +46,26 @@
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <form id="uploadForm">
-                <div class="custom-file">
-                    <label class="custom-file-label" for="fileToUpload">Képkeresés...</label>
-                    <input type="file" class="custom-file-input" accept=".png, .jpeg, .gif" id="fileToUpload"
-                           name="file">
+                <div class="form-group">
+                    <div class="input-group input-file" name="Fichier1">
+                        <label for="fileToUpload" class="label__first">Tallózás...</label>
+                        <input type="file" class="form-control hidden-input" id="fileToUpload" placeholder='...'/>
+                        <span class="input-group-btn">
+
+
+                    </span>
+                    </div>
                 </div>
-                <br><br>
-                <div>
+                <!-- COMPONENT END -->
+                <div class="form-group">
                     <input type="button" class="btn btn-success align-middle" id="uploadButton" value="Feltöltés">
+                    <button type="reset" class="btn btn-warning">Eldobás</button>
                 </div>
             </form>
-
         </div>
-
     </div>
 </div>
+
 
 <script src="js/upload.js"></script>
 <script src="js/navbarLoader.js"></script>

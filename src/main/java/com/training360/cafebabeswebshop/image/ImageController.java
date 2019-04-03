@@ -52,7 +52,7 @@ public class ImageController {
                     .contentType(image.getMediaType())
                     .body(image.getFileBytes());
         } catch (NullPointerException e) {
-            return null;
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 }

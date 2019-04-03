@@ -20,7 +20,7 @@ public class ImageDao {
     }
 
     public Image getImage(long ProductId) throws EmptyResultDataAccessException {
-        Image image = jdbcTemplate.queryForObject("select id, image_file, file_type, file_name, product_id from images where product_id = ?", new ImageRowMapper(), ProductId);
+        Image image = jdbcTemplate.queryForObject("select id, image_file, file_type, file_name, product_id from images where product_id = ? LIMIT 1", new ImageRowMapper(), ProductId);
         return image;
     }
 
