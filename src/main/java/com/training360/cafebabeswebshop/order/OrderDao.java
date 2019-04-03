@@ -70,17 +70,16 @@ public class OrderDao {
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
                         "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
-                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
+                        "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
                 "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id order by purchase_date desc"),
                 ORDER_ROW_MAPPER, username);
     }
 
     public List<Order> listAllOrders() {
-        return jdbcTemplate.query("SELECT orders.id, purchase_date, orders.user_id," +
-                        " sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity," +
-                        " order_status, delivery_id, delivery.address FROM orders JOIN ordered_products ON orders.id = order_id " +
-                        "LEFT JOIN delivery ON orders.user_id = delivery.user_id GROUP BY order_id, purchase_date, orders.user_id, " +
-                        "delivery_id, order_status, delivery.address order by purchase_date desc",
+        return jdbcTemplate.query("SELECT orders.id, purchase_date, orders.user_id, sum(pieces*ordering_price) AS total, " +
+                        "sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address FROM orders " +
+                        "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
+                        "GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address order by purchase_date desc",
                 ORDER_ROW_MAPPER);
     }
 

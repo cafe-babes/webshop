@@ -2,12 +2,13 @@ fetchBasket();
 
 function fetchImage(productId) {
     var productImage = document.getElementById(`img-${productId}`);
+    console.log(productImage);
 
     fetch('/image/' + productId)
     .then(function(response) {
-      if(response.ok) {
-        return response.blob();
-      }
+          if(response.status == 200) {
+            return response.blob();
+          }
       productImage.src = 'https://pbs.twimg.com/profile_images/758084549821730820/_HYHtD8F_400x400.jpg';
     })
     .then(function(myBlob) {
@@ -51,14 +52,14 @@ function showBasket(jsonData){
                 <br>
             </div>
             <div>
-            <img class="card-img-top basketImage" id='img-${jsonData[i].id}' alt="surfboard image">
+            <img class="card-img-top basketImage" id='img-${jsonData[i].productId}' alt="surfboard image">
             </div>
             <hr>
             </div>
 
             `;
         sum += jsonData[i].price * jsonData[i].pieces;
-        fetchImage(jsonData[i].id);
+        fetchImage(jsonData[i].productId);
     }
     
     document.getElementById("total-price").innerHTML = sum;

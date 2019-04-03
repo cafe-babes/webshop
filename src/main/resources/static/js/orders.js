@@ -66,7 +66,7 @@ function showTable(jsonData) {
         var orderStatusTdId = 'manTd' + i;
         orderStatusTd.setAttribute('id', orderStatusTdId);
         tr.appendChild(orderStatusTd);
-
+console.log(jsonData[i].delivery);
         var deliveryAddressTd = document.createElement("td");
         deliveryAddressTd.innerHTML = jsonData[i].delivery.deliveryAddress;
         var deliveryAddressTdId = 'delTd' + i;
