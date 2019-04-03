@@ -47,19 +47,19 @@ function fetchCategories(){
         var codeTdId = 'codeTd' + i;
         codeTd.setAttribute('id', codeTdId);
         tr.appendChild(codeTd);
-       
-        var addressTd = document.createElement("td");
-        addressTd.innerHTML = jsonData[i].address;
-        var addressTdId = 'addressTd' + i;
-        addressTd.setAttribute('id', addressTdId);
-        tr.appendChild(addressTd);
-       
+        
         var nameTd = document.createElement("td");
         nameTd.innerHTML = jsonData[i].name;
         var nameTdId = 'nameTd' + i;
         nameTd.setAttribute('id', nameTdId);
         tr.appendChild(nameTd);
 
+        var addressTd = document.createElement("td");
+        addressTd.innerHTML = jsonData[i].address;
+        var addressTdId = 'addressTd' + i;
+        addressTd.setAttribute('id', addressTdId);
+        tr.appendChild(addressTd);
+       
         var manufactureTd = document.createElement("td");
         manufactureTd.innerHTML = jsonData[i].manufacture;
         var manTdId = 'manTd' + i;
@@ -121,6 +121,7 @@ function fetchCategories(){
         editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
+        editImageButton.innerHTML = `<i class="far fa-images"></i>Kép hozzáadása`
 
         tr.appendChild(editButtonTd);
         tr.appendChild(editImageButtonTd);
@@ -136,23 +137,23 @@ function fetchCategories(){
 
     function editTds(num){
         var code = document.getElementById(`codeTd${num}`);
-        var address = document.getElementById(`addressTd${num}`);
         var name = document.getElementById(`nameTd${num}`);
+        var address = document.getElementById(`addressTd${num}`);
         var manu = document.getElementById(`manTd${num}`);
         var price = document.getElementById(`priceTd${num}`);
         var category = document.getElementById(`categoryTd${num}`);
         selectedCategory = category.innerHTML;
 
         var codeData = code.innerHTML;
-        var addressData = address.innerHTML;
         var nameData = name.innerHTML;
+        var addressData = address.innerHTML;
         var manuData = manu.innerHTML;
         var priceData = price.innerHTML;
         var categoryData = category.innerHTML;
 
         code.innerHTML = `<input id="codeInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value = '${codeData}' required>`
-        address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}' required>`
         name.innerHTML = `<input id="nameInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${nameData}' required>`
+        address.innerHTML = `<input id="addressInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${addressData}' required>`
         manu.innerHTML = `<input id="manInput${num}" type='text' minLength='1' maxLength='255' class='input-box'  value='${manuData}' required>`
         price.innerHTML = `<input id="priceInput${num}" type='number' class='input-box' min='0' max='2000000' step= '1' value='${priceData}' required>`
         category.innerHTML = `<select id="selectInput${num}" class='form-control' value='${categoryData}'  required>`
@@ -186,8 +187,8 @@ function showCategories(num, category){
         var id = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].id;
 
         var code = document.getElementById(`codeInput${num}`).value;
-        var address = document.getElementById(`addressInput${num}`).value;
         var name = document.getElementById(`nameInput${num}`).value;
+        var address = document.getElementById(`addressInput${num}`).value;
         var manu = document.getElementById(`manInput${num}`).value;
         var price = document.getElementById(`priceInput${num}`).value;
         var category = document.getElementById(`selectInput${num}`).value;
@@ -198,8 +199,8 @@ function showCategories(num, category){
         var request = {
             "id": id,
             "code": code,
-            "address": address,
             "name": name,
+            "address": address,
             "manufacture": manu,
             "price": price,
             "category" : {
@@ -221,8 +222,8 @@ function showCategories(num, category){
             if (jsonData.status == 'OK') {
 
                document.getElementById(`codeTd${num}`).innerHTML = code;
-               document.getElementById(`addressTd${num}`).innerHTML = address;
                document.getElementById(`nameTd${num}`).innerHTML = name;
+               document.getElementById(`addressTd${num}`).innerHTML = address;
                document.getElementById(`manTd${num}`).innerHTML = manu;
                document.getElementById(`priceTd${num}`).innerHTML = price;
                document.getElementById(`categoryTd${num}`).innerHTML = category;
@@ -248,10 +249,10 @@ function showCategories(num, category){
         idTd.setAttribute('id', `idTd${num}`);
         var codeTd = document.createElement('td');
         codeTd.setAttribute('id', `codeTd${num}`);
-        var addressTd = document.createElement('td');
-        addressTd.setAttribute('id', `addressTd${num}`);
         var nameTd = document.createElement('td');
         nameTd.setAttribute('id', `nameTd${num}`);
+        var addressTd = document.createElement('td');
+        addressTd.setAttribute('id', `addressTd${num}`);
         var manTd = document.createElement('td');
         manTd.setAttribute('id', `manTd${num}`);
         var priceTd = document.createElement('td');
@@ -263,16 +264,21 @@ function showCategories(num, category){
         var saveButton = document.createElement('button');
         saveButton.setAttribute('class', 'btn');
         saveButton.setAttribute('onclick', `addNewProduct(${num})`);
+        var editImageButtonTd = document.createElement('td');
+        //var editImageButton = document.createElement('button');
+        //editImageButton.setAttribute('class', 'btn');
+        //editImageButton.setAttribute('onclick', `editImageTds(${jsonData[i].id})`);
         var deleteButtonTd = document.createElement('td');
         var deleteButton = document.createElement('button');
         deleteButton.setAttribute('onclick', 'deleteNewRow()');
         deleteButton.setAttribute('class', 'btn');
         saveButtonTd.appendChild(saveButton);
+        //editImageButtonTd.appendChild(editImageButton);
         deleteButtonTd.appendChild(deleteButton);
 
         codeTd.innerHTML = `<input id="codeInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
+        nameTd.innerHTML = `<input id="nameInputNew${num}" onkeyup='generateAddress(${num})' type='text' minLength='1' maxLength='255' class='input-box' required>`
         addressTd.innerHTML = `<input id="addressInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
-        nameTd.innerHTML = `<input id="nameInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         manTd.innerHTML = `<input id="manInputNew${num}" type='text' minLength='1' maxLength='255' class='input-box' required>`
         priceTd.innerHTML = `<input id="priceInputNew${num}" type='number' class='input-box' min='0' max='2000000' step= '1' required>`
         statusTd.innerHTML = 'ACTIVE';
@@ -282,9 +288,10 @@ function showCategories(num, category){
         saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
         deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
-        tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(addressTd); 
-        tr.appendChild(nameTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
-        tr.appendChild(statusTd); tr.appendChild(categoryTd); tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
+        tr.appendChild(idTd); tr.appendChild(codeTd); tr.appendChild(nameTd); 
+        tr.appendChild(addressTd); tr.appendChild(manTd); tr.appendChild(priceTd); 
+        tr.appendChild(statusTd); tr.appendChild(categoryTd); tr.appendChild(saveButtonTd); 
+        tr.appendChild(editImageButtonTd); tr.appendChild(deleteButtonTd);
         table.appendChild(tr);
         for(var i = 0; i < global.length; i++){
             document.querySelector(`#categoryInputNew${num}`).innerHTML +=
@@ -310,8 +317,8 @@ function showNewCategories(num){
     function addNewProduct(num){
 
         var code = document.getElementById(`codeInputNew${num}`).value;
-        var address = document.getElementById(`addressInputNew${num}`).value;
         var name = document.getElementById(`nameInputNew${num}`).value;
+        var address = document.getElementById(`addressInputNew${num}`).value + num;
         var manu = document.getElementById(`manInputNew${num}`).value;
         var price = document.getElementById(`priceInputNew${num}`).value;
         var category = document.getElementById(`categoryInputNew${num}`).value;
@@ -319,8 +326,8 @@ function showNewCategories(num){
         var request = {
             //"id": id,
             "code": code,
-            "address": address,
             "name": name,
+            "address": address,
             "manufacture": manu,
             "price": price,
             "product_status": "ACTIVE",
@@ -341,10 +348,10 @@ function showNewCategories(num){
             }).
         then(function (jsonData) {
             if (jsonData.status == "OK") {
-
+                console.log(jsonData.message);
                 document.getElementById(`codeTd${num}`).innerHTML = code;
-                document.getElementById(`addressTd${num}`).innerHTML = address;
                 document.getElementById(`nameTd${num}`).innerHTML = name;
+                document.getElementById(`addressTd${num}`).innerHTML = address;
                 document.getElementById(`manTd${num}`).innerHTML = manu;
                 document.getElementById(`priceTd${num}`).innerHTML = price;
                 document.getElementById(`categoryTd${num}`).innerHTML = category;
@@ -381,4 +388,13 @@ function showNewCategories(num){
                 fetchProducts();
                 });
             }
-            
+         
+function generateAddress(num){
+    var nameInput = document.getElementById(`nameInputNew${num}`).value;
+
+    var addressInput = document.getElementById(`addressInputNew${num}`);
+
+    addressInput.value = nameInput.trim().toLowerCase().replace(new RegExp(' ', 'g'), '-')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+
+}
