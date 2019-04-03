@@ -24,17 +24,9 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/product")
-    public void getIncorrectProduct() {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
 
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address) {
-        if(address.equals("")){
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid address");
-        }
         validator = new ProductValidator(productService);
         List<String> addresses = productService.getProducts().stream().map(p -> p.getAddress()).collect(Collectors.toList());
         if (validator.isValid(address) && addresses.contains(address)) {
