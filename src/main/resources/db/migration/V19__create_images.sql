@@ -1,4 +1,4 @@
-create table Images (
+create table images (
     id bigint auto_increment,
     image_file mediumblob not null,
     file_type varchar(20) not null,
