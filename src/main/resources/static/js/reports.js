@@ -3,9 +3,6 @@ window.onload = function() {
   fetchProductReport();
 };
 
-var myJsonData1;
-var myJsonData2;
-console.log(myJsonData1);
 
 function fetchOrderReport() {
   fetch("/reports/orders")
@@ -14,7 +11,6 @@ function fetchOrderReport() {
     })
     .then(function(jsonData) {
       showIncomeTable(jsonData);
-      myJsonData1 = jsonData;
     });
 }
 
@@ -25,7 +21,6 @@ function fetchProductReport() {
     })
     .then(function(jsonData) {
         showProductTable(jsonData);
-        myJsonData2 = jsonData;
     });
 }
 
@@ -165,7 +160,7 @@ function showIncomeTable(jsonData){
                     }
                 },
                 "scale-y": {
-                    "values": "0:700000:100000",
+                    "values": "0:5000000:1000000",
                     "short": true,
                     "line-color": "#7E7E7E",
                     "tick": {
@@ -200,23 +195,6 @@ function showIncomeTable(jsonData){
                         ],
                     "background-color": "#90A23B"
                 },
-                {
-//                    "values": [
-//                        17000,
-//                        9000,
-//                        2000,
-//                        12500,
-//                        11245,
-//                        1750,
-//                        5500,
-//                        3000,
-//                        10000,
-//                        9750,
-//                        1500,
-//                        17750
-//                    ],
-//                    "background-color": "#90A23B"
-                }
             ],
                 "tooltip": {
                     "visible": false
@@ -370,7 +348,7 @@ function showProductTable(jsonData){
                         }
                     },
                     "scale-y": {
-                        "values": "0:700000:100000",
+                        "values": "0:1000000:200000",
                         "short": true,
                         "line-color": "#7E7E7E",
                         "tick": {
@@ -390,7 +368,7 @@ function showProductTable(jsonData){
                             0,
                             jsonData[0].total,
                             jsonData[1].total,
-                            jsonData[2].total
+    //                        jsonData[2].total
     //                        jsonData[2].total,
     //                        jsonData[3].total,
     //                        jsonData[4].total,
@@ -405,23 +383,6 @@ function showProductTable(jsonData){
                             ],
                         "background-color": "#90A23B"
                     },
-                    {
-    //                    "values": [
-    //                        17000,
-    //                        9000,
-    //                        2000,
-    //                        12500,
-    //                        11245,
-    //                        1750,
-    //                        5500,
-    //                        3000,
-    //                        10000,
-    //                        9750,
-    //                        1500,
-    //                        17750
-    //                    ],
-    //                    "background-color": "#90A23B"
-                    }
                 ],
                     "tooltip": {
                         "visible": false
@@ -430,7 +391,7 @@ function showProductTable(jsonData){
         ;
 
         zingchart.render({
-        	id : 'myChart',
+        	id : 'myChart2',
         	data : myConfig,
         });
 
