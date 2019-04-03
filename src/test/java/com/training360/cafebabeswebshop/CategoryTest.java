@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,34 @@ public class CategoryTest {
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status2.getMessage());
         assertEquals("Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt", status3.getMessage());
         assertEquals("Ilyen kategória már létezik, adjon meg egyedi nevet", status4.getMessage());
+    }
+
+    @Test
+    public void testDelete(){
+        //Given
+         //When
+        categoryController.deleteCategory(2L);
+        List<Category> categories = categoryController.listCategories();
+
+        //Then
+        assertEquals(2, categoryController.listCategories().size());
+    }
+
+    @Test
+    public void testGetCategory(){
+        //Given
+        List<Category> categories = categoryController.listCategories();
+        boolean foundIt = false;
+
+        //When
+        for(Category c : categories){
+            if(c.equals(categoryController.getCategory("pretty"))){
+                foundIt = true;
+            }
+        }
+
+        //Then
+        assertEquals(true, foundIt);
     }
 
     @Test
