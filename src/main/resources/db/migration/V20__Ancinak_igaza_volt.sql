@@ -1,0 +1,1 @@
+UPDATE orders SET delivery_id= 1

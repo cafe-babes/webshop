@@ -76,7 +76,7 @@ function fetchImage(productId) {
 
     fetch('/image/' + productId)
     .then(function(response) {
-      if(response.ok) {
+      if(response.status == 200) {
         return response.blob();
       }
       productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
