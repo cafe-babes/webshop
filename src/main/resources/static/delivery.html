@@ -42,10 +42,12 @@
                alt="banner-image">
        </div>
        <h2 style="text-align:center;">Szállítási cím megadása</h2><br>
-      <div id="deliveryDiv"></div> <br><br>
-       <button onclick="addNewAddress()" class="btn">Új szállítási cím megadása</button>
-       <button onclick="checkAddress()" class="btn">Megrendelem</button> <br><br>
-       <div id="new-address"></div>
+      <div class="d-flex justify-content-center" id="deliveryDiv"></div> <br><br>
+       <div style="display: block" class="d-flex justify-content-center" id="new-address"></div>
+       <div class="row justify-content-center">
+           <button style="display: block; border: 1px solid #cccccc; margin: 10px;" onclick="addNewAddress()" class="btn btn-space">Új szállítási cím megadása</button>
+           <button style="display: block; border: 1px solid #cccccc; margin: 10px" onclick="checkAddress()" class="btn btn-space">Megrendelem</button>
+       </div>
    </main>
 
    <!--<div class="jumbotron text-center" style="margin-bottom:0;margin-top:5em;">
