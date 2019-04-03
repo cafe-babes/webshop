@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.category;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -66,7 +68,7 @@ public class CategoryService {
     }
 
 
-    public void updateCategory(long id, Category category) {
+    public int updateCategory(long id, Category category) throws DataAccessException {
         List<Category> categories = categoryDao.listCategories();
         long originalOrdinal = category.getOrdinal();
 
@@ -82,15 +84,14 @@ public class CategoryService {
                     categoryDao.increaseOrdinal(categories.get(i).getOrdinal());
                 }
             }
-            categoryDao.updateCategory(id, category);
         }
-        if (category.getOrdinal() > originalOrdinal) {
+        else if (category.getOrdinal() > originalOrdinal) {
             for (int i = 0; i < categories.size(); i++) {
                 if (categories.get(i).getOrdinal() <= category.getOrdinal() && categories.get(i).getOrdinal() > originalOrdinal) {
                     categoryDao.decreaseOrdinal(categories.get(i).getOrdinal());
                 }
             }
-            categoryDao.updateCategory(id, category);
         }
+        return categoryDao.updateCategory(id, category);
     }
 }

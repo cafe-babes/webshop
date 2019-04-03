@@ -31,7 +31,7 @@ function showdeliveries(jsonData){
 
 function addNewAddress(){
     var div = document.querySelector('#new-address');
-    div.innerHTML = `<label for="inputNewAddress">Szállítási cím megadása (ország, város, utca, házszám, emelet, irányítószám)</label>
+    div.innerHTML = `<label for="inputNewAddress" >Szállítási cím megadása (ország, város, utca, házszám, emelet, irányítószám)</label>
      <input type="text" id="inputNewAddress" onfocus=checkoutRadios() max-length=255 style="width:600px;">`;
 }
 
