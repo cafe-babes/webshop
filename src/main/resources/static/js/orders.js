@@ -73,13 +73,18 @@ function showTable(jsonData) {
         deliveryAddressTd.setAttribute('id', deliveryAddressTdId);
         tr.appendChild(deliveryAddressTd);
 
-        var editButtonTd = document.createElement("td");
-        var editButton = document.createElement("button");
-        var editButtonId = 'editbutton' + i;
-        editButton.setAttribute('id', editButtonId);
-        editButton.setAttribute('class', 'btn');
-        editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
-        editButtonTd.appendChild(editButton);
+        if(jsonData[i].orderStatus == "ACTIVE"){
+          var editButtonTd = document.createElement("td");
+                var editButton = document.createElement("button");
+                var editButtonId = 'editbutton' + i;
+                editButton.setAttribute('id', editButtonId);
+                editButton.setAttribute('class', 'btn');
+                editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
+                editButtonTd.appendChild(editButton);
+        } else {
+            var editButtonTd = document.createElement("td");
+        }
+
 
         var saveButton = document.createElement("button");
         var saveButtonId = 'savebutton' + i;
