@@ -1,5 +1,21 @@
 fetchBasket();
 
+function fetchImage(productId) {
+    var productImage = document.getElementById(`img-${productId}`);
+
+    fetch('/image/' + productId)
+    .then(function(response) {
+      if(response.ok) {
+        return response.blob();
+      }
+      productImage.src = 'https://pbs.twimg.com/profile_images/758084549821730820/_HYHtD8F_400x400.jpg';
+    })
+    .then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      productImage.src = objectURL;
+    });
+}
+
 function fetchBasket(){
     var url = "/basket";
     fetch(url)
@@ -7,8 +23,10 @@ function fetchBasket(){
         return response.json();
     })
     .then(function(jsonData) {
+        var productId = jsonData;
         console.log(jsonData);
         showBasket(jsonData);
+        fetchImage(productId);
     });
 }
 
@@ -21,7 +39,8 @@ function showBasket(jsonData){
     for(var i = 0; i < jsonData.length; i++){
         console.log(`${jsonData[i].address}`);
         container.innerHTML +=
-            `<div class="col-sm-7" id="${jsonData[i].address}">
+            `<div class="container">
+            <div class="col-sm-7 ad-left" id="${jsonData[i].address}">
                 <h2 id="name">${jsonData[i].name}</h2>
                 <h3><span id="price-${jsonData[i].address}">${jsonData[i].price}</span> Ft</h3>
                 <label for = "changeQuantity">Darab</label> <br>
@@ -30,8 +49,16 @@ function showBasket(jsonData){
                 <br><br>
                 <button id="delete-one" type="button" class="btn btn-outline-secondary" onclick="removeItemFromBasket('${jsonData[i].address}')">Töröl</button>
                 <br>
-            </div>`;//TODO
+            </div>
+            <div>
+            <img class="card-img-top basketImage" id='img-${jsonData[i].id}' alt="surfboard image">
+            </div>
+            <hr>
+            </div>
+
+            `;
         sum += jsonData[i].price * jsonData[i].pieces;
+        fetchImage(jsonData[i].id);
     }
     
     document.getElementById("total-price").innerHTML = sum;

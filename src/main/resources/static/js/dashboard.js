@@ -86,7 +86,7 @@ function showDashboard(jsonData){
      	},
     	series : [
     		{
-    			values : [jsonData[0],jsonData[2],jsonData[4]],
+    			values : [jsonData[0],jsonData[1],jsonData[3]],
     			borderRadius : "50px 0px 0px 50px",
     			backgroundColor : "#E71D36",
     			rules : [
@@ -105,7 +105,7 @@ function showDashboard(jsonData){
     			]
     		},
     		{
-    			values : [,jsonData[1],jsonData[3]],
+    			values : [,jsonData[2],jsonData[4]],
     			text: "ez",
     			borderRadius : "0px 50px 50px 0px",
     			backgroundColor : "#E71D36",
