@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.basket.BasketController;
+import com.training360.cafebabeswebshop.basket.BasketDao;
 import com.training360.cafebabeswebshop.basket.BasketItem;
 import com.training360.cafebabeswebshop.product.Product;
 import org.junit.Test;
@@ -25,6 +26,8 @@ public class BasketTests {
 
     @Autowired
     private BasketController basketController;
+    @Autowired
+    private BasketDao basketDao;
 
     @Test
     public void testGetBasketItems() {
@@ -53,8 +56,8 @@ public class BasketTests {
         long productIdNumberOneSurfWaver = basketItemsBeforeDelete.stream().filter(p -> p.getAddress().equals("surf_waver")).findFirst().get().getProductId();
         long productIdNumberTwoSurfSlayer2 = basketItemsBeforeDelete.stream().filter(p -> p.getAddress().equals("surf_slayer2")).findFirst().get().getProductId();
 
-        assertEquals(productIdNumberOneSurfWaver,5);
-        assertEquals(productIdNumberTwoSurfSlayer2,3);
+        assertEquals(productIdNumberOneSurfWaver, 5);
+        assertEquals(productIdNumberTwoSurfSlayer2, 3);
 
         // When
         basketController.deleteOneItem(new TestingAuthenticationToken("user", "user", "ROLE_USER"), "surf_slayer2");
@@ -68,7 +71,7 @@ public class BasketTests {
 
     @Test
     public void testSaveBasketItemAndGetId() {
-        BasketItem basketItemExample = new BasketItem(8,"Funny","funny_bunny", 25800, 2);
+        BasketItem basketItemExample = new BasketItem(8, "Funny", "funny_bunny", 25800, 2);
         // When
         long anotherNewId = basketController.saveBasketItemAndGetId("funny_bunny", basketItemExample, new TestingAuthenticationToken("user", "user", "ROLE_USER"));
         List<BasketItem> list = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
@@ -78,6 +81,23 @@ public class BasketTests {
         assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("surf_slayer2"));
         assertTrue(list.stream().map(BasketItem::getAddress).collect(Collectors.toList()).contains("funny_bunny"));
 
+    }
+
+    @Test
+    public void testUpdateBasketItemPieces() {
+        List<BasketItem> basketItems = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));
+
+        assertEquals(2, basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER")).size());
+
+        BasketItem existingBasketItemExample = basketItems.get(0);
+
+        assertTrue(existingBasketItemExample != null);
+
+        int piecesBeforeIncreasingTheAmountByOne = existingBasketItemExample.getPieces();
+        existingBasketItemExample.setPieces(piecesBeforeIncreasingTheAmountByOne + 1);
+        basketController.updateBasketItemPieces(existingBasketItemExample, (new TestingAuthenticationToken("user", "user", "ROLE_USER")));
+        int piecesAfterIncreasingTheAmountByOne = existingBasketItemExample.getPieces();
+        assertTrue(piecesBeforeIncreasingTheAmountByOne+1 == piecesAfterIncreasingTheAmountByOne);
     }
 
 
