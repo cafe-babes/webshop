@@ -1,20 +1,19 @@
 window.onload = function () {
   fetchProduct();
 };
-console.log((new URL(document.location)).searchParams.get('address'));
 
 var product;
 var user;
 var feedbacks;
 
 $.getJSON('/user', json => {
-if(json.id != 0){
-var userId = json.id;
-fetchUser(userId);
-}
-  if (json.role != 'VISITOR') {
-    document.querySelector('#addToBasketButton').hidden = false;
-  }
+    if(json.id != 0){
+        var userId = json.id;
+        fetchUser(userId);
+    }
+    if (json.role != 'VISITOR') {
+        document.querySelector('#addToBasketButton').hidden = false;
+    }
 });
 
 function fetchUser(userId) {
@@ -44,6 +43,7 @@ function fetchProduct() {
         product = jsonData;
         var productId = jsonData.id;
         fetchFeedbacks(productId);
+        fetchImage(productId)
         showProduct(jsonData);
       }
     });
@@ -63,6 +63,21 @@ function fetchFeedbacks(productId) {
     });
 }
 
+function fetchImage(productId) {
+    var productImage = document.querySelector("#image");
+
+    fetch('/image/' + productId)
+    .then(function(response) {
+      if(response.ok) {
+        return response.blob();
+      }
+      productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
+    })
+    .then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      productImage.src = objectURL;
+    });
+}
 
 function showFeedbacks(jsonData) {
 
