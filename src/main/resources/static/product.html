@@ -64,11 +64,8 @@
                     <h2 id="name"></h2>
                     <h3><span id="price"></span> Ft</h3><br>
                     <h5>Manufacturer: <span id="manufacturer"></span></h5><br>
-                    <h5>Product code: <span id="code"></span></h5><br>
-                    <p>Leírás, ez a legjobb szörfdeszka. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laudantium
-                        aspernatur ipsa suscipit nostrum repellendus ipsam odit, eius architecto tenetur fugit libero
-                        voluptas pariatur doloribus ratione iure laborum nisi maxime mollitia.</p>
+                    <h5>Product code: <span id="code"></span></h5>
+                    <br>
                 </div>
                 <br>
                 <div>
@@ -77,7 +74,8 @@
                         <div class="ad-left">
                             <label for="inputQuantity">Darab</label>
                             <br>
-                            <input id="inputQuantity" type="number" step="1" value="1" min="1" style="width:40px;">
+                            <input id="inputQuantity" type="number" step="1" value="1" min="1"
+                                oninput="this.value = Math.abs(this.value)" style=" width:40px;">
                         </div>
                         <div class="ad-right">
                         <textarea class="form-control" aria-label="With textarea" minLength='1' maxLength='255'
@@ -107,7 +105,7 @@
                                 <span class="star">&nbsp;</span>
                                 <span class="star">&nbsp;</span>
                             </div>
-                            <div class="ad-right"  class= "surf medium" id="feedback-button">
+                            <div class="ad-right" class="surf medium" id="feedback-button">
                                 <button type="button" class="btn btn-outline-primary"
                                         onclick="newFeedback()">Értékelés elküldése <i class="fa fa-edit"></i>
                                 </button>

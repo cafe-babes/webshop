@@ -98,65 +98,28 @@ public class OrdersTest {
         assertEquals(basketController.getBasketItems(tat2), Collections.emptyList());
     }
 
-   /* @Test
-    public void orderContainsDate(){
+    /*@Test
+    public void listOrderAfterCreateNewOrder(){
         //Given
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
         //When
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
-        List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
+        Delivery delivery = new Delivery(1, "Valami valami valami", 4);
+        Order o = new Order(0, LocalDateTime.of(2019, 3, 12, 10, 23, 54), 4, 240000, 2, "ACTIVE", delivery);
+        orderDao.saveOrderAndGetId(tat.getName(), o);
+        List<Order> listMyOrders = orderController.listMyOrders(tat);
 
-        for(Map.Entry<LocalDateTime, List<OrderedProduct>> entry: listMyOrders.entrySet()){
-            System.out.println(entry.getKey());
-        }
-        LocalDateTime date2 = keys.get(0);
-        LocalDateTime date1 = keys.get(3);
 
 
         //Then
-        assertEquals(date1, LocalDateTime.of(2019, 01, 20, 21, 20, 20));
-        assertEquals(date2, LocalDateTime.of(2019, 04, 20, 22, 20, 20));
-    }
-
-    @Test
-    public void orderContainsProduct(){
-        //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
-        List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
-        List<OrderedProduct> values = listMyOrders.get(keys.get(1));
-        for(int i = 0; i < values.size(); i++){
-            System.out.println(values.get(i).getOrderingName());
-        }
-
-        //When
-        String name1 = values.get(0).getOrderingName();
-
-        //Given
-        assertEquals(name1, "Blow Fish");
-    }
-
-    @Test
-    public void ordeDateInOrder(){
-        //Given
-        TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
-
-        //When
-        Map<LocalDateTime, List<OrderedProduct>> listMyOrders = orderController.listMyOrders(tat);
-        List<LocalDateTime> keys = new ArrayList<>(listMyOrders.keySet());
-        LocalDateTime date0 = keys.get(0);
-        LocalDateTime date1 = keys.get(1);
-        LocalDateTime date2 = keys.get(2);
-        LocalDateTime date3 = keys.get(3);
-
-        //Then
-        assertEquals(date0, LocalDateTime.of(2019, 04, 20, 22, 20, 20));
-        assertEquals(date1, LocalDateTime.of(2019, 03, 20, 21, 20, 20));
-        assertEquals(date2, LocalDateTime.of(2019, 02, 20, 21, 20, 20));
-        assertEquals(date3, LocalDateTime.of(2019, 01, 20, 21, 20, 20));
-
+        Order lastItem = listMyOrders.get(listMyOrders.size()-1);
+        assertEquals(lastItem.getTotal(), 240000);
+        assertEquals(lastItem.getPurchaseDate(), LocalDateTime.of(2019, 3, 12, 10, 23, 54));
+        assertEquals(lastItem.getSumQuantity(), 2);
+        assertEquals(lastItem.getOrderStatus(), "ACTIVE");
+        assertEquals(lastItem.getDelivery().getDeliveryAddress(), "Valami valami valami");
     }*/
+
 
     @Test
     public void checkOrderDate(){
