@@ -117,5 +117,19 @@ public class ProductTests {
 		assertEquals(productList.size(), sizeOfACTIVEProductList);
 	}
 
+	@Test
+	public void testCategoryOrder(){
+		//Given
+		//When
+		List<Product> products = productController.getProducts();
+		for(Product product : products){
+			System.out.println(product);
+		}
+
+		//Then
+		assertEquals(products.get(0).getCategory().getName(), "pretty");
+		assertEquals(products.get(10).getCategory().getName(), "fast");
+	}
+
 
 }
