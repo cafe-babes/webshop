@@ -57,7 +57,7 @@ function fetchProduct() {
         product = jsonData;
         var productId = jsonData.id;
         fetchFeedbacks(productId);
-        fetchImage(productId)
+        fetchImage(productId);
         showProduct(jsonData);
       }
     });
@@ -77,19 +77,6 @@ function fetchFeedbacks(productId) {
     });
 }
 
-
-//var doRecursiveRequest = (url, limit = Number.MAX_VALUE) =>
-//  fetch(url).then(res => {
-//    if (res.status == 200 && --limit) {
-//      return doRecursiveRequest(url, limit);
-//    }
-//    return res.blob();
-//  });
-//
-//doRecursiveRequest('someURLWithAJSONfile/file.json', 10)
-//  .then(data => console.log(data))
-//  .catch(error => console.log(error));
-
 function fetchImage(productId) {
     fetch('/image/' + productId + '/' + 0)
     .then(function(response) {
@@ -100,8 +87,12 @@ function fetchImage(productId) {
     })
     .then(function(blob) {
         document.querySelector("#image").src = URL.createObjectURL(blob);
-        fetchAnotherImage(productId, 1);
+        callBackFunction(productId);
     });
+}
+
+function callBackFunction(productId) {
+setTimeout(function(){ fetchAnotherImage(productId, 1); }, 1000);
 }
 
 function fetchAnotherImage(productId, offset) {
@@ -111,11 +102,13 @@ function fetchAnotherImage(productId, offset) {
         return response.blob();
     })
     .then(function(blob) {
-        imageContainer.innerHTML += `<div class="carousel-item">
-                                      <img class="d-block w-100" id='img-${offset}' alt="surf">
-                                  </div>`;
-        document.querySelector(`#img-${i}`).src = URL.createObjectURL(blob);
-        fetchAnotherImage(productId, offset+1);
+        if(blob) {
+            imageContainer.innerHTML += `<div class="carousel-item">
+                                          <img class="d-block w-100" id='img-${offset}' alt="surf">
+                                      </div>`;
+            document.querySelector(`#img-${offset}`).src = URL.createObjectURL(blob);
+            fetchAnotherImage(productId, offset+1);
+        }
     });
 }
 

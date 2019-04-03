@@ -64,5 +64,16 @@ font-size: 250%;
 font-family: 'surf';
 font-size: 350%;
 }
+.btn-xl {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    width:250px;
+    margin-left:-125px;
+}
+
+* {
+  scroll-behavior: smooth;
+}
 
  /*# sourceMappingURL=bootstrap.min.css.map */
