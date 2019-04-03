@@ -8,6 +8,7 @@ import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.user.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -68,10 +69,11 @@ public class OrderService {
         for (Order o: orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
                 o.setOrderedProducts(orderDao.listOrderedProductsByOrderId(o.getId()));
+            }
+            try {
                 o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
-                //break;
-            } else {
-                o.setDelivery(orderDao.getDeliveryById(o.getDelivery()));
+            } catch (EmptyResultDataAccessException sql) {
+                o.setDelivery(orderDao.getDefaultDelivery());
             }
         }
         return orders;
