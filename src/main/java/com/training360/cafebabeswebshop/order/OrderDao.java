@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.delivery.Delivery;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -74,6 +75,15 @@ public class OrderDao {
                 ORDER_ROW_MAPPER, username);
     }
 
+    public List<Order> listAllOrders() {
+        return jdbcTemplate.query("SELECT orders.id, purchase_date, orders.user_id," +
+                        " sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity," +
+                        " order_status, delivery_id, delivery.address FROM orders JOIN ordered_products ON orders.id = order_id " +
+                        "LEFT JOIN delivery ON orders.user_id = delivery.user_id GROUP BY order_id, purchase_date, orders.user_id, " +
+                        "delivery_id, order_status, delivery.address order by purchase_date desc",
+                ORDER_ROW_MAPPER);
+    }
+
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -88,15 +98,6 @@ public class OrderDao {
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
-    }
-
-    public List<Order> listAllOrders() {
-        return jdbcTemplate.query("SELECT orders.id, purchase_date, orders.user_id," +
-                        " sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity," +
-                        " order_status, delivery_id, delivery.address FROM orders JOIN ordered_products ON orders.id = order_id " +
-                        "LEFT JOIN delivery ON orders.user_id = delivery.user_id GROUP BY order_id, purchase_date, orders.user_id, " +
-                        "delivery_id, order_status, delivery.address order by purchase_date desc",
-                ORDER_ROW_MAPPER);
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
@@ -128,8 +129,10 @@ public class OrderDao {
         jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
     }
 
-    public Delivery getDeliveryById(Delivery delivery){
+    public Delivery getDeliveryById(Delivery delivery) throws EmptyResultDataAccessException {
         return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
     }
-
+    public Delivery getDefaultDelivery() {
+        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = 1", DELIVERY_ROW_MAPPER);
+    }
 }
