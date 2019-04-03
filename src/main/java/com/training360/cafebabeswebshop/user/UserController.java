@@ -72,6 +72,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResultStatus createUser(@RequestBody User user) {
+        System.out.println(user);
         userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
             long id;
