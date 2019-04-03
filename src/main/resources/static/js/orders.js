@@ -75,41 +75,45 @@ function showTable(jsonData) {
 
         if(jsonData[i].orderStatus == "ACTIVE"){
           var editButtonTd = document.createElement("td");
-                var editButton = document.createElement("button");
-                var editButtonId = 'editbutton' + i;
-                editButton.setAttribute('id', editButtonId);
-                editButton.setAttribute('class', 'btn');
-                editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
-                editButtonTd.appendChild(editButton);
+          var editButton = document.createElement("button");
+          var editButtonId = 'editbutton' + i;
+          editButton.setAttribute('id', editButtonId);
+          editButton.setAttribute('class', 'btn');
+          editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
+          editButtonTd.appendChild(editButton);
+
+          var saveButton = document.createElement("button");
+          var saveButtonId = 'savebutton' + i;
+          saveButton.setAttribute('id', saveButtonId);
+          saveButton.setAttribute('class', 'btn');
+          saveButton.setAttribute('onclick', `saveTds(${i})`);
+          saveButton.style.display = 'none';
+          editButtonTd.appendChild(saveButton);
+
+          var deleteButtonTd = document.createElement("td");
+          var deleteButton = document.createElement("button");
+          var deleteButtonId = 'deletebutton' + i;
+          deleteButton.setAttribute('id', deleteButtonId);
+          deleteButton.setAttribute('class', 'btn');
+          deleteButton.setAttribute('onclick', `deleteOrder(${i})`);
+          deleteButton['raw-data'] = jsonData[i];
+          deleteButtonTd.appendChild(deleteButton);
+
+          var shippedButtonTd = document.createElement("td");
+          var shippedButton = document.createElement("button");
+          var shippedButtonId = "shippedButton" + i;
+          shippedButton.setAttribute("id", shippedButtonId);
+          shippedButton.setAttribute("class", "btn");
+          shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
+          shippedButtonTd.appendChild(shippedButton);
         } else {
             var editButtonTd = document.createElement("td");
+            var saveButton = document.createElement("button");
+            var deleteButtonTd = document.createElement("td");
+            var shippedButtonTd = document.createElement("td");
         }
 
 
-        var saveButton = document.createElement("button");
-        var saveButtonId = 'savebutton' + i;
-        saveButton.setAttribute('id', saveButtonId);
-        saveButton.setAttribute('class', 'btn');
-        saveButton.setAttribute('onclick', `saveTds(${i})`);
-        saveButton.style.display = 'none';
-        editButtonTd.appendChild(saveButton);
-
-        var deleteButtonTd = document.createElement("td");
-        var deleteButton = document.createElement("button");
-        var deleteButtonId = 'deletebutton' + i;
-        deleteButton.setAttribute('id', deleteButtonId);
-        deleteButton.setAttribute('class', 'btn');
-        deleteButton.setAttribute('onclick', `deleteOrder(${i})`);
-        deleteButton['raw-data'] = jsonData[i];
-        deleteButtonTd.appendChild(deleteButton);
-
-        var shippedButtonTd = document.createElement("td");
-        var shippedButton = document.createElement("button");
-        var shippedButtonId = "shippedButton" + i;
-        shippedButton.setAttribute("id", shippedButtonId);
-        shippedButton.setAttribute("class", "btn");
-        shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
-        shippedButtonTd.appendChild(shippedButton);
 
         editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
         saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
