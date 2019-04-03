@@ -84,7 +84,7 @@ for (var i = 0; i < jsonData.length; i++){
     for(var j = 0; j < jsonData[i].orderedProducts.length ; j++){
         showTableBody(jsonData, i, j);
         }
-        if (i < jsonData.length-1){
+        if (i < jsonData.length-2){
         showTableHead(jsonData);
         }
     }
