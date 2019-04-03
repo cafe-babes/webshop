@@ -160,7 +160,7 @@ function listProducts(jsonData) {
                 <div class="d-flex justify-content-between align-items-center">
                    <a href='product.html?address=${jsonData[i].address}'>
                     <div class="btn-group">
-                         <button type="button" class="btn btn-lm btn-outline-secondary">Details</button>
+                         <button type="button" class="btn btn-lm btn-outline-secondary">Részletek</button>
                     </div>
                    </a>
                 </div>

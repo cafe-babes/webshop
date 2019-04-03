@@ -3,6 +3,7 @@ fetchBasket();
 function fetchImage(productId) {
     var productImage = document.getElementById(`img-${productId}`);
     console.log(productImage);
+    console.log(productId);
 
     fetch('/image/' + productId)
     .then(function(response) {
@@ -27,7 +28,6 @@ function fetchBasket(){
         var productId = jsonData;
         console.log(jsonData);
         showBasket(jsonData);
-        fetchImage(productId);
     });
 }
 
@@ -59,9 +59,10 @@ function showBasket(jsonData){
 
             `;
         sum += jsonData[i].price * jsonData[i].pieces;
-        fetchImage(jsonData[i].productId);
     }
-    
+        for (var i = 0; i < jsonData.length; i++) {
+            fetchImage(jsonData[i].productId);
+        }
     document.getElementById("total-price").innerHTML = sum;
     
 }
