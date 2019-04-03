@@ -10,7 +10,7 @@ public class CategoryValidator {
     }
 
     public boolean isValidName(String str) {
-         return categoryService.listCategories().contains(str) || str != null && str.trim().length() != 0;
+         return str != null && str.trim().length() != 0;
     }
 
     public boolean isValidOrder(long ordinal){
