@@ -75,8 +75,8 @@ public class CategoryDao {
         return jdbcTemplate.queryForObject("select id, name, ordinal from category where name = ?", CATEGORY_ROW_MAPPER, name);
     }
 
-    public void updateCategory(long id, Category category) {
-        jdbcTemplate.update("update category set name = ?, ordinal = ? where id = ?",
+    public int updateCategory(long id, Category category) throws DataAccessException{
+        return jdbcTemplate.update("update category set name = ?, ordinal = ? where id = ?",
                 category.getName(),
                 category.getOrdinal(),
                 id);
