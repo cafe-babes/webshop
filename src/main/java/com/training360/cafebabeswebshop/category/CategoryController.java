@@ -61,14 +61,18 @@ public class CategoryController {
     @PostMapping("categories/{id}")
     public ResultStatus updateCategory(@PathVariable long id, @RequestBody Category category){
         categoryValidator = new CategoryValidator(categoryService);
-        if(categoryValidator.isValidOrder(category.getOrdinal())) {
-                categoryService.updateCategory(id, category);
-                return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen módosítva");
-        }
         if(!categoryValidator.isValidName(category.getName())){
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Az adott név már létezik");
-        }
-        else {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név");
+        } else if(categoryValidator.isValidOrder(category.getOrdinal())) {
+            try {
+               if(categoryService.updateCategory(id, category) == 0){
+                   return new ResultStatus(ResultStatusEnum.NOT_OK, "Nem változott semmi, lehet hogy üres a név");
+               }
+                return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen módosítva");
+            } catch (DataAccessException dae){
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Az adott név már létezik");
+            }
+        } else {
             System.out.println(categoryValidator.isValidName(category.getName()));
             System.out.println(categoryValidator.isValidOrder(category.getOrdinal()));
             return new ResultStatus(ResultStatusEnum.NOT_OK, "az adott sorszámnak a meglévők között kell lennie!");

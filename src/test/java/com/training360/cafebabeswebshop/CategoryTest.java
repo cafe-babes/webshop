@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,9 +72,32 @@ public class CategoryTest {
     }
 
     @Test
+    public void testDelete(){
+        //Given
+         //When
+        categoryController.deleteCategory(2L);
+        List<Category> categories = categoryController.listCategories();
+
+        //Then
+        assertEquals(2, categoryController.listCategories().size());
+    }
+
+    @Test
     public void testProductChanges() {
         // Given
         // When
+        ResultStatus status1 = categoryController.updateCategory(2L, new Category(1L, "fast", 2L));
+        ResultStatus status2 = categoryController.updateCategory(2L, new Category(2L, "fast", 2L));
+        ResultStatus status3 = categoryController.updateCategory(3L, new Category(3L, "smart", 4L));
+        ResultStatus status4 = categoryController.updateCategory(3L, new Category(3L, "fast", 3L));
+        ResultStatus status5 = categoryController.updateCategory(3L, new Category(3L, "", 3L));
+
         // Then
+        assertEquals("Kategória sikeresen módosítva", status1.getMessage());
+        assertEquals("Kategória sikeresen módosítva", status2.getMessage());
+        assertEquals("az adott sorszámnak a meglévők között kell lennie!", status3.getMessage());
+        assertEquals("Az adott név már létezik", status4.getMessage());
+        assertEquals("Üres név", status5.getMessage());
+
     }
 }

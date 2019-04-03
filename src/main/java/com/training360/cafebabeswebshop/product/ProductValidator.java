@@ -11,7 +11,7 @@ public class ProductValidator {
     public boolean isValidProduct(Product product){
         return isValid(product.getCode()) &&
                 isValid(product.getName()) &&
-                isValid(product.getAddress()) &&
+                //isValid(product.getAddress()) &&
                 isValid(product.getManufacture()) &&
                 isValidPrice(product.getPrice()) &&
                 isValid(product.getCategory().getName());
