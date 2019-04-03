@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -174,8 +175,8 @@ public class FeedbackTest {
         List<Feedback> feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
 
         assertEquals(feedbacks.size(), 2);
-        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
-        assertEquals(feedbacks.get(1).getFeedback(), "Awesome2!");
+        assertTrue(feedbacks.stream().map(Feedback::getFeedback).collect(Collectors.toList()).contains("Awesome!"));
+        assertTrue(feedbacks.stream().map(Feedback::getFeedback).collect(Collectors.toList()).contains("Awesome2!"));
 
 //      When (exampleUser2 gives a feedback it will affect only his)
 
