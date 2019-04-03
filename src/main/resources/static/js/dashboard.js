@@ -106,6 +106,7 @@ function showDashboard(jsonData){
     		},
     		{
     			values : [,jsonData[1],jsonData[3]],
+    			text: "ez",
     			borderRadius : "0px 50px 50px 0px",
     			backgroundColor : "#E71D36",
     			alpha : 0.8,
@@ -127,6 +128,9 @@ function showDashboard(jsonData){
     	]
     	},
     });
+
+//    var chart = document.getElementById("myChart");
+//    chart.innerHTML += `<img src="../images/chart.jpg">`
     }
 
 
