@@ -348,7 +348,7 @@ function showProductTable(jsonData){
                         }
                     },
                     "scale-y": {
-                        "values": "0:1000000:200000",
+                        "values": "0:500000:100000",
                         "short": true,
                         "line-color": "#7E7E7E",
                         "tick": {

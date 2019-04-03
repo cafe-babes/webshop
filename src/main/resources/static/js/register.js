@@ -17,6 +17,7 @@ function handleFormSubmit() {
         "userName" : form.username.value,
         "password" : form.password.value
         }
+        console.log(request);
     fetch("/users",{
              method: "POST",
              body: JSON.stringify(request),
