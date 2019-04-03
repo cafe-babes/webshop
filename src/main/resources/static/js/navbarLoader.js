@@ -12,11 +12,13 @@ function getNavbar() {
         var parent = nav.parentNode;
         var helper = document.createElement('div');
 
-        helper.innerHTML = `<li class="nav-item active" id="home">
-                                <a class="nav-link" href="/">
-                                    <i class="fas fa-home fa-lg"> </i>
-                                </a>
-                            </li>`;
+//        helper.innerHTML = `
+//        <li class="nav-item active" id="home">
+//                                <a class="nav-link" href="/">
+//                                    <i class="fas fa-home fa-lg"> </i>
+//                                </a>
+//                            </li>
+//                            `;
 
         if (role == 'ROLE_ADMIN') {
             helper.innerHTML +=
