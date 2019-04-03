@@ -43,10 +43,10 @@ public class ImageController {
         }
     }
 
-    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
+    @GetMapping("/image/{id}/{offset}")
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id, @PathVariable("offset") long offset) {
         try {
-            Image image = imageService.getImage(id);
+            Image image = imageService.getImage(id, offset);
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=" + image.getFileName())
                     .contentType(image.getMediaType())

@@ -94,12 +94,12 @@ function fetchAdvice(){
 function fetchImage(productId) {
     var productImage = document.querySelector(`#img-${productId}`);
 
-    fetch('/image/' + productId)
+    fetch('/image/' + productId + '/' + 0)
     .then(function(response) {
       if(response.status == 200) {
         return response.blob();
       }
-      productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
+      productImage.src = 'images/default.jpg';
     })
     .then(function(myBlob) {
       if(myBlob) {

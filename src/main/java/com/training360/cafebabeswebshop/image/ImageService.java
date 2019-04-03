@@ -3,6 +3,8 @@ package com.training360.cafebabeswebshop.image;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ImageService {
 
@@ -12,11 +14,11 @@ public class ImageService {
         this.imageDao = imageDao;
     }
 
-    public Image getImage(long id) {
+    public Image getImage(long id, long offset) {
         try {
-            return imageDao.getImage(id);
+            return imageDao.getImage(id, offset);
         } catch (EmptyResultDataAccessException sql) {
-            // nothing to do here, HTML handles default image
+            // nothing to do here, JS handles default image
         }
         return null;
     }

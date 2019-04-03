@@ -6,6 +6,12 @@ var product;
 var user;
 var feedbacks;
 
+var imageContainer = document.querySelector("#image-container");
+imageContainer.innerHTML = "";
+imageContainer.innerHTML += `<div class="carousel-item active">
+                                 <img class="d-block w-100" id="image" alt="surf">
+                             </div>`;
+
 $.getJSON('/user', json => {
     if(json.id != 0){
         var userId = json.id;
@@ -71,21 +77,45 @@ function fetchFeedbacks(productId) {
     });
 }
 
-function fetchImage(productId) {
-    var productImage = document.querySelector("#image");
 
-    fetch('/image/' + productId)
+//var doRecursiveRequest = (url, limit = Number.MAX_VALUE) =>
+//  fetch(url).then(res => {
+//    if (res.status == 200 && --limit) {
+//      return doRecursiveRequest(url, limit);
+//    }
+//    return res.blob();
+//  });
+//
+//doRecursiveRequest('someURLWithAJSONfile/file.json', 10)
+//  .then(data => console.log(data))
+//  .catch(error => console.log(error));
+
+function fetchImage(productId) {
+    fetch('/image/' + productId + '/' + 0)
     .then(function(response) {
-      if(response.status == 200) {
+      if(response.status == 200)
         return response.blob();
-      }
-      productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
+      else
+        document.querySelector("#image").src = 'images/default.jpg';
     })
-    .then(function(myBlob) {
-      if(myBlob) {
-          var objectURL = URL.createObjectURL(myBlob);
-          productImage.src = objectURL;
-      }
+    .then(function(blob) {
+        document.querySelector("#image").src = URL.createObjectURL(blob);
+        fetchAnotherImage(productId, 1);
+    });
+}
+
+function fetchAnotherImage(productId, offset) {
+    fetch('/image/' + productId + '/' + offset)
+    .then(function(response) {
+      if(response.status == 200)
+        return response.blob();
+    })
+    .then(function(blob) {
+        imageContainer.innerHTML += `<div class="carousel-item">
+                                      <img class="d-block w-100" id='img-${offset}' alt="surf">
+                                  </div>`;
+        document.querySelector(`#img-${i}`).src = URL.createObjectURL(blob);
+        fetchAnotherImage(productId, offset+1);
     });
 }
 
@@ -153,6 +183,7 @@ star = star.repeat(jsonData[i].rating);
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                               </div><br>
                               <div class="person-text rel" >
+                              <img src="images/member.png"/>
                                   <span class= "surf medium">${jsonData[i].user.name}</span>
                               </div>
                           </div>
