@@ -6,6 +6,12 @@ function init() {
     document.querySelector("#fileToUpload").addEventListener("change", function(){
         document.querySelector("[for='"+ this.id +"']").innerText = this.files[0].name;
     })
+//    let resetButton = document.getElementById('resetButton');
+//    resetButton.addEventListener('click', function(){
+//        document.querySelector("#fileToUpload").addEventListener("change", function(){
+//        document.querySelector("[for='" + this.id + "']").innerText = "";
+//        document.querySelector("[for='" + this + "']").value = null;
+//    });
 }
 
 function startUpload() {
