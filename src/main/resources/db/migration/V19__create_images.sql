@@ -1,3 +1,5 @@
+drop table image;
+
 create table images (
     id bigint auto_increment,
     image_file mediumblob not null,
