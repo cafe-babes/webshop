@@ -33,7 +33,7 @@ function fetchProduct() {
   var address = (new URL(document.location)).searchParams.get('address');
 
   var url = '/product/' + address;
-  console.log(url);
+
   if (url == '/product/') {
           showProductNotFound();
           return;
