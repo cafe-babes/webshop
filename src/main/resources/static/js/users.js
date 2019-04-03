@@ -151,6 +151,7 @@ function saveTds(num){
     var password = document.getElementById(`passwordInput${num}`).value;
     var email = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].email;
     var userName = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].userName;
+    var role = document.getElementById(`savebutton${num}`).parentElement.parentElement['raw-data'].role;
 
     var request;
     if(password == '********' || password == '') {
@@ -161,7 +162,7 @@ function saveTds(num){
                     "email": email,
                     "userName": userName,
                     "enabled": 1,
-                    "role": "ROLE_USER",
+                    "role": role,
                     "userStatus": "ACTIVE"
                 }
     } else if(checkPwd(password)) {
