@@ -1,6 +1,7 @@
 package com.training360.cafebabeswebshop.image;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,7 +19,7 @@ public class ImageDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Image getImage(long ProductId) {
+    public Image getImage(long ProductId) throws EmptyResultDataAccessException {
         Image image = jdbcTemplate.queryForObject("select id, image_file, file_type, file_name, product_id from images where product_id = ?", new ImageRowMapper(), ProductId);
         return image;
     }
