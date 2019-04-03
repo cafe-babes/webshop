@@ -118,10 +118,10 @@ function fetchCategories(){
         deleteButtonTd.appendChild(deleteButton);
         
 
-        editButton.innerHTML = `<i class="fas fa-edit"></i>Szerkesztés`;
-        saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
-        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
-        editImageButton.innerHTML = `<i class="far fa-images"></i>Kép hozzáadása`
+        editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
+        saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
+        editImageButton.innerHTML = `<i class="far fa-images"></i> Kép hozzáadása`
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
 
         tr.appendChild(editButtonTd);
         tr.appendChild(editImageButtonTd);

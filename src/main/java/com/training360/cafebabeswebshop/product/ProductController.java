@@ -3,8 +3,11 @@ package com.training360.cafebabeswebshop.product;
 import com.training360.cafebabeswebshop.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +22,6 @@ public class ProductController {
 
     public ProductController(ProductService productService) {
         this.productService = productService;
-    }
-
-    @GetMapping("/product")
-    public ResultStatus getIncorrectProduct() {
-        return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid address");
     }
 
 

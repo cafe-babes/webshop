@@ -1,20 +1,19 @@
 window.onload = function () {
   fetchProduct();
 };
-console.log((new URL(document.location)).searchParams.get('address'));
 
 var product;
 var user;
 var feedbacks;
 
 $.getJSON('/user', json => {
-if(json.id != 0){
-var userId = json.id;
-fetchUser(userId);
-}
-  if (json.role != 'VISITOR') {
-    document.querySelector('#addToBasketButton').hidden = false;
-  }
+    if(json.id != 0){
+        var userId = json.id;
+        fetchUser(userId);
+    }
+    if (json.role != 'VISITOR') {
+        document.querySelector('#addToBasketButton').hidden = false;
+    }
 });
 
 function fetchUser(userId) {
@@ -32,18 +31,27 @@ function fetchUser(userId) {
 
 function fetchProduct() {
   var address = (new URL(document.location)).searchParams.get('address');
+
   var url = '/product/' + address;
+
+  if (url == '/product/') {
+          showProductNotFound();
+          return;
+        }
+
   fetch(url)
     .then(function (response) {
       return response.json();
     })
     .then(function (jsonData) {
       if (jsonData.status == 'NOT_OK') {
-        showProductNotFound(jsonData);
+        showProductNotFound();
+        return;
       } else {
         product = jsonData;
         var productId = jsonData.id;
         fetchFeedbacks(productId);
+        fetchImage(productId)
         showProduct(jsonData);
       }
     });
@@ -63,6 +71,21 @@ function fetchFeedbacks(productId) {
     });
 }
 
+function fetchImage(productId) {
+    var productImage = document.querySelector("#image");
+
+    fetch('/image/' + productId)
+    .then(function(response) {
+      if(response.ok) {
+        return response.blob();
+      }
+      productImage.src = 'https://cdn.shopify.com/s/files/1/2123/8425/products/silsurfing0008-1000_530x.jpg?v=1522089086';
+    })
+    .then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      productImage.src = objectURL;
+    });
+}
 
 function showFeedbacks(jsonData) {
 
@@ -313,11 +336,9 @@ function deleteFeedback(feedbackId){
 }
 
 
-function showProductNotFound(jsonData) {
-    var productText = document.getElementById("product-text");
+function showProductNotFound() {
+    var content = document.getElementById("content");
     var pageNotFound = document.getElementById("page-not-found");
-    var picture = document.getElementById("picture");
-    var feedbacks = document.getElementById("feedbacks");
     pageNotFound.innerHTML = ` <br>
                                 <div class="errorStlye">
                                     <div class="d-flex justify-content-center" >
@@ -328,9 +349,7 @@ function showProductNotFound(jsonData) {
                                         <img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812">
                                     </div>
                                  </div>`
-    productText.innerHTML = "";
-    picture.innerHTML = "";
-    feedbacks.innerHTML = "";
+    content.style.display = "none";
 }
 
 //Init Star Rating System

@@ -109,3 +109,9 @@
     font-family: 'surf';
     src: url(../font/tropical_asian.ttf);
 }
+.picture {
+    max-width:450px;
+}
+.picture:hover {
+    transform: scale(1.2);
+}
