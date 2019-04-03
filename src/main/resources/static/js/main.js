@@ -32,7 +32,6 @@ function fetchProducts() {
         return response.json();
     })
     .then(function (jsonData) {
-        console.log(jsonData);
         listProducts(jsonData);
     });
 }
