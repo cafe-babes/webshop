@@ -167,7 +167,7 @@ function fetchCategories(){
 
 
      function editImageTds(productId){
-       location.replace("/upload.html/?productId=" + productId );
+       location.replace("/upload.html?productId=" + productId );
         }
 
 
