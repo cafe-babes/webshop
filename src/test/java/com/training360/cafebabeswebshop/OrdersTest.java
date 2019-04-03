@@ -39,7 +39,7 @@ public class OrdersTest {
     public void contextLoads() {
         List<Order> orders = orderController.listAllOrders();
 
-        assertEquals(orders.size(), 5);
+        assertEquals(4, orders.size());
 
     }
 
@@ -196,7 +196,7 @@ public class OrdersTest {
         long quantity = orders.get(0).getSumQuantity();
 
         //Then
-        assertEquals(quantity, 5L);
+        assertEquals(quantity, 3L);
     }
 
     @Test
@@ -209,7 +209,7 @@ public class OrdersTest {
         long value = orders.get(0).getTotal();
 
         //Then
-        assertEquals(value, 1300800L);
+        assertEquals(value, 96600L);
     }
 
     @Test
