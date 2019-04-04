@@ -5,7 +5,7 @@ function fetchImage(productId) {
     console.log(productImage);
     console.log(productId);
 
-    fetch('/image/' + productId)
+    fetch('/image/' + productId + '/' + 0)
     .then(function(response) {
           if(response.status == 200) {
             return response.blob();

@@ -178,9 +178,9 @@ function showIncomeTable(jsonData){
                 {
                     "values" : [
                         0,
-                        jsonData[0].total,
+                        jsonData[2].total,
                         jsonData[1].total,
-                        jsonData[2].total
+                        jsonData[0].total
 //                        jsonData[2].total,
 //                        jsonData[3].total,
 //                        jsonData[4].total,
