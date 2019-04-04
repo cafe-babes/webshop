@@ -4,6 +4,7 @@ delete from orders;
 delete from delivery;
 delete from basket;
 delete from users;
+delete from images;
 delete from products;
 delete from category;
 
