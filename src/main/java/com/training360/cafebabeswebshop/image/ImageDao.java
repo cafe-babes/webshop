@@ -20,8 +20,8 @@ public class ImageDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Image getImage(long ProductId, long offset) throws EmptyResultDataAccessException {
-        return jdbcTemplate.queryForObject("select id, image_file, file_type, file_name, product_id from images where product_id = ? LIMIT 1 OFFSET ?", new ImageRowMapper(), ProductId, offset);
+    public Image getImage(long productId, long offset) throws EmptyResultDataAccessException {
+        return jdbcTemplate.queryForObject("select id, image_file, file_type, file_name, product_id from images where product_id = ? LIMIT 1 OFFSET ?", new ImageRowMapper(), productId, offset);
     }
 
     public void saveImage(Image image) {
@@ -32,6 +32,10 @@ public class ImageDao {
             System.out.println(daex.getMessage());
             throw new IllegalArgumentException("Cannot save image", daex);
         }
+    }
+
+    public int deleteImage(long productId, long offset) {
+        return jdbcTemplate.update("DELETE FROM images WHERE id = (select id from (select id from images where product_id = ? LIMIT 1 OFFSET ?) x)", productId, offset);
     }
 
     private static class ImageRowMapper implements RowMapper<Image> {

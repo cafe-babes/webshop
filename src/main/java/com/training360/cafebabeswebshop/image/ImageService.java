@@ -14,16 +14,19 @@ public class ImageService {
         this.imageDao = imageDao;
     }
 
-    public Image getImage(long id, long offset) {
+    public Image getImage(long productId, long offset) {
         try {
-            return imageDao.getImage(id, offset);
+            return imageDao.getImage(productId, offset);
         } catch (EmptyResultDataAccessException sql) {
-            // nothing to do here, JS handles default image
+            return null;
         }
-        return null;
     }
 
     public void saveImage(Image image) {
         imageDao.saveImage(image);
+    }
+
+    public int deleteImage(long productId, long offset) {
+        return imageDao.deleteImage(productId, offset);
     }
 }
