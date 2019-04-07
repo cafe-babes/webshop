@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.user;
 
-import java.util.List;
-
 public class UserValidator {
 
     UserService userService;

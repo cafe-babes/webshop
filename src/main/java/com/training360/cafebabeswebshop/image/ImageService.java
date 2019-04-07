@@ -3,8 +3,6 @@ package com.training360.cafebabeswebshop.image;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ImageService {
 

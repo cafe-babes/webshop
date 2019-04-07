@@ -1,7 +1,6 @@
 package com.training360.cafebabeswebshop.order;
 
 import com.training360.cafebabeswebshop.delivery.Delivery;
-import com.training360.cafebabeswebshop.product.Product;
 import com.training360.cafebabeswebshop.product.ProductService;
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
@@ -10,23 +9,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController
 public class OrderController {
 
     private OrderService orderService;
-    private UserService userService;
-    private ProductService productService;
     private OrderValidator validator;
 
     public OrderController(OrderService orderService, UserService userService, ProductService productService) {
         this.orderService = orderService;
-        this.userService = userService;
-        this.productService = productService;
         this.validator = new OrderValidator(orderService, userService, productService);
     }
 
@@ -75,7 +67,6 @@ public class OrderController {
                 return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id, or address");
             }
         } catch (DataAccessException sql) {
-            sql.printStackTrace();
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Invalid id, or address");
         }
     }
@@ -91,7 +82,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders/piece")
-    public void updateOrderedProductPiece(@RequestBody OrderedProduct op){
+    public void updateOrderedProductPiece(@RequestBody OrderedProduct op) {
         orderService.updateOrderedProductPiece(op);
     }
 

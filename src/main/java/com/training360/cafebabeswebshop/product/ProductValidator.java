@@ -2,12 +2,6 @@ package com.training360.cafebabeswebshop.product;
 
 public class ProductValidator {
 
-    private ProductService productService;
-
-    public ProductValidator(ProductService productService) {
-        this.productService = productService;
-    }
-
     public boolean isValidProduct(Product product){
         return isValid(product.getCode()) &&
                 isValid(product.getName()) &&

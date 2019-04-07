@@ -1,15 +1,8 @@
 package com.training360.cafebabeswebshop.category;
 
-import com.training360.cafebabeswebshop.product.ResultStatus;
-import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,7 +15,7 @@ public class CategoryService {
         return categoryDao.listCategories();
     }
 
-    public long createCategoryAndGetId(Category category) throws DataAccessException {
+    public long createCategoryAndGetId(Category category) {
         long max = categoryDao.getMaxOrdinal();
         if (max + 1 < category.getOrdinal() || category.getOrdinal() < 0) {
             return -1;
@@ -46,7 +39,7 @@ public class CategoryService {
         return categoryDao.getMinOrdinal();
     }
 
-    public void deleteCategory(long id) {
+    public int deleteCategory(long id) {
         long ordinal = 0;
         List<Category> categories = categoryDao.listCategories();
 
@@ -55,12 +48,13 @@ public class CategoryService {
                 ordinal = c.getOrdinal();
             }
         }
-        categoryDao.deleteCategory(id);
+        int rowCount = categoryDao.deleteCategory(id);
         for (Category category : categories) {
             if (category.getOrdinal() > ordinal) {
                 categoryDao.decreaseOrdinal(category.getOrdinal());
             }
         }
+        return rowCount;
     }
 
     public Object getCategory(String name) {
@@ -68,7 +62,7 @@ public class CategoryService {
     }
 
 
-    public int updateCategory(long id, Category category) throws DataAccessException {
+    public int updateCategory(long id, Category category) {
         List<Category> categories = categoryDao.listCategories();
         long originalOrdinal = category.getOrdinal();
 

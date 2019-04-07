@@ -12,13 +12,13 @@ import java.util.List;
 @Repository
 public class FeedbackDao {
 
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    ProductDao productDao;
+    private ProductDao productDao;
 
     private final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
             rs.getLong("id"),

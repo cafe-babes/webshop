@@ -25,50 +25,49 @@ import static org.junit.Assert.assertEquals;
 public class DeliveryTest {
 
     @Autowired
-    DeliveryDao deliveryDao;
+    private DeliveryDao deliveryDao;
     @Autowired
-    DeliveryService deliveryService;
+    private DeliveryService deliveryService;
     @Autowired
-    DeliveryController deliveryController;
+    private DeliveryController deliveryController;
 
     @Test
-    public void deliveryCreateTest(){
+    public void deliveryCreateTest() {
 
         Delivery delivery = new Delivery(0, "Szeged Szeva u. 11.", 4);
 
-        assertEquals(delivery.getDeliveryAddress(), "Szeged Szeva u. 11.");
-        assertEquals(delivery.getUserId(), 4);
+        assertEquals("Szeged Szeva u. 11.", delivery.getDeliveryAddress());
+        assertEquals(4, delivery.getUserId());
 
     }
 
     @Test
-    public void setDeliveryCreateTest(){
+    public void setDeliveryCreateTest() {
 
         Delivery delivery = new Delivery(0, "Szeged Szeva u. 11.", 4);
 
         delivery.setDeliveryId(1);
-        assertEquals(delivery.getDeliveryId(), 1);
+        assertEquals(1, delivery.getDeliveryId());
 
         delivery.setDeliveryAddress("Szolnok Szeva u. 12");
-        assertEquals(delivery.getDeliveryAddress(), "Szolnok Szeva u. 12");
+        assertEquals("Szolnok Szeva u. 12", delivery.getDeliveryAddress());
 
         delivery.setUserId(5);
-        assertEquals(delivery.getUserId(), 5);
+        assertEquals(5, delivery.getUserId());
 
     }
 
 
-
     @Test
-    public void listDeliveriesTest(){
+    public void listDeliveriesTest() {
 
         List<Delivery> deliveries = deliveryDao.getDeliveries();
 
-        assertEquals(deliveries.size(), 1);
+        assertEquals(1, deliveries.size());
     }
 
     @Test
-    public void addNewDeliveryTest(){
+    public void addNewDeliveryTest() {
 
         Delivery delivery = new Delivery(0, "Szeged Szeva u. 11.", 4);
 
@@ -77,13 +76,13 @@ public class DeliveryTest {
 
         List<Delivery> deliveries = deliveryDao.getDeliveries();
 
-        assertEquals(deliveries.get(deliveries.size()-1).getDeliveryId(), id);
-        assertEquals(deliveries.get(deliveries.size()-1).getDeliveryAddress(), "Szeged Szeva u. 11.");
+        assertEquals(deliveries.get(deliveries.size() - 1).getDeliveryId(), id);
+        assertEquals("Szeged Szeva u. 11.", deliveries.get(deliveries.size() - 1).getDeliveryAddress());
 
     }
 
     @Test
-    public void getDeliveryByIdControllerTest(){
+    public void getDeliveryByIdControllerTest() {
 
         Delivery delivery = new Delivery(0, "Szeged Szeva u. 11.", 4);
 
@@ -91,12 +90,12 @@ public class DeliveryTest {
 
         Delivery result = deliveryController.getDeliveryById(id);
 
-        assertEquals(result.getDeliveryAddress(), "Szeged Szeva u. 11.");
+        assertEquals("Szeged Szeva u. 11.", result.getDeliveryAddress());
     }
 
     @Test
 
-    public void getDeliveriesByUserIdControllerTest(){
+    public void getDeliveriesByUserIdControllerTest() {
 
         TestingAuthenticationToken tat = new TestingAuthenticationToken("user", "user");
 
@@ -106,6 +105,6 @@ public class DeliveryTest {
 
         List<Delivery> deliveries = deliveryController.getDeliveriesByUserId(tat);
 
-        assertEquals(deliveries.size(), 2);
+        assertEquals(2, deliveries.size());
     }
 }

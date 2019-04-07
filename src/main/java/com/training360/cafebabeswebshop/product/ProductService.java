@@ -1,12 +1,7 @@
 package com.training360.cafebabeswebshop.product;
 
-
 import com.training360.cafebabeswebshop.category.Category;
 import com.training360.cafebabeswebshop.category.CategoryDao;
-import com.training360.cafebabeswebshop.order.Order;
-import com.training360.cafebabeswebshop.order.OrderDao;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -15,15 +10,12 @@ import java.util.List;
 @Service
 public class ProductService {
 
-
     private ProductDao productDao;
     private CategoryDao categoryDao;
-    private OrderDao orderDao;
 
-    public ProductService(ProductDao productDao, CategoryDao categoryDao, OrderDao orderDao) {
+    public ProductService(ProductDao productDao, CategoryDao categoryDao) {
         this.productDao = productDao;
         this.categoryDao = categoryDao;
-        this.orderDao = orderDao;
     }
 
     public Product getProduct(String address) {
@@ -41,16 +33,16 @@ public class ProductService {
         return productDao.getProductsWithStartAndSizeAndCategory(start, size, category);
     }
 
-    public long saveProductAndGetId(Product product) throws DataAccessException {
+    public long saveProductAndGetId(Product product) {
         for (Category category : categoryDao.listCategories()) {
             if (category.getName().equals(product.getCategory().getName()))
                 return productDao.saveProductAndGetId(product);
         }
-        categoryDao.createCategoryAndGetId(product.getCategory());//TODO
+        categoryDao.createCategoryAndGetId(product.getCategory());
         return productDao.saveProductAndGetId(product);
     }
 
-    public void updateProducts(long id, Product product) throws DataAccessException {
+    public void updateProducts(long id, Product product) {
         productDao.updateProduct(id, product);
     }
 

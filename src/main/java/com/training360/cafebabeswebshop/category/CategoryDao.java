@@ -1,20 +1,15 @@
 package com.training360.cafebabeswebshop.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.io.*;
 import java.sql.*;
 import java.util.List;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Properties;
 
 @Repository
 public class CategoryDao {
@@ -33,7 +28,7 @@ public class CategoryDao {
                 CATEGORY_ROW_MAPPER);
     }
 
-    public long createCategoryAndGetId(Category category) throws DataAccessException {
+    public long createCategoryAndGetId(Category category) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO category (name, ordinal) VALUES (?,?)",
@@ -67,15 +62,15 @@ public class CategoryDao {
         return jdbcTemplate.query("select name from category", (resultSet, i) -> resultSet.getString("name"));
     }
 
-    public void deleteCategory(long id) {
-        jdbcTemplate.update("delete from category where id = ?", id);
+    public int deleteCategory(long id) {
+        return jdbcTemplate.update("delete from category where id = ?", id);
     }
 
     public Category getCategory(String name) {
         return jdbcTemplate.queryForObject("select id, name, ordinal from category where name = ?", CATEGORY_ROW_MAPPER, name);
     }
 
-    public int updateCategory(long id, Category category) throws DataAccessException{
+    public int updateCategory(long id, Category category){
         return jdbcTemplate.update("update category set name = ?, ordinal = ? where id = ?",
                 category.getName(),
                 category.getOrdinal(),

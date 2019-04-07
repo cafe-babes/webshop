@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     private CategoryValidator categoryValidator;
 
@@ -34,23 +34,25 @@ public class CategoryController {
         try {
             long response = categoryService.createCategoryAndGetId(category);
             if (response==-1)
-                return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
             return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva!");
         } catch (DataAccessException sql) {
-            sql.printStackTrace();
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
         }
     }
 
     @DeleteMapping("/categories/{id}")
-    public void deleteCategory(@PathVariable long id){
-        categoryService.deleteCategory(id);
+    public ResultStatus deleteCategory(@PathVariable long id){
+        if(categoryService.deleteCategory(id) >= 0)
+            return new ResultStatus(ResultStatusEnum.OK, "Sikeres törlés!");
+        else
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Sikertelen törlés!");
     }
 
     @GetMapping("/categories/{name}")
     public Object getCategory(@PathVariable String name){
         categoryValidator = new CategoryValidator(categoryService);
-        List<String> names = categoryService.listCategories().stream().map(p -> p.getName()).collect(Collectors.toList());
+        List<String> names = categoryService.listCategories().stream().map(Category::getName).collect(Collectors.toList());
         if(categoryValidator.isValidName(name) && names.contains(name)){
             return categoryService.getCategory(name);
         } else {
@@ -73,8 +75,6 @@ public class CategoryController {
                 return new ResultStatus(ResultStatusEnum.NOT_OK, "Az adott név már létezik");
             }
         } else {
-            System.out.println(categoryValidator.isValidName(category.getName()));
-            System.out.println(categoryValidator.isValidOrder(category.getOrdinal()));
             return new ResultStatus(ResultStatusEnum.NOT_OK, "az adott sorszámnak a meglévők között kell lennie!");
         }
     }

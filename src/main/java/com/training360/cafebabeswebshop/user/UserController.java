@@ -72,19 +72,17 @@ public class UserController {
 
     @PostMapping("/users")
     public ResultStatus createUser(@RequestBody User user) {
-        System.out.println(user);
         userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
             long id;
             try {
                 id = userService.insertUserAndGetId(user);
             } catch (DataAccessException sql) {
-                sql.printStackTrace();
                 return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("\"%s\" már regisztrált felhasználó!", user.getUserName()));
             }
             return new ResultStatus(ResultStatusEnum.OK, String.format("\"%s\" sikeresen mentésre került. ( id: %d )", user.getUserName(), id));
         }
-        return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");//TODO
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");
     }
 
     @GetMapping("/users/{id}")

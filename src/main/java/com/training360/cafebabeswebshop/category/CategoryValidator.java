@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.category;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class CategoryValidator {
     private CategoryService categoryService;
 

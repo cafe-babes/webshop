@@ -56,8 +56,8 @@ public class BasketTests {
         long productIdNumberOneSurfWaver = basketItemsBeforeDelete.stream().filter(p -> p.getAddress().equals("surf_waver")).findFirst().get().getProductId();
         long productIdNumberTwoSurfSlayer2 = basketItemsBeforeDelete.stream().filter(p -> p.getAddress().equals("surf_slayer2")).findFirst().get().getProductId();
 
-        assertEquals(productIdNumberOneSurfWaver, 5);
-        assertEquals(productIdNumberTwoSurfSlayer2, 3);
+        assertEquals(5, productIdNumberOneSurfWaver);
+        assertEquals(3,productIdNumberTwoSurfSlayer2);
 
         // When
         basketController.deleteOneItem(new TestingAuthenticationToken("user", "user", "ROLE_USER"), "surf_slayer2");

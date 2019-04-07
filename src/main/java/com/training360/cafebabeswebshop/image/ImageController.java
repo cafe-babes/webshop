@@ -18,8 +18,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-
-    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    @PostMapping("/image")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) {
         Image image = new Image();
         String fileName = file.getOriginalFilename();
@@ -59,6 +58,6 @@ public class ImageController {
     @DeleteMapping("/image/{id}/{offset}")
     public ResponseEntity<String> deleteImage(@PathVariable("id") long productId, @PathVariable("offset") long offset) {
         int rowCount = imageService.deleteImage(productId, offset);
-        return rowCount >=1 ? ResponseEntity.ok("Kép sikeresen törölve!") : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return rowCount >= 1 ? ResponseEntity.ok("Kép sikeresen törölve!") : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
