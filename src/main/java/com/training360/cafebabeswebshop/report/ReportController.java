@@ -10,9 +10,11 @@ import java.util.List;
 @RestController
 public class ReportController {
 
-    @Autowired
     private ReportService reportService;
 
+    public ReportController(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
     @GetMapping("/reports/orders")
     public List<OrderReport> getMonthlyIncomeOfOrders(){
