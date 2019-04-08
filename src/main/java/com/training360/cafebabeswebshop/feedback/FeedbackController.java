@@ -12,15 +12,16 @@ public class FeedbackController {
 
     FeedbackService feedbackService;
 
+    FeedbackValidator feedbackValidator;
+
     public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
+        feedbackValidator = new FeedbackValidator();
     }
 
     @PostMapping("/feedback")
     public ResultStatus giveAFeedback(@RequestBody Feedback feedback){
-        Pattern p = Pattern.compile("<[^>]*>");
-        Matcher m = p.matcher(feedback.getFeedback());
-        if(m.find()){
+        if(feedbackValidator.containsHTMLCode(feedback)){
             return new ResultStatus(ResultStatusEnum.NOT_OK,"HTML kód nem megengedett");
         }
         if(feedbackService.giveAFeedback(feedback)){
@@ -29,7 +30,7 @@ public class FeedbackController {
         return new ResultStatus(ResultStatusEnum.NOT_OK,"Még nem szállítottunk ilyen terméket Önnek.");
     }
 
-    @RequestMapping("/feedback/{productId}")
+    @GetMapping("/feedback/{productId}")
     public List<Feedback> listFeedBacksByProductId(@PathVariable long productId){
         return feedbackService.listFeedBacksByProductId(productId);
     }
