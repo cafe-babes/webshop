@@ -27,7 +27,10 @@ function fetchProductReport() {
 function showIncomeTable(jsonData){
     console.log(jsonData);
     var incomeTable = document.getElementById("income-table");
-
+    var february = 0;
+    var march = 0;
+    var april = 0;
+    var may = 0;
 
     for(var i = 0; i<jsonData.length; i++) {
 
@@ -55,6 +58,18 @@ function showIncomeTable(jsonData){
         tr.appendChild(countTd);
 
         incomeTable.appendChild(tr);
+        if(jsonData[i].month == 2){
+            february += jsonData[i].total;
+        }
+        if(jsonData[i].month == 3){
+            march += jsonData[i].total;
+        }
+        if(jsonData[i].month == 4){
+            april += jsonData[i].total;
+        }
+        if(jsonData[i].month == 5){
+            may += jsonData[i].total;
+        }
     }
 
 
@@ -177,21 +192,11 @@ function showIncomeTable(jsonData){
             "series": [
                 {
                     "values" : [
-                        0,
-                        jsonData[2].total,
-                        jsonData[1].total,
-                        jsonData[0].total
-//                        jsonData[2].total,
-//                        jsonData[3].total,
-//                        jsonData[4].total,
-//                        jsonData[5].total,
-//                        jsonData[6].total,
-//                        jsonData[7].total,
-//                        jsonData[8].total,
-//                        jsonData[9].total,
-//                        jsonData[10].total,
-//                        jsonData[11].total,
-//                        jsonData[12].total
+                           0,
+                          february,
+                          march,
+                          april,
+                          may
                         ],
                     "background-color": "#90A23B"
                 },
@@ -212,6 +217,10 @@ function showIncomeTable(jsonData){
 function showProductTable(jsonData){
     console.log(jsonData);
     var tradeTable = document.getElementById("trade-table");
+    var february = 0;
+    var march = 0;
+    var april = 0;
+    var may = 0;
 
     for(var i = 0; i<jsonData.length; i++) {
 
@@ -243,6 +252,19 @@ function showProductTable(jsonData){
         tr.appendChild(totalTd);
 
         tradeTable.appendChild(tr);
+
+        if(jsonData[i].month == 2){
+            february += jsonData[i].total;
+        }
+        if(jsonData[i].month == 3){
+            march += jsonData[i].total;
+        }
+        if(jsonData[i].month == 4){
+            april += jsonData[i].total;
+        }
+        if(jsonData[i].month == 5){
+            may += jsonData[i].total;
+        }
 
     }
 
@@ -366,20 +388,10 @@ function showProductTable(jsonData){
                     {
                         "values" : [
                             0,
-                            jsonData[0].total,
-                            jsonData[1].total,
-    //                        jsonData[2].total
-    //                        jsonData[2].total,
-    //                        jsonData[3].total,
-    //                        jsonData[4].total,
-    //                        jsonData[5].total,
-    //                        jsonData[6].total,
-    //                        jsonData[7].total,
-    //                        jsonData[8].total,
-    //                        jsonData[9].total,
-    //                        jsonData[10].total,
-    //                        jsonData[11].total,
-    //                        jsonData[12].total
+                            february,
+                            march,
+                            april,
+                            may
                             ],
                         "background-color": "#90A23B"
                     },
