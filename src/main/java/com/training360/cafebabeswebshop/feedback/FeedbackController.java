@@ -10,8 +10,11 @@ import java.util.regex.Pattern;
 @RestController
 public class FeedbackController {
 
-    @Autowired
     FeedbackService feedbackService;
+
+    public FeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
 
     @PostMapping("/feedback")
     public ResultStatus giveAFeedback(@RequestBody Feedback feedback){
