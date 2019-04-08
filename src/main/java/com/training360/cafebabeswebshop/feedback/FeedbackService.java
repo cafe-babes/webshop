@@ -46,7 +46,7 @@ public class FeedbackService {
         return feedbackWasSuccessful;
     }
 
-    public boolean deleteFeedbackByIdWasSuccessful(long id) {
+    public boolean deleteFeedbackWasSuccessful(long id) {
         boolean sizeOfFeedbacksHasDecreasedByOne = false;
         int sizeOfFeedbackListBeforeDeletion = feedbackDao.getSizeOfFeedbacks();
         feedbackDao.deleteFeedbackById(id);

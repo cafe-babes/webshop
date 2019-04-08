@@ -34,7 +34,7 @@ public class FeedbackController {
 
     @DeleteMapping("/feedback/{id}")
     public ResultStatus deleteFeedbackById(@PathVariable long id){
-        if(feedbackService.deleteFeedbackByIdWasSuccessful(id)){
+        if(feedbackService.deleteFeedbackWasSuccessful(id)){
             return new ResultStatus(ResultStatusEnum.OK,"Sikeres törlés!");
         }
         return new ResultStatus(ResultStatusEnum.NOT_OK,"A törlés sikertelen.");
