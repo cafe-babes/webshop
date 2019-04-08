@@ -1,11 +1,8 @@
 package com.training360.cafebabeswebshop.feedback;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 public class FeedbackController {
@@ -36,8 +33,11 @@ public class FeedbackController {
     }
 
     @DeleteMapping("/feedback/{id}")
-    public void deleteFeedbackById(@PathVariable long id){
-        feedbackService.deleteFeedbackById(id);
+    public ResultStatus deleteFeedbackById(@PathVariable long id){
+        if(feedbackService.deleteFeedbackByIdWasSuccessful(id)){
+            return new ResultStatus(ResultStatusEnum.OK,"Sikeres törlés!");
+        }
+        return new ResultStatus(ResultStatusEnum.NOT_OK,"A törlés sikertelen.");
     }
 
 

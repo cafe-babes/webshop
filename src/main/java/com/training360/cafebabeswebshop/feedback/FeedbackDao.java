@@ -74,4 +74,8 @@ public class FeedbackDao {
         return jdbcTemplate.queryForObject("SELECT id FROM feedback WHERE user_id = ? AND product_id = ?", Integer.class, userId, productId);
     }
 
+    public int getSizeOfFeedbacks(){
+        return jdbcTemplate.queryForObject("SELECT count(*) FROM feedback", Integer.class);
+    }
+
 }
