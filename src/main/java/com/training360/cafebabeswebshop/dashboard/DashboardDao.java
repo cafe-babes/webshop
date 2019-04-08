@@ -1,25 +1,11 @@
 package com.training360.cafebabeswebshop.dashboard;
 
-import com.training360.cafebabeswebshop.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class DashboardDao {
     private JdbcTemplate jdbcTemplate;
-    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User(
-            rs.getLong("id"),
-            rs.getString("name"),
-            rs.getString("email"),
-            rs.getString("user_name"),
-            rs.getString("password"),
-            rs.getInt("enabled"),
-            rs.getString("role"),
-            rs.getString("user_status")
-    );
-
 
     public DashboardDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

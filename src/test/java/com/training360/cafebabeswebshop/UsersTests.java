@@ -2,6 +2,7 @@ package com.training360.cafebabeswebshop;
 
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserController;
+import com.training360.cafebabeswebshop.user.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,14 @@ public class UsersTests {
     @Autowired
     private UserController userController;
 
+    @Test
+    public void testUserInfoGetterSetter() {
+        UserInfo userInfo = new UserInfo("ADMIN", "bela");
+        userInfo.setRole("USER");
+        userInfo.setUserName("jushua");
+        assertEquals("USER", userInfo.getRole());
+        assertEquals("jushua", userInfo.getUserName());
+    }
 
     @Test
     public void testListUsers() {

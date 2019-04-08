@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.feedback;
 
-
-import com.training360.cafebabeswebshop.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +10,11 @@ import java.util.regex.Pattern;
 @RestController
 public class FeedbackController {
 
-    @Autowired
     FeedbackService feedbackService;
+
+    public FeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
 
     @PostMapping("/feedback")
     public ResultStatus giveAFeedback(@RequestBody Feedback feedback){

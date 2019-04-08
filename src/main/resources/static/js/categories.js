@@ -17,23 +17,17 @@ for (var i = 0; i < jsonData.length; i++) {
     var tr = document.createElement("tr");
     tr["raw-data"] = jsonData[i];
 
-    var idTd = document.createElement("td");
-    idTd.innerHTML = jsonData[i].id;
-    var idTdId = 'idTd' + i;
-    idTd.setAttribute('id', idTdId);
-    tr.appendChild(idTd);
+    var ordinalTd = document.createElement("td");
+    ordinalTd.innerHTML = jsonData[i].ordinal;
+    var ordinalTdId = 'ordinalTd' + i;
+    ordinalTd.setAttribute('id', ordinalTdId);
+    tr.appendChild(ordinalTd);
 
     var nameTd = document.createElement("td");
     nameTd.innerHTML = jsonData[i].name;
     var nameTdId = 'nameTd' + i;
     nameTd.setAttribute('id', nameTdId);
     tr.appendChild(nameTd);
-
-    var ordinalTd = document.createElement("td");
-    ordinalTd.innerHTML = jsonData[i].ordinal;
-    var ordinalTdId = 'ordinalTd' + i;
-    ordinalTd.setAttribute('id', ordinalTdId);
-    tr.appendChild(ordinalTd);
 
     var editButtonTd = document.createElement("td");
     var editButton = document.createElement("button");
@@ -121,13 +115,12 @@ function saveTds(num){
            document.getElementById(`nameTd${num}`).innerHTML = name;
            document.getElementById(`ordinalTd${num}`).innerHTML = ordinal;
 
-            fetchCategories();
+           fetchCategories();
            document.getElementById("message-div").setAttribute("class", "alert alert-success");
-           document.getElementById("message-div").innerHTML = "Frissítve";
         } else {
             document.getElementById("message-div").setAttribute("class", "alert alert-danger");
-            document.getElementById("message-div").innerHTML = "Frissítés nem sikerült";
         }
+        document.getElementById("message-div").innerHTML = jsonData.message;
     });
     return false;
 }
@@ -137,12 +130,10 @@ function showNewRow(length){
     var table = document.querySelector("#admincategories-table");
     var tr = document.createElement('tr');
 
-    var idTd = document.createElement('td');
-    idTd.setAttribute('id', `idTd${num}`);
-    var nameTd = document.createElement('td');
-    nameTd.setAttribute('id', `nameTd${num}`);
     var ordinalTd = document.createElement('td');
     ordinalTd.setAttribute('id', `ordinalTd${num}`);
+    var nameTd = document.createElement('td');
+    nameTd.setAttribute('id', `nameTd${num}`);
 
     var saveButtonTd = document.createElement('td');
     var saveButton = document.createElement('button');
@@ -161,7 +152,8 @@ function showNewRow(length){
     saveButton.innerHTML = `<i class="fa fa-save"></i>Mentés`;
     deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>Törlés`;
 
-    tr.appendChild(idTd); tr.appendChild(nameTd); tr.appendChild(ordinalTd);
+    tr.appendChild(ordinalTd);
+    tr.appendChild(nameTd);
     tr.appendChild(saveButtonTd); tr.appendChild(deleteButtonTd);
     table.appendChild(tr);
 
@@ -187,20 +179,18 @@ function addNewCategory(num){
         })
         .then(function (response) {
             return response.json();
-        }).
-    then(function (jsonData) {
-        if (jsonData.status == "OK") {
-
-            document.getElementById(`nameTd${num}`).innerHTML = name;
-            document.getElementById(`ordinalTd${num}`).innerHTML = ordinal;
-            fetchCategories();
-            document.getElementById("message-div").setAttribute("class", "alert alert-success");
-            document.getElementById("message-div").innerHTML = "Új kategória hozzáadva";
-        } else {
-            document.getElementById("message-div").setAttribute("class", "alert alert-danger");
-            document.getElementById("message-div").innerHTML = "A beszúrás sikertelen";
-        }
-    });
+        })
+        .then(function (jsonData) {
+            if (jsonData.status == "OK") {
+                document.getElementById(`nameTd${num}`).innerHTML = name;
+                document.getElementById(`ordinalTd${num}`).innerHTML = ordinal;
+                fetchCategories();
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+            } else {
+                document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+            }
+            document.getElementById("message-div").innerHTML = jsonData.message;
+        });
     return false;
 }
 
@@ -221,8 +211,14 @@ function deleteCategory(num){
             method: "DELETE",
     })
     .then(function (response) {
-        document.getElementById("message-div").setAttribute("class", "alert alert-success");
-        document.querySelector("#message-div").innerHTML = "Törölve"
+        return response.json();
+    })
+    .then(function (jsonData) {
+        if(jsonData.status == "OK")
+            document.getElementById("message-div").setAttribute("class", "alert alert-success");
+        else
+            document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+        document.querySelector("#message-div").innerHTML = jsonData.message;
         fetchCategories();
     });
 }

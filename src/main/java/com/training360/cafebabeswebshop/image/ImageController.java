@@ -18,8 +18,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-
-    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    @PostMapping("/image")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) {
         Image image = new Image();
         String fileName = file.getOriginalFilename();
@@ -44,9 +43,9 @@ public class ImageController {
     }
 
     @GetMapping("/image/{id}/{offset}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id, @PathVariable("offset") long offset) {
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") long productId, @PathVariable("offset") long offset) {
         try {
-            Image image = imageService.getImage(id, offset);
+            Image image = imageService.getImage(productId, offset);
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=" + image.getFileName())
                     .contentType(image.getMediaType())
@@ -54,5 +53,11 @@ public class ImageController {
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+    }
+
+    @DeleteMapping("/image/{id}/{offset}")
+    public ResponseEntity<String> deleteImage(@PathVariable("id") long productId, @PathVariable("offset") long offset) {
+        int rowCount = imageService.deleteImage(productId, offset);
+        return rowCount >= 1 ? ResponseEntity.ok("Kép sikeresen törölve!") : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

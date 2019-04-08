@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.feedback;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +29,6 @@ public class FeedbackService {
         try {
             feedbackId = feedbackDao.getFeedbackIdByUserIdAndProductId(userId, productId);
         }catch (DataAccessException dae){
-            dae.printStackTrace();
             feedbackId = 0;
         }
 

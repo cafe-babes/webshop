@@ -1,7 +1,6 @@
 package com.training360.cafebabeswebshop.basket;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -30,7 +29,7 @@ public class BasketDao {
             resultSet.getInt("pieces")
     ));
 
-    public long saveBasketItemAndGetId(BasketItem basketItem) throws DataAccessException {
+    public long saveBasketItemAndGetId(BasketItem basketItem) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {

@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.user;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -49,7 +48,7 @@ public class UserDao {
                 user.getName(), user.getEmail(), user.getUserName(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
-    public long insertUserAndGetId(User user) throws DataAccessException {
+    public long insertUserAndGetId(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {

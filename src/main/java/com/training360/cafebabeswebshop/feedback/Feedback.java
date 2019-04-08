@@ -5,8 +5,7 @@ import com.training360.cafebabeswebshop.user.User;
 
 import java.time.LocalDateTime;
 
-public class
-Feedback {
+public class Feedback {
 
     private long id;
     private LocalDateTime feedbackDate;

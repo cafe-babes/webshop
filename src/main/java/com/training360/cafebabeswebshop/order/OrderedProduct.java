@@ -10,12 +10,8 @@ public class OrderedProduct {
     private int pieces;
 
     public OrderedProduct(long id, long productId, long orderId, long orderingPrice, String orderingName, int pieces) {
+        this(productId, orderId, orderingPrice, orderingName, pieces);
         this.id = id;
-        this.productId = productId;
-        this.orderId = orderId;
-        this.orderingPrice = orderingPrice;
-        this.orderingName = orderingName;
-        this.pieces = pieces;
     }
 
     public OrderedProduct(long productId, long orderId, long orderingPrice, String orderingName, int pieces) {
