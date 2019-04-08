@@ -9,7 +9,7 @@ import java.util.List;
 public class FeedbackService {
 
 
-    FeedbackDao feedbackDao;
+    private FeedbackDao feedbackDao;
 
     public FeedbackService(FeedbackDao feedbackDao) {
         this.feedbackDao = feedbackDao;
@@ -31,8 +31,6 @@ public class FeedbackService {
         }catch (DataAccessException dae){
             feedbackId = 0;
         }
-
-
         if (feedbackDao.alreadyGaveAFeedback(userId, productId)) {
 
             feedbackDao.updateFeedback(feedback, feedbackId);

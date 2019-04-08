@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 @RestController
 public class FeedbackController {
 
-    FeedbackService feedbackService;
+    private FeedbackService feedbackService;
 
-    FeedbackValidator feedbackValidator;
+    private FeedbackValidator feedbackValidator;
 
     public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class FeedbackValidator {
 
 
-    boolean containsHTMLCode(Feedback feedback){
+    public boolean containsHTMLCode(Feedback feedback){
         Pattern p = Pattern.compile("<[^>]*>");
         Matcher m = p.matcher(feedback.getFeedback());
         return m.find();
