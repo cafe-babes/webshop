@@ -30,6 +30,7 @@ function startUpload() {
         return response.text();
     }).then(message => {
         console.log(message);
+        alert(message);
         document.getElementById('uploadForm').reset();
         let messageNode = document.getElementById('messageP');
 //        messageNode.innerText = message;
