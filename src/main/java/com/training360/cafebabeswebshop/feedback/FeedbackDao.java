@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.feedback;
 
 import com.training360.cafebabeswebshop.product.ProductDao;
 import com.training360.cafebabeswebshop.user.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,10 +13,8 @@ public class FeedbackDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
     private UserDao userDao;
 
-    @Autowired
     private ProductDao productDao;
 
     private final RowMapper<Feedback> FEEDBACK_ROW_MAPPER = ((rs, i) -> new Feedback(
@@ -29,9 +26,10 @@ public class FeedbackDao {
             productDao.getProductById(rs.getLong("product_id"))
     ));
 
-
-    public FeedbackDao(JdbcTemplate jdbcTemplate) {
+    public FeedbackDao(JdbcTemplate jdbcTemplate, UserDao userDao, ProductDao productDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userDao = userDao;
+        this.productDao = productDao;
     }
 
     public List<Feedback> listFeedBacksByProductId(long productId) {

@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.basket;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,7 +13,6 @@ import java.util.List;
 @Repository
 public class BasketDao {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public BasketDao(JdbcTemplate jdbcTemplate) {

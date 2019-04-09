@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.user;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,10 +13,14 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
     private UserValidator userValidator;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+        this.userValidator = new UserValidator(userService);
+    }
 
     @GetMapping("/users")
     public List<User> listUsers() {
@@ -56,7 +59,6 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     public ResultStatus deleteUserById(@PathVariable long id) {
-        userValidator = new UserValidator(userService);
         if (userValidator.deletionWasSuccessFul(id)) {
             return new ResultStatus(ResultStatusEnum.OK, "A felhasználó törlése sikeres volt.");
         }
@@ -65,7 +67,6 @@ public class UserController {
 
     @PostMapping("/users/{id}")
     public ResultStatus updateUser(@PathVariable long id, @RequestBody User user) {
-        userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
             userService.updateUser(id, user);
             return new ResultStatus(ResultStatusEnum.OK, "A felhasználó sikeresen módosításra került");
@@ -75,7 +76,6 @@ public class UserController {
 
     @PostMapping("/users")
     public ResultStatus createUser(@RequestBody User user) {
-        userValidator = new UserValidator(userService);
         if (userValidator.userCanBeSaved(user)) {
             long id;
             try {

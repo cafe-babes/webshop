@@ -1,7 +1,5 @@
 package com.training360.cafebabeswebshop.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class User {
 
     private long id;

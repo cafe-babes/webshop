@@ -22,8 +22,6 @@ public class DashboardService {
         Dashboard dashboards = new Dashboard(userDao.listUsers().size(),
                 productDao.getAllProducts().size(), productDao.getProducts().size(),
                 orderDao.listAllOrders().size(), orderDao.listAllActiveOrders().size());
-        System.out.println(dashboards);
-        System.out.println(userDao.listUsers().size());
         return dashboards;
     }
 }
