@@ -10,18 +10,8 @@ public class CategoryValidator {
         this.categoryDao = categoryDao;
     }
 
-    public boolean isValidName(String str) {
-         return str != null && str.trim().length() != 0;
-    }
-
-    public boolean isValidOrder(long ordinal){
-        long max = categoryDao.getMaxOrdinal();
-        long min = categoryDao.getMinOrdinal();
-        return (max >= ordinal && ordinal >= min);
-    }
-
-    public boolean isValidOrdinal(long max, Category category) {
-        return max + 1 >= category.getOrdinal() && category.getOrdinal() >= 0;
+    public boolean isEmpty(String str) {
+         return str == null || str.trim().isEmpty();
     }
 
     public boolean isExistingCategoryName(Category category) {

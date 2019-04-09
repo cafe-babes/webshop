@@ -56,12 +56,12 @@ font-size: 150%;
 }
 
 .surf.medium {
-font-family: 'surf';
+font-family: 'surf', 'Comic Sans MS';
 font-size: 250%;
 }
 
 .surf.large {
-font-family: 'surf';
+font-family: 'surf', 'Comic Sans MS';
 font-size: 350%;
 }
 .btn-xl {

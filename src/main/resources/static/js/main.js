@@ -158,7 +158,7 @@ function listProducts(jsonData) {
                 id='img-${jsonData[i].id}'
                 alt="surfboard image">
             <div class="card-body">
-                <p class="card-text">${jsonData[i].name}</p>
+                <p class="card-text surf medium">${jsonData[i].name}</p>
                 <p class="card-text">${jsonData[i].manufacture}</p>
                 <div class="d-flex justify-content-between align-items-center">
                    <a href='product.html?address=${jsonData[i].address}'>

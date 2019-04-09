@@ -1,6 +1,6 @@
 package com.training360.cafebabeswebshop.basket;
 
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +19,21 @@ public class BasketService {
         basketItem.setUsername(authentication.getName());
         basketItem.setAddress(address);
         try {
-            return basketDao.saveBasketItemAndGetId(basketItem);
-        } catch (DataAccessException sql) {
-            int piecesAlreadyInBasket = basketDao.getBasketItem(basketItem.getUsername(), basketItem.getAddress()).getPieces();
-            basketItem.setPieces(basketItem.getPieces() + piecesAlreadyInBasket);
+            int piecesInBasket = basketDao.getBasketItem(basketItem).getPieces();
+            basketItem.setPieces(basketItem.getPieces() + piecesInBasket);
             basketDao.updateBasketItemPieces(basketItem);
-            return 0;
+            return basketItem.getBasketId();
+        } catch (EmptyResultDataAccessException noResult) {
+            return basketDao.saveBasketItemAndGetId(basketItem);
         }
     }
 
-    public void updateBasketItemPieces(Authentication authentication, BasketItem basketItem){
+    public void updateBasketItemPieces(Authentication authentication, BasketItem basketItem) {
         basketItem.setUsername(authentication.getName());
         basketDao.updateBasketItemPieces(basketItem);
     }
 
-    public List<BasketItem> getBasketItems(Authentication authentication){
+    public List<BasketItem> getBasketItems(Authentication authentication) {
         return basketDao.getBasketItems(authentication.getName());
     }
 

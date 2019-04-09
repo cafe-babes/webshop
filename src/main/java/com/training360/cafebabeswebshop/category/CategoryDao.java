@@ -14,8 +14,11 @@ import java.sql.PreparedStatement;
 @Repository
 public class CategoryDao {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+
+    public CategoryDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private static final RowMapper<Category> CATEGORY_ROW_MAPPER = (rs, rowNum) -> new Category(
             rs.getLong("id"),
@@ -50,11 +53,6 @@ public class CategoryDao {
                 (rs, rowNum) -> rs.getLong("MAX(ordinal)"));
     }
 
-    public Long getMinOrdinal() {
-        return jdbcTemplate.queryForObject("SELECT MIN(ordinal) FROM category",
-                (rs, rowNum) -> rs.getLong("MIN(ordinal)"));
-    }
-
     public void increaseOrdinal(long ordinal) {
         jdbcTemplate.update("UPDATE category SET ordinal = ordinal +1 WHERE ordinal >= ?", ordinal);
     }
@@ -63,16 +61,16 @@ public class CategoryDao {
         jdbcTemplate.update("UPDATE category SET ordinal = ordinal -1 WHERE ordinal <= ?", ordinal);
     }
 
-    public List<String> getCategoryNames() {
-        return jdbcTemplate.query("select name from category", (resultSet, i) -> resultSet.getString("name"));
-    }
-
     public int deleteCategory(long id) {
         return jdbcTemplate.update("delete from category where id = ?", id);
     }
 
     public Category getCategory(String name) {
         return jdbcTemplate.queryForObject("select id, name, ordinal from category where name = ?", CATEGORY_ROW_MAPPER, name);
+    }
+
+    public Category getCategoryById(long id) {
+        return jdbcTemplate.queryForObject("select id, name, ordinal from category where id = ?", CATEGORY_ROW_MAPPER, id);
     }
 
     public int updateCategory(long id, Category category){

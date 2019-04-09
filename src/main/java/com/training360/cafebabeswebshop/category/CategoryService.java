@@ -2,8 +2,10 @@ package com.training360.cafebabeswebshop.category;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 @Service
@@ -23,76 +25,69 @@ public class CategoryService {
 
     public ResultStatus createCategoryAndGetId(Category category) {
         long max = categoryDao.getMaxOrdinal();
-        if (!categoryValidator.isValidOrdinal(max, category)) {
+        if (max + 1 < category.getOrdinal() || category.getOrdinal() < 0) {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
-        }
-        if(categoryValidator.isExistingCategoryName(category)) {
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
         }
         if (category.getOrdinal() == 0) {
             category.setOrdinal(max + 1);
         } else if (category.getOrdinal() <= max) {
             categoryDao.increaseOrdinal(category.getOrdinal());
         }
-        long id = categoryDao.createCategoryAndGetId(category);
-        return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva! id: " + id);
-    }
-
-    public long getMaxOrdinal() {
-        return categoryDao.getMaxOrdinal();
-    }
-
-    public long getMinOrdinal() {
-        return categoryDao.getMinOrdinal();
-    }
-
-    public int deleteCategory(long id) {
-        long ordinal = 0;
-        List<Category> categories = categoryDao.listCategories();
-
-        for (Category c : categories) {
-            if (c.getId() == id) {
-                ordinal = c.getOrdinal();
-            }
+        try {
+            long id = categoryDao.createCategoryAndGetId(category);
+            return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva! id: " + id);
+        } catch (DataAccessException dae) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Hiba történt a mentéskor");
         }
-        int rowCount = categoryDao.deleteCategory(id);
-        for (Category category : categories) {
-            if (category.getOrdinal() > ordinal) {
-                categoryDao.decreaseOrdinal(category.getOrdinal());
-            }
-        }
-        return rowCount;
     }
 
-    public Object getCategory(String name) {
+    public ResultStatus deleteCategory(long id) {
+
+        long originalOrdinal = categoryDao.getCategoryById(id).getOrdinal();
+        categoryDao.decreaseOrdinal(originalOrdinal);
+
+        try {
+            int rowsAffected = categoryDao.deleteCategory(id);
+            if (rowsAffected == 0) {
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Sikertelen törlés!");
+            }
+            return new ResultStatus(ResultStatusEnum.OK, "Sikeres törlés!");
+        } catch (DataAccessException dae) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Hiba történt törléskor");
+        }
+    }
+
+    public Category getCategory(String name) {
         return categoryDao.getCategory(name);
     }
 
-
-    public int updateCategory(long id, Category category) {
-        List<Category> categories = categoryDao.listCategories();
-        long originalOrdinal = category.getOrdinal();
-
-        for (Category c : categories) {
-            if (c.getId() == id) {
-                originalOrdinal = c.getOrdinal();
-            }
+    public ResultStatus updateCategory(long id, Category category) {
+        if (!categoryDao.getCategoryById(id).getName().equals(category.getName()) && categoryValidator.isExistingCategoryName(category)) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategórianév már létezik, adjon meg egyedi nevet");
         }
 
+        long max = categoryDao.getMaxOrdinal();
+        if (max < category.getOrdinal() || category.getOrdinal() <= 0) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Az adott sorszámnak a meglévők között kell lennie!");
+        }
+
+        long originalOrdinal = categoryDao.getCategoryById(id).getOrdinal();
         if (originalOrdinal > category.getOrdinal()) {
-            for (int i = categories.size() - 1; i >= 0; i--) {
-                if (categories.get(i).getOrdinal() >= category.getOrdinal() && categories.get(i).getOrdinal() < originalOrdinal) {
-                    categoryDao.increaseOrdinal(categories.get(i).getOrdinal());
-                }
-            }
+            categoryDao.increaseOrdinal(category.getOrdinal());
+        } else if (category.getOrdinal() > originalOrdinal) {
+            categoryDao.decreaseOrdinal(category.getOrdinal());
         }
-        else if (category.getOrdinal() > originalOrdinal) {
-            for (int i = 0; i < categories.size(); i++) {
-                if (categories.get(i).getOrdinal() <= category.getOrdinal() && categories.get(i).getOrdinal() > originalOrdinal) {
-                    categoryDao.decreaseOrdinal(categories.get(i).getOrdinal());
-                }
+
+        try {
+            int rowsAffected = categoryDao.updateCategory(id, category);
+            if (rowsAffected == 0) {
+                return new ResultStatus(ResultStatusEnum.NOT_OK, "Nem sikerült a mentés");
             }
+            return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen módosítva");
+        } catch (DataAccessException dae) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Hiba történt a mentéskor");
         }
-        return categoryDao.updateCategory(id, category);
     }
+
+
 }

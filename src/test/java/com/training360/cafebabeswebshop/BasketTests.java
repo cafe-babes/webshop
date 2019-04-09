@@ -71,7 +71,7 @@ public class BasketTests {
 
     @Test
     public void testSaveBasketItemAndGetId() {
-        BasketItem basketItemExample = new BasketItem(8, "Funny", "funny_bunny", 25800, 2);
+        BasketItem basketItemExample = new BasketItem(8, 0, "Funny", "funny_bunny", 25800, 2);
         // When
         long anotherNewId = basketController.saveBasketItemAndGetId("funny_bunny", basketItemExample, new TestingAuthenticationToken("user", "user", "ROLE_USER"));
         List<BasketItem> list = basketController.getBasketItems(new TestingAuthenticationToken("user", "user", "ROLE_USER"));

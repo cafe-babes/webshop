@@ -23,6 +23,7 @@ public class BasketDao {
 
     private static final RowMapper<BasketItem> BASKETITEM_ROW_MAPPER = ((resultSet, i) -> new BasketItem(
             resultSet.getLong("product_id"),
+            resultSet.getLong("basket.id"),
             resultSet.getString("products.name"),
             resultSet.getString("products.address"),
             resultSet.getInt("products.price"),
@@ -46,7 +47,7 @@ public class BasketDao {
 
     public List<BasketItem> getBasketItems(String userName) {
         return jdbcTemplate.query(
-                "SELECT product_id, products.name, products.address, products.price, pieces FROM basket \n" +
+                "SELECT product_id, basket.id, products.name, products.address, products.price, pieces FROM basket \n" +
                         "JOIN products ON basket.product_id=products.id \n" +
                         "JOIN users ON basket.user_id=users.id \n" +
                         "WHERE user_name = ?",
@@ -54,14 +55,14 @@ public class BasketDao {
                 userName);
     }
 
-    public BasketItem getBasketItem(String userName, String address) {
+    public BasketItem getBasketItem(BasketItem basketItem) {
         return jdbcTemplate.queryForObject(
-                "SELECT product_id, products.name, products.address, products.price, pieces FROM basket \n" +
+                "SELECT product_id, basket.id, products.name, products.address, products.price, pieces FROM basket \n" +
                         "JOIN products ON basket.product_id=products.id \n" +
                         "JOIN users ON basket.user_id=users.id \n" +
                         "WHERE users.user_name = ? and products.address = ?",
                 BASKETITEM_ROW_MAPPER,
-                userName, address);
+                basketItem.getUsername(), basketItem.getAddress());
     }
 
     public void updateBasketItemPieces(BasketItem basketItem) {

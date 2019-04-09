@@ -2,18 +2,28 @@ package com.training360.cafebabeswebshop.basket;
 
 public class BasketItem {
     private long productId;
+    private long basketId;
     private String name;
     private String address;
     private int price;
     private int pieces;
     private String username;
 
-    public BasketItem(long productId, String name, String address, int price, int pieces) {
+    public BasketItem(long productId, long basketId, String name, String address, int price, int pieces) {
         this.productId = productId;
+        this.basketId = basketId;
         this.name = name;
         this.address = address;
         this.price = price;
         this.pieces = pieces;
+    }
+
+    public long getBasketId() {
+        return basketId;
+    }
+
+    public void setBasketId(long basketId) {
+        this.basketId = basketId;
     }
 
     public String getName() {

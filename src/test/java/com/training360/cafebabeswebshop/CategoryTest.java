@@ -95,9 +95,9 @@ public class CategoryTest {
         // Then
         assertEquals("Kategória sikeresen módosítva", status1.getMessage());
         assertEquals("Kategória sikeresen módosítva", status2.getMessage());
-        assertEquals("az adott sorszámnak a meglévők között kell lennie!", status3.getMessage());
-        assertEquals("Az adott név már létezik", status4.getMessage());
-        assertEquals("Üres név", status5.getMessage());
+        assertEquals("Az adott sorszámnak a meglévők között kell lennie!", status3.getMessage());
+        assertEquals("Ilyen kategórianév már létezik, adjon meg egyedi nevet", status4.getMessage());
+        assertEquals("Név megadása kötelező", status5.getMessage());
 
     }
 }
