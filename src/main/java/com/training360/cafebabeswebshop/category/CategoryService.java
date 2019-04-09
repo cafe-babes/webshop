@@ -12,9 +12,9 @@ public class CategoryService {
     private CategoryDao categoryDao;
     private CategoryValidator categoryValidator;
 
-    public CategoryService(CategoryDao categoryDao, CategoryService categoryService) {
+    public CategoryService(CategoryDao categoryDao, CategoryValidator categoryValidator) {
         this.categoryDao = categoryDao;
-        this.categoryValidator = new CategoryValidator(categoryService, categoryDao);
+        this.categoryValidator = categoryValidator;
     }
 
     public List<Category> listCategories() {
