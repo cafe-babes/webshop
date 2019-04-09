@@ -54,7 +54,11 @@ function showIncomeTable(jsonData){
           tr.appendChild(dateMonthTd);
 
         var o_statusTd = document.createElement("td");
-        o_statusTd.innerHTML = jsonData[i].orderStatus;
+        if(jsonData[i].orderStatus == 'ACTIVE'){
+        o_statusTd.innerHTML = "aktív";
+        } else {
+            o_statusTd.innerHTML = "kiszállított"
+        }
         tr.appendChild(o_statusTd);
 
         var m_incomeTd = document.createElement("td");

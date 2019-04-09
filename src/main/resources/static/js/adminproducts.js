@@ -73,7 +73,7 @@ function fetchCategories(){
         tr.appendChild(priceTd);
 
         var statusTd = document.createElement("td");
-        statusTd.innerHTML = jsonData[i].productStatus;
+        statusTd.innerHTML = "aktív";
         var statusTdId = 'statusTd' + i;
         statusTd.setAttribute('id', statusTdId);
         tr.appendChild(statusTd);
