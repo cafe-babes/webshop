@@ -63,7 +63,13 @@ function showTable(jsonData) {
         tr.appendChild(total);
 
         var orderStatusTd = document.createElement("td");
-        orderStatusTd.innerHTML = jsonData[i].orderStatus;
+        if(jsonData[i].orderStatus == 'ACTIVE'){
+            orderStatusTd.innerHTML = "aktív";
+        } else if(jsonData[i].orderStatus == 'SHIPPED'){
+            orderStatusTd.innerHTML = "kiszállítva";
+        } else {
+            orderStatusTd.innerHTML = "törölt";
+        }
         var orderStatusTdId = 'manTd' + i;
         orderStatusTd.setAttribute('id', orderStatusTdId);
         tr.appendChild(orderStatusTd);

@@ -60,13 +60,21 @@ function showTable(jsonData) {
     tr.appendChild(enabledTd);
 
     var roleTd = document.createElement("td");
-    roleTd.innerHTML = jsonData[i].role;
+    if(jsonData[i].role == 'ROLE_ADMIN'){
+        roleTd.innerHTML = "admin";
+    } else {
+        roleTd.innerHTML = "felhasználó";
+    }
     var roleTdId = "roleTd" + i;
     roleTd.setAttribute("id", roleTdId);
     tr.appendChild(roleTd);
 
     var user_statusTd = document.createElement("td");
-    user_statusTd.innerHTML = jsonData[i].userStatus;
+    if(jsonData[i].userStatus == 'ACTIVE'){
+        user_statusTd.innerHTML = "aktív";
+    } else {
+        user_statusTd.innerHTML = "törölt";
+    }
     var user_statusTdId = "user_statusTd" + i;
     user_statusTd.setAttribute("id", user_statusTdId);
     tr.appendChild(user_statusTd);

@@ -1,24 +1,29 @@
 package com.training360.cafebabeswebshop.dashboard;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.training360.cafebabeswebshop.order.OrderDao;
+import com.training360.cafebabeswebshop.product.ProductDao;
+import com.training360.cafebabeswebshop.user.UserDao;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class DashboardService {
-    @Autowired
-    private DashboardDao dashboardDao;
+    private UserDao userDao;
+    private ProductDao productDao;
+    private OrderDao orderDao;
 
+    public DashboardService(UserDao userDao, ProductDao productDao, OrderDao orderDao) {
+        this.userDao = userDao;
+        this.productDao = productDao;
+        this.orderDao = orderDao;
+    }
 
-    public List<Integer> listOfResults() {
-        List<Integer> list = new ArrayList<>();
-        list.add(dashboardDao.countAllUsers());
-        list.add(dashboardDao.countAllProducts());
-        list.add(dashboardDao.countAllActiveProducts());
-        list.add(dashboardDao.countAllOrders());
-        list.add(dashboardDao.countAllActiveOrders());
-        return list;
+    public Dashboard listOfResult(){
+        Dashboard dashboards = new Dashboard(userDao.listUsers().size(),
+                productDao.getAllProducts().size(), productDao.getProducts().size(),
+                orderDao.listAllOrders().size(), orderDao.listAllActiveOrders().size());
+        System.out.println(dashboards);
+        System.out.println(userDao.listUsers().size());
+        return dashboards;
     }
 }

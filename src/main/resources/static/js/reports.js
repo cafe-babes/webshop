@@ -27,10 +27,18 @@ function fetchProductReport() {
 function showIncomeTable(jsonData){
     console.log(jsonData);
     var incomeTable = document.getElementById("income-table");
+    var jan = 0;
     var february = 0;
     var march = 0;
     var april = 0;
     var may = 0;
+    var jun = 0;
+    var jul = 0;
+    var aug = 0;
+    var sept = 0;
+    var oct = 0;
+    var nov = 0;
+    var dec = 0;
 
     for(var i = 0; i<jsonData.length; i++) {
 
@@ -46,7 +54,11 @@ function showIncomeTable(jsonData){
           tr.appendChild(dateMonthTd);
 
         var o_statusTd = document.createElement("td");
-        o_statusTd.innerHTML = jsonData[i].orderStatus;
+        if(jsonData[i].orderStatus == 'ACTIVE'){
+        o_statusTd.innerHTML = "aktív";
+        } else {
+            o_statusTd.innerHTML = "kiszállított"
+        }
         tr.appendChild(o_statusTd);
 
         var m_incomeTd = document.createElement("td");
@@ -58,6 +70,9 @@ function showIncomeTable(jsonData){
         tr.appendChild(countTd);
 
         incomeTable.appendChild(tr);
+if(jsonData[i].month == 1){
+            jan += jsonData[i].total;
+        }
         if(jsonData[i].month == 2){
             february += jsonData[i].total;
         }
@@ -69,6 +84,27 @@ function showIncomeTable(jsonData){
         }
         if(jsonData[i].month == 5){
             may += jsonData[i].total;
+        }
+        if(jsonData[i].month == 6){
+            jun += jsonData[i].total;
+        }
+        if(jsonData[i].month == 7){
+            jul += jsonData[i].total;
+        }
+        if(jsonData[i].month == 8){
+            aug += jsonData[i].total;
+        }
+        if(jsonData[i].month == 9){
+            sept += jsonData[i].total;
+        }
+        if(jsonData[i].month == 10){
+            oct += jsonData[i].total;
+        }
+        if(jsonData[i].month == 11){
+            nov += jsonData[i].total;
+        }
+        if(jsonData[i].month == 12){
+            dec += jsonData[i].total;
         }
     }
 
@@ -192,11 +228,18 @@ function showIncomeTable(jsonData){
             "series": [
                 {
                     "values" : [
-                           0,
+                          jan,
                           february,
                           march,
                           april,
-                          may
+                          may,
+                          jun,
+                          jul,
+                          aug,
+                          sept,
+                          oct,
+                          nov,
+                          dec
                         ],
                     "background-color": "#90A23B"
                 },
@@ -217,10 +260,18 @@ function showIncomeTable(jsonData){
 function showProductTable(jsonData){
     console.log(jsonData);
     var tradeTable = document.getElementById("trade-table");
+    var jan = 0;
     var february = 0;
     var march = 0;
     var april = 0;
     var may = 0;
+    var jun = 0;
+    var jul = 0;
+    var aug = 0;
+    var sept = 0;
+    var oct = 0;
+    var nov = 0;
+    var dec = 0;
 
     for(var i = 0; i<jsonData.length; i++) {
 
@@ -253,6 +304,9 @@ function showProductTable(jsonData){
 
         tradeTable.appendChild(tr);
 
+        if(jsonData[i].month == 1){
+            jan += jsonData[i].total;
+        }
         if(jsonData[i].month == 2){
             february += jsonData[i].total;
         }
@@ -264,6 +318,27 @@ function showProductTable(jsonData){
         }
         if(jsonData[i].month == 5){
             may += jsonData[i].total;
+        }
+        if(jsonData[i].month == 6){
+            jun += jsonData[i].total;
+        }
+        if(jsonData[i].month == 7){
+            jul += jsonData[i].total;
+        }
+        if(jsonData[i].month == 8){
+            aug += jsonData[i].total;
+        }
+        if(jsonData[i].month == 9){
+            sept += jsonData[i].total;
+        }
+        if(jsonData[i].month == 10){
+            oct += jsonData[i].total;
+        }
+        if(jsonData[i].month == 11){
+            nov += jsonData[i].total;
+        }
+        if(jsonData[i].month == 12){
+            dec += jsonData[i].total;
         }
 
     }
@@ -387,11 +462,18 @@ function showProductTable(jsonData){
                 "series": [
                     {
                         "values" : [
-                            0,
+                            jan,
                             february,
                             march,
                             april,
-                            may
+                            may,
+                            jun,
+                            jul,
+                            aug,
+                            sept,
+                            oct,
+                            nov,
+                            dec,
                             ],
                         "background-color": "#90A23B"
                     },

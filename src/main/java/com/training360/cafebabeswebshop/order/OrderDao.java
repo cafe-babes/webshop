@@ -82,6 +82,12 @@ public class OrderDao {
                 ORDER_ROW_MAPPER);
     }
 
+    public List<Order> listAllActiveOrders(){
+        return jdbcTemplate.query(SQL_SELECT_ORDER + "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
+                "WHERE order_status = 'ACTIVE' GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address order by purchase_date desc",
+                ORDER_ROW_MAPPER);
+    }
+
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
