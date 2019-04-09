@@ -21,7 +21,7 @@ public class CategoryValidator {
     }
 
     public boolean isValidOrdinal(long max, Category category) {
-        return max + 1 > category.getOrdinal() && category.getOrdinal() > 0;
+        return max + 1 >= category.getOrdinal() && category.getOrdinal() >= 0;
     }
 
     public boolean isExistingCategoryName(Category category) {
