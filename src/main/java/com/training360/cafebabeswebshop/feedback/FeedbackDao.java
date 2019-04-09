@@ -35,17 +35,17 @@ public class FeedbackDao {
     }
 
     public List<Feedback> listFeedBacksByProductId(long productId) {
-        return jdbcTemplate.query("SELECT `id`, `feedback_date`, `feedback`, `rating`, `user_id`, `product_id` FROM `feedback` WHERE product_id = ? ORDER BY feedback_date DESC",
+        return jdbcTemplate.query("SELECT id, feedback_date, feedback, rating, user_id, product_id FROM feedback WHERE product_id = ? ORDER BY feedback_date DESC",
                 FEEDBACK_ROW_MAPPER, productId);
     }
 
     public void giveAFeedback(Feedback feedback) {
-        jdbcTemplate.update("INSERT INTO `feedback`(`feedback_date`, `feedback`, `rating`, `user_id`, `product_id`)"
+        jdbcTemplate.update("INSERT INTO feedback(feedback_date, feedback, rating, user_id, product_id)"
                 + "VALUES (?,?,?,?,?)", feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getUser().getId(), feedback.getProduct().getId());
     }
 
     public void deleteFeedbackById(long id) {
-        jdbcTemplate.update("delete from feedback where id = ?", id);
+        jdbcTemplate.update("DELETE from feedback WHERE id = ?", id);
     }
 
     public boolean userCanGiveAFeedback(long userId, long productId) {
@@ -60,18 +60,22 @@ public class FeedbackDao {
     }
 
     public void updateFeedback(Feedback feedback, long feedbackId) {
-        jdbcTemplate.update("UPDATE `feedback` SET `feedback_date`= ?,`feedback`= ?,`rating`= ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE feedback SET feedback_date= ?,feedback= ?,rating= ? WHERE id = ?",
                 feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedbackId);
     }
 
     public boolean alreadyGaveAFeedback(long userId, long productId) {
         int numberOfFeedbacksOfTheGivenUserForACertainProduct =
-                jdbcTemplate.queryForObject("SELECT count(*) numberOfFeedback FROM `feedback` WHERE product_id = ? AND user_id = ?", Integer.class, productId, userId);
+                jdbcTemplate.queryForObject("SELECT count(*) numberOfFeedback FROM feedback WHERE product_id = ? AND user_id = ?", Integer.class, productId, userId);
         return numberOfFeedbacksOfTheGivenUserForACertainProduct == 1;
     }
 
     public int getFeedbackIdByUserIdAndProductId(long userId, long productId){
-        return jdbcTemplate.queryForObject("SELECT `id` FROM `feedback` WHERE user_id = ? AND product_id = ?", Integer.class, userId, productId);
+        return jdbcTemplate.queryForObject("SELECT id FROM feedback WHERE user_id = ? AND product_id = ?", Integer.class, userId, productId);
+    }
+
+    public int getSizeOfFeedbacks(){
+        return jdbcTemplate.queryForObject("SELECT count(*) FROM feedback", Integer.class);
     }
 
 }
