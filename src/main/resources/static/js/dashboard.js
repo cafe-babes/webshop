@@ -11,11 +11,8 @@ function fetchDashboard(){
         return response.json();
     })
     .then(function(jsonData){
-        console.log("fetch ok");
-        console.log(jsonData);
         showDashboard(jsonData);
         myJsonData = jsonData;
-        console.log(myJsonData);
     });
 }
 
@@ -24,11 +21,11 @@ function showDashboard(jsonData){
     tbody.innerHTML = "";
     tbody.innerHTML += `
         <tr>
-            <td style="text-align: center">${jsonData[0]}</td>
-            <td style="text-align: center">${jsonData[1]}</td>
-            <td style="text-align: center">${jsonData[2]}</td>
-            <td style="text-align: center">${jsonData[3]}</td>
-            <td style="text-align: center">${jsonData[4]}</td>
+            <td style="text-align: center">${jsonData.allUsers}</td>
+            <td style="text-align: center">${jsonData.allProducts}</td>
+            <td style="text-align: center">${jsonData.activeProducts}</td>
+            <td style="text-align: center">${jsonData.allOrders}</td>
+            <td style="text-align: center">${jsonData.activeOrders}</td>
         </tr>
     `;
 
@@ -86,7 +83,7 @@ function showDashboard(jsonData){
      	},
     	series : [
     		{
-    			values : [jsonData[0],jsonData[1],jsonData[3]],
+    			values : [jsonData.allUsers,jsonData.allProducts,jsonData.allOrders],
     			borderRadius : "50px 0px 0px 50px",
     			backgroundColor : "#E71D36",
     			rules : [
@@ -105,7 +102,7 @@ function showDashboard(jsonData){
     			]
     		},
     		{
-    			values : [,jsonData[2],jsonData[4]],
+    			values : [,jsonData.activeProducts,jsonData.activeOrders],
     			text: "ez",
     			borderRadius : "0px 50px 50px 0px",
     			backgroundColor : "#E71D36",
@@ -128,9 +125,6 @@ function showDashboard(jsonData){
     	]
     	},
     });
-
-//    var chart = document.getElementById("myChart");
-//    chart.innerHTML += `<img src="../images/chart.jpg">`
     }
 
 

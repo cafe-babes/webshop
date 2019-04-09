@@ -12,14 +12,15 @@ import java.util.stream.Collectors;
 @RestController
 public class CategoryController {
 
-    @Autowired
     private CategoryService categoryService;
 
     private CategoryValidator categoryValidator;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
+        this.categoryValidator = new CategoryValidator(categoryService);
     }
+
 
     @GetMapping("/categories")
     public List<Category> listCategories() {
@@ -51,7 +52,6 @@ public class CategoryController {
 
     @GetMapping("/categories/{name}")
     public Object getCategory(@PathVariable String name){
-        categoryValidator = new CategoryValidator(categoryService);
         List<String> names = categoryService.listCategories().stream().map(Category::getName).collect(Collectors.toList());
         if(categoryValidator.isValidName(name) && names.contains(name)){
             return categoryService.getCategory(name);
@@ -62,7 +62,6 @@ public class CategoryController {
 
     @PostMapping("categories/{id}")
     public ResultStatus updateCategory(@PathVariable long id, @RequestBody Category category){
-        categoryValidator = new CategoryValidator(categoryService);
         if(!categoryValidator.isValidName(category.getName())){
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név");
         } else if(categoryValidator.isValidOrder(category.getOrdinal())) {
