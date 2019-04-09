@@ -11,6 +11,25 @@ public class User {
     private String role;
     private String userStatus;
 
+    public User(int enabled, String role) {
+        this.enabled = enabled;
+        this.role = role;
+    }
+
+    public User(String userName, int enabled, String role) {
+        this.userName = userName;
+        this.enabled = enabled;
+        this.role = role;
+    }
+
+    public User(long id, String name, String userName, int enabled, String role) {
+        this.id = id;
+        this.name = name;
+        this.userName = userName;
+        this.enabled = enabled;
+        this.role = role;
+    }
+
     public User(long id, String name, String email, String userName, String password, int enabled, String role, String userStatus) {
         this.id = id;
         this.name = name;

@@ -12,7 +12,7 @@ imageContainer.innerHTML += `<div class="carousel-item active">
                                  <img class="d-block w-100" id="image" alt="surf">
                              </div>`;
 
-$.getJSON('/user', json => {
+$.getJSON('/role', json => {
     if(json.id != 0){
         var userId = json.id;
         fetchUser(userId);
