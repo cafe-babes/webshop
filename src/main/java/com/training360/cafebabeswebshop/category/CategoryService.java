@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.category;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +17,20 @@ public class CategoryService {
         return categoryDao.listCategories();
     }
 
-    public long createCategoryAndGetId(Category category) {
+    public ResultStatus createCategoryAndGetId(Category category) {
         long max = categoryDao.getMaxOrdinal();
-        if (max + 1 < category.getOrdinal() || category.getOrdinal() < 0) {
-            return -1;
+        if (1==1) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
         }
-
-        if (category.getOrdinal() <= 0) {
+        if(1==1)
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+        if (category.getOrdinal() == 0) {
             category.setOrdinal(max + 1);
         } else if (category.getOrdinal() <= max) {
-            while (max >= category.getOrdinal()) {
-                categoryDao.increaseOrdinal(max--);
-            }
+            categoryDao.increaseOrdinal(category.getOrdinal());
         }
-        return categoryDao.createCategoryAndGetId(category);
+        long id = categoryDao.createCategoryAndGetId(category);
+        return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva! id: " + id);
     }
 
     public long getMaxOrdinal() {

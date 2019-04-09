@@ -11,18 +11,11 @@ function init() {
     document.querySelector("#fileToUpload").addEventListener("change", function(){
         document.querySelector("[for='"+ this.id +"']").innerText = this.files[0].name;
     })
-//    let resetButton = document.getElementById('resetButton');
-//    resetButton.addEventListener('click', function(){
-//        document.querySelector("#fileToUpload").addEventListener("change", function(){
-//        document.querySelector("[for='" + this.id + "']").innerText = "";
-//        document.querySelector("[for='" + this + "']").value = null;
-//    });
 }
 
 function startUpload() {
     let file = document.getElementById('fileToUpload').files[0];
     const formData = new FormData();
-
     formData.append('file', file);
     formData.append('productId', productId);
 
@@ -30,14 +23,12 @@ function startUpload() {
         method: 'POST',
         body: formData
     }).then(response => {
-        console.log(response);
         return response.text();
     }).then(message => {
-        console.log(message);
+        alert(message);
         document.getElementById('uploadForm').reset();
         let messageNode = document.getElementById('messageP');
         fetchImage(productId, 0);
-//        messageNode.innerText = message;
     });
 }
 
@@ -88,33 +79,3 @@ function deleteImage(productId, offset) {
       console.log(message);
     });
 }
-
-//function bs_input_file() {
-//	$(".input-file").before(
-//		function() {
-//			if ( ! $(this).prev().hasClass('input-ghost') ) {
-//				var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
-//				element.attr("name",$(this).attr("name"));
-//				element.change(function(){
-//					element.next(element).find('input').val((element.val()).split('\\').pop());
-//				});
-//				$(this).find("button.btn-choose").click(function(){
-//					element.click();
-//				});
-//				$(this).find("button.btn-reset").click(function(){
-//					element.val(null);
-//					$(this).parents(".input-file").find('input').val('');
-//				});
-//				$(this).find('input').css("cursor","pointer");
-//				$(this).find('input').mousedown(function() {
-//					$(this).parents('.input-file').prev().click();
-//					return false;
-//				});
-//				return element;
-//			}
-//		}
-//	);
-//}
-//$(function() {
-//	bs_input_file();
-//});

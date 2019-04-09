@@ -33,13 +33,11 @@ public class CategoryController {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Név megadása kötelező");
         }
         try {
-            long response = categoryService.createCategoryAndGetId(category);
-            if (response==-1)
-                return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
-            return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva!");
+            return categoryService.createCategoryAndGetId(category);
         } catch (DataAccessException sql) {
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+            sql.printStackTrace();
         }
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Hiba történt");
     }
 
     @DeleteMapping("/categories/{id}")
