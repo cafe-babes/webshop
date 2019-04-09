@@ -25,7 +25,7 @@ function fetchProductReport() {
 }
 
 function showIncomeTable(jsonData){
-    console.log(jsonData);
+
     var incomeTable = document.getElementById("income-table");
     var jan = 0;
     var february = 0;
@@ -258,7 +258,7 @@ if(jsonData[i].month == 1){
 
 
 function showProductTable(jsonData){
-    console.log(jsonData);
+
     var tradeTable = document.getElementById("trade-table");
     var jan = 0;
     var february = 0;

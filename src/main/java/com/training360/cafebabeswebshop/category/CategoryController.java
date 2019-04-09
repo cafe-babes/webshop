@@ -16,11 +16,10 @@ public class CategoryController {
 
     private CategoryValidator categoryValidator;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, CategoryValidator categoryValidator) {
         this.categoryService = categoryService;
-        this.categoryValidator = new CategoryValidator(categoryService);
+        this.categoryValidator = categoryValidator;
     }
-
 
     @GetMapping("/categories")
     public List<Category> listCategories() {
