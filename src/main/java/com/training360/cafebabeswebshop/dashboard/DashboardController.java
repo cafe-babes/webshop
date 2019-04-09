@@ -1,21 +1,20 @@
 package com.training360.cafebabeswebshop.dashboard;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 public class DashboardController {
 
-    @Autowired
     private DashboardService dashboardService;
 
-    //countAllUsers
-    @GetMapping("/dashboard")
-    public List<Integer> listOfResults(){
-        return dashboardService.listOfResults();
+    public DashboardController(DashboardService dashboardService) {
+        this.dashboardService = dashboardService;
     }
 
+    @GetMapping("/dashboard")
+    public Dashboard listOfResults(){
+        return dashboardService.listOfResult();
+    }
 }

@@ -11,8 +11,11 @@ sizeDropdown.onchange = function(){
 };
 
 categoryDropdown.onchange = function(){
-    let category = categoryDropdown[categoryDropdown.selectedIndex].value;
-    window.location.href=`/index.html?category=${category}`;
+    if (categoryDropdown[categoryDropdown.selectedIndex].value != 'all') {
+        let category = categoryDropdown[categoryDropdown.selectedIndex].value;
+        window.location.href=`/index.html?category=${category}`;
+    } else
+        window.location.href=`/`;
 };
 
 if(!url.searchParams.get("start") && !url.searchParams.get("category")) {

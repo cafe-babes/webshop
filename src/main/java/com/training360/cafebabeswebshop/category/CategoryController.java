@@ -12,14 +12,15 @@ import java.util.stream.Collectors;
 @RestController
 public class CategoryController {
 
-    @Autowired
     private CategoryService categoryService;
 
     private CategoryValidator categoryValidator;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
+        this.categoryValidator = new CategoryValidator(categoryService);
     }
+
 
     @GetMapping("/categories")
     public List<Category> listCategories() {
@@ -32,13 +33,11 @@ public class CategoryController {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Név megadása kötelező");
         }
         try {
-            long response = categoryService.createCategoryAndGetId(category);
-            if (response==-1)
-                return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
-            return new ResultStatus(ResultStatusEnum.OK, "Kategória sikeresen hozzáadva!");
+            return categoryService.createCategoryAndGetId(category);
         } catch (DataAccessException sql) {
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+            sql.printStackTrace();
         }
+        return new ResultStatus(ResultStatusEnum.NOT_OK, "Hiba történt");
     }
 
     @DeleteMapping("/categories/{id}")
@@ -51,7 +50,6 @@ public class CategoryController {
 
     @GetMapping("/categories/{name}")
     public Object getCategory(@PathVariable String name){
-        categoryValidator = new CategoryValidator(categoryService);
         List<String> names = categoryService.listCategories().stream().map(Category::getName).collect(Collectors.toList());
         if(categoryValidator.isValidName(name) && names.contains(name)){
             return categoryService.getCategory(name);
@@ -62,7 +60,6 @@ public class CategoryController {
 
     @PostMapping("categories/{id}")
     public ResultStatus updateCategory(@PathVariable long id, @RequestBody Category category){
-        categoryValidator = new CategoryValidator(categoryService);
         if(!categoryValidator.isValidName(category.getName())){
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név");
         } else if(categoryValidator.isValidOrder(category.getOrdinal())) {

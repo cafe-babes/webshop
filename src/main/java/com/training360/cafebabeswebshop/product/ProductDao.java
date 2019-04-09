@@ -63,6 +63,10 @@ public class ProductDao {
                 PRODUCT_ROW_MAPPER);
     }
 
+    public List<Product> getAllProducts(){
+        return jdbcTemplate.query(SQL_SELECT_ALL_JOIN_CATEGORY, PRODUCT_ROW_MAPPER);
+    }
+
     public List<Product> getProductsWithStartAndSize(int start, int size) {
         return jdbcTemplate.query(SQL_SELECT_ALL_JOIN_CATEGORY +
                         "WHERE product_status = 'ACTIVE' ORDER BY category.ordinal, products.name, manufacture LIMIT ? OFFSET ?",

@@ -25,30 +25,33 @@ public class UserController {
     }
 
     @GetMapping("/user")
+    public User getUser(Authentication authentication) {
+        if (authentication == null)
+            return new User(1, "VISITOR");
+
+        User user = userService.getUserByName(authentication.getName());
+        if (user.getRole().equals("ROLE_ADMIN")) {
+            return new User(user.getId(), user.getName(), authentication.getName(),  1, "ROLE_ADMIN");
+        } else {
+            return new User(user.getId(), user.getName(), authentication.getName(), 1, "ROLE_USER");
+        }
+    }
+
+    @GetMapping("/role")
     public User determineRole(Authentication authentication) {
         if (authentication == null)
-            return new User(0, null, null, null, null, 1, "VISITOR", null);
-        boolean isUser = false;
-        boolean isAdmin = false;
+            return new User(1, "VISITOR");
+
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
-                isUser = true;
+                return new User(authentication.getName(), 1, "ROLE_USER");
             } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-                isAdmin = true;
-                break;
+                return new User(authentication.getName(), 1, "ROLE_ADMIN");
             }
         }
-
-        User user = userService.getUserByName(authentication.getName());
-        if (isAdmin) {
-            return new User(user.getId(), null, null, authentication.getName(), null, 1, "ROLE_ADMIN", null);
-        } else if (isUser) {
-            return new User(user.getId(), user.getName(), null, authentication.getName(), null, 1, "ROLE_USER", null);
-        } else {
-            return new User(0, null, null, authentication.getName(), null, 1, "VISITOR", null);
-        }
+        return new User(1, "VISITOR");
     }
 
     @DeleteMapping("/users/{id}")

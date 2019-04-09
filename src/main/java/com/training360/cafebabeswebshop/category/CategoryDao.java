@@ -28,6 +28,11 @@ public class CategoryDao {
                 CATEGORY_ROW_MAPPER);
     }
 
+    public Category getCategoryByName(String categoryName) {
+        return jdbcTemplate.queryForObject("SELECT id, name, ordinal FROM category WHERE name = ? LIMIT 1",
+                CATEGORY_ROW_MAPPER, categoryName);
+    }
+
     public long createCategoryAndGetId(Category category) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -51,11 +56,11 @@ public class CategoryDao {
     }
 
     public void increaseOrdinal(long ordinal) {
-        jdbcTemplate.update("UPDATE category SET ordinal = ? WHERE ordinal = ?", ordinal + 1, ordinal);
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal +1 WHERE ordinal >= ?", ordinal);
     }
 
     public void decreaseOrdinal(long ordinal) {
-        jdbcTemplate.update("update category set ordinal = ? where ordinal = ?", ordinal - 1, ordinal);
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal -1 WHERE ordinal <= ?", ordinal);
     }
 
     public List<String> getCategoryNames() {
