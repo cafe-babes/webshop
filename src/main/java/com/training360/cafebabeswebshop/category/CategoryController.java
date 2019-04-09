@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.category;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class CategoryController {
 
     @PostMapping("/categories")
     public ResultStatus createCategoryAndGetId(@RequestBody Category category) {
-        if(category.getName().trim().length() == 0){
+        if(category.getName() == null || category.getName().trim().length() == 0){
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Név megadása kötelező");
         }
         try {

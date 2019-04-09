@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.category;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,15 +21,10 @@ public class CategoryValidator {
     }
 
     public boolean isValidOrdinal(long max, Category category) {
-        return max + 1 > category.getOrdinal() || category.getOrdinal() > 0;
+        return max + 1 > category.getOrdinal() && category.getOrdinal() > 0;
     }
 
     public boolean isExistingCategoryName(Category category) {
-        try {
-            categoryDao.getCategoryByName(category.getName());
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
+        return !categoryDao.getCategoryByName(category.getName()).isEmpty();
     }
 }

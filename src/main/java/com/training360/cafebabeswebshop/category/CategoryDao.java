@@ -28,8 +28,8 @@ public class CategoryDao {
                 CATEGORY_ROW_MAPPER);
     }
 
-    public Category getCategoryByName(String categoryName) {
-        return jdbcTemplate.queryForObject("SELECT id, name, ordinal FROM category WHERE name = ? LIMIT 1",
+    public List<Category> getCategoryByName(String categoryName) {
+        return jdbcTemplate.query("SELECT id, name, ordinal FROM category WHERE name = ? LIMIT 1",
                 CATEGORY_ROW_MAPPER, categoryName);
     }
 
