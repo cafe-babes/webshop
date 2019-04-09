@@ -18,8 +18,8 @@ public class DashBoardTest {
     @Autowired
     private DashboardController dashboardController;
 
-//    @Test
-//    public void getList(){
+    @Test
+    public void getList(){
 //        int users = dashboardController.listOfResults().get(0);
 //        int allProducts = dashboardController.listOfResults().get(1);
 //        int allActiveProducts = dashboardController.listOfResults().get(2);
@@ -31,5 +31,5 @@ public class DashBoardTest {
 //        assertEquals(5, allOrders);
 //        assertEquals(14, allActiveProducts);
 //        assertEquals(1, allActiveOrders);
-//    }
+    }
 }
