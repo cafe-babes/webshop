@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.basket;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +8,11 @@ import java.util.List;
 @RestController
 public class BasketController {
 
-    @Autowired
     private BasketService basketService;
 
+    public BasketController(BasketService basketService) {
+        this.basketService = basketService;
+    }
 
     @PostMapping("/basket/{address}")
     public long saveBasketItemAndGetId(@PathVariable String address, @RequestBody BasketItem basketItem, Authentication authentication) {

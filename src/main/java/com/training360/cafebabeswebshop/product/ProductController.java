@@ -1,7 +1,6 @@
 package com.training360.cafebabeswebshop.product;
 
 import com.training360.cafebabeswebshop.category.Category;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,19 +10,16 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
-
     private ProductValidator validator;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
+        this.validator = new ProductValidator();
     }
-
 
     @GetMapping("/product/{address}")
     public Object getProduct(@PathVariable String address) {
-        validator = new ProductValidator();
         List<String> addresses = productService.getProducts().stream().map(Product::getAddress).collect(Collectors.toList());
         if (validator.isValid(address) && addresses.contains(address)) {
             return productService.getProduct(address);

@@ -1,6 +1,5 @@
 package com.training360.cafebabeswebshop.basket;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -10,8 +9,11 @@ import java.util.List;
 @Service
 public class BasketService {
 
-    @Autowired
     private BasketDao basketDao;
+
+    public BasketService(BasketDao basketDao) {
+        this.basketDao = basketDao;
+    }
 
     public long saveBasketItemAndGetId(String address, Authentication authentication, BasketItem basketItem) {
         basketItem.setUsername(authentication.getName());

@@ -5,7 +5,6 @@ import com.training360.cafebabeswebshop.basket.BasketItem;
 import com.training360.cafebabeswebshop.delivery.Delivery;
 import com.training360.cafebabeswebshop.delivery.DeliveryDao;
 import com.training360.cafebabeswebshop.user.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,17 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Autowired
     private OrderDao orderDao;
-    @Autowired
     private BasketDao basketDao;
-    @Autowired
     private UserDao userDao;
-    @Autowired
     private DeliveryDao deliveryDao;
 
+    public OrderService(OrderDao orderDao, BasketDao basketDao, UserDao userDao, DeliveryDao deliveryDao) {
+        this.orderDao = orderDao;
+        this.basketDao = basketDao;
+        this.userDao = userDao;
+        this.deliveryDao = deliveryDao;
+    }
 
     public List<Order> listAllOrders() {
         return orderDao.listAllOrders();
