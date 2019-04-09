@@ -3,7 +3,7 @@ fetchCategories();
 basketRefresh();
 
 function getNavbar() {
-    $.getJSON("/user", json => {
+    $.getJSON("/role", json => {
 
         let role = json.role || 'VISITOR';
         let name = json.userName;
@@ -11,14 +11,6 @@ function getNavbar() {
         var nav = document.querySelector('#basket');
         var parent = nav.parentNode;
         var helper = document.createElement('div');
-
-//        helper.innerHTML = `
-//        <li class="nav-item active" id="home">
-//                                <a class="nav-link" href="/">
-//                                    <i class="fas fa-home fa-lg"> </i>
-//                                </a>
-//                            </li>
-//                            `;
 
         if (role == 'ROLE_ADMIN') {
             helper.innerHTML +=

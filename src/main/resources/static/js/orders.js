@@ -31,6 +31,7 @@ function checkOrderStatus(jsonData) {
 }
 
 function showTable(jsonData) {
+    console.log(jsonData);
     var table = document.querySelector("#orders-table");
     table.innerHTML = "";
     for (var i = 0; i < jsonData.length; i++) {
@@ -90,6 +91,18 @@ console.log(jsonData[i].delivery);
           saveButton.style.display = 'none';
           editButtonTd.appendChild(saveButton);
 
+          var shippedButtonTd = document.createElement("td");
+          var shippedButton = document.createElement("button");
+          var shippedButtonId = "shippedButton" + i;
+          shippedButton.setAttribute("id", shippedButtonId);
+          shippedButton.setAttribute("class", "btn");
+          shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
+          shippedButtonTd.appendChild(shippedButton);
+
+          editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
+          saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
+          shippedButton.innerHTML = `<i class="fas fa-truck"></i> Kiszállítva`;
+
           var deleteButtonTd = document.createElement("td");
           var deleteButton = document.createElement("button");
           var deleteButtonId = 'deletebutton' + i;
@@ -98,34 +111,19 @@ console.log(jsonData[i].delivery);
           deleteButton.setAttribute('onclick', `deleteOrder(${i})`);
           deleteButton['raw-data'] = jsonData[i];
           deleteButtonTd.appendChild(deleteButton);
+          deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
 
-          var shippedButtonTd = document.createElement("td");
-          var shippedButton = document.createElement("button");
-          var shippedButtonId = "shippedButton" + i;
-          shippedButton.setAttribute("id", shippedButtonId);
-          shippedButton.setAttribute("class", "btn");
-          shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
-          shippedButtonTd.appendChild(shippedButton);
         } else {
-            var editButtonTd = document.createElement("td");
-            var saveButton = document.createElement("button");
-            var deleteButtonTd = document.createElement("td");
-            var shippedButtonTd = document.createElement("td");
+          var editButtonTd = document.createElement("td");
+          var saveButton = document.createElement("button");
+          var deleteButtonTd = document.createElement("td");
+          var shippedButtonTd = document.createElement("td");
         }
 
-
-
-        editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
-        saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
-        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
-        shippedButton.innerHTML = `<i class="fas fa-truck"></i> Kiszállítva`
-
-        tr.appendChild(editButtonTd);
         tr.appendChild(deleteButtonTd);
+        tr.appendChild(editButtonTd);
         tr.appendChild(shippedButtonTd);
-
         table.appendChild(tr);
-
     }
 }
 
