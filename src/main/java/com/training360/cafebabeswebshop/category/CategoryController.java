@@ -16,9 +16,9 @@ public class CategoryController {
 
     private CategoryValidator categoryValidator;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, CategoryDao categoryDao) {
         this.categoryService = categoryService;
-        this.categoryValidator = new CategoryValidator(categoryService);
+        this.categoryValidator = new CategoryValidator(categoryService, categoryDao);
     }
 
 

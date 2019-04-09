@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.category;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +9,13 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    @Autowired
-    CategoryDao categoryDao;
+    private CategoryDao categoryDao;
+    private CategoryValidator categoryValidator;
+
+    public CategoryService(CategoryDao categoryDao, CategoryService categoryService) {
+        this.categoryDao = categoryDao;
+        this.categoryValidator = new CategoryValidator(categoryService, categoryDao);
+    }
 
     public List<Category> listCategories() {
         return categoryDao.listCategories();
@@ -19,11 +23,12 @@ public class CategoryService {
 
     public ResultStatus createCategoryAndGetId(Category category) {
         long max = categoryDao.getMaxOrdinal();
-        if (1==1) {
+        if (!categoryValidator.isValidOrdinal(max, category)) {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen sorszám, állítsa be a soron következőt vagy egy már meglévőt");
         }
-        if(1==1)
-        return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+        if(categoryValidator.isExistingCategoryName(category)) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategória már létezik, adjon meg egyedi nevet");
+        }
         if (category.getOrdinal() == 0) {
             category.setOrdinal(max + 1);
         } else if (category.getOrdinal() <= max) {

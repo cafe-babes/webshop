@@ -1,10 +1,14 @@
 package com.training360.cafebabeswebshop.category;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+
 public class CategoryValidator {
     private CategoryService categoryService;
+    private CategoryDao categoryDao;
 
-    public CategoryValidator(CategoryService categoryService) {
+    public CategoryValidator(CategoryService categoryService, CategoryDao categoryDao) {
         this.categoryService = categoryService;
+        this.categoryDao = categoryDao;
     }
 
     public boolean isValidName(String str) {
@@ -17,7 +21,16 @@ public class CategoryValidator {
         return (max >= ordinal && ordinal >= min);
     }
 
-    public boolean isValidNewCategory(long max, Category category) {
-        return max + 1 < category.getOrdinal() || category.getOrdinal() < 0;
+    public boolean isValidOrdinal(long max, Category category) {
+        return max + 1 > category.getOrdinal() || category.getOrdinal() > 0;
+    }
+
+    public boolean isExistingCategoryName(Category category) {
+        try {
+            categoryDao.getCategoryByName(category.getName());
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 }
