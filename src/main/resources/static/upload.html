@@ -23,9 +23,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-
             <!--js tölti fel-->
-
             <li class="nav-item active" id="basket">
                 <a class="nav-link" href="basket.html">
                     <i class="fa" style="font-size:20px">&#xf07a;</i>
@@ -48,29 +46,19 @@
             <form id="uploadForm">
                 <div class="form-group">
                     <div class="input-group input-file" name="Fichier1">
-                        <label for="fileToUpload" class="label__first">Tallózás...</label>
+                        <label for="fileToUpload" class="label__first">Tallózás... (.jpg, .jpeg, .png, .gif)</label>
                         <input type="file" class="form-control hidden-input" id="fileToUpload" placeholder='...'/>
-                        <span class="input-group-btn">
-
-
-                    </span>
+                        <span class="input-group-btn"></span>
                     </div>
                 </div>
-                <!-- COMPONENT END -->
                 <div class="form-group">
                     <input type="button" class="btn btn-success align-middle" id="uploadButton" value="Feltöltés">
-                    <!-- <input type="button" class="btn btn-warning" id="resetButton" value="Eldobás"> -->
                 </div>
             </form>
         </div>
     </div>
-    <div class="row" id="image-container">
-
-        <!--js tölti fel-->
-
-    </div>
+    <div class="row" id="image-container"></div>
 </div>
-
 
 <script src="js/upload.js"></script>
 <script src="js/navbarLoader.js"></script>

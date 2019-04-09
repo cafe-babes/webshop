@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class User {
 
     private long id;
@@ -10,6 +12,9 @@ public class User {
     private int enabled;
     private String role;
     private String userStatus;
+
+    public User() {
+    }
 
     public User(int enabled, String role) {
         this.enabled = enabled;

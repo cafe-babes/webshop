@@ -12,7 +12,7 @@ imageContainer.innerHTML += `<div class="carousel-item active">
                                  <img class="d-block w-100" id="image" alt="surf">
                              </div>`;
 
-$.getJSON('/role', json => {
+$.getJSON('/user', json => {
     if(json.id != 0){
         var userId = json.id;
         fetchUser(userId);
@@ -263,7 +263,7 @@ function showProduct(jsonData) {
 }
 
 function newFeedback() {
-
+console.log(user);
             if(typeof user === "undefined"){
                         alert("Be kell jelentkeznie az értékeléshez");
                         return;
