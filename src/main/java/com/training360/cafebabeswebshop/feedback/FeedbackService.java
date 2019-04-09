@@ -9,7 +9,7 @@ import java.util.List;
 public class FeedbackService {
 
 
-    FeedbackDao feedbackDao;
+    private FeedbackDao feedbackDao;
 
     public FeedbackService(FeedbackDao feedbackDao) {
         this.feedbackDao = feedbackDao;
@@ -28,11 +28,9 @@ public class FeedbackService {
 
         try {
             feedbackId = feedbackDao.getFeedbackIdByUserIdAndProductId(userId, productId);
-        }catch (DataAccessException dae){
+        } catch (DataAccessException dae) {
             feedbackId = 0;
         }
-
-
         if (feedbackDao.alreadyGaveAFeedback(userId, productId)) {
 
             feedbackDao.updateFeedback(feedback, feedbackId);
@@ -48,8 +46,15 @@ public class FeedbackService {
         return feedbackWasSuccessful;
     }
 
-    public void deleteFeedbackById(long id) {
+    public boolean deleteFeedbackWasSuccessful(long id) {
+        boolean sizeOfFeedbacksHasDecreasedByOne = false;
+        int sizeOfFeedbackListBeforeDeletion = feedbackDao.getSizeOfFeedbacks();
         feedbackDao.deleteFeedbackById(id);
+        int sizeOfFeedbackListAfterDeletion = feedbackDao.getSizeOfFeedbacks();
+        if (sizeOfFeedbackListBeforeDeletion > sizeOfFeedbackListAfterDeletion) {
+            sizeOfFeedbacksHasDecreasedByOne = true;
+        }
+        return sizeOfFeedbacksHasDecreasedByOne;
     }
 
 }
