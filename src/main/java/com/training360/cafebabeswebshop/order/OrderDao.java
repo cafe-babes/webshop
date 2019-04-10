@@ -42,7 +42,7 @@ public class OrderDao {
 
     private static final String SQL_SELECT_ORDER = "SELECT orders.id, purchase_date, orders.user_id, " +
             "sum(pieces*ordering_price) AS total, sum(pieces) AS sum_quantity, order_status, delivery_id, delivery.address " +
-            "FROM orders ";
+            "FROM orders JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id ";
 
     public OrderDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -70,21 +70,19 @@ public class OrderDao {
 
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(SQL_SELECT_ORDER +
-                        "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
                         "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER, username);
     }
 
     public List<Order> listAllOrders() {
         return jdbcTemplate.query(SQL_SELECT_ORDER +
-                        "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
                         "GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER);
     }
 
-    public List<Order> listAllActiveOrders(){
-        return jdbcTemplate.query(SQL_SELECT_ORDER + "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
-                "WHERE order_status = 'ACTIVE' GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address ORDER BY purchase_date DESC",
+    public List<Order> listAllActiveOrders() {
+        return jdbcTemplate.query(SQL_SELECT_ORDER +
+                        "WHERE order_status = 'ACTIVE' GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER);
     }
 

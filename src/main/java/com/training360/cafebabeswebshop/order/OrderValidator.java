@@ -49,10 +49,7 @@ public class OrderValidator {
                 presentAddress = true;
             }
         }
-        if (address != null && !address.trim().equals("") && presentAddress){
-            return true;
-        }
-        return false;
+        return address != null && !address.trim().equals("") && presentAddress;
     }
 
     public boolean isValidStatus(String status){

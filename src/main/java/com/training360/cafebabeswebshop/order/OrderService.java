@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -58,7 +59,7 @@ public class OrderService {
 
     public List<Order> listMyOrders(Authentication authentication) {
         if (authentication == null)
-            return null;
+            return Collections.emptyList();
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
         for (Order o : orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {
