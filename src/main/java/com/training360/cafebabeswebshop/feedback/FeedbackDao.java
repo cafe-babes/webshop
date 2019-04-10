@@ -43,7 +43,7 @@ public class FeedbackDao {
     }
 
     public void deleteFeedbackById(long id) {
-        jdbcTemplate.update("DELETE from feedback WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM feedback WHERE id = ?", id);
     }
 
     public boolean userCanGiveAFeedback(long userId, long productId) {
@@ -51,7 +51,7 @@ public class FeedbackDao {
         int numberOfShippedProductsWhichTheUserOrdered =
                 jdbcTemplate.queryForObject("SELECT count(ordered_products.id) as OrderedAndShippedProducts\n" +
                         "FROM orders\n" +
-                        "JOIN ordered_products on orders.id = ordered_products.order_id\n" +
+                        "JOIN ordered_products ON orders.id = ordered_products.order_id\n" +
                         "WHERE orders.user_id = ? AND ordered_products.product_id = ? AND orders.order_status = 'SHIPPED'", Integer.class, userId, productId);
 
         return numberOfShippedProductsWhichTheUserOrdered >= 1;

@@ -51,8 +51,8 @@ public class OrderDao {
     public long saveOrderAndGetId(String userName, Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into orders (purchase_date, user_id, delivery_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?), (SELECT id FROM delivery WHERE address = ? LIMIT 1))",
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO orders (purchase_date, user_id, delivery_id) " +
+                            "VALUES (?,(SELECT id FROM users WHERE user_name = ?), (SELECT id FROM delivery WHERE address = ? LIMIT 1))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(order.getPurchaseDate()));
             ps.setString(2, userName);
@@ -71,28 +71,28 @@ public class OrderDao {
     public List<Order> listMyOrders(String username) {
         return jdbcTemplate.query(SQL_SELECT_ORDER +
                         "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
-                        "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id order by purchase_date desc",
+                        "WHERE orders.user_id = (SELECT id FROM users WHERE user_name = ?) GROUP BY orders.id ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER, username);
     }
 
     public List<Order> listAllOrders() {
         return jdbcTemplate.query(SQL_SELECT_ORDER +
                         "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
-                        "GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address order by purchase_date desc",
+                        "GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER);
     }
 
     public List<Order> listAllActiveOrders(){
         return jdbcTemplate.query(SQL_SELECT_ORDER + "JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id " +
-                "WHERE order_status = 'ACTIVE' GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address order by purchase_date desc",
+                "WHERE order_status = 'ACTIVE' GROUP BY order_id, purchase_date, orders.user_id, delivery_id, order_status, delivery.address ORDER BY purchase_date DESC",
                 ORDER_ROW_MAPPER);
     }
 
     public long saveOrderedProductAndGetId(OrderedProduct orderedProduct) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into ordered_products " +
-                            "(product_id, order_id, ordering_price, ordering_name, pieces) values (?,?,?,?,?)",
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO ordered_products " +
+                            "(product_id, order_id, ordering_price, ordering_name, pieces) VALUES (?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, orderedProduct.getProductId());
             ps.setLong(2, orderedProduct.getOrderId());
@@ -105,39 +105,39 @@ public class OrderDao {
     }
 
     public List<OrderedProduct> listOrderedProductsByOrderId(long id) {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
-                        "from ordered_products JOIN products ON product_id=products.id where order_id =?",
+        return jdbcTemplate.query("SELECT ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
+                        "FROM ordered_products JOIN products ON product_id=products.id WHERE order_id =?",
                 ORDERED_PRODUCT_ROW_MAPPER, id);
     }
 
     public List<OrderedProduct> listAllOrderedProduct() {
-        return jdbcTemplate.query("select ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
-                        "from ordered_products JOIN products ON product_id=products.id",
+        return jdbcTemplate.query("SELECT ordered_products.id, product_id, order_id, ordering_price, ordering_name, pieces " +
+                        "FROM ordered_products JOIN products ON product_id=products.id",
                 ORDERED_PRODUCT_ROW_MAPPER);
     }
 
     public void deleteOneItemFromOrder(long orderId, String address) {
-        jdbcTemplate.update("delete ordered_products from ordered_products inner join products on product_id = products.id " +
-                "where products.address = ? AND ordered_products.order_id = ?", address, orderId);
+        jdbcTemplate.update("DELETE ordered_products FROM ordered_products INNER JOIN products ON product_id = products.id " +
+                "WHERE products.address = ? AND ordered_products.order_id = ?", address, orderId);
     }
 
     public void deleteOrder(long id) {
-        jdbcTemplate.update("update orders set order_status = 'DELETED' where id = ?", id);
+        jdbcTemplate.update("UPDATE orders SET order_status = 'DELETED' WHERE id = ?", id);
     }
 
     public void updateOrderStatus(long id, String status) {
-        jdbcTemplate.update("update orders set order_status = ? where id = ?", status, id);
+        jdbcTemplate.update("UPDATE orders SET order_status = ? WHERE id = ?", status, id);
     }
 
     public void updateOrderedProductPiece(OrderedProduct op) {
-        jdbcTemplate.update("update ordered_products set pieces = ? where product_id = ?", op.getPieces(), op.getProductId());
+        jdbcTemplate.update("UPDATE ordered_products SET pieces = ? WHERE product_id = ?", op.getPieces(), op.getProductId());
     }
 
     public Delivery getDeliveryById(Delivery delivery) {
-        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
+        return jdbcTemplate.queryForObject("SELECT id, address, user_id FROM delivery WHERE id = ?", DELIVERY_ROW_MAPPER, delivery.getDeliveryId());
     }
 
     public Delivery getDefaultDelivery() {
-        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = 1", DELIVERY_ROW_MAPPER);
+        return jdbcTemplate.queryForObject("SELECT id, address, user_id FROM delivery WHERE id = 1", DELIVERY_ROW_MAPPER);
     }
 }

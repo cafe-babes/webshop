@@ -29,22 +29,22 @@ public class UserDao {
     }
 
     public List<User> listUsers() {
-        return jdbcTemplate.query("SELECT `id`, `name`, `email`, `user_name`, `password`, `enabled`, `role`, `user_status` FROM `users`", USER_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT id, name, email, user_name, password, enabled, role, user_status FROM users", USER_ROW_MAPPER);
     }
 
     public void deleteUserById(long id) {
-        jdbcTemplate.update("update orders set user_id = NULL where user_id = ?", id);
-        jdbcTemplate.update("update basket set user_id = NULL where user_id = ?", id);
-        jdbcTemplate.update("delete from users where id = ?", id);
+        jdbcTemplate.update("UPDATE orders SET user_id = NULL WHERE user_id = ?", id);
+        jdbcTemplate.update("UPDATE basket SET user_id = NULL WHERE user_id = ?", id);
+        jdbcTemplate.update("DELETE FROM users WHERE id = ?", id);
     }
 
     public void updateUser(long id, User user) {
-        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, password = ?, enabled = ?, role = ?, user_status = ? where id = ?",
+        jdbcTemplate.update("UPDATE users SET name = ?, email = ?, user_name = ?, password = ?, enabled = ?, role = ?, user_status = ? WHERE id = ?",
                 user.getName(), user.getEmail(), user.getUserName(), user.getPassword(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
     public void updateUserWithoutPassword(long id, User user) {
-        jdbcTemplate.update("update users set name = ?, email = ?, user_name = ?, enabled = ?, role = ?, user_status = ? where id = ?",
+        jdbcTemplate.update("UPDATE users SET name = ?, email = ?, user_name = ?, enabled = ?, role = ?, user_status = ? WHERE id = ?",
                 user.getName(), user.getEmail(), user.getUserName(), user.getEnabled(), user.getRole(), user.getUserStatus(), id);
     }
 
@@ -67,12 +67,12 @@ public class UserDao {
     }
 
     public User getUserById(long id) {
-        return jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status FROM users WHERE id = ? ",
+        return jdbcTemplate.queryForObject("SELECT id, name, email, user_name, password, enabled, role, user_status FROM users WHERE id = ? ",
                 USER_ROW_MAPPER, id);
     }
 
     public User getUserByName(String userName) {
-        return jdbcTemplate.queryForObject("select id, name, email, user_name, password, enabled, role, user_status FROM users WHERE user_name = ? ",
+        return jdbcTemplate.queryForObject("SELECT id, name, email, user_name, password, enabled, role, user_status FROM users WHERE user_name = ? ",
                 USER_ROW_MAPPER, userName);
     }
 }

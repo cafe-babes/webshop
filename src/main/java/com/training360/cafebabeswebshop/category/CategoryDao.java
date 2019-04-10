@@ -70,15 +70,15 @@ public class CategoryDao {
     }
 
     public int deleteCategory(long id) {
-        return jdbcTemplate.update("delete from category where id = ?", id);
+        return jdbcTemplate.update("DELETE FROM category WHERE id = ?", id);
     }
 
     public Category getCategoryById(long id) {
-        return jdbcTemplate.queryForObject("select id, name, ordinal from category where id = ?", CATEGORY_ROW_MAPPER, id);
+        return jdbcTemplate.queryForObject("SELECT id, name, ordinal FROM category WHERE id = ?", CATEGORY_ROW_MAPPER, id);
     }
 
     public int updateCategory(long id, Category category){
-        return jdbcTemplate.update("update category set name = ?, ordinal = ? where id = ?",
+        return jdbcTemplate.update("UPDATE category SET name = ?, ordinal = ? WHERE id = ?",
                 category.getName(),
                 category.getOrdinal(),
                 id);
