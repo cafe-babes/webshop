@@ -89,8 +89,8 @@ public class ProductDao {
     public long saveProductAndGetId(Product product) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into products (code, address, name,  manufacture, price, product_status, category_id) " +
-                            "values (?,?,?,?,?,?,(SELECT id FROM category WHERE name=?))",
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO products (code, address, name,  manufacture, price, product_status, category_id) " +
+                            "VALUES (?,?,?,?,?,?,(SELECT id FROM category WHERE name=?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getCode());
             ps.setString(2, product.getAddress());
@@ -105,8 +105,8 @@ public class ProductDao {
     }
 
     public void updateProduct(long id, Product product) {
-        jdbcTemplate.update("update products set code = ?, address = ?, name = ?, manufacture = ?, price = ?, " +
-                        "category_id = (SELECT id FROM category WHERE name=?) where id = ?",
+        jdbcTemplate.update("UPDATE products SET code = ?, address = ?, name = ?, manufacture = ?, price = ?, " +
+                        "category_id = (SELECT id FROM category WHERE name=?) WHERE id = ?",
                 product.getCode(),
                 product.getAddress(),
                 product.getName(),
@@ -117,7 +117,7 @@ public class ProductDao {
     }
 
     public void deleteProduct(long id) {
-        jdbcTemplate.update("update products set product_status = 'DELETED' where id = ?", id);
+        jdbcTemplate.update("UPDATE products SET product_status = 'DELETED' WHERE id = ?", id);
     }
 
     public Product getProductById(long id) {
@@ -126,9 +126,9 @@ public class ProductDao {
     }
 
     public List<Product> listAdviceProducts() {
-        return jdbcTemplate.query("select products.name, products.manufacture, products.price, products.address, products.product_status " +
-                "from products join ordered_products on products.id = ordered_products.product_id " +
-                "join orders on ordered_products.order_id = orders.id " +
-                "where (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' order by orders.purchase_date desc limit 3", PRODUCT_ROW_MAPPER3);
+        return jdbcTemplate.query("SELECT products.name, products.manufacture, products.price, products.address, products.product_status " +
+                "FROM products JOIN ordered_products ON products.id = ordered_products.product_id " +
+                "JOIN orders ON ordered_products.order_id = orders.id " +
+                "WHERE (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' ORDER BY orders.purchase_date DESC LIMIT 3", PRODUCT_ROW_MAPPER3);
     }
 }

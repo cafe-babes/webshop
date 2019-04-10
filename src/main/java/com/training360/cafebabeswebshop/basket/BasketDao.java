@@ -64,16 +64,16 @@ public class BasketDao {
     }
 
     public void updateBasketItemPieces(BasketItem basketItem) {
-        jdbcTemplate.update("update basket set pieces = ? where product_id = (SELECT id FROM products WHERE address = ?) AND user_id = (SELECT id FROM users WHERE user_name = ?)",
+        jdbcTemplate.update("UPDATE basket SET pieces = ? WHERE product_id = (SELECT id FROM products WHERE address = ?) AND user_id = (SELECT id FROM users WHERE user_name = ?)",
                 basketItem.getPieces(), basketItem.getAddress(), basketItem.getUsername());
     }
 
     public void deleteBasket(String userName) {
-        jdbcTemplate.update("DELETE FROM basket WHERE user_id =(select id from users where users.user_name = ?)", userName);
+        jdbcTemplate.update("DELETE FROM basket WHERE user_id =(SELECT id FROM users WHERE users.user_name = ?)", userName);
     }
 
     public void deleteOneItem(String userName, String address) {
-        jdbcTemplate.update("delete from basket where user_id=(select id from users where users.user_name = ?) and product_id=(select id from products where products.address=?)", userName, address);
+        jdbcTemplate.update("DELETE FROM basket WHERE user_id=(SELECT id FROM users WHERE users.user_name = ?) and product_id=(SELECT id FROM products WHERE products.address=?)", userName, address);
     }
 }
 

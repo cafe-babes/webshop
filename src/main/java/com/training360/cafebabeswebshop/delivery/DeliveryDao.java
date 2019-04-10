@@ -29,8 +29,8 @@ public class DeliveryDao {
     public long saveDeliveryAndGetId(String userName, Delivery delivery){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into delivery (address, user_id) " +
-                            "values (?,(SELECT id FROM users WHERE user_name = ?))",
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO delivery (address, user_id) " +
+                            "VALUES (?,(SELECT id FROM users WHERE user_name = ?))",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, delivery.getDeliveryAddress());
             ps.setString(2, userName);
@@ -40,15 +40,15 @@ public class DeliveryDao {
     }
 
     public Delivery getDeliveryById(long id){
-        return jdbcTemplate.queryForObject("select id, address, user_id from delivery where id = ?", DELIVERY_ROW_MAPPER, id);
+        return jdbcTemplate.queryForObject("SELECT id, address, user_id FROM delivery WHERE id = ?", DELIVERY_ROW_MAPPER, id);
     }
 
     public List<Delivery> getDeliveries(){
-        return jdbcTemplate.query("select id, address, user_id from delivery", DELIVERY_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT id, address, user_id FROM delivery", DELIVERY_ROW_MAPPER);
     }
 
     public List<Delivery> getDeliveriesByUserId(Authentication authentication){
-        return jdbcTemplate.query("select delivery.id as id, address, user_id from delivery LEFT JOIN users ON delivery.user_id=users.id where users.user_name = ? OR user_id IS NULL",
+        return jdbcTemplate.query("SELECT delivery.id as id, address, user_id FROM delivery LEFT JOIN users ON delivery.user_id=users.id WHERE users.user_name = ? OR user_id IS NULL",
                 DELIVERY_ROW_MAPPER, authentication.getName());
     }
 }
