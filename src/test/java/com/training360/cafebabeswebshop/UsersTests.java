@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.user.User;
 import com.training360.cafebabeswebshop.user.UserController;
 import org.junit.Test;
@@ -46,6 +47,21 @@ public class UsersTests {
 
         //Then (size of user is increased by one)
         assertEquals(users.size() + 1, userController.listUsers().size());
+    }
+
+    @Test
+    public void testCreateUserWithExistingUserName() {
+
+        // Given (having a user list)
+        List<User> users = userController.listUsers();
+
+        // When (adding a user)
+        ResultStatus status = userController.createUser(new User(5L, "Ciara Doe", "a@eee.com", "user", "abcdef1A", 1,
+                "ROLE_USER", "ACTIVE"));
+
+        //Then (size of user is increased by one)
+        assertEquals(users.size(), userController.listUsers().size());
+        assertEquals("\"user\" már regisztrált felhasználó!", status.getMessage());
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.user;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +31,13 @@ public class UserController {
         if (authentication == null)
             return new User(1, "VISITOR");
 
-        User user = userService.getUserByName(authentication.getName());
+        User user = userService.getUserByName(authentication.getName()).get();
         if (user.getRole().equals("ROLE_ADMIN")) {
-            return new User(user.getId(), user.getName(), authentication.getName(),  1, "ROLE_ADMIN");
-        } else {
+            return new User(user.getId(), user.getName(), authentication.getName(), 1, "ROLE_ADMIN");
+        } else if (user.getRole().equals("ROLE_USER")) {
             return new User(user.getId(), user.getName(), authentication.getName(), 1, "ROLE_USER");
+        } else {
+            return new User(1, "VISITOR");
         }
     }
 
@@ -76,16 +77,14 @@ public class UserController {
 
     @PostMapping("/users")
     public ResultStatus createUser(@RequestBody User user) {
-        if (userValidator.userCanBeSaved(user)) {
-            long id;
-            try {
-                id = userService.insertUserAndGetId(user);
-            } catch (DataAccessException sql) {
-                return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("\"%s\" már regisztrált felhasználó!", user.getUserName()));
-            }
-            return new ResultStatus(ResultStatusEnum.OK, String.format("\"%s\" sikeresen mentésre került. ( id: %d )", user.getUserName(), id));
+        if (!userValidator.userCanBeSaved(user)) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");
         }
-        return new ResultStatus(ResultStatusEnum.NOT_OK, "Üres név vagy jelszó lett megadva");
+        if (!userValidator.userNameIsUnique(user)) {
+            return new ResultStatus(ResultStatusEnum.NOT_OK, String.format("\"%s\" már regisztrált felhasználó!", user.getUserName()));
+        }
+        long id = userService.insertUserAndGetId(user);
+        return new ResultStatus(ResultStatusEnum.OK, String.format("\"%s\" sikeresen mentésre került. ( id: %d )", user.getUserName(), id));
     }
 
     @GetMapping("/users/{id}")

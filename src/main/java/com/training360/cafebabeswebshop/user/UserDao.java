@@ -71,8 +71,8 @@ public class UserDao {
                 USER_ROW_MAPPER, id);
     }
 
-    public User getUserByName(String userName) {
-        return jdbcTemplate.queryForObject("SELECT id, name, email, user_name, password, enabled, role, user_status FROM users WHERE user_name = ? ",
+    public List<User> getUserByName(String userName) {
+        return jdbcTemplate.query("SELECT id, name, email, user_name, password, enabled, role, user_status FROM users WHERE user_name = ? LIMIT 1",
                 USER_ROW_MAPPER, userName);
     }
 }

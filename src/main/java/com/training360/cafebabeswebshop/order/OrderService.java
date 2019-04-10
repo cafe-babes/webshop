@@ -42,7 +42,7 @@ public class OrderService {
         if (authentication == null)
             return 0;
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
-        Order o = new Order(0, userDao.getUserByName(authentication.getName()).getId(),
+        Order o = new Order(0, userDao.getUserByName(authentication.getName()).get(0).getId(),
                 -1, -1, "ACTIVE");
         o.setDelivery(checkIfNewDeliveryAddress(authentication, delivery));
         if (basketSize > 0) {

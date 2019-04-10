@@ -2,7 +2,6 @@ package com.training360.cafebabeswebshop.category;
 
 import com.training360.cafebabeswebshop.product.ResultStatus;
 import com.training360.cafebabeswebshop.product.ResultStatusEnum;
-import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

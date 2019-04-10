@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
+
 public class UserValidator {
 
     UserService userService;
@@ -10,6 +12,10 @@ public class UserValidator {
 
     public boolean userCanBeSaved(User user) {
         return usernameIsNotEmptyOrNull(user.getUserName()) && passwordIsValid(user.getPassword());
+    }
+
+    public boolean userNameIsUnique(User user) {
+        return userService.getUserByName(user.getUserName()).getStatus() == ResultStatusEnum.NOT_OK;
     }
 
     private boolean usernameIsNotEmptyOrNull(String name) {

@@ -1,5 +1,7 @@
 package com.training360.cafebabeswebshop.user;
 
+import com.training360.cafebabeswebshop.product.ResultStatus;
+import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,14 @@ public class UserService {
         return userDao.getUserById(id);
     }
 
-    public User getUserByName(String userName) {
-        return userDao.getUserByName(userName);
+    public ResultStatus<User> getUserByName(String userName) {
+        try {
+            User user = userDao.getUserByName(userName).get(0);
+            ResultStatus<User> status = new ResultStatus<>(ResultStatusEnum.OK, "OK");
+            status.set(user);
+            return status;
+        } catch (IndexOutOfBoundsException e) {
+            return new ResultStatus<>(ResultStatusEnum.NOT_OK, "Nem található ilyen nevű felhasználó!");
+        }
     }
 }
