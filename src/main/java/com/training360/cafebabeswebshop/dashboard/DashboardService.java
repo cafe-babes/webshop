@@ -19,9 +19,8 @@ public class DashboardService {
     }
 
     public Dashboard listOfResult(){
-        Dashboard dashboards = new Dashboard(userDao.listUsers().size(),
+        return new Dashboard(userDao.listUsers().size(),
                 productDao.getAllProducts().size(), productDao.getProducts().size(),
                 orderDao.listAllOrders().size(), orderDao.listAllActiveOrders().size());
-        return dashboards;
     }
 }
