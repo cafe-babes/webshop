@@ -165,7 +165,6 @@ function addNewCategory(num){
     var ordinal = document.getElementById(`ordinalInputNew${num}`).value;
 
     var request = {
-        //"id": id,
         "name": name,
         "ordinal": ordinal
     }

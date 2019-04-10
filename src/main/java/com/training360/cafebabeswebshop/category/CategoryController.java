@@ -41,18 +41,6 @@ public class CategoryController {
         return categoryService.deleteCategory(id);
     }
 
-    @GetMapping("/categories/{name}")
-    public ResultStatus getCategory(@PathVariable String name) {
-        List<String> names = categoryService.listCategories().stream().map(Category::getName).collect(Collectors.toList());
-        if (!categoryValidator.isEmpty(name) && names.contains(name)) {
-            ResultStatus<Category> result = new ResultStatus<>(ResultStatusEnum.OK, "OK");
-            result.set(categoryService.getCategory(name));
-            return result;
-        } else {
-            return new ResultStatus(ResultStatusEnum.NOT_OK, "Helytelen név");
-        }
-    }
-
     @PostMapping("categories/{id}")
     public ResultStatus updateCategory(@PathVariable long id, @RequestBody Category category) {
         if (categoryValidator.isEmpty(category.getName())) {

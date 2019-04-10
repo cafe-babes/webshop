@@ -57,10 +57,6 @@ public class CategoryService {
         }
     }
 
-    public Category getCategory(String name) {
-        return categoryDao.getCategory(name);
-    }
-
     public ResultStatus updateCategory(long id, Category category) {
         if (!categoryDao.getCategoryById(id).getName().equals(category.getName()) && categoryValidator.isExistingCategoryName(category)) {
             return new ResultStatus(ResultStatusEnum.NOT_OK, "Ilyen kategórianév már létezik, adjon meg egyedi nevet");
