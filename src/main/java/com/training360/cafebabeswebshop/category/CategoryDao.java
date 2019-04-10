@@ -1,5 +1,6 @@
 package com.training360.cafebabeswebshop.category;
 
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -52,12 +53,20 @@ public class CategoryDao {
                 (rs, rowNum) -> rs.getLong("MAX(ordinal)"));
     }
 
-    public void increaseOrdinal(long ordinal) {
-        jdbcTemplate.update("UPDATE category SET ordinal = ordinal +1 WHERE ordinal >= ?", ordinal);
+    public void increaseOrdinalFrom(long ordinalFrom) {
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal +1 WHERE ordinal >= ?", ordinalFrom);
     }
 
-    public void decreaseOrdinal(long ordinal) {
-        jdbcTemplate.update("UPDATE category SET ordinal = ordinal -1 WHERE ordinal <= ?", ordinal);
+    public void increaseOrdinalFromTo(long ordinalFrom, long ordinalTo) {
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal +1 WHERE ordinal >= ? AND ordinal < ? ", ordinalFrom, ordinalTo);
+    }
+
+    public void decreaseOrdinalFrom(long ordinalFrom) {
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal -1 WHERE ordinal <= ?", ordinalFrom);
+    }
+
+    public void decreaseOrdinalFromTo(long ordinalFrom, long ordinalTo) {
+        jdbcTemplate.update("UPDATE category SET ordinal = ordinal -1 WHERE ordinal <= ? AND ordinal > ? ", ordinalFrom, ordinalTo);
     }
 
     public int deleteCategory(long id) {

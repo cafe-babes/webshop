@@ -31,7 +31,7 @@ public class CategoryService {
         if (category.getOrdinal() == 0) {
             category.setOrdinal(max + 1);
         } else if (category.getOrdinal() <= max) {
-            categoryDao.increaseOrdinal(category.getOrdinal());
+            categoryDao.increaseOrdinalFrom(category.getOrdinal());
         }
         try {
             long id = categoryDao.createCategoryAndGetId(category);
@@ -44,7 +44,7 @@ public class CategoryService {
     public ResultStatus deleteCategory(long id) {
 
         long originalOrdinal = categoryDao.getCategoryById(id).getOrdinal();
-        categoryDao.decreaseOrdinal(originalOrdinal);
+        categoryDao.decreaseOrdinalFrom(originalOrdinal);
 
         try {
             int rowsAffected = categoryDao.deleteCategory(id);
@@ -69,9 +69,9 @@ public class CategoryService {
 
         long originalOrdinal = categoryDao.getCategoryById(id).getOrdinal();
         if (originalOrdinal > category.getOrdinal()) {
-            categoryDao.increaseOrdinal(category.getOrdinal());
+            categoryDao.increaseOrdinalFromTo(category.getOrdinal(), originalOrdinal);
         } else if (category.getOrdinal() > originalOrdinal) {
-            categoryDao.decreaseOrdinal(category.getOrdinal());
+            categoryDao.decreaseOrdinalFromTo(category.getOrdinal(), originalOrdinal);
         }
 
         try {
