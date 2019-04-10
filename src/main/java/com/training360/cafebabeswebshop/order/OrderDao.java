@@ -64,7 +64,7 @@ public class OrderDao {
 
     public Order findOrderById(long id) {
         return jdbcTemplate.queryForObject(SQL_SELECT_ORDER +
-                        "LEFT JOIN ordered_products ON orders.id = order_id LEFT JOIN delivery ON orders.delivery_id = delivery.id WHERE orders.id = ?",
+                        "WHERE orders.id = ?",
                 ORDER_ROW_MAPPER, id);
     }
 
