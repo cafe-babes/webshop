@@ -72,10 +72,6 @@ public class CategoryDao {
         return jdbcTemplate.update("DELETE FROM category WHERE id = ?", id);
     }
 
-    public Category getCategory(String name) {
-        return jdbcTemplate.queryForObject("SELECT id, name, ordinal FROM category WHERE name = ?", CATEGORY_ROW_MAPPER, name);
-    }
-
     public Category getCategoryById(long id) {
         return jdbcTemplate.queryForObject("SELECT id, name, ordinal FROM category WHERE id = ?", CATEGORY_ROW_MAPPER, id);
     }
