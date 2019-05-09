@@ -26,20 +26,23 @@ public class BasketController {
 
     @DeleteMapping("/basket")
     public void deleteBasket(Authentication authentication) {
-        if (authentication != null)
+        if (authentication != null) {
             basketService.deleteBasket(authentication);
+        }
     }
 
 
     @DeleteMapping("/basket/{address}")
     public void deleteOneItem(Authentication authentication, @PathVariable String address) {
-        if (authentication != null)
+        if (authentication != null) {
             basketService.deleteOneItem(authentication, address);
+        }
     }
 
     @PostMapping("/basket")
     public void updateBasketItemPieces(@RequestBody BasketItem basketItem, Authentication authentication) {
-        if (authentication != null)
+        if (authentication != null) {
             basketService.updateBasketItemPieces(authentication, basketItem);
+        }
     }
 }

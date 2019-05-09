@@ -6,38 +6,37 @@ function fetchImage(productId) {
     console.log(productId);
 
     fetch('/image/' + productId + '/' + 0)
-    .then(function(response) {
-          if(response.status == 200) {
-            return response.blob();
-          }
-      productImage.src = 'https://pbs.twimg.com/profile_images/758084549821730820/_HYHtD8F_400x400.jpg';
-    })
-    .then(function(myBlob) {
-      var objectURL = URL.createObjectURL(myBlob);
-      productImage.src = objectURL;
-    });
+        .then(function (response) {
+            if (response.status == 200) {
+                return response.blob();
+            }
+            productImage.src = 'https://pbs.twimg.com/profile_images/758084549821730820/_HYHtD8F_400x400.jpg';
+        })
+        .then(function (myBlob) {
+            var objectURL = URL.createObjectURL(myBlob);
+            productImage.src = objectURL;
+        });
 }
 
-function fetchBasket(){
+function fetchBasket() {
     var url = "/basket";
     fetch(url)
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(jsonData) {
-        var productId = jsonData;
-        console.log(jsonData);
-        showBasket(jsonData);
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            console.log(jsonData);
+            showBasket(jsonData);
+        });
 }
 
-function showBasket(jsonData){
+function showBasket(jsonData) {
     var container = document.getElementById("list-product");
     container.innerHTML = "";
 
     var sum = 0;
 
-    for(var i = 0; i < jsonData.length; i++){
+    for (let i = 0; i < jsonData.length; i++) {
         console.log(`${jsonData[i].address}`);
         container.innerHTML +=
             `<div class="container">
@@ -60,16 +59,17 @@ function showBasket(jsonData){
             `;
         sum += jsonData[i].price * jsonData[i].pieces;
     }
-        for (var i = 0; i < jsonData.length; i++) {
-            fetchImage(jsonData[i].productId);
-        }
+
+    for (let i = 0; i < jsonData.length; i++) {
+        fetchImage(jsonData[i].productId);
+    }
     document.getElementById("total-price").innerHTML = sum;
-    
+
 }
 
 function minus(address) {
     var pieceSpan = document.querySelector(`#changeQuantity-${address}`);
-    if(pieceSpan.innerHTML <= 1)
+    if (pieceSpan.innerHTML <= 1)
         removeItemFromBasket(address);
     pieceSpan.innerHTML = parseInt(pieceSpan.innerText) - 1;
     updatePieces(address, parseInt(pieceSpan.innerText));
@@ -85,7 +85,7 @@ function plus(address) {
     basketRefresh();
 }
 
-function summarizer(address){
+function summarizer(address) {
     var sum = 0;
     var productArr = document.querySelector('#list-product').children;
     for (let i = 0; i < productArr.length; i++) {
@@ -112,50 +112,50 @@ function updatePieces(address, piece) {
             "Content-type": "application/json"
         }
     })
-    .then(function (response) {
-        return response;
-    })
+        .then(function (response) {
+            return response;
+        })
 }
 
 function removeItemFromBasket(product_address) {
-      var url = "/basket/" + product_address;
-      console.log(url)
-      return fetch(url, {
-              method: "DELETE"
-          })
-          .then(function (response) {
-              fetchBasket();
-              basketRefresh();
-          })
+    var url = "/basket/" + product_address;
+    console.log(url)
+    return fetch(url, {
+        method: "DELETE"
+    })
+        .then(function (response) {
+            fetchBasket();
+            basketRefresh();
+        })
 }
 
 function emptyBasket() {
     var url = "/basket";
     fetch(url, {
-    method: "DELETE"
+        method: "DELETE"
     })
-    .then(function(){
-        fetchBasket();
-        basketRefresh();
-    });
+        .then(function () {
+            fetchBasket();
+            basketRefresh();
+        });
 }
 
-function checkIfEmpty(){
-       var url = "/basket";
-       fetch(url)
-       .then(function(response){
-           return response.json();
-       })
-       .then(function(jsonData) {
-         //  console.log(jsonData);
-           if(jsonData.length == 0){
+function checkIfEmpty() {
+    var url = "/basket";
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            //  console.log(jsonData);
+            if (jsonData.length == 0) {
                 alert("a kosár tartalma üres");
                 return;
-           }
-           window.location.href = "/delivery.html";
-           //handleAddToOrders();
-           basketRefresh();
-       });
+            }
+            window.location.href = "/delivery.html";
+            //handleAddToOrders();
+            basketRefresh();
+        });
 }
 
 /*function handleAddToOrders(){

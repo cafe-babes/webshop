@@ -142,7 +142,7 @@ function fetchCategories(){
         var manu = document.getElementById(`manTd${num}`);
         var price = document.getElementById(`priceTd${num}`);
         var category = document.getElementById(`categoryTd${num}`);
-        selectedCategory = category.innerHTML;
+        var selectedCategory = category.innerHTML;
 
         var codeData = code.innerHTML;
         var nameData = name.innerHTML;

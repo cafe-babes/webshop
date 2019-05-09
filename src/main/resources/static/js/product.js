@@ -13,13 +13,13 @@ imageContainer.innerHTML += `<div class="carousel-item active">
                              </div>`;
 
 $.getJSON('/user', json => {
-    if(json.id != 0){
-        var userId = json.id;
-        fetchUser(userId);
-    }
-    if (json.role != 'VISITOR') {
-        document.querySelector('#addToBasketButton').hidden = false;
-    }
+  if (json.id != 0) {
+    var userId = json.id;
+    fetchUser(userId);
+  }
+  if (json.role != 'VISITOR') {
+    document.querySelector('#addToBasketButton').hidden = false;
+  }
 });
 
 function fetchUser(userId) {
@@ -29,7 +29,7 @@ function fetchUser(userId) {
       return response.json();
     })
     .then(function (jsonData) {
-     user = jsonData;
+      user = jsonData;
     });
   return false;
 }
@@ -41,9 +41,9 @@ function fetchProduct() {
   var url = '/product/' + address;
 
   if (url == '/product/') {
-          showProductNotFound();
-          return;
-        }
+    showProductNotFound();
+    return;
+  }
 
   fetch(url)
     .then(function (response) {
@@ -72,83 +72,81 @@ function fetchFeedbacks(productId) {
       return response.json();
     })
     .then(function (jsonData) {
-    feedbacks = jsonData;
+      feedbacks = jsonData;
       showFeedbacks(jsonData);
     });
 }
 
 function fetchImage(productId) {
-    fetch('/image/' + productId + '/' + 0)
-    .then(function(response) {
-      if(response.status == 200)
+  fetch('/image/' + productId + '/' + 0)
+    .then(function (response) {
+      if (response.status == 200)
         return response.blob();
       else
         document.querySelector("#image").src = 'images/default.jpg';
     })
-    .then(function(blob) {
-        document.querySelector("#image").src = URL.createObjectURL(blob);
-        callBackFunction(productId);
+    .then(function (blob) {
+      document.querySelector("#image").src = URL.createObjectURL(blob);
+      callBackFunction(productId);
     });
 }
 
 function callBackFunction(productId) {
-setTimeout(function(){ fetchAnotherImage(productId, 1); }, 1000);
+  setTimeout(function () { fetchAnotherImage(productId, 1); }, 1000);
 }
 
 function fetchAnotherImage(productId, offset) {
-    fetch('/image/' + productId + '/' + offset)
-    .then(function(response) {
-      if(response.status == 200)
+  fetch('/image/' + productId + '/' + offset)
+    .then(function (response) {
+      if (response.status == 200)
         return response.blob();
     })
-    .then(function(blob) {
-        if(blob) {
-            imageContainer.innerHTML += `<div class="carousel-item">
+    .then(function (blob) {
+      if (blob) {
+        imageContainer.innerHTML += `<div class="carousel-item">
                                           <img class="d-block w-100" id='img-${offset}' alt="surf">
                                       </div>`;
-            document.querySelector(`#img-${offset}`).src = URL.createObjectURL(blob);
-            fetchAnotherImage(productId, offset+1);
-        }
+        document.querySelector(`#img-${offset}`).src = URL.createObjectURL(blob);
+        fetchAnotherImage(productId, offset + 1);
+      }
     });
 }
 
 function showFeedbacks(jsonData) {
+  console.log(jsonData);
+  var feedbacks = document.getElementById('feedbacks');
+  feedbacks.innerHTML = '';
 
-    var feedbacks = document.getElementById('feedbacks');
-    feedbacks.innerHTML = '';
+  //  Display the feedback of the registered User
+  var defaultUserFeedback = "";
 
-//  Display the feedback of the registered User
-    var defaultUserFeedback = "";
+  if (typeof user != "undefined") {
 
-    if(typeof user != "undefined"){
-
-        var userId = user.id;
-        for(var i = 0; i < jsonData.length; i++){
-            if(jsonData[i].user.id == userId){
-                defaultUserFeedback = jsonData[i].feedback;
-                break;
-            }
-        }
+    var userId = user.id;
+    for (let i = 0; i < jsonData.length; i++) {
+      if (jsonData[i].user.id == userId) {
+        defaultUserFeedback = jsonData[i].feedbackText;
+        break;
+      }
     }
-    var registeredUsersFeedbackTextArea = document.getElementById("feedback-text");
-    registeredUsersFeedbackTextArea.innerHTML = defaultUserFeedback;
-    console.log(defaultUserFeedback);
-//    ------------------
-
-// Listing feedbacks
-
-var visibility;
-
-var star =' <font color="#c59b08">&starf;</font>';
-
-  for (var i = 0; i < jsonData.length; i++) {
-//  Setting the visibility of the delet button
-star =' <font color="#c59b08">&starf;</font>';
-star = star.repeat(jsonData[i].rating);
-  visibility = 'hidden';
-  if(jsonData[i].user.id == userId){
-  visibility = 'visible';
   }
+  var registeredUsersFeedbackTextArea = document.getElementById("feedback-text");
+  registeredUsersFeedbackTextArea.innerHTML = defaultUserFeedback;
+  console.log(defaultUserFeedback);
+  //    ------------------
+
+  // Listing feedbacks
+
+  var visibility;
+
+  for (let i = 0; i < jsonData.length; i++) {
+    //  Setting the visibility of the delet button
+    var star = ' <font color="#c59b08">&starf;</font>';
+    star = star.repeat(jsonData[i].rating);
+    visibility = 'hidden';
+    if (jsonData[i].user.id == userId) {
+      visibility = 'visible';
+    }
     feedbacks.innerHTML += `
       <div class="container">
           <div>
@@ -171,7 +169,7 @@ star = star.repeat(jsonData[i].rating);
                                           data-value="5" class="glyphicon glyphicon-star-empty"></span>  </span>
                                   </div>
                                   <div id="feedback#${jsonData[i].id}">
-                                  <p id = "fb">${jsonData[i].feedback}</p>
+                                  <p id = "fb">${jsonData[i].feedbackText}</p>
                                   </div>
                                   <ins class="ab zmin sprite sprite-i-triangle block"></ins>
                               </div><br>
@@ -189,17 +187,15 @@ star = star.repeat(jsonData[i].rating);
 
                 `;
   }
-  }
-
-function repeat(starsNumber){
-
-for(var i = 0 ;i < starsNumber; i++){
 }
-}
+
+//function repeat(starsNumber){
+//    for(var i = 0 ;i < starsNumber; i++){
+//    }
+//}
 
 
 function handleAddToBasketButton() {
-  var address = (new URL(document.location)).searchParams.get('address');
   var url = '/basket';
   fetch(url, {
     method: 'GET'
@@ -245,7 +241,7 @@ function addToBasket() {
 
 function addGoToBasketButton() {
   document.querySelector('#basketButton').innerHTML =
-        '<button type="button" class="btn btn-outline-primary">Irány a kosár</button>';
+    '<button type="button" class="btn btn-outline-primary">Irány a kosár</button>';
 }
 
 
@@ -263,109 +259,108 @@ function showProduct(jsonData) {
 }
 
 function newFeedback() {
-console.log(user);
-            if(typeof user === "undefined"){
-                        alert("Be kell jelentkeznie az értékeléshez");
-                        return;
-                    }
+  console.log(user);
+  if (typeof user === "undefined") {
+    alert("Be kell jelentkeznie az értékeléshez");
+    return;
+  }
 
-            var feedbackButton = document.getElementById('feedback-button');
-            var date = new Date(Date.now());
-            date.setHours(date.getHours()+2)
-            var dateNow = date.toISOString().substring(0,19);
-            var feedbackText = document.getElementById('feedback-text');
-            var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+  var date = new Date(Date.now());
+  date.setHours(date.getHours() + 2)
+  var dateNow = date.toISOString().substring(0, 19);
+  var feedbackText = document.getElementById('feedback-text');
+  var rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
 
-            console.log(dateNow);
-            console.log('Feedback '+feedbackText.value);
-            console.log('Rating :'+rating);
-            console.log('User ID :'+user.id);
-            console.log('Product ID :'+ product.id);
+  console.log(dateNow);
+  console.log('Feedback ' + feedbackText.value);
+  console.log('Rating :' + rating);
+  console.log('User ID :' + user.id);
+  console.log('Product ID :' + product.id);
 
-                    var request =
-                                   {
-                                   	"feedbackDate": dateNow,
-                                       "feedback": feedbackText.value,
-                                       "rating": rating,
-                                       "user": {
-                                       "id": user.id,
-                                       "name": user.name,
-                                       "email": null,
-                                       "userName": user.userName,
-                                       "password": user.password,
-                                       "enabled": user.enabled,
-                                       "role": user.role,
-                                       "userStatus": user.userStatus
-                                   },
-                                       "product": {
-                                       "id": product.id,
-                                       "code": product.code,
-                                       "address": product.address,
-                                       "name": product.name,
-                                       "manufacture":product.manufacture,
-                                       "price": product.price,
-                                       "productStatus": product.productStatus,
-                                       "category": {
-                                           "id": product.category.id,
-                                           "name": product.category.name,
-                                           "ordinal": 1
-                                       }
-                                   }
-                                   }
+  var request =
+  {
+    "feedbackDate": dateNow,
+    "feedbackText": feedbackText.value,
+    "rating": rating,
+    "user": {
+      "id": user.id,
+      "name": user.name,
+      "email": null,
+      "userName": user.userName,
+      "password": user.password,
+      "enabled": user.enabled,
+      "role": user.role,
+      "userStatus": user.userStatus
+    },
+    "product": {
+      "id": product.id,
+      "code": product.code,
+      "address": product.address,
+      "name": product.name,
+      "manufacture": product.manufacture,
+      "price": product.price,
+      "productStatus": product.productStatus,
+      "category": {
+        "id": product.category.id,
+        "name": product.category.name,
+        "ordinal": 1
+      }
+    }
+  }
 
-            fetch("/feedback" , {
-                                method: "POST",
-                                body: JSON.stringify(request),
-                                headers: {
-                                    "Content-type": "application/json"
-                                }
-                            })
-                            .then(function (response) {
-                                return response.json();
-                            }).
-                                then(function (jsonData) {
-                                    if (jsonData.resultStatusEnum == "OK") {
-                                      fetchProduct();
-                                      alert(jsonData.message);
-                                    } else {
-                                        alert(jsonData.message);
-                                    }
-                                });
-                                return false;
-            }
+  fetch("/feedback", {
+    method: "POST",
+    body: JSON.stringify(request),
+    headers: {
+      "Content-type": "application/json"
+    }
+  })
+    .then(function (response) {
+      return response.json();
+    }).
+    then(function (jsonData) {
+      if (jsonData.resultStatusEnum == "OK") {
+        fetchProduct();
+        alert(jsonData.message);
+      } else {
+        alert(jsonData.message);
+      }
+    });
+  return false;
+}
 
-function deleteFeedback(feedbackId){
+function deleteFeedback(feedbackId) {
 
-        var feedback;
-        for(var i = 0; i<feedbacks.length; i++){
-                if(feedbacks[i].id == feedbackId){
-                        feedback = feedbacks[i];
-                        break;
-                }
-        }
+  var feedback;
+  for (var i = 0; i < feedbacks.length; i++) {
+    if (feedbacks[i].id == feedbackId) {
+      feedback = feedbacks[i];
+      break;
+    }
+  }
+  if (feedback)
+    console.log("feedback-hez tartozó user id-ja = " + feedback.user.id);
+  console.log("a bejelentkezett user id-ja = " + user.id);
 
-        console.log("feedback-hez tartozó user id-ja = " +feedback.user.id);
-        console.log("a bejelentkezett user id-ja = "+ user.id);
+  if (feedback && user.id == feedback.user.id) {
 
-            if(user.id == feedback.user.id){
-
-                     fetch("/feedback/" + feedback.id, {
-                                               method: "DELETE",
-                                           })
-                                           .then(function (response) {
-                                               fetchProduct();
-                                               });
-            }else{
-                alert("Ez nem az Ön értékelése, ezért nem törölheti");
-            }
+    fetch("/feedback/" + feedback.id, {
+      method: "DELETE",
+    })
+      .then(function (response) {
+        fetchProduct();
+      });
+  } else {
+    alert("Ez nem az Ön értékelése, ezért nem törölheti");
+  }
 
 }
 
 
 function showProductNotFound() {
-    var content = document.getElementById("content");
-    var pageNotFound = document.getElementById("page-not-found");
-    pageNotFound.innerHTML = ` <br>
+  var content = document.getElementById("content");
+  var pageNotFound = document.getElementById("page-not-found");
+  pageNotFound.innerHTML = ` <br>
                                 <div class="errorStlye">
                                     <div class="d-flex justify-content-center" >
                                         <h1 class= "surf medium">Sajnos ilyen termékkel nem rendelkezünk...</h1>
@@ -375,37 +370,37 @@ function showProductNotFound() {
                                         <img src="https://vignette.wikia.nocookie.net/kenny-the-shark/images/2/24/KTS_Gallery_570x402_08.jpg/revision/latest/scale-to-width-down/310?cb=20130523023812">
                                     </div>
                                  </div>`
-    content.style.display = "none";
+  content.style.display = "none";
 }
 
 //Init Star Rating System
-        document.addEventListener('DOMContentLoaded', function(){
-            let stars = document.querySelectorAll('.star');
-            stars.forEach(function(star){
-                star.addEventListener('click', setRating);
-            });
+document.addEventListener('DOMContentLoaded', function () {
+  let stars = document.querySelectorAll('.star');
+  stars.forEach(function (star) {
+    star.addEventListener('click', setRating);
+  });
 
-            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
-            let target = stars[rating - 1];
-            target.dispatchEvent(new MouseEvent('click'));
-        });
-        function setRating(ev){
-            let span = ev.currentTarget;
-            let stars = document.querySelectorAll('.star');
-            let match = false;
-            let num = 0;
-            stars.forEach(function(star, index){
-                if(match){
-                    star.classList.remove('rated');
-                }else{
-                    star.classList.add('rated');
-                }
-                //are we currently looking at the span that was clicked
-                if(star === span){
-                    match = true;
-                    num = index + 1;
-                }
-            });
-            document.querySelector('.stars').setAttribute('data-rating', num);
-        }
+  let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+  let target = stars[rating - 1];
+  target.dispatchEvent(new MouseEvent('click'));
+});
+function setRating(ev) {
+  let span = ev.currentTarget;
+  let stars = document.querySelectorAll('.star');
+  let match = false;
+  let num = 0;
+  stars.forEach(function (star, index) {
+    if (match) {
+      star.classList.remove('rated');
+    } else {
+      star.classList.add('rated');
+    }
+    //are we currently looking at the span that was clicked
+    if (star === span) {
+      match = true;
+      num = index + 1;
+    }
+  });
+  document.querySelector('.stars').setAttribute('data-rating', num);
+}
 

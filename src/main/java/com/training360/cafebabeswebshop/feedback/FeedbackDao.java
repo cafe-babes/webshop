@@ -39,7 +39,7 @@ public class FeedbackDao {
 
     public void giveAFeedback(Feedback feedback) {
         jdbcTemplate.update("INSERT INTO feedback(feedback_date, feedback, rating, user_id, product_id)"
-                + "VALUES (?,?,?,?,?)", feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedback.getUser().getId(), feedback.getProduct().getId());
+                + "VALUES (?,?,?,?,?)", feedback.getFeedbackDate(), feedback.getFeedbackText(), feedback.getRating(), feedback.getUser().getId(), feedback.getProduct().getId());
     }
 
     public void deleteFeedbackById(long id) {
@@ -59,7 +59,7 @@ public class FeedbackDao {
 
     public void updateFeedback(Feedback feedback, long feedbackId) {
         jdbcTemplate.update("UPDATE feedback SET feedback_date= ?,feedback= ?,rating= ? WHERE id = ?",
-                feedback.getFeedbackDate(), feedback.getFeedback(), feedback.getRating(), feedbackId);
+                feedback.getFeedbackDate(), feedback.getFeedbackText(), feedback.getRating(), feedbackId);
     }
 
     public boolean alreadyGaveAFeedback(long userId, long productId) {

@@ -105,7 +105,7 @@ public class ProductTests {
 		// When
 		List<Product> productList = productController.listAdvicedProducts();
 		//Then
-		assertEquals(productList.size(),3 );
+		assertEquals(3, productList.size());
 	}
 
 	@Test
@@ -127,8 +127,8 @@ public class ProductTests {
 		}
 
 		//Then
-		assertEquals(products.get(0).getCategory().getName(), "pretty");
-		assertEquals(products.get(10).getCategory().getName(), "fast");
+		assertEquals("pretty", products.get(0).getCategory().getName());
+		assertEquals("fast", products.get(10).getCategory().getName());
 	}
 
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Random;
 
 @Repository
 public class UserDao {
@@ -33,8 +34,7 @@ public class UserDao {
     }
 
     public void deleteUserById(long id) {
-        jdbcTemplate.update("UPDATE orders SET user_id = NULL WHERE user_id = ?", id);
-        jdbcTemplate.update("UPDATE basket SET user_id = NULL WHERE user_id = ?", id);
+        jdbcTemplate.update("DELETE FROM basket WHERE user_id = ?", id);
         jdbcTemplate.update("DELETE FROM users WHERE id = ?", id);
     }
 

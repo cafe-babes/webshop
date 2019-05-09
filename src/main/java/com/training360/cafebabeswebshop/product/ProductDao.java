@@ -29,7 +29,7 @@ public class ProductDao {
                     resultSet.getLong("category.ordinal"))
     ));
 
-    private static final RowMapper<Product> PRODUCT_ROW_MAPPER3 = (resultSet, i) -> new Product(
+    private static final RowMapper<Product> PRODUCT_ROW_MAPPER_WITHOUT_CATEGORY = (resultSet, i) -> new Product(
             resultSet.getString("address"),
             resultSet.getString("name"),
             resultSet.getString("manufacture"),
@@ -129,6 +129,6 @@ public class ProductDao {
         return jdbcTemplate.query("SELECT products.name, products.manufacture, products.price, products.address, products.product_status " +
                 "FROM products JOIN ordered_products ON products.id = ordered_products.product_id " +
                 "JOIN orders ON ordered_products.order_id = orders.id " +
-                "WHERE (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' ORDER BY orders.purchase_date DESC LIMIT 3", PRODUCT_ROW_MAPPER3);
+                "WHERE (orders.order_status = 'ACTIVE' or orders.order_status = 'SHIPPED') AND products.product_status = 'ACTIVE' ORDER BY orders.purchase_date DESC LIMIT 3", PRODUCT_ROW_MAPPER_WITHOUT_CATEGORY);
     }
 }

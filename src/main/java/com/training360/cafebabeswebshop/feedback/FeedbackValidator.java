@@ -8,7 +8,7 @@ public class FeedbackValidator {
 
     public boolean containsHTMLCode(Feedback feedback){
         Pattern p = Pattern.compile("<[^>]*>");
-        Matcher m = p.matcher(feedback.getFeedback());
+        Matcher m = p.matcher(feedback.getFeedbackText());
         return m.find();
     }
 

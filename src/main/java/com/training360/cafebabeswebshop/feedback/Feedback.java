@@ -9,7 +9,7 @@ public class Feedback {
 
     private long id;
     private LocalDateTime feedbackDate;
-    private String feedback;
+    private String feedbackText;
     private int rating;
     private User user;
     private Product product;
@@ -17,18 +17,18 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(String feedback, int rating, User user, Product product) {
+    public Feedback(String feedbackText, int rating, User user, Product product) {
         this.feedbackDate = LocalDateTime.now();
-        this.feedback = feedback;
+        this.feedbackText = feedbackText;
         this.rating = rating;
         this.user = user;
         this.product = product;
     }
 
-    public Feedback(long id, LocalDateTime feedbackDate, String feedback, int rating, User user, Product product) {
+    public Feedback(long id, LocalDateTime feedbackDate, String feedbackText, int rating, User user, Product product) {
         this.id = id;
         this.feedbackDate = feedbackDate;
-        this.feedback = feedback;
+        this.feedbackText = feedbackText;
         this.rating = rating;
         this.user = user;
         this.product = product;
@@ -42,8 +42,8 @@ public class Feedback {
         return id;
     }
 
-    public String getFeedback() {
-        return feedback;
+    public String getFeedbackText() {
+        return feedbackText;
     }
 
     public int getRating() {
@@ -62,7 +62,7 @@ public class Feedback {
     public String toString() {
         return "Feedback{" +
                 "feedbackDate=" + feedbackDate +
-                ", feedback='" + feedback + '\'' +
+                ", feedbackText='" + feedbackText + '\'' +
                 '}';
     }
 }

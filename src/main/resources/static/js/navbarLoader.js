@@ -61,12 +61,12 @@ function getNavbar() {
 
 function basketRefresh() {
     $.getJSON("/basket", json => {
-    var sum = 0;
-    for(var i = 0; i<json.length; i++) {
-        if(json[i].pieces)
-            sum += json[i].pieces;
-    }
-    document.querySelector('#cartCount').innerHTML = sum;
+        var sum = 0;
+        for (var i = 0; i < json.length; i++) {
+            if (json[i].pieces)
+                sum += json[i].pieces;
+        }
+        document.querySelector('#cartCount').innerHTML = sum;
     });
 }
 
@@ -75,13 +75,13 @@ function fetchCategories() {
         var categoryDropdown = document.querySelector("#category-select");
         var categoryNavbar = document.querySelector('#categories');
 
-        for (let i = 0; i<json.length; i++) {
-            if(categoryNavbar)
+        for (let i = 0; i < json.length; i++) {
+            if (categoryNavbar)
                 categoryNavbar.innerHTML += `<a class="nav-link text-light" href="/index.html?category=${json[i].name}">${json[i].name}</a>`;
-            if(categoryDropdown)
+            if (categoryDropdown)
                 categoryDropdown.innerHTML += `<option value="${json[i].name}">${json[i].name}</option>`;
         }
-        if(categoryDropdown)
+        if (categoryDropdown)
             categoryDropdown.value = new URL(document.location).searchParams.get("category") || 'all';
     });
 }

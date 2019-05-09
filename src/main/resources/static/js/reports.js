@@ -1,30 +1,30 @@
-window.onload = function() {
-  fetchOrderReport();
-  fetchProductReport();
+window.onload = function () {
+    fetchOrderReport();
+    fetchProductReport();
 };
 
 
 function fetchOrderReport() {
-  fetch("/reports/orders")
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(jsonData) {
-      showIncomeTable(jsonData);
-    });
+    fetch("/reports/orders")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            showIncomeTable(jsonData);
+        });
 }
 
 function fetchProductReport() {
     fetch("/reports/products")
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(jsonData) {
-        showProductTable(jsonData);
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            showProductTable(jsonData);
+        });
 }
 
-function showIncomeTable(jsonData){
+function showIncomeTable(jsonData) {
 
     var incomeTable = document.getElementById("income-table");
     var jan = 0;
@@ -40,22 +40,22 @@ function showIncomeTable(jsonData){
     var nov = 0;
     var dec = 0;
 
-    for(var i = 0; i<jsonData.length; i++) {
+    for (var i = 0; i < jsonData.length; i++) {
 
         var tr = document.createElement("tr");
         tr["raw-data"] = jsonData[i];
 
         var dateYearTd = document.createElement("td");
-            dateYearTd.innerHTML = jsonData[i].year;
-            tr.appendChild(dateYearTd);
+        dateYearTd.innerHTML = jsonData[i].year;
+        tr.appendChild(dateYearTd);
 
         var dateMonthTd = document.createElement("td");
-          dateMonthTd.innerHTML = jsonData[i].month;
-          tr.appendChild(dateMonthTd);
+        dateMonthTd.innerHTML = jsonData[i].month;
+        tr.appendChild(dateMonthTd);
 
         var o_statusTd = document.createElement("td");
-        if(jsonData[i].orderStatus == 'ACTIVE'){
-        o_statusTd.innerHTML = "aktív";
+        if (jsonData[i].orderStatus == 'ACTIVE') {
+            o_statusTd.innerHTML = "aktív";
         } else {
             o_statusTd.innerHTML = "kiszállított"
         }
@@ -70,194 +70,194 @@ function showIncomeTable(jsonData){
         tr.appendChild(countTd);
 
         incomeTable.appendChild(tr);
-if(jsonData[i].month == 1){
+        if (jsonData[i].month == 1) {
             jan += jsonData[i].total;
         }
-        if(jsonData[i].month == 2){
+        if (jsonData[i].month == 2) {
             february += jsonData[i].total;
         }
-        if(jsonData[i].month == 3){
+        if (jsonData[i].month == 3) {
             march += jsonData[i].total;
         }
-        if(jsonData[i].month == 4){
+        if (jsonData[i].month == 4) {
             april += jsonData[i].total;
         }
-        if(jsonData[i].month == 5){
+        if (jsonData[i].month == 5) {
             may += jsonData[i].total;
         }
-        if(jsonData[i].month == 6){
+        if (jsonData[i].month == 6) {
             jun += jsonData[i].total;
         }
-        if(jsonData[i].month == 7){
+        if (jsonData[i].month == 7) {
             jul += jsonData[i].total;
         }
-        if(jsonData[i].month == 8){
+        if (jsonData[i].month == 8) {
             aug += jsonData[i].total;
         }
-        if(jsonData[i].month == 9){
+        if (jsonData[i].month == 9) {
             sept += jsonData[i].total;
         }
-        if(jsonData[i].month == 10){
+        if (jsonData[i].month == 10) {
             oct += jsonData[i].total;
         }
-        if(jsonData[i].month == 11){
+        if (jsonData[i].month == 11) {
             nov += jsonData[i].total;
         }
-        if(jsonData[i].month == 12){
+        if (jsonData[i].month == 12) {
             dec += jsonData[i].total;
         }
     }
 
 
-    zingchart.THEME="classic";
+    zingchart.THEME = "classic";
     var myConfig =
-            {
-                "type": "bar",
-                "stacked": true,
-                "stack-type": "normal",
-                "background-color": "#FFFFFF",
-                "title": {
-                    "text": "",
-                    "font-family": "arial",
-                    "x": "40px",
-                    "y": "5px",
-                    "align": "left",
-                    "bold": false,
-                    "font-size": "16px",
-                    "font-color": "#000000",
-                    "background-color": "none"
-                },
-                "subtitle": {
-                    "text": "<i></i>",
-                    "font-family": "arial",
-                    "x": "175px",
-                    "y": "5px",
-                    "align": "left",
-                    "bold": false,
-                    "font-size": "16px",
-                    "font-color": "#7E7E7E",
-                    "background-color": "none"
-                },
-                "plot": {
-                    "bar-width": "25px",
-                    "hover-state": {
-                        "visible": false
-                    },
-                    "animation":{
-                      "delay":300,
-                      "sequence":1
-                    }
-                },
-                "labels":[
-                    {
-                        "text": "SHIPPED",
-                        "background-color": "#90A23B",
-                        "font-size": "14px",
-                        "font-family": "arial",
-                        "font-weight": "normal",
-                        "font-color": "#FFFFFF",
-                        "padding": "10%",
-                        "border-radius": "3px",
-                        "offset-y":-30,
-                        "shadow": false,
-                        "callout": true,
-                        "callout-height": "10px",
-                        "callout-width": "15px",
-                        "hook":"node:plot=2;index=4"
-                    },
-                    {
-                        "text": "ACTIVE",
-                        "thousands-separator": ",",
-                        "background-color": "#FFC700",
-                        "font-size": "14px",
-                        "font-family": "arial",
-                        "font-weight": "normal",
-                        "font-color": "#FFFFFF",
-                        "padding": "10%",
-                        "border-radius": "3px",
-                        "shadow": false,
-                        "callout": true,
-                        "callout-height": "10px",
-                        "callout-width": "15px",
-                        "offset-y": -30,
-                        "hook":"node:plot=2;index=9"
-                    }
-                ],
-                "scale-x": {
-                    "values": [
-                        "JAN",
-                        "FEB",
-                        "MAR",
-                        "APR",
-                        "MAY",
-                        "JUN",
-                        "JUL",
-                        "AUG",
-                        "SEP",
-                        "OCT",
-                        "NOV",
-                        "DEC"
-                    ],
-                    "line-color": "#7E7E7E",
-                    "tick": {
-                        "visible": false
-                    },
-                    "guide": {
-                        "visible": false
-                    },
-                    "item": {
-                        "font-family": "arial",
-                        "font-color": "#8B8B8B"
-                    }
-                },
-                "scale-y": {
-                    "values": "0:5000000:1000000",
-                    "short": true,
-                    "line-color": "#7E7E7E",
-                    "tick": {
-                        "visible": false
-                    },
-                    "guide": {
-                        "line-style": "solid"
-                    },
-                    "item": {
-                        "font-family": "arial",
-                        "font-color": "#8B8B8B"
-                    }
-                },
-            "series": [
-                {
-                    "values" : [
-                          jan,
-                          february,
-                          march,
-                          april,
-                          may,
-                          jun,
-                          jul,
-                          aug,
-                          sept,
-                          oct,
-                          nov,
-                          dec
-                        ],
-                    "background-color": "#90A23B"
-                },
-            ],
-                "tooltip": {
-                    "visible": false
-                }
+    {
+        "type": "bar",
+        "stacked": true,
+        "stack-type": "normal",
+        "background-color": "#FFFFFF",
+        "title": {
+            "text": "",
+            "font-family": "arial",
+            "x": "40px",
+            "y": "5px",
+            "align": "left",
+            "bold": false,
+            "font-size": "16px",
+            "font-color": "#000000",
+            "background-color": "none"
+        },
+        "subtitle": {
+            "text": "<i></i>",
+            "font-family": "arial",
+            "x": "175px",
+            "y": "5px",
+            "align": "left",
+            "bold": false,
+            "font-size": "16px",
+            "font-color": "#7E7E7E",
+            "background-color": "none"
+        },
+        "plot": {
+            "bar-width": "25px",
+            "hover-state": {
+                "visible": false
+            },
+            "animation": {
+                "delay": 300,
+                "sequence": 1
             }
-    ;
+        },
+        "labels": [
+            {
+                "text": "SHIPPED",
+                "background-color": "#90A23B",
+                "font-size": "14px",
+                "font-family": "arial",
+                "font-weight": "normal",
+                "font-color": "#FFFFFF",
+                "padding": "10%",
+                "border-radius": "3px",
+                "offset-y": -30,
+                "shadow": false,
+                "callout": true,
+                "callout-height": "10px",
+                "callout-width": "15px",
+                "hook": "node:plot=2;index=4"
+            },
+            {
+                "text": "ACTIVE",
+                "thousands-separator": ",",
+                "background-color": "#FFC700",
+                "font-size": "14px",
+                "font-family": "arial",
+                "font-weight": "normal",
+                "font-color": "#FFFFFF",
+                "padding": "10%",
+                "border-radius": "3px",
+                "shadow": false,
+                "callout": true,
+                "callout-height": "10px",
+                "callout-width": "15px",
+                "offset-y": -30,
+                "hook": "node:plot=2;index=9"
+            }
+        ],
+        "scale-x": {
+            "values": [
+                "JAN",
+                "FEB",
+                "MAR",
+                "APR",
+                "MAY",
+                "JUN",
+                "JUL",
+                "AUG",
+                "SEP",
+                "OCT",
+                "NOV",
+                "DEC"
+            ],
+            "line-color": "#7E7E7E",
+            "tick": {
+                "visible": false
+            },
+            "guide": {
+                "visible": false
+            },
+            "item": {
+                "font-family": "arial",
+                "font-color": "#8B8B8B"
+            }
+        },
+        "scale-y": {
+            "values": "0:5000000:1000000",
+            "short": true,
+            "line-color": "#7E7E7E",
+            "tick": {
+                "visible": false
+            },
+            "guide": {
+                "line-style": "solid"
+            },
+            "item": {
+                "font-family": "arial",
+                "font-color": "#8B8B8B"
+            }
+        },
+        "series": [
+            {
+                "values": [
+                    jan,
+                    february,
+                    march,
+                    april,
+                    may,
+                    jun,
+                    jul,
+                    aug,
+                    sept,
+                    oct,
+                    nov,
+                    dec
+                ],
+                "background-color": "#90A23B"
+            },
+        ],
+        "tooltip": {
+            "visible": false
+        }
+    }
+        ;
 
     zingchart.render({
-    	id : 'myChart',
-    	data : myConfig,
+        id: 'myChart',
+        data: myConfig,
     });
-    }
+}
 
 
-function showProductTable(jsonData){
+function showProductTable(jsonData) {
 
     var tradeTable = document.getElementById("trade-table");
     var jan = 0;
@@ -273,7 +273,7 @@ function showProductTable(jsonData){
     var nov = 0;
     var dec = 0;
 
-    for(var i = 0; i<jsonData.length; i++) {
+    for (var i = 0; i < jsonData.length; i++) {
 
         var tr = document.createElement("tr");
         tr["raw-data"] = jsonData[i];
@@ -304,189 +304,189 @@ function showProductTable(jsonData){
 
         tradeTable.appendChild(tr);
 
-        if(jsonData[i].month == 1){
+        if (jsonData[i].month == 1) {
             jan += jsonData[i].total;
         }
-        if(jsonData[i].month == 2){
+        if (jsonData[i].month == 2) {
             february += jsonData[i].total;
         }
-        if(jsonData[i].month == 3){
+        if (jsonData[i].month == 3) {
             march += jsonData[i].total;
         }
-        if(jsonData[i].month == 4){
+        if (jsonData[i].month == 4) {
             april += jsonData[i].total;
         }
-        if(jsonData[i].month == 5){
+        if (jsonData[i].month == 5) {
             may += jsonData[i].total;
         }
-        if(jsonData[i].month == 6){
+        if (jsonData[i].month == 6) {
             jun += jsonData[i].total;
         }
-        if(jsonData[i].month == 7){
+        if (jsonData[i].month == 7) {
             jul += jsonData[i].total;
         }
-        if(jsonData[i].month == 8){
+        if (jsonData[i].month == 8) {
             aug += jsonData[i].total;
         }
-        if(jsonData[i].month == 9){
+        if (jsonData[i].month == 9) {
             sept += jsonData[i].total;
         }
-        if(jsonData[i].month == 10){
+        if (jsonData[i].month == 10) {
             oct += jsonData[i].total;
         }
-        if(jsonData[i].month == 11){
+        if (jsonData[i].month == 11) {
             nov += jsonData[i].total;
         }
-        if(jsonData[i].month == 12){
+        if (jsonData[i].month == 12) {
             dec += jsonData[i].total;
         }
 
     }
 
-        zingchart.THEME="classic";
-        var myConfig =
-                {
-                    "type": "bar",
-                    "stacked": true,
-                    "stack-type": "normal",
-                    "background-color": "#FFFFFF",
-                    "title": {
-                        "text": "",
-                        "font-family": "arial",
-                        "x": "40px",
-                        "y": "5px",
-                        "align": "left",
-                        "bold": false,
-                        "font-size": "16px",
-                        "font-color": "#000000",
-                        "background-color": "none"
-                    },
-                    "subtitle": {
-                        "text": "<i></i>",
-                        "font-family": "arial",
-                        "x": "175px",
-                        "y": "5px",
-                        "align": "left",
-                        "bold": false,
-                        "font-size": "16px",
-                        "font-color": "#7E7E7E",
-                        "background-color": "none"
-                    },
-                    "plot": {
-                        "bar-width": "25px",
-                        "hover-state": {
-                            "visible": false
-                        },
-                        "animation":{
-                          "delay":300,
-                          "sequence":1
-                        }
-                    },
-                    "labels":[
-                        {
-                            "text": "SHIPPED",
-                            "background-color": "#90A23B",
-                            "font-size": "14px",
-                            "font-family": "arial",
-                            "font-weight": "normal",
-                            "font-color": "#FFFFFF",
-                            "padding": "10%",
-                            "border-radius": "3px",
-                            "offset-y":-30,
-                            "shadow": false,
-                            "callout": true,
-                            "callout-height": "10px",
-                            "callout-width": "15px",
-                            "hook":"node:plot=2;index=4"
-                        },
-                        {
-                            "text": "ACTIVE",
-                            "thousands-separator": ",",
-                            "background-color": "#FFC700",
-                            "font-size": "14px",
-                            "font-family": "arial",
-                            "font-weight": "normal",
-                            "font-color": "#FFFFFF",
-                            "padding": "10%",
-                            "border-radius": "3px",
-                            "shadow": false,
-                            "callout": true,
-                            "callout-height": "10px",
-                            "callout-width": "15px",
-                            "offset-y": -30,
-                            "hook":"node:plot=2;index=9"
-                        }
-                    ],
-                    "scale-x": {
-                        "values": [
-                            "JAN",
-                            "FEB",
-                            "MAR",
-                            "APR",
-                            "MAY",
-                            "JUN",
-                            "JUL",
-                            "AUG",
-                            "SEP",
-                            "OCT",
-                            "NOV",
-                            "DEC"
-                        ],
-                        "line-color": "#7E7E7E",
-                        "tick": {
-                            "visible": false
-                        },
-                        "guide": {
-                            "visible": false
-                        },
-                        "item": {
-                            "font-family": "arial",
-                            "font-color": "#8B8B8B"
-                        }
-                    },
-                    "scale-y": {
-                        "values": "0:500000:100000",
-                        "short": true,
-                        "line-color": "#7E7E7E",
-                        "tick": {
-                            "visible": false
-                        },
-                        "guide": {
-                            "line-style": "solid"
-                        },
-                        "item": {
-                            "font-family": "arial",
-                            "font-color": "#8B8B8B"
-                        }
-                    },
-                "series": [
-                    {
-                        "values" : [
-                            jan,
-                            february,
-                            march,
-                            april,
-                            may,
-                            jun,
-                            jul,
-                            aug,
-                            sept,
-                            oct,
-                            nov,
-                            dec,
-                            ],
-                        "background-color": "#90A23B"
-                    },
+    zingchart.THEME = "classic";
+    var myConfig =
+    {
+        "type": "bar",
+        "stacked": true,
+        "stack-type": "normal",
+        "background-color": "#FFFFFF",
+        "title": {
+            "text": "",
+            "font-family": "arial",
+            "x": "40px",
+            "y": "5px",
+            "align": "left",
+            "bold": false,
+            "font-size": "16px",
+            "font-color": "#000000",
+            "background-color": "none"
+        },
+        "subtitle": {
+            "text": "<i></i>",
+            "font-family": "arial",
+            "x": "175px",
+            "y": "5px",
+            "align": "left",
+            "bold": false,
+            "font-size": "16px",
+            "font-color": "#7E7E7E",
+            "background-color": "none"
+        },
+        "plot": {
+            "bar-width": "25px",
+            "hover-state": {
+                "visible": false
+            },
+            "animation": {
+                "delay": 300,
+                "sequence": 1
+            }
+        },
+        "labels": [
+            {
+                "text": "SHIPPED",
+                "background-color": "#90A23B",
+                "font-size": "14px",
+                "font-family": "arial",
+                "font-weight": "normal",
+                "font-color": "#FFFFFF",
+                "padding": "10%",
+                "border-radius": "3px",
+                "offset-y": -30,
+                "shadow": false,
+                "callout": true,
+                "callout-height": "10px",
+                "callout-width": "15px",
+                "hook": "node:plot=2;index=4"
+            },
+            {
+                "text": "ACTIVE",
+                "thousands-separator": ",",
+                "background-color": "#FFC700",
+                "font-size": "14px",
+                "font-family": "arial",
+                "font-weight": "normal",
+                "font-color": "#FFFFFF",
+                "padding": "10%",
+                "border-radius": "3px",
+                "shadow": false,
+                "callout": true,
+                "callout-height": "10px",
+                "callout-width": "15px",
+                "offset-y": -30,
+                "hook": "node:plot=2;index=9"
+            }
+        ],
+        "scale-x": {
+            "values": [
+                "JAN",
+                "FEB",
+                "MAR",
+                "APR",
+                "MAY",
+                "JUN",
+                "JUL",
+                "AUG",
+                "SEP",
+                "OCT",
+                "NOV",
+                "DEC"
+            ],
+            "line-color": "#7E7E7E",
+            "tick": {
+                "visible": false
+            },
+            "guide": {
+                "visible": false
+            },
+            "item": {
+                "font-family": "arial",
+                "font-color": "#8B8B8B"
+            }
+        },
+        "scale-y": {
+            "values": "0:500000:100000",
+            "short": true,
+            "line-color": "#7E7E7E",
+            "tick": {
+                "visible": false
+            },
+            "guide": {
+                "line-style": "solid"
+            },
+            "item": {
+                "font-family": "arial",
+                "font-color": "#8B8B8B"
+            }
+        },
+        "series": [
+            {
+                "values": [
+                    jan,
+                    february,
+                    march,
+                    april,
+                    may,
+                    jun,
+                    jul,
+                    aug,
+                    sept,
+                    oct,
+                    nov,
+                    dec,
                 ],
-                    "tooltip": {
-                        "visible": false
-                    }
-                }
+                "background-color": "#90A23B"
+            },
+        ],
+        "tooltip": {
+            "visible": false
+        }
+    }
         ;
 
-        zingchart.render({
-        	id : 'myChart2',
-        	data : myConfig,
-        });
+    zingchart.render({
+        id: 'myChart2',
+        data: myConfig,
+    });
 
 }

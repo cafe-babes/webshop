@@ -2,57 +2,57 @@ var sizeDropdown = document.querySelector("#size-select");
 var categoryDropdown = document.querySelector("#category-select");
 var url = new URL(document.location);
 
-sizeDropdown.onchange = function(){
+sizeDropdown.onchange = function () {
     let size = sizeDropdown[sizeDropdown.selectedIndex].value;
     if (url.searchParams.get("category"))
-        window.location.href=`/index.html?start=0&size=${size}&category=${url.searchParams.get("category")}`;
+        window.location.href = `/index.html?start=0&size=${size}&category=${url.searchParams.get("category")}`;
     else
-        window.location.href=`/index.html?start=0&size=${size}`;
+        window.location.href = `/index.html?start=0&size=${size}`;
 };
 
-categoryDropdown.onchange = function(){
+categoryDropdown.onchange = function () {
     if (categoryDropdown[categoryDropdown.selectedIndex].value != 'all') {
         let category = categoryDropdown[categoryDropdown.selectedIndex].value;
-        window.location.href=`/index.html?category=${category}`;
+        window.location.href = `/index.html?category=${category}`;
     } else
-        window.location.href=`/`;
+        window.location.href = `/`;
 };
 
-if(!url.searchParams.get("start") && !url.searchParams.get("category")) {
+if (!url.searchParams.get("start") && !url.searchParams.get("category")) {
     fetchProducts();
 } else if (!url.searchParams.get("category")) {
     fetchProductsWithStartAndSize();
 } else {
     fetchProductsWithStartAndSizeAndCategory();
 }
-    fetchAdvice();
+fetchAdvice();
 
 sizeDropdown.value = url.searchParams.get("size") || 999;
 
 function fetchProducts() {
     fetch("/products")
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (jsonData) {
-        listProducts(jsonData);
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            listProducts(jsonData);
+        });
 }
 
 function fetchProductsWithStartAndSize() {
     var start = url.searchParams.get("start") || 0;
     var size = url.searchParams.get("size") || 999;
 
-    fetch("/products/"+start+"/"+size, {
+    fetch("/products/" + start + "/" + size, {
         method: "POST"
     })
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (jsonData) {
-        console.log(jsonData);
-        listProducts(jsonData);
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            console.log(jsonData);
+            listProducts(jsonData);
+        });
 
     getButtons(size);
 }
@@ -66,92 +66,92 @@ function fetchProductsWithStartAndSizeAndCategory() {
         "name": category
     };
 
-    fetch("/products/"+start+"/"+size, {
+    fetch("/products/" + start + "/" + size, {
         method: "POST",
         body: JSON.stringify(request),
         headers: {
             "Content-type": "application/json"
         }
     })
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (jsonData) {
-        console.log(jsonData);
-        listProducts(jsonData);
-    });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            console.log(jsonData);
+            listProducts(jsonData);
+        });
 
     getButtons(size, category);
 }
 
-function fetchAdvice(){
+function fetchAdvice() {
     fetch("/advice")
-    .then(function (response){
-        return response.json();
-    })
-    .then(function (jsonData){
-        showAdvice(jsonData);
-    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            showAdvice(jsonData);
+        })
 }
 
 function fetchImage(productId) {
     var productImage = document.querySelector(`#img-${productId}`);
 
     fetch('/image/' + productId + '/' + 0)
-    .then(function(response) {
-      if(response.status == 200) {
-        return response.blob();
-      }
-      productImage.src = 'images/default.jpg';
-    })
-    .then(function(myBlob) {
-      if(myBlob) {
-          var objectURL = URL.createObjectURL(myBlob);
-          productImage.src = objectURL;
-      }
-    });
+        .then(function (response) {
+            if (response.status == 200) {
+                return response.blob();
+            }
+            productImage.src = 'images/default.jpg';
+        })
+        .then(function (myBlob) {
+            if (myBlob) {
+                var objectURL = URL.createObjectURL(myBlob);
+                productImage.src = objectURL;
+            }
+        });
 }
 
 function getButtons(size, category) {
     var buttons = document.querySelector('#page-change');
     var request = {
-          "name": category
+        "name": category
     };
-    if(category) {
-    fetch("/products/0/999", {
-         method: "POST",
-         body: JSON.stringify(request),
-         headers: {
-             "Content-type": "application/json"
-         }
-    })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            buttons.innerHTML = '';
-            for(let i = 0; i < jsonData.length/size ;i++) {
-                buttons.innerHTML += `<a href='index.html?start=${i*size}&size=${size}&category=${category}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
+    if (category) {
+        fetch("/products/0/999", {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: {
+                "Content-type": "application/json"
             }
-        });
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (jsonData) {
+                buttons.innerHTML = '';
+                for (let i = 0; i < jsonData.length / size; i++) {
+                    buttons.innerHTML += `<a href='index.html?start=${i * size}&size=${size}&category=${category}'><button type="button" class="btn btn-lm btn-outline-secondary">${i + 1}</button></a>`;
+                }
+            });
     } else {
-    fetch("/products")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsonData) {
-            buttons.innerHTML = '';
-            for(let i = 0; i < jsonData.length/size ;i++) {
-                buttons.innerHTML += `<a href='index.html?start=${i*size}&size=${size}'><button type="button" class="btn btn-lm btn-outline-secondary">${i+1}</button></a>`;
-            }
-        });
+        fetch("/products")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (jsonData) {
+                buttons.innerHTML = '';
+                for (let i = 0; i < jsonData.length / size; i++) {
+                    buttons.innerHTML += `<a href='index.html?start=${i * size}&size=${size}'><button type="button" class="btn btn-lm btn-outline-secondary">${i + 1}</button></a>`;
+                }
+            });
     }
 }
 
 function listProducts(jsonData) {
     var container = document.querySelector('#list-products');
     container.innerHTML = "";
-    for (var i = 0; i < jsonData.length; i++) {
+    for (let i = 0; i < jsonData.length; i++) {
         container.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 box-shadow">
             <img class="card-img-top"
@@ -173,17 +173,17 @@ function listProducts(jsonData) {
         </div>
         </div>`;
     }
-    for (var i = 0; i < jsonData.length; i++) {
+    for (let i = 0; i < jsonData.length; i++) {
         fetchImage(jsonData[i].id);
     }
 }
 
-function showAdvice(jsonData){
+function showAdvice(jsonData) {
     var container = document.querySelector("#show-advice");
     container.setAttribute("class", "row d-flex justify-content-around p-3 mb-2 bg-light text-dark");
     container.innerHTML = "";
-        for(var i = 0; i < jsonData.length; i++){
-            container.innerHTML +=
+    for (var i = 0; i < jsonData.length; i++) {
+        container.innerHTML +=
             `
                 <div class="p-3 mb-2 bg-light text-dark">
                     <div class="card-body justify-content-around align-items-center">

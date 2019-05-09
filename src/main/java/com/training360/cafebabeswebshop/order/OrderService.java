@@ -40,8 +40,9 @@ public class OrderService {
     }
 
     public long saveOrderAndGetId(Authentication authentication, Delivery delivery) {
-        if (authentication == null)
+        if (authentication == null) {
             return 0;
+        }
         int basketSize = basketDao.getBasketItems(authentication.getName()).size();
         Order o = new Order(0, userDao.getUserByName(authentication.getName()).get(0).getId(),
                 -1, -1, "ACTIVE");
@@ -58,8 +59,9 @@ public class OrderService {
     }
 
     public List<Order> listMyOrders(Authentication authentication) {
-        if (authentication == null)
+        if (authentication == null) {
             return Collections.emptyList();
+        }
         List<Order> orders = orderDao.listMyOrders(authentication.getName());
         for (Order o : orders) {
             if (o.getOrderStatus() == OrderStatus.ACTIVE || o.getOrderStatus() == OrderStatus.SHIPPED) {

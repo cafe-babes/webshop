@@ -44,7 +44,7 @@ public class FeedbackTest {
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(1);
         assertEquals(3, feedbacks.get(0).getUser().getId());
-        assertEquals("Never a better shop!", feedbacks.get(0).getFeedback());
+        assertEquals("Never a better shop!", feedbacks.get(0).getFeedbackText());
 
     }
 
@@ -60,7 +60,7 @@ public class FeedbackTest {
         List<Feedback> feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
 
         assertEquals(exampleUser.getUserName(), feedbacks.get(0).getUser().getUserName());
-        assertEquals("Awesome!", feedbacks.get(0).getFeedback());
+        assertEquals("Awesome!", feedbacks.get(0).getFeedbackText());
         assertEquals(8, feedbacks.get(0).getProduct().getId());
         assertEquals(5, feedbacks.get(0).getRating());
 
@@ -75,7 +75,7 @@ public class FeedbackTest {
 
         List<Feedback> feedbackListOfExampleProduct = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
 
-        assertEquals(feedbackListOfExampleProduct.size(), 1);
+        assertEquals(1, feedbackListOfExampleProduct.size());
 
 
 //        When (deleting ONE feedback by it's ID )
@@ -124,9 +124,9 @@ public class FeedbackTest {
 
         List<Feedback> feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
 
-        assertEquals(feedbacks.size(), 1);
-        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
-        assertEquals(feedbacks.get(0).getRating(), 4);
+        assertEquals(1, feedbacks.size());
+        assertEquals("Awesome!", feedbacks.get(0).getFeedbackText());
+        assertEquals(4, feedbacks.get(0).getRating());
 
         feedbackService.giveAFeedback(new Feedback("Awesome #2!", 5, exampleUser,
                 exampleproduct));
@@ -134,9 +134,9 @@ public class FeedbackTest {
 //        Then (the second feedback will serve only as an update of the first one)
         feedbacks = feedbackService.listFeedBacksByProductId(exampleproduct.getId());
 
-        assertEquals(feedbacks.size(), 1);
-        assertEquals(feedbacks.get(0).getFeedback(), "Awesome #2!");
-        assertEquals(feedbacks.get(0).getRating(), 5);
+        assertEquals(1, feedbacks.size());
+        assertEquals("Awesome #2!", feedbacks.get(0).getFeedbackText());
+        assertEquals(5, feedbacks.get(0).getRating());
 
     }
 
@@ -174,9 +174,9 @@ public class FeedbackTest {
 
         List<Feedback> feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
 
-        assertEquals(feedbacks.size(), 2);
-        assertTrue(feedbacks.stream().map(Feedback::getFeedback).collect(Collectors.toList()).contains("Awesome!"));
-        assertTrue(feedbacks.stream().map(Feedback::getFeedback).collect(Collectors.toList()).contains("Awesome2!"));
+        assertEquals(2, feedbacks.size());
+        assertTrue(feedbacks.stream().map(Feedback::getFeedbackText).collect(Collectors.toList()).contains("Awesome!"));
+        assertTrue(feedbacks.stream().map(Feedback::getFeedbackText).collect(Collectors.toList()).contains("Awesome2!"));
 
 //      When (exampleUser2 gives a feedback it will affect only his)
 
@@ -186,9 +186,9 @@ public class FeedbackTest {
         feedbacks = feedbackController.listFeedBacksByProductId(exampleproduct.getId());
 
 
-        assertEquals(feedbacks.size(), 2);
-        assertEquals(feedbacks.get(0).getFeedback(), "Awesome!");
-        assertEquals(feedbacks.get(1).getFeedback(), "Awesome3!");
+        assertEquals(2, feedbacks.size());
+        assertEquals("Awesome!", feedbacks.get(0).getFeedbackText());
+        assertEquals("Awesome3!", feedbacks.get(1).getFeedbackText());
 
     }
 

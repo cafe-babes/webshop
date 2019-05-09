@@ -13,12 +13,9 @@ function fetchOrders() {
 }
 
 var selector = document.querySelector("#checkStatus");
+
 selector.addEventListener('change', function (event) {
-    if (selector.checked) {
-        fetchOrders();
-    } else {
-        fetchOrders();
-    }
+    fetchOrders();
 });
 
 function checkOrderStatus(jsonData) {
@@ -63,9 +60,9 @@ function showTable(jsonData) {
         tr.appendChild(total);
 
         var orderStatusTd = document.createElement("td");
-        if(jsonData[i].orderStatus == 'ACTIVE'){
+        if (jsonData[i].orderStatus == 'ACTIVE') {
             orderStatusTd.innerHTML = "aktív";
-        } else if(jsonData[i].orderStatus == 'SHIPPED'){
+        } else if (jsonData[i].orderStatus == 'SHIPPED') {
             orderStatusTd.innerHTML = "kiszállítva";
         } else {
             orderStatusTd.innerHTML = "törölt";
@@ -73,57 +70,60 @@ function showTable(jsonData) {
         var orderStatusTdId = 'manTd' + i;
         orderStatusTd.setAttribute('id', orderStatusTdId);
         tr.appendChild(orderStatusTd);
-console.log(jsonData[i].delivery);
+        console.log(jsonData[i].delivery);
         var deliveryAddressTd = document.createElement("td");
         deliveryAddressTd.innerHTML = jsonData[i].delivery.deliveryAddress;
         var deliveryAddressTdId = 'delTd' + i;
         deliveryAddressTd.setAttribute('id', deliveryAddressTdId);
         tr.appendChild(deliveryAddressTd);
 
-        if(jsonData[i].orderStatus == "ACTIVE"){
-          var editButtonTd = document.createElement("td");
-          var editButton = document.createElement("button");
-          var editButtonId = 'editbutton' + i;
-          editButton.setAttribute('id', editButtonId);
-          editButton.setAttribute('class', 'btn');
-          editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
-          editButtonTd.appendChild(editButton);
+        var editButtonTd;
+        var deleteButtonTd;
+        var shippedButtonTd;
 
-          var saveButton = document.createElement("button");
-          var saveButtonId = 'savebutton' + i;
-          saveButton.setAttribute('id', saveButtonId);
-          saveButton.setAttribute('class', 'btn');
-          saveButton.setAttribute('onclick', `saveTds(${i})`);
-          saveButton.style.display = 'none';
-          editButtonTd.appendChild(saveButton);
+        if (jsonData[i].orderStatus == "ACTIVE") {
+            editButtonTd = document.createElement("td");
+            var editButton = document.createElement("button");
+            var editButtonId = 'editbutton' + i;
+            editButton.setAttribute('id', editButtonId);
+            editButton.setAttribute('class', 'btn');
+            editButton.setAttribute('onclick', `editTds(${jsonData[i].id})`);
+            editButtonTd.appendChild(editButton);
 
-          var shippedButtonTd = document.createElement("td");
-          var shippedButton = document.createElement("button");
-          var shippedButtonId = "shippedButton" + i;
-          shippedButton.setAttribute("id", shippedButtonId);
-          shippedButton.setAttribute("class", "btn");
-          shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
-          shippedButtonTd.appendChild(shippedButton);
+            var saveButton = document.createElement("button");
+            var saveButtonId = 'savebutton' + i;
+            saveButton.setAttribute('id', saveButtonId);
+            saveButton.setAttribute('class', 'btn');
+            saveButton.setAttribute('onclick', `saveTds(${i})`);
+            saveButton.style.display = 'none';
+            editButtonTd.appendChild(saveButton);
 
-          editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
-          saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
-          shippedButton.innerHTML = `<i class="fas fa-truck"></i> Kiszállítva`;
+            shippedButtonTd = document.createElement("td");
+            var shippedButton = document.createElement("button");
+            var shippedButtonId = "shippedButton" + i;
+            shippedButton.setAttribute("id", shippedButtonId);
+            shippedButton.setAttribute("class", "btn");
+            shippedButton.setAttribute("onclick", `changeStatusToShipped(${i})`);
+            shippedButtonTd.appendChild(shippedButton);
 
-          var deleteButtonTd = document.createElement("td");
-          var deleteButton = document.createElement("button");
-          var deleteButtonId = 'deletebutton' + i;
-          deleteButton.setAttribute('id', deleteButtonId);
-          deleteButton.setAttribute('class', 'btn');
-          deleteButton.setAttribute('onclick', `deleteOrder(${i})`);
-          deleteButton['raw-data'] = jsonData[i];
-          deleteButtonTd.appendChild(deleteButton);
-          deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
+            editButton.innerHTML = `<i class="fas fa-edit"></i> Szerkesztés`;
+            saveButton.innerHTML = `<i class="fa fa-save"></i> Mentés`;
+            shippedButton.innerHTML = `<i class="fas fa-truck"></i> Kiszállítva`;
+
+            deleteButtonTd = document.createElement("td");
+            var deleteButton = document.createElement("button");
+            var deleteButtonId = 'deletebutton' + i;
+            deleteButton.setAttribute('id', deleteButtonId);
+            deleteButton.setAttribute('class', 'btn');
+            deleteButton.setAttribute('onclick', `deleteOrder(${i})`);
+            deleteButton['raw-data'] = jsonData[i];
+            deleteButtonTd.appendChild(deleteButton);
+            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Törlés`;
 
         } else {
-          var editButtonTd = document.createElement("td");
-          var saveButton = document.createElement("button");
-          var deleteButtonTd = document.createElement("td");
-          var shippedButtonTd = document.createElement("td");
+            editButtonTd = document.createElement("td");
+            deleteButtonTd = document.createElement("td");
+            shippedButtonTd = document.createElement("td");
         }
 
         tr.appendChild(deleteButtonTd);
@@ -144,8 +144,8 @@ function deleteOrder(num) {
         return;
     }
     fetch("/orders/" + id, {
-            method: "POST",
-        })
+        method: "POST",
+    })
         .then(function (response) {
             document.getElementById("message-div").setAttribute("class", "alert alert-success");
             document.querySelector("#message-div").innerHTML = "Törölve"
@@ -160,8 +160,8 @@ function changeStatusToShipped(num) {
     }
 
     fetch("/orders/" + id + "/shipped", {
-            method: "POST",
-        })
+        method: "POST",
+    })
         .then(function (response) {
             document.getElementById("message-div").setAttribute("class", "alert alert-success");
             document.querySelector("#message-div").innerHTML = "Státusz módosítva erre: kiszállítva"

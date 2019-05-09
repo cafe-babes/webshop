@@ -60,7 +60,7 @@ public class OrdersTest {
         Order orderexample = orders.stream().filter((o) -> o.getId() == idexample).findFirst().get();
 
 
-        assertEquals(orderexample.getOrderStatus().name(), "DELETED");
+        assertEquals("DELETED", orderexample.getOrderStatus().name());
 
     }
 
@@ -79,7 +79,7 @@ public class OrdersTest {
             }
         }
 
-        assertEquals(allOrdersStatusIsActive, false);
+        assertEquals(false, allOrdersStatusIsActive);
 
     }
 
@@ -132,8 +132,8 @@ public class OrdersTest {
         LocalDateTime date2 = orders.get(1).getPurchaseDate();
 
         //Then
-        assertEquals(date1, LocalDateTime.of(2019, 04, 20, 22, 20, 20));
-        assertEquals(date2, LocalDateTime.of(2019, 03, 20, 21, 20, 20));
+        assertEquals(date1, LocalDateTime.of(2019, 4, 20, 22, 20, 20));
+        assertEquals(date2, LocalDateTime.of(2019, 3, 20, 21, 20, 20));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class OrdersTest {
         long user1 = orders.get(0).getUserId();
 
         //Then
-        assertEquals(user1, 2L);
+        assertEquals(2L, user1);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class OrdersTest {
         long quantity = orders.get(0).getSumQuantity();
 
         //Then
-        assertEquals(quantity, 3L);
+        assertEquals(3L, quantity);
     }
 
     @Test
@@ -172,7 +172,7 @@ public class OrdersTest {
         long value = orders.get(0).getTotal();
 
         //Then
-        assertEquals(value, 96600L);
+        assertEquals(96600L, value);
     }
 
     @Test
@@ -187,9 +187,9 @@ public class OrdersTest {
         String status3 = orders.get(2).getOrderStatus().toString();
 
         //Then
-        assertEquals(status1, "SHIPPED");
-        assertEquals(status2, "ACTIVE");
-        assertEquals(status3, "SHIPPED");
+        assertEquals("SHIPPED", status1);
+        assertEquals("ACTIVE", status2);
+        assertEquals("SHIPPED", status3);
     }
 
     @Test
@@ -201,10 +201,10 @@ public class OrdersTest {
         ResultStatus rs4 = orderController.deleteOneItemFromOrder(1, "surf_coder");
 
         //Then
-        assertEquals(rs.getMessage(), "Ordered product deleted successfully");
-        assertEquals(rs2.getMessage(), "Invalid id, or address");
-        assertEquals(rs3.getMessage(), "Ordered product deleted successfully");
-        assertEquals(rs4.getMessage(), "Ordered product deleted successfully");
+        assertEquals("Ordered product deleted successfully", rs.getMessage());
+        assertEquals("Invalid id, or address", rs2.getMessage());
+        assertEquals("Ordered product deleted successfully", rs3.getMessage());
+        assertEquals("Ordered product deleted successfully", rs4.getMessage());
     }
 
     @Test
@@ -214,11 +214,11 @@ public class OrdersTest {
 
         long orderId = orderService.saveOrderAndGetId(tat, delivery);
 
-        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+        assertEquals(OrderStatus.ACTIVE, orderDao.findOrderById(orderId).getOrderStatus());
 
         orderService.updateOrderStatus(orderId, "shipped");
 
-        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.SHIPPED);
+        assertEquals(OrderStatus.SHIPPED, orderDao.findOrderById(orderId).getOrderStatus());
     }
 
     @Test
@@ -228,11 +228,11 @@ public class OrdersTest {
 
         long orderId = orderService.saveOrderAndGetId(tat, delivery);
 
-        assertEquals(orderDao.findOrderById(orderId).getOrderStatus(), OrderStatus.ACTIVE);
+        assertEquals(OrderStatus.ACTIVE, orderDao.findOrderById(orderId).getOrderStatus());
 
         ResultStatus rs = orderController.updateOrderStatus(orderId, "shippe");
 
-        assertEquals(rs.getMessage(), "Invalid id or status");
+        assertEquals("Invalid id or status", rs.getMessage());
     }
 
 

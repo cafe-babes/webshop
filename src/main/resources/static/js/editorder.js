@@ -76,7 +76,7 @@ function showTable(jsonData) {
 }
 
 
-function editPiece(num){
+function editPiece(num) {
     var piece = document.getElementById(`pieceTd${num}`);
     var pieceData = piece.innerHTML;
 
@@ -88,7 +88,7 @@ function editPiece(num){
     save.style.display = 'inline';
 }
 
-function savePiece(num){
+function savePiece(num) {
     var productId = document.getElementById(`editbuttonOp${num}`).parentElement.parentElement['raw-data'].productId;
     var piece = document.getElementById(`inputQuantityOp${num}`).value;
 
@@ -98,30 +98,30 @@ function savePiece(num){
     }
 
     fetch("/orders/piece", {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: {
-                "Content-type": "application/json"
-            }
-        })
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
         .then(function (response) {
             return response;
         })
         .then(function (jsonData) {
             if (jsonData.ok == true) {
 
-            document.getElementById(`pieceTd${num}`).innerHTML = piece;
-            document.getElementById(`editbuttonOp${num}`).style.display = 'inline';
-            document.getElementById(`savebuttonOp${num}`).style.display = 'none';
+                document.getElementById(`pieceTd${num}`).innerHTML = piece;
+                document.getElementById(`editbuttonOp${num}`).style.display = 'inline';
+                document.getElementById(`savebuttonOp${num}`).style.display = 'none';
 
             }
         });
-        return false;
+    return false;
 }
 
 
-function deleteItem(i){
-console.log(i);
+function deleteItem(i) {
+    console.log(i);
 
     var productId = document.getElementById(`deletebuttonOp${i}`).parentElement.parentElement['raw-data'].productId;
     fetch('/products/' + productId)
@@ -131,25 +131,25 @@ console.log(i);
         })
 }
 
-function removeItemFromOrders(i, product){
+function removeItemFromOrders(i, product) {
     var id = document.getElementById(`deletebuttonOp${i}`).parentElement.parentElement['raw-data'].orderId;
 
-    console.log("/orders/" + id +"/" +  product.address);
+    console.log("/orders/" + id + "/" + product.address);
     if (!confirm("Biztos, hogy törli a tételt?")) {
         return;
     }
-    fetch("/orders/" + id +"/" +  product.address, {
+    fetch("/orders/" + id + "/" + product.address, {
         method: "DELETE"
     })
-    .then(response => response.json())
-    .then(jsonData => {
-        if(jsonData.status=='OK') {
-            document.getElementById("message-div").setAttribute("class", "alert alert-success");
-            document.querySelector("#message-div").innerHTML = "Törölve a(z) " + product.address + " termék";
-            fetchOrders();
-        } else {
-            document.getElementById("message-div").setAttribute("class", "alert alert-danger");
-            document.querySelector("#message-div").innerHTML = "Nem sikerült a törlés";
-        }
-    });
+        .then(response => response.json())
+        .then(jsonData => {
+            if (jsonData.status == 'OK') {
+                document.getElementById("message-div").setAttribute("class", "alert alert-success");
+                document.querySelector("#message-div").innerHTML = "Törölve a(z) " + product.address + " termék";
+                fetchOrders();
+            } else {
+                document.getElementById("message-div").setAttribute("class", "alert alert-danger");
+                document.querySelector("#message-div").innerHTML = "Nem sikerült a törlés";
+            }
+        });
 }

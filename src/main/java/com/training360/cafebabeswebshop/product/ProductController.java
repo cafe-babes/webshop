@@ -30,7 +30,6 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResultStatus saveProductAndGetId(@RequestBody Product product) {
-        validator = new ProductValidator();
         if (validator.isValidProduct(product)) {
             try {
                 long id = productService.saveProductAndGetId(product);
@@ -45,7 +44,6 @@ public class ProductController {
 
     @PostMapping("/products/{id}")
     public ResultStatus updateProducts(@PathVariable long id, @RequestBody Product product) {
-        validator = new ProductValidator();
         if (validator.isValidProduct(product)) {
             try {
                 productService.updateProducts(id, product);
@@ -65,8 +63,9 @@ public class ProductController {
 
     @PostMapping("/products/{start}/{size}")
     public List<Product> getProductsWithStartAndSize(@PathVariable int start, @PathVariable int size, @RequestBody(required = false) Category category) {
-        if (category==null)
+        if (category==null) {
             return productService.getProductsWithStartAndSize(start,size);
+        }
         return productService.getProductsWithStartAndSizeAndCategory(start, size, category);
     }
 

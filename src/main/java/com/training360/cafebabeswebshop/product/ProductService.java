@@ -29,16 +29,15 @@ public class ProductService {
     public List<Product> getProductsWithStartAndSize(int start, int size) {
         return productDao.getProductsWithStartAndSize(start, size);
     }
+
     public List<Product> getProductsWithStartAndSizeAndCategory(int start, int size, Category category) {
         return productDao.getProductsWithStartAndSizeAndCategory(start, size, category);
     }
 
     public long saveProductAndGetId(Product product) {
-        for (Category category : categoryDao.listCategories()) {
-            if (category.getName().equals(product.getCategory().getName()))
-                return productDao.saveProductAndGetId(product);
+        if (categoryDao.getCategoryByName(product.getCategory().getName()).isEmpty()) {
+            categoryDao.createCategoryAndGetId(product.getCategory());
         }
-        categoryDao.createCategoryAndGetId(product.getCategory());
         return productDao.saveProductAndGetId(product);
     }
 

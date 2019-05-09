@@ -28,9 +28,9 @@ public class UserController {
 
     @GetMapping("/user")
     public User getUser(Authentication authentication) {
-        if (authentication == null)
+        if (authentication == null) {
             return new User(1, "VISITOR");
-
+        }
         User user = userService.getUserByName(authentication.getName()).get();
         if (user.getRole().equals("ROLE_ADMIN")) {
             return new User(user.getId(), user.getName(), authentication.getName(), 1, "ROLE_ADMIN");
@@ -43,9 +43,9 @@ public class UserController {
 
     @GetMapping("/role")
     public User determineRole(Authentication authentication) {
-        if (authentication == null)
+        if (authentication == null) {
             return new User(1, "VISITOR");
-
+        }
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {

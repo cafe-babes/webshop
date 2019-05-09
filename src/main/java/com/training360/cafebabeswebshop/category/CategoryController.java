@@ -5,7 +5,6 @@ import com.training360.cafebabeswebshop.product.ResultStatusEnum;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class CategoryController {
